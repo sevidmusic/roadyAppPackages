@@ -1,0 +1,7 @@
+{
+    "name": "darling/roady-app-packages",
+    "description": "A collection of App packages that can be made into Roady Apps.",
+    "type": "library",
+    "license": "MIT",
+    "require": {}
+}
