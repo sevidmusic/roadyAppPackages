@@ -36,10 +36,22 @@ $assignOutputComponentsToResponse = function(AppComponentsFactoryInterface $appC
         $oc = $appComponentsFactory->getComponentCrud()->read($storable);
         switch($oc->getType()) {
             case OutputComponent::class:
-                array_push($assignements, "rig --assign-to-response --response '" . $response->getName() . "' --output-components '" . $storable->getName() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $assignements,
+                    "rig --assign-to-response " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--response '" . $response->getName() . "' " .
+                    "--output-components '" . $storable->getName() . "'"
+                );
                 break;
             case DynamicOutputComponent::class:
-                array_push($assignements, "rig --assign-to-response --response '" . $response->getName() . "' --dynamic-output-components '" . $storable->getName() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $assignements,
+                    "rig --assign-to-response " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--response '" . $response->getName() . "' " .
+                    "--dynamic-output-components '" . $storable->getName() . "' "
+                );
                 break;
         }
     }
@@ -47,7 +59,13 @@ $assignOutputComponentsToResponse = function(AppComponentsFactoryInterface $appC
 
 $assignRequestsToResponse = function(AppComponentsFactoryInterface $appComponentsFactory, ResponseInterface $response, array &$assignements) {
     foreach($response->getRequestStorageInfo() as $storable) {
-        array_push($assignements, "rig --assign-to-response --response '" . $response->getName() . "' --requests '" . $storable->getName() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+        array_push(
+            $assignements,
+            "rig --assign-to-response " .
+            "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+            "--response '" . $response->getName() . "' " .
+            "--requests '" . $storable->getName() . "' "
+        );
     }
 };
 
@@ -119,25 +137,60 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
             case DynamicOutputComponent::class:
                 /** @var DynamicOutputComponent $component */
                 $isShared = str_contains($component->getDynamicFilePath(), 'SharedDynamicOutput');
-                array_push($outputComponents, "rig --new-dynamic-output-component --name '" . $component->getName() . "' --container '" . $component->getContainer() . "' --position '" . $component->getPosition() . "' " . ($isShared === true ? '--shared ' : '') . "--for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $outputComponents,
+                    "rig --new-dynamic-output-component " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--name '" . $component->getName() . "' " .
+                    "--container '" . $component->getContainer() . "' " .
+                    "--position '" . $component->getPosition() . "' " .
+                    ($isShared === true ? '--shared ' : '')
+                );
                 break;
             case OutputComponent::class:
                 /** @var OutputComponent $component */
-                array_push($outputComponents, "rig --new-output-component --name '" . $component->getName() . "' --container '" . $component->getContainer() . "' --position '" . $component->getPosition() . "' --output '" . $component->getOutput() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $outputComponents,
+                    "rig --new-output-component " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--name '" . $component->getName() . "' " .
+                    "--output '" . $component->getOutput() . "' " .
+                    "--container '" . $component->getContainer() . "' " .
+                    "--position '" . $component->getPosition() . "'"
+                );
                 break;
             case Request::class:
                 /** @var Request $component */
-                array_push($requests, "rig --new-request --name '" . $component->getName() . "' --relative-url '" . str_replace([$appComponentsFactory->getApp()->getAppDomain()->getUrl(), "/"], "", $component->getUrl()) . "' --container '" . $component->getContainer() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $requests,
+                    "rig --new-request " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--name '" . $component->getName() . "' " .
+                    "--relative-url '" . str_replace([$appComponentsFactory->getApp()->getAppDomain()->getUrl(), "/"], "", $component->getUrl()) . "' " .
+                    "--container '" . $component->getContainer() . "'"
+                );
                 break;
             case Response::class:
                 /** @var Response $component */
-                array_push($responses, "rig --new-response --name '" . $component->getName() . "' --position '" . $component->getPosition() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $responses,
+                    "rig --new-response " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--name '" . $component->getName() . "' " .
+                    "--position '" . $component->getPosition() . "'"
+                );
                 $assignRequestsToResponse($appComponentsFactory, $component, $assignements);
                 $assignOutputComponentsToResponse($appComponentsFactory, $component, $assignements);
                 break;
             case GlobalResponse::class:
                 /** @var GlobalResponse $component */
-                array_push($responses, "rig --new-global-response --name '" . $component->getName() . "' --position '" . $component->getPosition() . "' --for-app '" . $appComponentsFactory->getApp()->getName() . "'");
+                array_push(
+                    $responses,
+                    "rig --new-global-response " .
+                    "--for-app '" . $appComponentsFactory->getApp()->getName() . "' " .
+                    "--name '" . $component->getName() . "' " .
+                    "--position '" . $component->getPosition() . "'"
+                );
                 $assignOutputComponentsToResponse($appComponentsFactory, $component, $assignements);
                 break;
         }
@@ -147,24 +200,62 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
 
 ?>
 <!-- App Packager Output Start -->
+<div class="app-packager-app-packager-output-container">
 <div class="app-packager-app-packager-output">
+
+
+<div class="app-packager-content">
+    <h3>Welcome to the App Packager App</h3>
+
+    <p>
+        The App Pcakager can be used to create app packages from existing Roady
+        Apps that were built for the same domain the App Packager was built for.
+    </p>
+
+    <p>
+        App Packages can be used to save stripped down versions of an App that
+        can be re-made into Roady App via <code>`rig --make-app-package`</code>.
+    <p>
+
+    <p>
+        Instead of defining configuration files, App Packages define a single
+        make.sh script that can be used to re-make an actual Roady App.
+    </p>
+
+    <p>
+        App Packages also can provide any additional resources that may be needed
+        by the App, such as stylesheets, scripts, etc.
+    </p>
+</div>
+
 <form class="app-packager-app-selection-form" action="<?php echo $currentRequest->getUrl(); ?>" method="post">
+
     <label class="app-packager-select-form-label" for="AppToPackSelector">Select an App to create an App Package from:</label><br/>
+
     <select id="AppToPackSelector" class="app-packager-select-form" name="AppToPack">
         <?php $generateAvailableAppSelectionOptions($appName); ?>
     </select>
+
     <input type="hidden" name="MakeAppPackage" value="True">
+
     <input class="app-packager-submit-button" type="submit">
+
 </form>
 
 <?php if(isset($currentRequest->getPost()['MakeAppPackage']) && $currentRequest->getPost()['MakeAppPackage'] === 'True') { ?>
     <div class="app-packager-make-file-preview">
+
     <?php
         $createDirectory($appPackageDirectoryPath);
         $createMakeFile($appPackageDirectoryPath, $generateMakeFile($appComponentsFactory, $apps, $outputComponents, $requests, $responses, $assignements));
         $copyAppFilesAndDirectories($appDirectoryPath, $appPackageDirectoryPath);
     ?>
+
     </div>
+
 <?php } ?>
+
 </div>
 <!-- App Packager Output End -->
+</div>
+<!-- App Packager Output Container End -->

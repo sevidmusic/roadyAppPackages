@@ -1,18 +1,10 @@
 
-html, body {
-    margin: 0;
-    padding: 0;
-    background-image: linear-gradient(
-        90deg,
-        #030302,
-        #040405,
-        #050507,
-        #030302,
-        #040405,
-        #050507,
-        #030302,
-        #2c728c
-    );
+.app-packager-app-packager-output-container {
+    background: #140a09;
+    background-image: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
+    background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
+    background-size: 10rem 10rem;
+    padding: 1rem;
 }
 
 /**
@@ -20,16 +12,17 @@ html, body {
  * Main container div for all AppPackager output.
  */
 .app-packager-app-packager-output {
-    font-size: 23px;
-    position: sticky;
-    top: 0;
-    right: 0;
-    font-family: monospace;
     background: #020203;
-    color: #9f9faf;
-    overflow: auto;
-    width: 100%;
+    color: #00bbff;
+    font-family: monospace;
+    font-size: 1.3rem;
     min-height: calc(100vh - 0px);
+    opacity: .93;
+    overflow: auto;
+    position: sticky;
+    right: 0;
+    top: 0;
+    width: 100%;
 }
 
 .app-packager-error-message {
@@ -38,40 +31,46 @@ html, body {
 
 .app-packager-message {
     border-bottom: 1px solid #9fafaf;
-    width: 87%;
-    margin: .5em auto;
-    border-radius: .5em;
-    padding: .3em;
+    border-radius: .5rem;
+    margin: .5rem auto;
     overflow: auto;
+    padding: .3rem;
 }
+
+.app-packager-select-form-label,
+.app-packager-message,
+.app-packager-content,
+.app-packager-submit-button, .app-packager-select-form {
+    width: 87%;
+}
+
 .app-packager-code-preview {
-    display: block;
     background: #030302;
-    padding: 1em;
     color: #afa79f;
-    font-size: .5em;
+    display: block;
+    font-size: .5rem;
+    padding: 1rem;
 }
 
 .app-packager-app-selection-form {
 }
 
 .app-packager-select-form-label {
-    color: orange;
-    padding-top: 1em;
+    color: #00bbff;
+    padding-top: 1rem;
     display: block;
-    width: 87%;
     margin: 0 auto;
+    font-size: 1rem;
 }
 
 .app-packager-submit-button, .app-packager-select-form {
     border: 1px solid #999;
-    font-size: .7em;
-    color: orange;
+    font-size: .7rem;
+    color: #00bbff;
     background-color: #020203;
     border-radius: 0;
-    width: 87%;
-    padding: .3em;
-    margin: .5em auto;
+    padding: .3rem;
+    margin: .5rem auto;
     display: block;
 }
 
@@ -84,4 +83,14 @@ html, body {
 
 .makeFileOutput {
     color: limegreen;
+}
+
+.app-packager-content {
+    margin: 0 auto;
+    font-size: 0.9rem;
+}
+
+.app-packager-content p {
+    color: #f3f9fc;
+    opacity: .7;
 }
