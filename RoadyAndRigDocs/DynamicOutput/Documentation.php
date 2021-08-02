@@ -46,14 +46,12 @@ $output = htmlspecialchars(strval(file_get_contents($rigHelpFilesDirectoryPath .
             '/rig --.*</m',
             '/\[.*]/m',
             '/rig.*\[/',
-#            '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)#',
-            '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)#',
+            '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)|((\.\/)\w+/).*(\w+/)(\w+)#',
         ],
         [
             '<code class="' . $codeClass . '">${0}/code><',
             '<code class="' . $codeClass . '">${0}</code>',
             '<code class="' . $codeClass . '">rig [',
-#            '<code class="rr-docs-file-path">${0}</code>',
             '<code class="rr-docs-file-path">${0}</code>',
         ],
         $output
