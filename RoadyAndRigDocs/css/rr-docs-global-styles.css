@@ -1,9 +1,23 @@
+
+* {
+    box-sizing: border-box;
+}
+
 .rr-docs-container {
     background: #140a09;
     background-image: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
     background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     background-size: 10rem 10rem;
     color: white;
+    font-size: 1.2rem;
+}
+
+.rr-docs-output {
+    margin: 0 auto;
+    width: 87%;
+    background: black;
+    opacity: 0.87;
+    padding: 3rem;
 }
 
 .rr-docs-file-path {
@@ -18,7 +32,7 @@
     background: #28353b;
     color: #c9ffb9;
     font-family: monospace;
-    font-size: .7rem;
+    font-size: .9rem;
     padding: .2rem .4rem;
 }
 
@@ -26,19 +40,20 @@
     color: white;
 }
 
-a, a:link {
+.rr-docs-container a, .rr-docs-container a:link {
     color: #86dfff;
     text-decoration: none;
 }
 
-a:visited {
+.rr-docs-container a:visited {
     color: #b9ecff;
 }
 
-a:hover {
+.rr-docs-container a:hover {
     color: #00bbff;
 }
 
-a:active {
+.rr-docs-container a:active {
     color: #b9c9ff;
 }
+
