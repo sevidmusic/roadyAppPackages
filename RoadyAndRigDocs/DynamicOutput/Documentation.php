@@ -45,6 +45,7 @@ $output = htmlspecialchars(
     <div class="rr-docs-output">
         <?php
             $codeClass = 'rr-docs-code';
+            $pathClass = 'rr-docs-file-path';
             $lines = explode(PHP_EOL, $output);
             foreach($lines as $key => $line) {
                 $lines[$key] = '<p>' . trim($line) . '</p>';
@@ -55,10 +56,15 @@ $output = htmlspecialchars(
             }
             echo preg_replace(
                 [
-                    '/\[.*]/m', # Match similar to [--flag] [--flag] [--flag]
+                    # Match similar to [--flag] [--flag] [--flag]
+                    '/\[.*]/m',
+                    # Match paths (./path/.../word OR /path/.../word)
                     '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)|((\.\/)\w+/).*(\w+/)(\w+)#',
+                    # Match --flag... word \
                     '/((--)\w+).*[ ](\w+)[ ][\\\]/m',
+                    # Match --flag...<
                     '/rig --.*</m',
+                    # Match export PATH=&quot;${PATH}:${HOME}<code class="rr-docs-file-path">
                     '/export PATH=&quot;\${PATH}:\${HOME}<code class="rr-docs-file-path">/',
                     '/bin<\/code>&quot;/',
                     '/~\/(\w+)/',
@@ -67,12 +73,12 @@ $output = htmlspecialchars(
                 ],
                 [
                     '<code class="' . $codeClass . '">${0}</code>',
-                    '<code class="rr-docs-file-path">${0}</code>',
+                    '<code class="' . $pathClass . '">${0}</code>',
                     '<code class="' . $codeClass . '">${0}</code>',
                     '<code class="' . $codeClass . '">${0}/code><',
-                    '<code class="rr-docs-file-path">export PATH=&quot;${PATH}:${HOME}',
+                    '<code class="' . $codeClass . '">export PATH=&quot;${PATH}:${HOME}',
                     'bin&quot;</code>',
-                    '<code class="' . $codeClass . '">${0}</code>',
+                    '<code class="' . $pathClass . '">${0}</code>',
                     '<code class="' . $codeClass . '">$PATH</code>',
                     '<code class="rr-docs-code">rig ',
                 ],
