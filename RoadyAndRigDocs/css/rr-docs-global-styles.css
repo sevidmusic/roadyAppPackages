@@ -20,20 +20,21 @@
     padding: 3rem;
 }
 
+.rr-docs-code,
+.rr-docs-file-path {
+    font-family: monospace;
+    font-size: .9rem;
+    padding: .2rem .4rem;
+}
+
 .rr-docs-file-path {
     background: #283b38;
     color: #ffccb9;
-    font-family: monospace;
-    font-size: .7rem;
-    padding: .2rem .4rem;
 }
 
 .rr-docs-code {
     background: #28353b;
     color: #c9ffb9;
-    font-family: monospace;
-    font-size: .9rem;
-    padding: .2rem .4rem;
 }
 
 .rr-docs-code:hover, .rr-docs-file-path:hover {
