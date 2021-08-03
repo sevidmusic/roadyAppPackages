@@ -59,12 +59,22 @@ $output = htmlspecialchars(
                     '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)|((\.\/)\w+/).*(\w+/)(\w+)#',
                     '/((--)\w+).*[ ](\w+)[ ][\\\]/m',
                     '/rig --.*</m',
+                    '/export PATH=&quot;\${PATH}:\${HOME}<code class="rr-docs-file-path">/',
+                    '/bin<\/code>&quot;/',
+                    '/~\/(\w+)/',
+                    '/[ ]\$PATH[ ]/',
+                    '/rig  <code class="rr-docs-code">/',
                 ],
                 [
                     '<code class="' . $codeClass . '">${0}</code>',
                     '<code class="rr-docs-file-path">${0}</code>',
                     '<code class="' . $codeClass . '">${0}</code>',
                     '<code class="' . $codeClass . '">${0}/code><',
+                    '<code class="rr-docs-file-path">export PATH=&quot;${PATH}:${HOME}',
+                    'bin&quot;</code>',
+                    '<code class="' . $codeClass . '">${0}</code>',
+                    '<code class="' . $codeClass . '">$PATH</code>',
+                    '<code class="rr-docs-code">rig ',
                 ],
                 $output
             );
