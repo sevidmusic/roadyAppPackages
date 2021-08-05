@@ -57,36 +57,32 @@ $output = htmlspecialchars(
 
             echo PHP_EOL . preg_replace(
                 [
-                    # Match paths (./path/.../word OR /path/.../word)
+                    # Match paths (./path/.../word.word OR /path/.../word OR ./path/.../word/word)
                     '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)|((\.\/)\w+/).*(\w+/)(\w+)#',
                     # Match export PATH=&quot;${PATH}:${HOME}<code class="rr-docs-file-path">
                     '/export PATH=&quot;\${PATH}:\${HOME}<code class="rr-docs-file-path">/',
-                    # Match $PATH (with one space on each side)
-                    '/[ ]\$PATH[ ]/',
                     # Match bin</code>&quot;
                     '/bin<\/code>&quot;/',
+                    # Match $PATH (with one space on each side)
+                    '/[ ]\$PATH[ ]/',
                     # Match >../word.../word<
                     '/>(\.\.\/).*((\/)\w+)</',
-                    # Match similar to [--flag] [--flag] [--flag]
+                    # Match >[...] (for example: >[--flag] [--flag] [--flag])
                     '/>\[.*]/',
-                    # Match ~/word
-                    '/~\/(\w+)/',
                 ],
                 [
-                    # Match paths (./path/.../word OR /path/.../word)
+                    # Match paths (./path/.../word.word OR /path/.../word OR ./path/.../word/word)
                     '<code class="' . $pathClass . '">${0}</code>',
                     # Match export PATH=&quot;${PATH}:${HOME}<code class="rr-docs-file-path">
                     '<code class="' . $codeClass . '">export PATH=&quot;${PATH}:${HOME}',
-                    # Match $PATH (with one space on each side)
-                    '<code class="' . $codeClass . '">$PATH</code>',
                     # Match bin</code>&quot;
                     'bin&quot;</code>',
+                    # Match $PATH (with one space on each side)
+                    '<code class="' . $codeClass . '">$PATH</code>',
                     # Match >../word.../word<
                     '><code class="' . $pathClass . '"${0}/code><',
-                    # Match similar to [--flag] [--flag] [--flag]
+                    # Match >[...] (for example: >[--flag] [--flag] [--flag])
                     '><code class="' . $codeClass . '"${0}</code>',
-                    # Match ~/word
-                    '<code class="' . $pathClass . '">${0}</code>',
                 ],
                 $output
             );
