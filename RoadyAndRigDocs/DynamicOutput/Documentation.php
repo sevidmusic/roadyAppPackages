@@ -67,10 +67,12 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
+                    '#((rig[ ]--)|(rig[ ]\[--)|(\[--)|(--))(\w+)(.*)(-\w+)(]|)#',
                 ],
                 [
                     '',
                     ' ',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                 ],
                 implode(PHP_EOL, $lines)
             );
