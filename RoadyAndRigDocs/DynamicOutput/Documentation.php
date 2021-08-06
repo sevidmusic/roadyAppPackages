@@ -67,7 +67,7 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
-                    '#((rig[ ]--)|(rig[ ]\[--)|(\[--)|(--))(\w+)(.*)(-\w+)(]|)#',
+                    "#((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|(debug)|(name)|(help)|(options)|(static)|(Foo)|(Bar)|(Baz)|[ ]\\\\)#",
                 ],
                 [
                     '',
