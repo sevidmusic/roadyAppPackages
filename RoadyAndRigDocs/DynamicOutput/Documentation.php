@@ -67,12 +67,12 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
-                    "#((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|(debug)|(name)|(help)|(options)|(static)|(Foo)|(Bar)|(Baz)|[ ]\\\\)#",
+                    #'#((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|(debug)|(name)|(help)|(options)|(static)|(Foo)|(Bar)|(Baz)|(response)|(reques(ts|t))|([0-9])|(FooDynamicOutput)|(FooRequests)|([ ]\\\\))#',
                 ],
                 [
                     '',
                     ' ',
-                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    #'<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                 ],
                 implode(PHP_EOL, $lines)
             );
