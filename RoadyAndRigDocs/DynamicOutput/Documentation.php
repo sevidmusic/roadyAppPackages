@@ -30,7 +30,7 @@ $helpFilesListing = array_diff(
     ['.', '..']
 );
 
-$output = htmlspecialchars(
+$helpFileOutput = htmlspecialchars(
     strval(
         file_get_contents(
             $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
@@ -44,48 +44,40 @@ $output = htmlspecialchars(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
         <?php
-            $codeClass = 'rr-docs-code';
-            $pathClass = 'rr-docs-file-path';
-            $lines = explode(PHP_EOL, $output);
+            /** vars */
+            $cssClasses = [
+                'codeClass' => 'rr-docs-code',
+                'pathClass' => 'rr-docs-file-path',
+            ];
+            /** Menu  */
+            $menuLinks = [];
+            foreach($helpFilesListing as $listing) {
+                array_push(
+                    $menuLinks,
+                    '<a href="?request=' . str_replace('.txt', '', $listing) .
+                    '">' . $listing . '</a>'
+                );
+            }
+            /** Help File Output */
+            $lines = explode(PHP_EOL, $helpFileOutput);
             foreach($lines as $key => $line) {
                 $lines[$key] = '<p>' . trim($line) . '</p>';
             }
-            $output = str_replace('<p></p>', '',implode(PHP_EOL, $lines));
-            foreach($helpFilesListing as $listing) {
-                echo '<div><a href="?request=' . str_replace('.txt', '', $listing) . '">' . $listing . '</a></div>';
-            }
-
-            echo PHP_EOL . preg_replace(
+            $helpFileOutput = preg_replace(
                 [
-                    # Match paths (./path/.../word.word OR /path/.../word OR ./path/.../word/word)
-                    '#((\.\/)\w+/).*(\w+/)(\w+.*[.]\w+)|((\/)\w+/).*(\w+/)(\w+)|((\.\/)\w+/).*(\w+/)(\w+)#',
-                    # Match export PATH=&quot;${PATH}:${HOME}<code class="rr-docs-file-path">
-                    '/export PATH=&quot;\${PATH}:\${HOME}<code class="rr-docs-file-path">/',
-                    # Match bin</code>&quot;
-                    '/bin<\/code>&quot;/',
-                    # Match $PATH (with one space on each side)
-                    '/[ ]\$PATH[ ]/',
-                    # Match >../word.../word<
-                    '/>(\.\.\/).*((\/)\w+)</',
-                    # Match >[...] (for example: >[--flag] [--flag] [--flag])
-                    '/>\[.*]/',
+                    '#<p></p>#',
+                    '#[ ]+#',
                 ],
                 [
-                    # Match paths (./path/.../word.word OR /path/.../word OR ./path/.../word/word)
-                    '<code class="' . $pathClass . '">${0}</code>',
-                    # Match export PATH=&quot;${PATH}:${HOME}<code class="rr-docs-file-path">
-                    '<code class="' . $codeClass . '">export PATH=&quot;${PATH}:${HOME}',
-                    # Match bin</code>&quot;
-                    'bin&quot;</code>',
-                    # Match $PATH (with one space on each side)
-                    '<code class="' . $codeClass . '">$PATH</code>',
-                    # Match >../word.../word<
-                    '><code class="' . $pathClass . '"${0}/code><',
-                    # Match >[...] (for example: >[--flag] [--flag] [--flag])
-                    '><code class="' . $codeClass . '"${0}</code>',
+                    '',
+                    ' ',
                 ],
-                $output
+                implode(PHP_EOL, $lines)
             );
+            echo PHP_EOL . str_repeat(' ', 8) . '<div class="rr-docs-rig-menu">' .
+                implode(PHP_EOL . str_repeat(' ', 16), $menuLinks) .
+                PHP_EOL . str_repeat(' ', 8) . '</div>' . str_repeat(PHP_EOL, 2) .
+                $helpFileOutput . PHP_EOL;
         ?>
     </div>
 </div>
