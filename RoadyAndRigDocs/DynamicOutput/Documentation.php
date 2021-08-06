@@ -67,7 +67,7 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
-                    '#((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|(debug)|(name)|(help)|(options)|(flags)|(static)|(Foo)|(Bar)|(Baz)|(response)|(reques(ts|t))|(&quot;)|(\')|([0-9])|(FooDynamicOutput)|(FooRequests)|([a-z]Response)|[a-z](Output)|([ ]\\\\))#',
+                    '#(((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|([ ]\\\\))|(--\w+))#',
                 ],
                 [
                     '',
