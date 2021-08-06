@@ -9,7 +9,7 @@
     background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     background-size: 10rem 10rem;
     color: white;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-family: monospace;
 }
 
@@ -25,7 +25,7 @@
 .rr-docs-file-path {
     font-family: monospace;
     font-size: .9rem;
-    padding: .2rem .4rem;
+    padding: .2rem;
 }
 
 .rr-docs-file-path {

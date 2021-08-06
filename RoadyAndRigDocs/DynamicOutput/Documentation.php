@@ -67,12 +67,24 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
-                    '#(((--)|(\[--)|(rig --)|(rig \[--))(.*)((])|(-(\w+))|([ ]\\\\))|(--\w+)|(rig --\w+))#',
+                    '#((--)(\w+)[a-z\-]*)#',
+                    '#([[]|[]])#',
+                    '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
+                    '#\\\\#',
+                    "#[ ]['](.*)['][ ]#",
+                    '#export(.*)&quot;#',
+                    '#\$PATH#',
                 ],
                 [
                     '',
                     ' ',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
                 ],
                 implode(PHP_EOL, $lines)
             );
