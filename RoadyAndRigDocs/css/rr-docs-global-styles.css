@@ -1,0 +1,104 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.rr-docs-container {
+    background: #140a09;
+    background-image: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
+    background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
+    background-size: 10rem 10rem;
+    color: white;
+    font-size: 0.9rem;
+    font-family: monospace;
+}
+
+.rr-docs-output {
+    margin: 0 auto;
+    width: 87%;
+    background: black;
+    opacity: 0.93;
+    padding: 3rem;
+}
+
+.rr-docs-container a, .rr-docs-container a:link {
+    color: #86dfff;
+    text-decoration: none;
+}
+
+.rr-docs-container a:visited {
+    color: #b9ecff;
+}
+
+.rr-docs-container a:hover {
+    color: #00bbff;
+}
+
+.rr-docs-container a:active {
+    color: #b9c9ff;
+}
+
+.rr-docs-code,
+.rr-docs-special-char,
+.rr-docs-file-path,
+.rr-docs-var
+{
+    font-family: monospace;
+    font-size: .9rem;
+}
+
+.rr-docs-code,
+.rr-docs-special-char
+{
+    background: #28353b;
+}
+
+.rr-docs-file-path,
+.rr-docs-var
+{
+    background: #283b38;
+}
+
+.rr-docs-code {
+    color: #c9ffb9;
+}
+
+.rr-docs-special-char {
+    color: #ecffb9;
+}
+
+.rr-docs-file-path {
+    color: #ffccb9;
+}
+
+.rr-docs-var {
+    color: #ccb9ff;
+}
+
+.rr-docs-code:hover,
+.rr-docs-special-char:hover,
+.rr-docs-file-path:hover,
+.rr-docs-var:hover
+{
+    color: white;
+}
+
+.rr-docs-warning,
+.rr-docs-warning:before
+{
+    color: #ff4400;
+    background: #3b282b;
+}
+
+.rr-docs-warning:before {
+    background-image: linear-gradient(45deg, #3b2f28 25%, transparent 25%), linear-gradient(-45deg, #28343b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #59473d 75%), linear-gradient(-45deg, transparent 75%, #454145 75%);
+    background-position: 0 0, 0 5rem, 5rem -5rem, -5rem 0rem;
+    background-size: 3rem 1rem;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 5px;
+    margin-bottom: 0.7rem;
+    border-radius: 0 0.7rem;
+}
+
