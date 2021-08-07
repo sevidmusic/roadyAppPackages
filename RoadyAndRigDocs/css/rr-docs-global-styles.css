@@ -82,3 +82,23 @@
 {
     color: white;
 }
+
+.rr-docs-warning,
+.rr-docs-warning:before
+{
+    color: #ff4400;
+    background: #3b282b;
+}
+
+.rr-docs-warning:before {
+    background-image: linear-gradient(45deg, #3b2f28 25%, transparent 25%), linear-gradient(-45deg, #28343b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #59473d 75%), linear-gradient(-45deg, transparent 75%, #454145 75%);
+    background-position: 0 0, 0 5rem, 5rem -5rem, -5rem 0rem;
+    background-size: 3rem 1rem;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 5px;
+    margin-bottom: 0.7rem;
+    border-radius: 0 0.7rem;
+}
+

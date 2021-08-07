@@ -50,6 +50,7 @@ $helpFileOutput = htmlspecialchars(
                 'pathClass' => 'rr-docs-file-path',
                 'specialCharClass' => 'rr-docs-special-char',
                 'varClass' => 'rr-docs-var',
+                'warningClass' => 'rr-docs-warning',
             ];
             /** Menu  */
             $menuLinks = [];
@@ -76,7 +77,8 @@ $helpFileOutput = htmlspecialchars(
                     "#[ ]['](.*)['][ ]#",
                     '#export(.*)&quot;#',
                     '#\$PATH#',
-                    '#rig#',
+                    '#([ ]rig|rig)[ ]#',
+                    '#WARNING:#',
                 ],
                 [
                     '',
@@ -89,6 +91,7 @@ $helpFileOutput = htmlspecialchars(
                     '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '"><a href="index.php?request=help">${0}</a></code>',
+                    '<span class="' .  ($cssClasses['warningClass'] ?? '') . '">${0}</span>',
                 ],
                 implode(PHP_EOL, $lines)
             );
