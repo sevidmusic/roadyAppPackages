@@ -48,6 +48,8 @@ $helpFileOutput = htmlspecialchars(
             $cssClasses = [
                 'codeClass' => 'rr-docs-code',
                 'pathClass' => 'rr-docs-file-path',
+                'specialCharClass' => 'rr-docs-special-char',
+                'varClass' => 'rr-docs-var',
             ];
             /** Menu  */
             $menuLinks = [];
@@ -74,17 +76,19 @@ $helpFileOutput = htmlspecialchars(
                     "#[ ]['](.*)['][ ]#",
                     '#export(.*)&quot;#',
                     '#\$PATH#',
+                    '#rig#',
                 ],
                 [
                     '',
                     ' ',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
-                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
-                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
-                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '"><a href="index.php?request=help">${0}</a></code>',
                 ],
                 implode(PHP_EOL, $lines)
             );

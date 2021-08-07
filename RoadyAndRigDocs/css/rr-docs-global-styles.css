@@ -17,29 +17,8 @@
     margin: 0 auto;
     width: 87%;
     background: black;
-    opacity: 0.87;
+    opacity: 0.93;
     padding: 3rem;
-}
-
-.rr-docs-code,
-.rr-docs-file-path {
-    font-family: monospace;
-    font-size: .9rem;
-    padding: .2rem;
-}
-
-.rr-docs-file-path {
-    background: #283b38;
-    color: #ffccb9;
-}
-
-.rr-docs-code {
-    background: #28353b;
-    color: #c9ffb9;
-}
-
-.rr-docs-code:hover, .rr-docs-file-path:hover {
-    color: white;
 }
 
 .rr-docs-container a, .rr-docs-container a:link {
@@ -59,3 +38,47 @@
     color: #b9c9ff;
 }
 
+.rr-docs-code,
+.rr-docs-special-char,
+.rr-docs-file-path,
+.rr-docs-var
+{
+    font-family: monospace;
+    font-size: .9rem;
+}
+
+.rr-docs-code,
+.rr-docs-special-char
+{
+    background: #28353b;
+}
+
+.rr-docs-file-path,
+.rr-docs-var
+{
+    background: #283b38;
+}
+
+.rr-docs-code {
+    color: #c9ffb9;
+}
+
+.rr-docs-special-char {
+    color: #ecffb9;
+}
+
+.rr-docs-file-path {
+    color: #ffccb9;
+}
+
+.rr-docs-var {
+    color: #ccb9ff;
+}
+
+.rr-docs-code:hover,
+.rr-docs-special-char:hover,
+.rr-docs-file-path:hover,
+.rr-docs-var:hover
+{
+    color: white;
+}
