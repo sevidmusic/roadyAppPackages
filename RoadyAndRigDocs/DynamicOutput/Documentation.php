@@ -70,6 +70,7 @@ $helpFileOutput = htmlspecialchars(
                 [
                     '#<p></p>#',
                     '#[ ]+#',
+                    '#[`]#',
                     '#((--)(\w+)[a-z\-]*)#',
                     '#([[]|[]])#',
                     '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
@@ -79,10 +80,14 @@ $helpFileOutput = htmlspecialchars(
                     '#\$PATH#',
                     '#([ ]rig|rig)[ ]#',
                     '#WARNING:#',
+                    '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
+                    '#[ ](debug)|(FLAG)#',
+                    '#(\#!/bin/bash)|(set -o posix)#',
                 ],
                 [
                     '',
                     ' ',
+                    '',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>',
@@ -92,6 +97,9 @@ $helpFileOutput = htmlspecialchars(
                     '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '"><a href="index.php?request=help">${0}</a></code>',
                     '<span class="' .  ($cssClasses['warningClass'] ?? '') . '">${0}</span>',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                 ],
                 implode(PHP_EOL, $lines)
             );
