@@ -44,10 +44,11 @@ $helpFilesListing = array_diff(
             /** Menu  */
             $menuLinks = [];
             foreach($helpFilesListing as $listing) {
+                $linkName = str_replace('.txt', '', $listing);
                 array_push(
                     $menuLinks,
-                    '<a href="?request=' . str_replace('.txt', '', $listing) .
-                    '">' . $listing . '</a>'
+                    '<div class="rr-docs-menu-link"><a href="?request=' . $linkName .
+                    '">--' . $linkName . '</a></div>'
                 );
             }
             echo PHP_EOL . str_repeat(' ', 8) . '' .

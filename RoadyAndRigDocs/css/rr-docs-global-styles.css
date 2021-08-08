@@ -69,6 +69,7 @@
 
 .rr-docs-container pre
 {
+    padding: 1rem;
     overflow: auto;
 }
 
@@ -119,4 +120,20 @@
     width: 87%;
     height: auto;
     display: block;
+}
+
+.rr-docs-multi-line-code-line-indent1 {
+}
+
+.rr-docs-multi-line-code-line-indent2 {
+    padding: 3rem;
+}
+
+.rr-docs-rig-menu {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rr-docs-menu-link {
+    margin: 0 2rem;
 }
