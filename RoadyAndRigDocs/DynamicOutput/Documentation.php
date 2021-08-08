@@ -43,6 +43,7 @@ $helpFileOutput = htmlspecialchars(
 
 <div class="rr-docs-container">
     <div class="rr-docs-output">
+        <h1>rig</h1>
         <?php
             /** vars */
             $cssClasses = [

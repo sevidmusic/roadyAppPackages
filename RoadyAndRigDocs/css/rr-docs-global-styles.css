@@ -19,6 +19,7 @@
     background: black;
     opacity: 0.93;
     padding: 3rem;
+    overflow: auto;
 }
 
 .rr-docs-container a, .rr-docs-container a:link {
@@ -48,7 +49,8 @@
 }
 
 .rr-docs-code,
-.rr-docs-special-char
+.rr-docs-special-char,
+.rr-docs-container pre
 {
     background: #28353b;
 }
@@ -59,9 +61,17 @@
     background: #283b38;
 }
 
-.rr-docs-code {
+.rr-docs-code,
+.rr-docs-container pre
+{
     color: #c9ffb9;
 }
+
+.rr-docs-container pre
+{
+    overflow: auto;
+}
+
 
 .rr-docs-special-char {
     color: #ecffb9;
@@ -78,7 +88,8 @@
 .rr-docs-code:hover,
 .rr-docs-special-char:hover,
 .rr-docs-file-path:hover,
-.rr-docs-var:hover
+.rr-docs-var:hover,
+.rr-docs-container pre:hover
 {
     color: white;
 }
@@ -102,3 +113,9 @@
     border-radius: 0 0.7rem;
 }
 
+.rr-docs-video {
+    width: 87%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
