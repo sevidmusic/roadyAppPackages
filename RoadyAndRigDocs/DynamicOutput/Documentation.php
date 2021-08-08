@@ -53,19 +53,10 @@ $helpFileOutput = htmlspecialchars(
                 'varClass' => 'rr-docs-var',
                 'warningClass' => 'rr-docs-warning',
             ];
-            /** Menu  */
-            $menuLinks = [];
-            foreach($helpFilesListing as $listing) {
-                array_push(
-                    $menuLinks,
-                    '<a href="?request=' . str_replace('.txt', '', $listing) .
-                    '">' . $listing . '</a>'
-                );
-            }
             /** Help File Output */
             $lines = explode(PHP_EOL, $helpFileOutput);
             foreach($lines as $key => $line) {
-                $lines[$key] = '<p>' . trim($line) . '</p>';
+                $lines[$key] = trim($line);
             }
             $helpFileOutput = preg_replace(
                 [
@@ -104,10 +95,7 @@ $helpFileOutput = htmlspecialchars(
                 ],
                 implode(PHP_EOL, $lines)
             );
-            echo PHP_EOL . str_repeat(' ', 8) . '<div class="rr-docs-rig-menu">' .
-                implode(PHP_EOL . str_repeat(' ', 16), $menuLinks) .
-                PHP_EOL . str_repeat(' ', 8) . '</div>' . str_repeat(PHP_EOL, 2) .
-                $helpFileOutput . PHP_EOL;
+            echo PHP_EOL . $helpFileOutput . PHP_EOL;
         ?>
     </div>
 </div>
