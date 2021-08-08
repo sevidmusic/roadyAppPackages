@@ -4,10 +4,10 @@ use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
-# Disable output temporarily, just remove this line to re-enable.
-if($this->getState() === true) {
-    $this->switchState();
-}
+# To disable output temporarily:
+#if($this->getState() === true) {
+#    $this->switchState();
+#}
 
 $currentRequest = new Request(
     new Storable('CurrentRequest', 'tmp', 'Documentation'),

@@ -75,6 +75,10 @@ $helpFileOutput = htmlspecialchars(
                     '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
                     '#[ ](debug)|(FLAG)#',
                     '#(\#!/bin/bash)|(set -o posix)#',
+                    # Keep Together
+                    '#^&lt;\?php$#m',
+                    '#^\);$#m',
+                    #
                 ],
                 [
                     '',
@@ -92,6 +96,10 @@ $helpFileOutput = htmlspecialchars(
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>',
+                    # Keep Together
+                    '<pre><code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}',
+                    '${0}</code></pre>',
+                    #
                 ],
                 implode(PHP_EOL, $lines)
             );
