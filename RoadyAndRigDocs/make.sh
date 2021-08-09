@@ -30,8 +30,8 @@ rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'Documentation' 
 
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'MainMenu' --dynamic-output-components 'MainMenu' 
 
-rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'README' --requests 'README' 
-
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'README' --requests 'README0' 
+
+rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'README' --requests 'README' 
 
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'README' --dynamic-output-components 'README' 
