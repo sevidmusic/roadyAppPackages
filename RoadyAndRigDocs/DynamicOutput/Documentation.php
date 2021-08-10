@@ -67,7 +67,7 @@ $helpFileOutput = htmlspecialchars(
                     '#<p></p>#',
                     '#[ ]+#',
                     '#[`]#',
-                    '#(?!([/]\w+[>]))(([.][/]\w+|[/][.]\w+|[.][/][.]\w+|\w+[/]|[~][/]\w+|[/]\w+)(\w+|([.-]\w+)+))#',
+                    '#http(s?):/(/[a-zA-Z0-9_.-:]+)+[a-zA-Z0-9/]#',
                     '#((--)(\w+)[a-z\-]*)#',
                     '#([[]|[]])#',
                     '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
@@ -90,7 +90,7 @@ $helpFileOutput = htmlspecialchars(
                     '', # '#<p></p>#',
                     ' ', # '#[ ]+#',
                     '', # '#[`]#',
-                    '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>', # #(?!([/]\w+[>]))(([.][/]\w+|[/][.]\w+|[.][/][.]\w+|\w+[/]|[~][/]\w+|[/]\w+)(\w+|([.-]\w+)+))#
+                    '<a href="${0}">${0}</a>', # #http(s?):/(/[a-zA-Z0-9_.-]+)+#
                     '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#((--)(\w+)[a-z\-]*)#',
                     '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>', # '#([[]|[]])#',
                     '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>', # '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
