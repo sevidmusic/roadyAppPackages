@@ -130,10 +130,13 @@
 }
 
 .rr-docs-rig-menu {
-    display: flex;
-    flex-wrap: wrap;
+    padding: 1rem;
 }
 
-.rr-docs-menu-link {
-    margin: 0 2rem;
+.rr-docs-rig-menu ul {
+    list-style-type: none;
+}
+
+.rr-docs-rig-menu li {
+    display: inline;
 }
