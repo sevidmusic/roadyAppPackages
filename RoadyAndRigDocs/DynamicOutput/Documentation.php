@@ -39,27 +39,37 @@ $helpFileOutput = htmlspecialchars(
     )
 );
 
+/** vars */
+$cssClasses = [
+    'codeClass' => 'rr-docs-code',
+    'pathClass' => 'rr-docs-file-path',
+    'specialCharClass' => 'rr-docs-special-char',
+    'varClass' => 'rr-docs-var',
+    'warningClass' => 'rr-docs-warning',
+    'multiLineCodeClass' => 'rr-docs-multi-line-code-line',
+    'codeIndent1Class' => 'rr-docs-multi-line-code-line-indent1',
+    'codeIndent2Class' => 'rr-docs-multi-line-code-line-indent2',
+];
+
 ?>
 
 <div class="rr-docs-container">
     <div class="rr-docs-output">
-        <h1>rig</h1>
         <?php
-            /** vars */
-            $cssClasses = [
-                'codeClass' => 'rr-docs-code',
-                'pathClass' => 'rr-docs-file-path',
-                'specialCharClass' => 'rr-docs-special-char',
-                'varClass' => 'rr-docs-var',
-                'warningClass' => 'rr-docs-warning',
-                'multiLineCodeClass' => 'rr-docs-multi-line-code-line',
-                'codeIndent1Class' => 'rr-docs-multi-line-code-line-indent1',
-                'codeIndent2Class' => 'rr-docs-multi-line-code-line-indent2',
-
-            ];
+            if(($currentRequest->getGet()['request'] ?? '') !== 'README') {
+                echo '<h1>rig</h1>';
+            }
             /** Help File Output */
             $lines = explode(PHP_EOL, $helpFileOutput);
             foreach($lines as $key => $line) {
+                if(!str_contains($line, 'http')) {
+                    $lines[$key] = preg_replace(
+                        '#((/|~/|../|./)[a-zA-Z0-9_.-]+)+[a-zA-Z0-9/]#',
+                        '<code class="' . ($cssClasses['pathClass'] ?? '') . '">${0}</code>',
+                        trim($line)
+                    );
+                    continue;
+                }
                 $lines[$key] = trim($line);
             }
             $helpFileOutput = preg_replace(
@@ -111,7 +121,47 @@ $helpFileOutput = htmlspecialchars(
                 ],
                 implode(PHP_EOL, $lines)
             );
-            echo PHP_EOL . $helpFileOutput . PHP_EOL;
+                    echo PHP_EOL . str_replace(
+                        [
+                            '--assign-to-response',
+                            '--configure-app-output',
+                            '--path-to-apps-directory',
+                            '--debug',
+                            '--help',
+                            '--make-app-package',
+                            '--new-dynamic-output-component',
+                            '--new-global-response',
+                            '--new-output-component',
+                            '--new-request',
+                            '--new-response',
+                            '--start-server',
+                            '--view-active-servers',
+#                            '--new-app-package',# (help file is not defined yet)
+                            '--new-app',
+                            '<code class="rr-docs-code"><a href="index.php?request=help">rig </a></code>',
+                            '>\</code>',
+                        ],
+                        [
+                            '<a href="index.php?request=assign-to-response">--assign-to-response</a>',
+                            '<a href="index.php?request=configure-app-output">--configure-app-output</a>',
+                            '<a href="index.php?request=path-to-apps-directory">--path-to-apps-directory</a>',
+                            '<a href="index.php?request=debug">--debug</a>',
+                            '<a href="index.php?request=help">--help</a>',
+                            '<a href="index.php?request=make-app-package">--make-app-package</a>',
+                            '<a href="index.php?request=new-dynamic-output-component">--new-dynamic-output-component</a>',
+                            '<a href="index.php?request=new-global-response">--new-global-response</a>',
+                            '<a href="index.php?request=new-output-component">--new-output-component</a>',
+                            '<a href="index.php?request=new-request">--new-request</a>',
+                            '<a href="index.php?request=new-response">--new-response</a>',
+                            '<a href="index.php?request=start-server">--start-server</a>',
+                            '<a href="index.php?request=view-active-servers">--view-active-servers</a>',
+#                            '<a href="index.php?request=new-app-package">--new-app-package</a>',
+                            '<a href="index.php?request=new-app">--new-app</a>',
+                            '<br><code class="rr-docs-code"><a href="index.php?request=help">rig </a></code>',
+                            '>\</code><br>',
+                        ],
+                        $helpFileOutput
+                    ) . PHP_EOL;
         ?>
     </div>
 </div>
