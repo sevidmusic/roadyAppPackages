@@ -9,7 +9,7 @@
         <p>New documentation is being added to <a href="https://roady.tech">https://roady.tech</a> regularly.</p>
         <p>Version 1.0 will be out soon.</p>
         <h1 id="installation-setup-and-hello-world">Installation, setup, and Hello World</h1>
-        <video class="rr-docs-video" controls>
+        <video class="rr-docs-video" controls autoplay>
             <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
             Sorry, the video failed to load.
         </video>
