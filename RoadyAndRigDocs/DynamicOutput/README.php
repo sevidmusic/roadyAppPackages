@@ -1,9 +1,9 @@
 <div class="rr-docs-container">
     <div class="rr-docs-output">
         <h1 id="roady">Roady</h1>
-        <p>Roady is a tool designed to aid in the development of websites.</p>
+        <p><a href="index.php?request=roady">roady</a> is a tool designed to aid in the development of websites.</p>
         <p>Its design allows the features of a website to be implemented as smaller niche applications called Apps.</p>
-        <p>Roady Apps are responsible for implementing one or more related features.</p>
+        <p><a href="index.php?request=roady">roady</a> Apps are responsible for implementing one or more related features.</p>
         <p>The features an App provides can be made available to multiple websites running on a single installation of Roady.</p>
         <p>Apps can configure output to show up in response to appropriate requests to a website, and can also provide stylesheets, scripts, and other resources necessary to implement the specific features they provide.</p>
         <p>New documentation is being added to <a href="https://roady.tech">https://roady.tech</a> regularly.</p>
