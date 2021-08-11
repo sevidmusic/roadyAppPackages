@@ -77,7 +77,7 @@ $helpFileOutput = preg_replace(
         "#[ ]['](.*)['][ ]#",
         '#export(.*)&quot;#',
         '#\$PATH#',
-        '#([ ]rig|rig)[ ]#',
+        '#([ ]rig[ ]|rig[ ]|[ ]rig)#',
         '#WARNING:#',
         '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
         '#[ ](debug)|(FLAG)#',
@@ -86,7 +86,10 @@ $helpFileOutput = preg_replace(
         '#^\);$#m',
         '#(^use roady.*$)|(^\);)|(^\$\w+.*build.*\($)#m',
         '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)|(^[0-9]$)|(^\',$)|(^\'.*Hello World.*$)|(^\$\w+.*getApp.*,$)#m',
-        '#^[a-zA-Z].*$#m',
+        '#^[Rr]oady$#m',
+        '#([ ][Rr]oady|[Rr]oady[ ])#m',
+        # MUST BE LAST PATTERN
+        '#^[a-zA-Z0-9].*$#m',
     ],
     [
         '', # '#<p></p>#',
@@ -109,6 +112,9 @@ $helpFileOutput = preg_replace(
         '${0}</code></pre>', # '#^\);$#m',
         '<span class="' .  ($cssClasses['codeIndent1Class'] ?? '') . '">${0} </span>', # '#(^use roady.*$)|(^\);)|(^\$\w+.*build.*\($)#m',
         '<span class="' .  ($cssClasses['codeIndent2Class'] ?? '') . '">${0}</span>', # '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)#m',
+        '<h1><a href="index.php?request=roady">${0}</a></h1>', # '#Roady#'
+        ' <a href="index.php?request=roady">${0}</a> ', # '#Roady#'
+        # MUST BE LAST REPLACEMENT
         '<p>${0}</p>', # '#^[a-zA-Z].*$#m',
     ],
     implode(PHP_EOL, $lines)
@@ -128,6 +134,7 @@ $output = trim(PHP_EOL . str_replace(
         '--new-response',
         '--start-server',
         '--view-active-servers',
+        'installation-and-setup',
         '<code class="rr-docs-code"><a href="index.php?request=help">rig </a></code>',
         '>\</code>',
         '<code class="rr-docs-code">--new-app-package</code>',
@@ -147,6 +154,7 @@ $output = trim(PHP_EOL . str_replace(
         '<a href="index.php?request=new-response">--new-response</a>',
         '<a href="index.php?request=start-server">--start-server</a>',
         '<a href="index.php?request=view-active-servers">--view-active-servers</a>',
+        '<a href="index.php?request=installation-and-setup">installation-and-setup</a>',
         '<br><code class="rr-docs-code"><a href="index.php?request=help">rig </a></code>',
         '>\</code><br>',
         '<code class="rr-docs-code"><a href="index.php?request=new-app-package">--new-app-package</a></code>',
@@ -158,22 +166,28 @@ $output = trim(PHP_EOL . str_replace(
 
 <div class="rr-docs-container">
     <div class="rr-docs-output">
-        <?php if(($currentRequest->getGet()['request'] ?? '') !== 'README') { ?>
-            <h1>rig</h1>
-        <?php } ?>
-        <?php if(empty($output)) { ?>
-        <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
-        <a href="index.php?request=help">rig</a> --<?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
-        <h2>Installation, setup, and Hello World Demo</h2>
-        <video class="rr-docs-video" controls autoplay>
-            <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
-            Sorry, the video failed to load.
-        </video>
-        <?php
+    <?php
+        if(
+            ($currentRequest->getGet()['request'] ?? '') !== 'README' &&
+            ($currentRequest->getGet()['request'] ?? '') !== 'installation-and-setup' &&
+            ($currentRequest->getGet()['request'] ?? '') !== 'roady'
+        ) {
+            echo ' <h1><a href="index.php?request=help">rig</a></h1>';
+        }
+        if(empty($output)) {
+    ?>
+            <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
+            <a href="index.php?request=help">rig</a> --<?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
+            <h2>Installation, setup, and Hello World Demo</h2>
+            <video class="rr-docs-video" controls autoplay>
+                <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
+                Sorry, the video failed to load.
+            </video>
+    <?php
         } else {
             echo $output;
         }
-        ?>
+    ?>
     </div>
 </div>
 
