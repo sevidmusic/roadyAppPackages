@@ -30,14 +30,26 @@ $helpFilesListing = array_diff(
     ['.', '..']
 );
 
-$helpFileOutput = htmlspecialchars(
-    strval(
-        file_get_contents(
-            $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
-            ($currentRequest->getGet()['request'] ?? 'roady') . '.txt'
+if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
+    $helpFileOutput = htmlspecialchars(
+        strval(
+            file_get_contents(
+                $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
+                'help.txt'
+            )
         )
-    )
-);
+    );
+} else {
+    $helpFileOutput = htmlspecialchars(
+        strval(
+            file_get_contents(
+                $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
+                ($currentRequest->getGet()['request'] ?? 'roady') . '.txt'
+            )
+        )
+    );
+}
+
 
 /** vars */
 $cssClasses = [
@@ -180,15 +192,15 @@ $output = trim(PHP_EOL . str_replace(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
     <?php
-        if(empty($output)) {
+        if(empty($output) && (($currentRequest->getGet()['request'] ?? '') !== 'Installation')) {
     ?>
             <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
             <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
-            <h2>Installation, setup, and Hello World Demo</h2>
             <video class="rr-docs-video" controls autoplay>
                 <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
                 Sorry, the video failed to load.
             </video>
+            <p><a href="index.php">Return to Homepage</a></p>
     <?php
         } else {
             if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
