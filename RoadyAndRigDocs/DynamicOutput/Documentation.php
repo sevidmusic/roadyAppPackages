@@ -80,7 +80,7 @@ $helpFileOutput = preg_replace(
         '#\$PATH#',
         '#([ ]rig[ ]|rig[ ]|[ ]rig)#',
         '#WARNING:#',
-        '#(Note|Examples|Description):#',
+        '#(Note|Examples|Description|Flags):#',
         '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
         '#[ ](debug)|(FLAG)#',
         '#(\#!/bin/bash)|(set -o posix)#',
@@ -90,6 +90,10 @@ $helpFileOutput = preg_replace(
         '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)|(^[0-9]$)|(^\',$)|(^\'.*Hello World.*$)|(^\$\w+.*getApp.*,$)#m',
         '#^[Rr]oady$#m',
         '#([ ][Rr]oady|[Rr]oady[ ])#m',
+        '#[ ]Response#',
+        '#[ ]GlobalResponse#',
+        '#[ ]OutputComponent#',
+        '#[ ]DynamicOutputComponent#',
         # MUST BE LAST PATTERN
         '#^[a-zA-Z0-9].*$#m',
     ],
@@ -117,6 +121,10 @@ $helpFileOutput = preg_replace(
         '<span class="' .  ($cssClasses['codeIndent2Class'] ?? '') . '">${0}</span>', # '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)#m',
         '<h1><a href="index.php?request=roady">${0}</a></h1>', # '#Roady#'
         ' <a href="index.php?request=roady">${0}</a> ', # '#Roady#'
+        ' <a href="index.php?request=Response">${0}</a>', # '#[ ]Response#'
+        ' <a href="index.php?request=GlobalResponse">${0}</a>', # '#[ ]GlobalResponse#'
+        ' <a href="index.php?request=OutputComponent">${0}</a>', # '#[ ]GlobalResponse#'
+        ' <a href="index.php?request=DynamicOutputComponent">${0}</a>', # '#[ ]GlobalResponse#'
         # MUST BE LAST REPLACEMENT
         '<p>${0}</p>', # '#^[a-zA-Z].*$#m',
     ],
@@ -180,7 +188,7 @@ $output = trim(PHP_EOL . str_replace(
         if(empty($output)) {
     ?>
             <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
-            <a href="index.php?request=help">rig</a> --<?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
+            <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
             <h2>Installation, setup, and Hello World Demo</h2>
             <video class="rr-docs-video" controls autoplay>
                 <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
