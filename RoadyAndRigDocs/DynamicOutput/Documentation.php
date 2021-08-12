@@ -34,7 +34,7 @@ $helpFileOutput = htmlspecialchars(
     strval(
         file_get_contents(
             $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
-            ($currentRequest->getGet()['request'] ?? 'help') . '.txt'
+            ($currentRequest->getGet()['request'] ?? 'roady') . '.txt'
         )
     )
 );
@@ -94,6 +94,7 @@ $helpFileOutput = preg_replace(
         '#[ ]GlobalResponse#',
         '#[ ]OutputComponent#',
         '#[ ]DynamicOutputComponent#',
+        '#App[ ]Packag(e|e\'s|es)#',
         # MUST BE LAST PATTERN
         '#^[a-zA-Z0-9].*$#m',
     ],
@@ -125,6 +126,7 @@ $helpFileOutput = preg_replace(
         ' <a href="index.php?request=GlobalResponse">${0}</a>', /** #[ ]GlobalResponse# */
         ' <a href="index.php?request=OutputComponent">${0}</a>', /** #[ ]OutputComponent# */
         ' <a href="index.php?request=DynamicOutputComponent">${0}</a>', /** #[ ]DynamicOutputComponent# */
+        ' <a href="index.php?request=AppPackages">${0}</a>', /** #App[ ]Packag(e|e\'s|es)# */
         # MUST BE LAST REPLACEMENT
         '<p>${0}</p>', /** #^[a-zA-Z0-9].*$#m */
     ],
@@ -178,13 +180,6 @@ $output = trim(PHP_EOL . str_replace(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
     <?php
-        if(
-            ($currentRequest->getGet()['request'] ?? '') !== 'README' &&
-            ($currentRequest->getGet()['request'] ?? '') !== 'installation-and-setup' &&
-            ($currentRequest->getGet()['request'] ?? '') !== 'roady'
-        ) {
-            echo ' <h1><a href="index.php?request=help">rig</a></h1>';
-        }
         if(empty($output)) {
     ?>
             <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
@@ -196,7 +191,9 @@ $output = trim(PHP_EOL . str_replace(
             </video>
     <?php
         } else {
-            echo $output;
+            if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
+                echo $output;
+            }
         }
     ?>
     </div>

@@ -10,7 +10,7 @@ rig --new-global-response --for-app 'RoadyAndRigDocs' --name 'Documentation' --p
 
 rig --new-global-response --for-app 'RoadyAndRigDocs' --name 'MainMenu' --position '0'
 
-rig --new-response --for-app 'RoadyAndRigDocs' --name 'README' --position '0'
+rig --new-response --for-app 'RoadyAndRigDocs' --name 'README' --position '5'
 
 rig --new-request --for-app 'RoadyAndRigDocs' --name 'Documentation' --relative-url 'index.php?request=Documentation' --container 'RoadyAndRigDocsRequests'
 
@@ -18,7 +18,7 @@ rig --new-request --for-app 'RoadyAndRigDocs' --name 'MainMenu' --relative-url '
 
 rig --new-request --for-app 'RoadyAndRigDocs' --name 'README' --relative-url 'index.php?request=README' --container 'RoadyAndRigDocsRequests'
 
-rig --new-request --for-app 'RoadyAndRigDocs' --name 'README0' --relative-url '' --container 'RoadyAndRigDocsRequests'
+rig --new-request --for-app 'RoadyAndRigDocs' --name 'README0' --relative-url 'index.php?request=installation-and-setup' --container 'RoadyAndRigDocsRequests'
 
 rig --new-dynamic-output-component --for-app 'RoadyAndRigDocs' --name 'Documentation' --container 'RoadyAndRigDocsDynamicOutput' --position '0' 
 
