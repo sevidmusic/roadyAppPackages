@@ -34,7 +34,7 @@ $helpFileOutput = htmlspecialchars(
     strval(
         file_get_contents(
             $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
-            ($currentRequest->getGet()['request'] ?? 'help') . '.txt'
+            ($currentRequest->getGet()['request'] ?? 'roady') . '.txt'
         )
     )
 );
@@ -80,7 +80,7 @@ $helpFileOutput = preg_replace(
         '#\$PATH#',
         '#([ ]rig[ ]|rig[ ]|[ ]rig)#',
         '#WARNING:#',
-        '#(Note|Examples|Description):#',
+        '#(Note|Examples|Description|Flags):#',
         '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
         '#[ ](debug)|(FLAG)#',
         '#(\#!/bin/bash)|(set -o posix)#',
@@ -90,35 +90,45 @@ $helpFileOutput = preg_replace(
         '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)|(^[0-9]$)|(^\',$)|(^\'.*Hello World.*$)|(^\$\w+.*getApp.*,$)#m',
         '#^[Rr]oady$#m',
         '#([ ][Rr]oady|[Rr]oady[ ])#m',
+        '#[ ]Response#',
+        '#[ ]GlobalResponse#',
+        '#[ ]OutputComponent#',
+        '#[ ]DynamicOutputComponent#',
+        '#App[ ]Packag(e|e\'s|es)#',
         # MUST BE LAST PATTERN
         '#^[a-zA-Z0-9].*$#m',
     ],
     [
-        '', # '#<p></p>#',
-        ' ', # '#[ ]+#',
-        '', # '#[`]#',
-        '<a href="${0}">${0}</a>', # #http(s?):/(/[a-zA-Z0-9_.-]+)+#
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#((--)(\w+)[a-z\-]*)#',
-        '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>', # '#([[]|[]])#',
-        '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>', # '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#\\\\#',
+        '', /** #<p></p># */
+        ' ', /** #[ ]+# */
+        '', /** #[`]# */
+        '<a href="${0}">${0}</a>', /** #http(s?):/(/[a-zA-Z0-9_.-:]+)+[a-zA-Z0-9/]# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #((--)(\w+)[a-z\-]*)# */
+        '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>', /** #([[]|[]])# */
+        '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>', /** #(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #\\\\# */
         '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>', # "#[ ]['](.*)['][ ]#",
-        '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>', # '#export(.*)&quot;#',
-        '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>', # '#\$PATH#',
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '"><a href="index.php?request=help">${0}</a></code>', # '#([ ]rig|rig)[ ]#',
-        '<span class="' .  ($cssClasses['warningClass'] ?? '') . '">${0}</span>', # '#WARNING:#',
-        '<span class="' .  ($cssClasses['noteClass'] ?? '') . '">${0}</span><br><br>', # '#(Note|Examples):#',
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)#',
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#[ ](debug)|(FLAG)#',
-        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', # '#(\#!/bin/bash)|(set -o posix)#',
-        '<pre><code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}', # '#^&lt;\?php$#m',
-        '${0}</code></pre>', # '#^\);$#m',
-        '<span class="' .  ($cssClasses['codeIndent1Class'] ?? '') . '">${0} </span>', # '#(^use roady.*$)|(^\);)|(^\$\w+.*build.*\($)#m',
-        '<span class="' .  ($cssClasses['codeIndent2Class'] ?? '') . '">${0}</span>', # '#(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)#m',
-        '<h1><a href="index.php?request=roady">${0}</a></h1>', # '#Roady#'
-        ' <a href="index.php?request=roady">${0}</a> ', # '#Roady#'
+        '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>', /** #export(.*)&quot;# */
+        '<code class="' .  ($cssClasses['pathClass'] ?? '') . '">${0}</code>', /** #\$PATH# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '"><a href="index.php?request=help">${0}</a></code>', /** #([ ]rig[ ]|rig[ ]|[ ]rig)# */
+        '<span class="' .  ($cssClasses['warningClass'] ?? '') . '">${0}</span>', /** #WARNING:# */
+        '<span class="' .  ($cssClasses['noteClass'] ?? '') . '">${0}</span><br><br>', /** #(Note|Examples|Description|Flags):# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #[ ](\w+-)(.*)(-\w+)|[ ](\w+-\w+)# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #[ ](debug)|(FLAG)# */
+        '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #(\#!/bin/bash)|(set -o posix)# */
+        '<pre><code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}', /** #^&lt;\?php$#m */
+        '${0}</code></pre>', /** #^\);$#m */
+        '<span class="' .  ($cssClasses['codeIndent1Class'] ?? '') . '">${0} </span>', /** #(^use roady.*$)|(^\);)|(^\$\w+.*build.*\($)#m */
+        '<span class="' .  ($cssClasses['codeIndent2Class'] ?? '') . '">${0}</span>', /** #(^\w+::class.*$)|(^\'.*(\',|\')$)|(^\),$)|(^\$\w+.*(read|getLocation).*(\(\),|\()$)|(^([0-9]|[0-9][.][0-9]),$)|(^[0-9]$)|(^\',$)|(^\'.*Hello World.*$)|(^\$\w+.*getApp.*,$)#m */
+        '<h1><a href="index.php?request=roady">${0}</a></h1>', /** #^[Rr]oady$#m */
+        ' <a href="index.php?request=roady">${0}</a> ', /** #([ ][Rr]oady|[Rr]oady[ ])#m */
+        ' <a href="index.php?request=Response">${0}</a>', /** #[ ]Response# */
+        ' <a href="index.php?request=GlobalResponse">${0}</a>', /** #[ ]GlobalResponse# */
+        ' <a href="index.php?request=OutputComponent">${0}</a>', /** #[ ]OutputComponent# */
+        ' <a href="index.php?request=DynamicOutputComponent">${0}</a>', /** #[ ]DynamicOutputComponent# */
+        ' <a href="index.php?request=AppPackages">${0}</a>', /** #App[ ]Packag(e|e\'s|es)# */
         # MUST BE LAST REPLACEMENT
-        '<p>${0}</p>', # '#^[a-zA-Z].*$#m',
+        '<p>${0}</p>', /** #^[a-zA-Z0-9].*$#m */
     ],
     implode(PHP_EOL, $lines)
 );
@@ -170,17 +180,10 @@ $output = trim(PHP_EOL . str_replace(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
     <?php
-        if(
-            ($currentRequest->getGet()['request'] ?? '') !== 'README' &&
-            ($currentRequest->getGet()['request'] ?? '') !== 'installation-and-setup' &&
-            ($currentRequest->getGet()['request'] ?? '') !== 'roady'
-        ) {
-            echo ' <h1><a href="index.php?request=help">rig</a></h1>';
-        }
         if(empty($output)) {
     ?>
             <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
-            <a href="index.php?request=help">rig</a> --<?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
+            <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
             <h2>Installation, setup, and Hello World Demo</h2>
             <video class="rr-docs-video" controls autoplay>
                 <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
@@ -188,7 +191,9 @@ $output = trim(PHP_EOL . str_replace(
             </video>
     <?php
         } else {
-            echo $output;
+            if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
+                echo $output;
+            }
         }
     ?>
     </div>
