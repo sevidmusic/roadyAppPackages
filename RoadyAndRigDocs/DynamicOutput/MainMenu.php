@@ -3,8 +3,8 @@
         <div class="rr-docs-rig-menu">
             <ul>
                 <li><a href="index.php?request=roady">Roady</a></li>
-                <li><a href="index.php?request=installation-and-setup">Installation</a></li>
-                <li><a href="index.php?request=help">Rig</a></li>
+                <li><a href="index.php?request=rig">Rig</a></li>
+                <li><a href="index.php?request=GettingStarted">Getting Started</a></li>
             </ul>
         </div>
     </div>
