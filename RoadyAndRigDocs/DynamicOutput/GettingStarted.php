@@ -106,7 +106,10 @@ body {
 }
 </code></pre>
         <h3 id="hello-world-app-package">Hello World App Package</h3>
-        <p>Note: The <a href="index.php?request=AppPackages">App Package</a> for the HelloWorld App created in the example above can be found <a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">here</a>:</p>
+        <span class="rr-docs-note">Note:</span>
+        <p>The <a href="index.php?request=AppPackages">App Package</a> for the HelloWorld App created in the example above can be found <a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">here</a>:</p>
         <p><a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld</a></p>
+        <p>And can be made into a Roady app via:</p>
+        <code class="rr-docs-code"><a href="index.php?request=rig">rig</a> <a href="index.php?request=make-app-package">--make-app-package</a></code>
     </div>
 </div>

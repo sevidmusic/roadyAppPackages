@@ -82,7 +82,7 @@ $helpFileOutput = preg_replace(
         '#<p></p>#',
         '#[ ]+#',
         '#[`]#',
-        '#http(s?):/(/[a-zA-Z0-9_.-:]+)+[a-zA-Z0-9/]#',
+        '#http(s?):/(/[a-zA-Z0-9_.:?=-]+)+[a-zA-Z0-9/]#',
         '#((--)(\w+)[a-z\-]*)#',
         '#([[]|[]])#',
         '#(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))#',
@@ -114,7 +114,7 @@ $helpFileOutput = preg_replace(
         '', /** #<p></p># */
         ' ', /** #[ ]+# */
         '', /** #[`]# */
-        '<a href="${0}">${0}</a>', /** #http(s?):/(/[a-zA-Z0-9_.-:]+)+[a-zA-Z0-9/]# */
+        '<a href="${0}">${0}</a>', /** #http(s?):/(/[a-zA-Z0-9_.:?=-]+)+[a-zA-Z0-9/]# */
         '<code class="' .  ($cssClasses['codeClass'] ?? '') . '">${0}</code>', /** #((--)(\w+)[a-z\-]*)# */
         '<code class="' .  ($cssClasses['specialCharClass'] ?? '') . '">${0}</code>', /** #([[]|[]])# */
         '<code class="' .  ($cssClasses['varClass'] ?? '') . '">${0}</code>', /** #(([Ff]oo)|([Bb]ar)|([Bb]azzer)|([Bb]az))# */
@@ -192,7 +192,7 @@ $output = trim(PHP_EOL . str_replace(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
     <?php
-        if(empty($output) && (($currentRequest->getGet()['request'] ?? '') !== 'Installation')) {
+        if(empty($output) && (($currentRequest->getGet()['request'] ?? '') !== 'GettingStarted')) {
     ?>
             <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
             <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
