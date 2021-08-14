@@ -28,9 +28,9 @@ rig --new-dynamic-output-component --for-app 'RoadyAndRigDocs' --name 'MainMenu'
 
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'Documentation' --dynamic-output-components 'Documentation' 
 
-rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'GettingStarted' --requests 'GettingStarted0' 
-
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'GettingStarted' --requests 'GettingStarted' 
+
+rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'GettingStarted' --requests 'GettingStarted0' 
 
 rig --assign-to-response --for-app 'RoadyAndRigDocs' --response 'GettingStarted' --dynamic-output-components 'GettingStarted' 
 

@@ -50,20 +50,6 @@ if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
     );
 }
 
-
-/** vars */
-$cssClasses = [
-    'codeClass' => 'rr-docs-code',
-    'pathClass' => 'rr-docs-file-path',
-    'specialCharClass' => 'rr-docs-special-char',
-    'varClass' => 'rr-docs-var',
-    'warningClass' => 'rr-docs-warning',
-    'noteClass' => 'rr-docs-note',
-    'multiLineCodeClass' => 'rr-docs-multi-line-code-line',
-    'codeIndent1Class' => 'rr-docs-multi-line-code-line-indent1',
-    'codeIndent2Class' => 'rr-docs-multi-line-code-line-indent2',
-];
-
 /** Help File Output */
 $lines = explode(PHP_EOL, $helpFileOutput);
 foreach($lines as $key => $line) {
@@ -89,6 +75,18 @@ $output = preg_replace(
         '#~{3}#',
         /** Match ~~~ for removal */
         '#~{3}#',
+        /** Match text prefixed with ### for replacement */
+        '/#{3}.*$/m',
+        /** Match ### for removal */
+        '/#{3}(\s?)/m',
+        /** Match text prefixed with # for replacement */
+        '/#{1}.*$/m',
+        /** Match # for removal */
+        '/#{1}(\s?)/m',
+        /** Match WARNING: */
+        '#WARNING:#i',
+        /** Match NOTE: */
+        '#NOTE:#i',
     ],
     [
         /** Replace within ``` and ``` */
@@ -109,6 +107,18 @@ $output = preg_replace(
         PHP_EOL . '<div class="rr-docs-plaintext">' . PHP_EOL,
         /** Remove ~~~ */
         '',
+        /** Replace ### */
+        '<h3>${0}</h3>',
+        /** Remove ### */
+        '',
+        /** Replace # */
+        '<h1>${0}</h1>',
+        /** Remove # */
+        '',
+        /** Replace WARNING: */
+        '<span class="rr-docs-warning">WARNING:</span>',
+        /** Replace NOTE: */
+        '<span class="rr-docs-note">NOTE:</span>',
     ],
     implode(PHP_EOL, $lines)
 );
@@ -120,7 +130,7 @@ $output = preg_replace(
     <?php
         if(empty($output) && (($currentRequest->getGet()['request'] ?? '') !== 'GettingStarted')) {
     ?>
-            <p>Sorry, documentation for <code class="<?php echo ($cssClasses['codeClass'] ?? ''); ?>">
+            <p>Sorry, documentation for <code class="rr-docs-code">
             <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
             <video class="rr-docs-video" controls autoplay>
                 <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
