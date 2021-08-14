@@ -81,6 +81,14 @@ $output = preg_replace(
         '#`{1}#',
         /** Match links */
         '#http(s?):/(/[a-zA-Z0-9_.:?=-]+)+[a-zA-Z0-9/]#',
+        /** Match ~~~~~ for replacement */
+        '#~{5}#',
+        /** Match ~~~~~ for removal */
+        '#~{5}#',
+        /** Match ~~~ for replacement */
+        '#~{3}#',
+        /** Match ~~~ for removal */
+        '#~{3}#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -93,6 +101,14 @@ $output = preg_replace(
         '',
         /** Replace links with <a href="${0}">${0}</a> */
         '<a href="${0}">${0}</a>',
+        /** Replace ~~~~~ */
+        PHP_EOL . '</div>' . PHP_EOL . '<!-- Close rr-docs-plaintext -->' . PHP_EOL,
+        /** Remove ~~~~~ */
+        '',
+        /** Replace ~~~ */
+        PHP_EOL . '<div class="rr-docs-plaintext">' . PHP_EOL,
+        /** Remove ~~~ */
+        '',
     ],
     implode(PHP_EOL, $lines)
 );

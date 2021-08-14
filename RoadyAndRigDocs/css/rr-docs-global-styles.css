@@ -154,3 +154,7 @@ body {
 .rr-docs-rig-menu li {
     display: inline;
 }
+
+.rr-docs-plaintext {
+    padding: 1rem;
+}
