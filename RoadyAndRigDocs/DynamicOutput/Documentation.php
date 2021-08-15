@@ -134,7 +134,7 @@ $output = preg_replace(
         /** Replace NOTE: */
         '<span class="rr-docs-note">NOTE:</span>',
         /** Replace rig */
-        '<a href="index.php?request=rig">rig</a>',
+        '<a href="index.php?request=rig">${0}</a>',
         /** Replace Request(s?) */
         '<a href="index.php?request=Request">${0}</a>',
         /** Replace GlobalResponse(s?) */
