@@ -88,7 +88,7 @@ $output = preg_replace(
         /** Match NOTE: */
         '#NOTE:#i',
         /** Match rig */
-        '#rig#',
+        '#(\s)rig#',
         /** Match Request(s) */
         '#Request(s?)#',
         /** Match GlobalResponse(s) */
