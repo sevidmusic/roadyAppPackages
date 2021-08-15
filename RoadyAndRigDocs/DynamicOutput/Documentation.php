@@ -87,6 +87,20 @@ $output = preg_replace(
         '#WARNING:#i',
         /** Match NOTE: */
         '#NOTE:#i',
+        /** Match rig */
+        '#(\s)rig#',
+        /** Match Request(s) */
+        '#Request(s?)#',
+        /** Match GlobalResponse(s) */
+        '#(\s)GlobalResponse(s?)#',
+        /** Match Response(s) */
+        '#(\s)Response(s?)#',
+        /** Match DynamicOutputComponent(s) */
+        '#(\s)DynamicOutputComponent(s?)#',
+        /** Match OutputComponent(s) */
+        '#(\s)OutputComponent(s?)#',
+        /** Match App(s) */
+        '#(\s)App(s?)#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -119,6 +133,20 @@ $output = preg_replace(
         '<span class="rr-docs-warning">WARNING:</span>',
         /** Replace NOTE: */
         '<span class="rr-docs-note">NOTE:</span>',
+        /** Replace rig */
+        '<a href="index.php?request=rig">${0}</a>',
+        /** Replace Request(s?) */
+        '<a href="index.php?request=Request">${0}</a>',
+        /** Replace GlobalResponse(s?) */
+        '<a href="index.php?request=GlobalResponse">${0}</a>',
+        /** Replace Response(s?) */
+        '<a href="index.php?request=Response">${0}</a>',
+        /** Replace DynamicOutputComponent(s?) */
+        '<a href="index.php?request=DynamicOutputComponent">${0}</a>',
+        /** Replace OutputComponent(s?) */
+        '<a href="index.php?request=OutputComponent">${0}</a>',
+        /** Replace App(s?) */
+        '<a href="index.php?request=App">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
