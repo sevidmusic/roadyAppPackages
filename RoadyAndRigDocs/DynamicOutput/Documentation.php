@@ -55,6 +55,7 @@ $lines = explode(PHP_EOL, $helpFileOutput);
 foreach($lines as $key => $line) {
     $lines[$key] = trim($line);
 }
+
 $output = preg_replace(
     [
         /** Match within ``` and ``` */
@@ -76,19 +77,19 @@ $output = preg_replace(
         /** Match ~~~ for removal */
         '#~{3}#',
         /** Match text prefixed with ### for replacement */
-        '/#{3}.*$/m',
+        '/#{3}(\s).*$/m',
         /** Match ### for removal */
-        '/#{3}(\s?)/m',
+        '/#{3}(\s)/m',
         /** Match text prefixed with # for replacement */
-        '/#{1}.*$/m',
+        '/#{1}(\s).*$/m',
         /** Match # for removal */
-        '/#{1}(\s?)/m',
+        '/#{1}(\s)/m',
         /** Match WARNING: */
         '#WARNING:#i',
         /** Match NOTE: */
         '#NOTE:#i',
         /** Match rig */
-        '#(\s)rig#',
+        '#(\s)rig#i',
         /** Match Request(s) */
         '#Request(s?)#',
         /** Match GlobalResponse(s) */
@@ -101,6 +102,16 @@ $output = preg_replace(
         '#(\s)OutputComponent(s?)#',
         /** Match App(s) */
         '#(\s)App(s?)#',
+        /** Match roady */
+        '#(\s)roady#i',
+        /** Match --configure-app-output or configure-app-output  */
+        '#(--)?configure-app-output#',
+        /** Match --new-app or new-app*/
+        '#(--)?new-app#',
+        /** Pattern conflict fix | Match <a href="index.php?request=new-app">--new-app</a>-package */
+        '#<a href="index.php[?]request=new-app">--new-app</a>-package#',
+        /** Pattern conflict fix | Match <a href="index.php?request=new-app">new-app</a>-package */
+        '#<a href="index.php[?]request=new-app">new-app</a>-package#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -147,6 +158,16 @@ $output = preg_replace(
         '<a href="index.php?request=OutputComponent">${0}</a>',
         /** Replace App(s?) */
         '<a href="index.php?request=App">${0}</a>',
+        /** Replace roady */
+        '<a href="index.php?request=roady">${0}</a>',
+        /** Replace --configure-app-output or configure-app-output */
+        '<a href="index.php?request=configure-app-output">${0}</a>',
+        /** Replace --new-app or new-app */
+        '<a href="index.php?request=new-app">${0}</a>',
+        /** Pattern conflict fix | Replace <a href="index.php?request=new-app">--new-app</a>-package */
+        '<a href="index.php?request=new-app-package">--new-app-package</a>',
+        /** Pattern conflict fix | Replace <a href="index.php?request=new-app">new-app</a>-package */
+        '<a href="index.php?request=new-app-package">new-app-package</a>',
     ],
     implode(PHP_EOL, $lines)
 );
