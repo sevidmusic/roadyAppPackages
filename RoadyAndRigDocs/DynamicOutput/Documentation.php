@@ -90,6 +90,8 @@ $output = preg_replace(
         '#NOTE:#i',
         /** Match rig */
         '#(\s)rig#i',
+        /** Match rig */
+        '#>rig#i',
         /** Match Request(s) */
         '#Request(s?)#',
         /** Match GlobalResponse(s) */
@@ -112,6 +114,8 @@ $output = preg_replace(
         '#<a href="index.php[?]request=new-app">--new-app</a>-package#',
         /** Pattern conflict fix | Match <a href="index.php?request=new-app">new-app</a>-package */
         '#<a href="index.php[?]request=new-app">new-app</a>-package#',
+        /** Match --assign-to-response or assign-to-response */
+        '#(--)?assign-to-response#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -146,6 +150,8 @@ $output = preg_replace(
         '<span class="rr-docs-note">NOTE:</span>',
         /** Replace rig */
         '<a href="index.php?request=rig">${0}</a>',
+        /** Match rig */
+        '><a href="index.php?request=rig">rig</a>',
         /** Replace Request(s?) */
         '<a href="index.php?request=Request">${0}</a>',
         /** Replace GlobalResponse(s?) */
@@ -168,6 +174,8 @@ $output = preg_replace(
         '<a href="index.php?request=new-app-package">--new-app-package</a>',
         /** Pattern conflict fix | Replace <a href="index.php?request=new-app">new-app</a>-package */
         '<a href="index.php?request=new-app-package">new-app-package</a>',
+        /** Replace --assign-to-response or assign-to-response */
+        '<a href="index.php?request=assign-to-response">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
