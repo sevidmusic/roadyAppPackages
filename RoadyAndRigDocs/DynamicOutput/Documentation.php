@@ -116,6 +116,14 @@ $output = preg_replace(
         '#<a href="index.php[?]request=new-app">new-app</a>-package#',
         /** Match --assign-to-response or assign-to-response */
         '#(--)?assign-to-response#',
+        /** Match --make-app-package or make-app-package */
+        '#(--)?make-app-package#',
+        /** Match --name */
+        '#--name#',
+        /** Match --path-to-apps-directory or path-to-apps-directory */
+        '#(--)?path-to-apps-directory#',
+        /** Match https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm */
+        '#<a href="https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm">https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm</a>#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -176,6 +184,19 @@ $output = preg_replace(
         '<a href="index.php?request=new-app-package">new-app-package</a>',
         /** Replace --assign-to-response or assign-to-response */
         '<a href="index.php?request=assign-to-response">${0}</a>',
+        /** Replace --make-app-package or make-app-package */
+        '<a href="index.php?request=make-app-package">${0}</a>',
+        /** Replace --name */
+        '<code class="rr-docs-code">${0}</code>',
+        /** Replace --make-app-package or make-app-package */
+        '<a href="index.php?request=path-to-apps-directory">${0}</a>',
+        /** Replace  */
+        '
+<video class="rr-docs-video" controls autoplay>
+    <source src="https://roadydemos.us-east-1.linodeobjects.com/${1}.webm" type="video/webm">
+    Sorry, the video failed to load.
+</video>
+        ',
     ],
     implode(PHP_EOL, $lines)
 );
