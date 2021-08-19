@@ -4,7 +4,7 @@
             <ul>
                 <li><a href="index.php?request=roady">Roady</a></li>
                 <li><a href="index.php?request=rig">Rig</a></li>
-                <li><a href="index.php?request=GettingStarted">Getting Started</a></li>
+                <li><a href="index.php?request=getting-started">Getting Started</a></li>
             </ul>
         </div>
     </div>
