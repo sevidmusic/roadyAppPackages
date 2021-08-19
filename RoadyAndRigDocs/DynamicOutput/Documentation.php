@@ -196,9 +196,9 @@ $output = preg_replace(
             <p><a href="index.php">Return to Homepage</a></p>
     <?php
         } else {
-            if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
+#            if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
                 echo $output;
-            }
+#            }
         }
     ?>
     </div>
