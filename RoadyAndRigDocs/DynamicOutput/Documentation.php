@@ -124,6 +124,24 @@ $output = preg_replace(
         '#(--)?path-to-apps-directory#',
         /** Match https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm */
         '#<a href="https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm">https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm</a>#',
+        /** Match --start-server or start-server */
+        '#(--)?start-server#',
+        /** Match --view-active-servers or view-active-servers */
+        '#(--)?view-active-servers#',
+        /** Match --debug or debug */
+        '#(--)?debug#',
+        /** Match --help or help */
+        '#(--)?help#',
+        /** Match --new-response or new-response */
+        '#(--)?new-response#',
+        /** Match --new-global-response or new-global-response */
+        '#(--)?new-global-response#',
+        /** Match --new-request or new-request */
+        '#(--)?new-request#',
+        /** Match --new-output-component or new-output-component */
+        '#(--)?new-output-component#',
+        /** Match --new-dynamic-output-component or new-dynamic-output-component */
+        '#(--)?new-dynamic-output-component#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -197,6 +215,24 @@ $output = preg_replace(
     Sorry, the video failed to load.
 </video>
         ',
+        /** Replace --start-server or start-server */
+        '<a href="index.php?request=start-server">${0}</a>',
+        /** Replace --view-active-servers or view-active-servers */
+        '<a href="index.php?request=view-active-servers">${0}</a>',
+        /** Replace --debug or debug */
+        '<a href="index.php?request=debug">${0}</a>',
+        /** Replace --help or help */
+        '<a href="index.php?request=rig">${0}</a>',
+        /** Replace --new-response or new-response */
+        '<a href="index.php?request=new-response">${0}</a>',
+        /** Replace --new-global-response or new-global-response */
+        '<a href="index.php?request=new-global-response">${0}</a>',
+        /** Replace --new-request or new-request */
+        '<a href="index.php?request=new-request">${0}</a>',
+        /** Replace --new-output-component or new-output-component */
+        '<a href="index.php?request=new-output-component">${0}</a>',
+        /** Replace --new-dynamic-output-component or new-dynamic-output-component */
+        '<a href="index.php?request=new-dynamic-output-component">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
