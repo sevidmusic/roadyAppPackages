@@ -144,8 +144,14 @@ $output = preg_replace(
         '#(--)?new-dynamic-output-component#',
         /** Match <a href="index.php?request=App"> App</a> [pP]ackage */
         '#<a href="index.php\?request=App"> App</a> [pP]ackage#',
+        /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
+        '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
         /** Match getting-started */
-        '#getting-started#',
+        '#(\s)getting-started(\s)#',
+        /** Match <a href="index.php?request=roady"> roady</a>AppPackages */
+        '#<a href="index.php\?request=roady"> roady</a>AppPackages#',
+        /** Match <a href="index.php?request=App"> App</a>Package */
+        '#<a href="index.php\?request=App"> App</a>Package#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -239,8 +245,14 @@ $output = preg_replace(
         '<a href="index.php?request=new-dynamic-output-component">${0}</a>',
         /** Replace <a href="index.php?request=App"> App</a> Packages */
         ' <a href="index.php?request=AppPackage">App Package</a>',
+        /** Replace <a href="index.php?request=App"> App</a>[pP]ackager */
+        ' <a href="https://github.com/sevidmusic/roadyAppPackages">AppPackager</a>',
         /** Replace getting-started */
         '<a href="index.php?request=getting-started">${0}</a>',
+        /** Replace <a href="index.php?request=roady"> roady</a>AppPackages */
+        ' <a href="https://github.com/sevidmusic/roadyAppPackages">roadyAppPackages</a>',
+        /** Replace <a href="index.php?request=App"> App</a>Package */
+        ' <a href="index.php?request=AppPackage">AppPackage</a>',
     ],
     implode(PHP_EOL, $lines)
 );
