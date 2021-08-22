@@ -147,7 +147,7 @@ $output = preg_replace(
         /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
         '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
         /** Match getting-started */
-        '#(\s)getting-started(\s)#',
+        '#(\s)getting-started#',
         /** Match <a href="index.php?request=roady"> roady</a>AppPackages */
         '#<a href="index.php\?request=roady"> roady</a>AppPackages#',
         /** Match <a href="index.php?request=App"> App</a>Package */
