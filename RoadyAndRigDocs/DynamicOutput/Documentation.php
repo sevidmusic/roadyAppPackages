@@ -142,8 +142,8 @@ $output = preg_replace(
         '#(--)?new-output-component#',
         /** Match --new-dynamic-output-component or new-dynamic-output-component */
         '#(--)?new-dynamic-output-component#',
-        /** Match <a href="index.php?request=App"> App</a> [pP]ackage */
-        '#<a href="index.php\?request=App"> App</a> [pP]ackage#',
+        /** Match <a href="index.php?request=App"> App</a>(\s)[pP]ackage */
+        '#<a href="index.php\?request=App"> App</a>(\s)[pP]ackage#',
         /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
         '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
         /** Match getting-started */
