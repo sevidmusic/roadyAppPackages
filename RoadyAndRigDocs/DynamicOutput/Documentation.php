@@ -142,6 +142,10 @@ $output = preg_replace(
         '#(--)?new-output-component#',
         /** Match --new-dynamic-output-component or new-dynamic-output-component */
         '#(--)?new-dynamic-output-component#',
+        /** Match <a href="index.php?request=App"> App</a> [pP]ackage */
+        '#<a href="index.php\?request=App"> App</a> [pP]ackage#',
+        /** Match getting-started */
+        '#getting-started#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -206,9 +210,9 @@ $output = preg_replace(
         '<a href="index.php?request=make-app-package">${0}</a>',
         /** Replace --name */
         '<code class="rr-docs-code">${0}</code>',
-        /** Replace --make-app-package or make-app-package */
+        /** Replace --path-to-apps-directory or path-to-apps-directory */
         '<a href="index.php?request=path-to-apps-directory">${0}</a>',
-        /** Replace  */
+        /** Replace https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm */
         '
 <video class="rr-docs-video" controls autoplay>
     <source src="https://roadydemos.us-east-1.linodeobjects.com/${1}.webm" type="video/webm">
@@ -233,6 +237,10 @@ $output = preg_replace(
         '<a href="index.php?request=new-output-component">${0}</a>',
         /** Replace --new-dynamic-output-component or new-dynamic-output-component */
         '<a href="index.php?request=new-dynamic-output-component">${0}</a>',
+        /** Replace <a href="index.php?request=App"> App</a> Packages */
+        ' <a href="index.php?request=AppPackage">App Package</a>',
+        /** Replace getting-started */
+        '<a href="index.php?request=getting-started">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
