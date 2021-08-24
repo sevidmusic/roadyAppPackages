@@ -1,6 +1,6 @@
 <div class="rr-docs-container rr-docs-sticky-top">
     <div class="rr-docs-output">
-        <div class="rr-docs-logo"><img src="roadyLogo.png" /></div>
+        <div class="rr-docs-logo"><a href="index.php"><img src="roadyLogo.png" /></a></div>
         <div class="rr-docs-rig-menu">
             <ul>
                 <li><a href="index.php?request=roady">Roady</a></li>
