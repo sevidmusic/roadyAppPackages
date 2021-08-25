@@ -220,7 +220,7 @@ $output = preg_replace(
         '<a href="index.php?request=path-to-apps-directory">${0}</a>',
         /** Replace https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm */
         '
-<video class="rr-docs-video" controls autoplay>
+<video class="rr-docs-video" controls>
     <source src="https://roadydemos.us-east-1.linodeobjects.com/${1}.webm" type="video/webm">
     Sorry, the video failed to load.
 </video>
