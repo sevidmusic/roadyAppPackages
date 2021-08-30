@@ -14,6 +14,7 @@ body {
     background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     background-size: 10rem 10rem;
     opacity: 0.80;
+    font-family: monospace;
 }
 
 .rr-docs-output,
@@ -45,13 +46,11 @@ body {
 }
 
 .rr-docs-container,
-.rr-docs-code,
 .rr-docs-special-char,
 .rr-docs-file-path,
 .rr-docs-var
 {
-    font-family: monospace;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
 }
 
 .rr-docs-code,
@@ -71,6 +70,16 @@ body {
 .rr-docs-container pre
 {
     color: #c9ffb9;
+}
+
+.rr-docs-code
+{
+    font-size: 0.95rem;
+}
+
+.rr-docs-container pre
+{
+    font-size: 0.87rem;
 }
 
 .rr-docs-container pre
@@ -120,8 +129,11 @@ body {
     display: block;
 }
 
+/*
 .rr-docs-multi-line-code-line-indent1 {
+    # Not in use yet.
 }
+*/
 
 .rr-docs-multi-line-code-line-indent2 {
     padding: 3rem;

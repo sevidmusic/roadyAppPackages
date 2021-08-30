@@ -152,6 +152,8 @@ $output = preg_replace(
         '#<a href="index.php\?request=roady"> roady</a>AppPackages#',
         /** Match <a href="index.php?request=App"> App</a>Package */
         '#<a href="index.php\?request=App"> App</a>Package#',
+        /** Match HelloWorld */
+        '#\sHelloWorld\s?#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -220,7 +222,7 @@ $output = preg_replace(
         '<a href="index.php?request=path-to-apps-directory">${0}</a>',
         /** Replace https://roadydemos\.us-east-1\.linodeobjects\.com/(.*)\.webm */
         '
-<video class="rr-docs-video" controls autoplay>
+<video class="rr-docs-video" controls>
     <source src="https://roadydemos.us-east-1.linodeobjects.com/${1}.webm" type="video/webm">
     Sorry, the video failed to load.
 </video>
@@ -253,6 +255,8 @@ $output = preg_replace(
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">roadyAppPackages</a>',
         /** Replace <a href="index.php?request=App"> App</a>Package */
         ' <a href="index.php?request=AppPackage">AppPackage</a>',
+        /** Replace HelloWorld */
+        '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
