@@ -81,10 +81,6 @@ body {
 .rr-docs-container pre
 {
     font-size: 0.87rem;
-}
-
-.rr-docs-container pre
-{
     padding: 1rem;
     overflow: auto;
 }
