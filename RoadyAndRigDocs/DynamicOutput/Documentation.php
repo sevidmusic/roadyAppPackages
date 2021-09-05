@@ -201,7 +201,7 @@ $output = preg_replace(
         /** Replace OutputComponent(s?) */
         '<a href="index.php?request=OutputComponent">${0}</a>',
         /** Replace App(s?) */
-        '<a href="index.php?request=App">${0}</a>',
+        '<a href="index.php?request=Apps">${0}</a>',
         /** Replace roady */
         '<a href="index.php?request=roady">${0}</a>',
         /** Replace --configure-app-output or configure-app-output */
