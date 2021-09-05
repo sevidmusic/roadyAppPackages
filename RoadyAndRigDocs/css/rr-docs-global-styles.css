@@ -38,11 +38,12 @@ body {
 }
 
 .rr-docs-container a:hover {
-    color: #00bbff;
+    color: #33c9ff;
+    text-shadow: 1px 1px #000000;
 }
 
 .rr-docs-container a:active {
-    color: #b9c9ff;
+    color: #00ffc3;
 }
 
 .rr-docs-container,
@@ -80,10 +81,6 @@ body {
 .rr-docs-container pre
 {
     font-size: 0.87rem;
-}
-
-.rr-docs-container pre
-{
     padding: 1rem;
     overflow: auto;
 }
@@ -170,3 +167,11 @@ body {
     opacity: 1;
     margin-bottom: 2rem;
 }
+
+.rr-docs-container h3 {
+    text-align: center;
+    background: #4b98b4;
+    padding: 0.5rem 0;
+    color: #fcfcff;
+}
+
