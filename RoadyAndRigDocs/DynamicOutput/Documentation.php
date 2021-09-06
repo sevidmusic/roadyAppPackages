@@ -154,6 +154,8 @@ $output = preg_replace(
         '#<a href="index.php\?request=App"> App</a>Package#',
         /** Match HelloWorld */
         '#\sHelloWorld\s?#',
+        /** Match Components.php */
+        '#Components[.]php#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -257,6 +259,8 @@ $output = preg_replace(
         ' <a href="index.php?request=AppPackage">AppPackage</a>',
         /** Replace HelloWorld */
         '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
+        /** Match Components.php */
+        '<a href="index.php?request=Components.php">Components.php</a>',
     ],
     implode(PHP_EOL, $lines)
 );
