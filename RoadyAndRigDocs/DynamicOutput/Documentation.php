@@ -154,6 +154,8 @@ $output = preg_replace(
         '#\sHelloWorld\s?#',
         /** Match Components.php */
         '#Components[.]php#',
+        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
+        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#'
     ],
     [
         /** Replace within ``` and ``` */
@@ -257,6 +259,8 @@ $output = preg_replace(
         '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
         /** Match Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
+        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
+        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:'
     ],
     implode(PHP_EOL, $lines)
 );

@@ -185,3 +185,13 @@ body {
     color: #fcfcff;
 }
 
+.rr-docs-note-container code,
+.rr-docs-note-container {
+    font-size: 0.82rem;
+}
+
+.rr-docs-note-container {
+    color: #53d2ff;
+    border-bottom: 1px solid white;
+    border-radius: 0 0 0 0.7rem;
+}
