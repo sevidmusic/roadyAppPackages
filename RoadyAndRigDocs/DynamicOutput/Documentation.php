@@ -143,19 +143,19 @@ $output = preg_replace(
         /** Match --new-dynamic-output-component or new-dynamic-output-component */
         '#(--)?new-dynamic-output-component#',
         /** Match <a href="index.php?request=App"> App</a>(\s)[pP]ackage */
-        '#<a href="index.php\?request=App"> App</a>(\s)[pP]ackage#',
+        '#<a href="index.php\?request=Apps">(\s)?App</a>(\s)[pP]ackage#',
         /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
         '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
         /** Match getting-started */
         '#(\s)getting-started#',
         /** Match <a href="index.php?request=roady"> roady</a>AppPackages */
         '#<a href="index.php\?request=roady"> roady</a>AppPackages#',
-        /** Match <a href="index.php?request=App"> App</a>Package */
-        '#<a href="index.php\?request=App"> App</a>Package#',
         /** Match HelloWorld */
         '#\sHelloWorld\s?#',
         /** Match Components.php */
         '#Components[.]php#',
+        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
+        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#'
     ],
     [
         /** Replace within ``` and ``` */
@@ -255,12 +255,12 @@ $output = preg_replace(
         '<a href="index.php?request=getting-started">${0}</a>',
         /** Replace <a href="index.php?request=roady"> roady</a>AppPackages */
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">roadyAppPackages</a>',
-        /** Replace <a href="index.php?request=App"> App</a>Package */
-        ' <a href="index.php?request=AppPackage">AppPackage</a>',
         /** Replace HelloWorld */
         '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
         /** Match Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
+        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
+        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:'
     ],
     implode(PHP_EOL, $lines)
 );
