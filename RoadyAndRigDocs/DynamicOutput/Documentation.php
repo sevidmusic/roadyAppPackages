@@ -146,8 +146,8 @@ $output = preg_replace(
         '#<a href="index.php\?request=Apps">(\s)?App</a>(\s)[pP]ackage#',
         /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
         '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
-        /** Match getting-started */
-        '#(\s)getting-started#',
+        /** Match getting(-|\s)started */
+        '#(\s)getting(-|\s)started#',
         /** Match <a href="index.php?request=roady"> roady</a>AppPackages */
         '#<a href="index.php\?request=roady"> roady</a>AppPackages#',
         /** Match HelloWorld */
@@ -251,7 +251,7 @@ $output = preg_replace(
         ' <a href="index.php?request=AppPackage">App Package</a>',
         /** Replace <a href="index.php?request=App"> App</a>[pP]ackager */
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">AppPackager</a>',
-        /** Replace getting-started */
+        /** Replace getting(-\s)started */
         '<a href="index.php?request=getting-started">${0}</a>',
         /** Replace <a href="index.php?request=roady"> roady</a>AppPackages */
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">roadyAppPackages</a>',

@@ -1,35 +1,45 @@
+:root {
+    --container-opacity: 0.80;
+    --default-font-family: monospace;
+    --link-color: #86dfff;
+    --main-bg-color: #020203;
+    --main-bg-gradient: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
+    --main-bg-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
+    --main-bg-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
+    --main-bg-size: 10rem 10rem;
+}
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    background-color: #020203;
-    background-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
+    background-color: var(--main-bg-color);
+    background-image: var(--main-bg-image);
 }
 
 .rr-docs-container {
-    background: #140a09;
-    background-image: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
-    background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
-    background-size: 10rem 10rem;
-    opacity: 0.80;
-    font-family: monospace;
+    background-image: var(--main-bg-gradient);
+    background-position: var(--main-bg-position);
+    background-size: var(--main-bg-size);
+    font-family: var(--default-font-family);
+    opacity: var(--container-opacity);
 }
 
 .rr-docs-output,
 .rr-docs-video
 {
+    background: var(--main-bg-color);
     margin: 0 auto;
-    width: 87%;
-    background: black;
     opacity: 0.93;
     padding: 0 2.7rem;
-    overflow: auto;
+    width: 87%;
 }
 
-.rr-docs-container a, .rr-docs-container a:link {
-    color: #86dfff;
+.rr-docs-container a,
+.rr-docs-container a:link
+{
+    color: var(--link-color);
     text-decoration: none;
 }
 
@@ -39,26 +49,20 @@ body {
 
 .rr-docs-container a:hover {
     color: #33c9ff;
-    text-shadow: 1px 1px #000000;
+    text-shadow: 2px 2px var(--main-bg-color);
 }
 
 .rr-docs-container a:active {
     color: #00ffc3;
 }
 
+.rr-docs-container h1,
 .rr-docs-container,
-.rr-docs-special-char,
 .rr-docs-file-path,
+.rr-docs-special-char,
 .rr-docs-var
 {
     font-size: 1.2rem;
-}
-
-.rr-docs-code,
-.rr-docs-special-char,
-.rr-docs-container pre
-{
-    background: #28353b;
 }
 
 .rr-docs-file-path,
@@ -81,7 +85,20 @@ body {
 .rr-docs-container pre
 {
     font-size: 0.87rem;
+}
+
+.rr-docs-container pre,
+.rr-docs-rig-menu,
+.rr-docs-plaintext
+{
     padding: 1rem;
+}
+
+
+.rr-docs-container pre,
+.rr-docs-output,
+.rr-docs-video
+{
     overflow: auto;
 }
 
@@ -111,33 +128,26 @@ body {
 .rr-docs-warning
 {
     color: #ff4400;
-    background: #3b282b;
 }
 
 .rr-docs-note
 {
     color: #b9c9ff;
-    background: #3b282b;
+}
+
+.rr-docs-warning,
+.rr-docs-note,
+.rr-docs-container h1,
+.rr-docs-code,
+.rr-docs-special-char,
+.rr-docs-container pre
+{
+    background: #002c3c;
 }
 
 .rr-docs-video {
-    width: 87%;
     height: auto;
     display: block;
-}
-
-/*
-.rr-docs-multi-line-code-line-indent1 {
-    # Not in use yet.
-}
-*/
-
-.rr-docs-multi-line-code-line-indent2 {
-    padding: 3rem;
-}
-
-.rr-docs-rig-menu {
-    padding: 1rem;
 }
 
 .rr-docs-rig-menu ul {
@@ -146,10 +156,6 @@ body {
 
 .rr-docs-rig-menu li {
     display: inline;
-}
-
-.rr-docs-plaintext {
-    padding: 1rem;
 }
 
 .rr-docs-logo img {
@@ -169,13 +175,11 @@ body {
 }
 
 .rr-docs-container h1 {
-    background: #002c3c;
     opacity: 1;
     padding: 0.5rem;
     margin: 0;
     border-radius: 0.7rem 0.7rem 0 0;
     text-shadow: -1px 1px #0052cf;
-    font-size: 1.2rem;
 }
 
 .rr-docs-container h3 {
