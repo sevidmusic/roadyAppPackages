@@ -93,7 +93,7 @@ $output = preg_replace(
         /** Match rig */
         '#>rig#i',
         /** Match [Rr]equest(s) */
-        '#[Rr]equest(s?)#',
+        '#\s[Rr]equest(s?)#',
         /** Match GlobalResponse(s) */
         '#(\s)GlobalResponse(s?)#',
         /** Match [Rr]esponse(s) */
