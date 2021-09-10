@@ -187,6 +187,7 @@ body {
     background: #4b98b4;
     padding: 0.5rem 0;
     color: #fcfcff;
+    text-shadow: -1px 1px #0052cf;
 }
 
 .rr-docs-note-container code,
