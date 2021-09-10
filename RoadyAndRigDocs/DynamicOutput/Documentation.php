@@ -92,12 +92,12 @@ $output = preg_replace(
         '#(\s)rig#i',
         /** Match rig */
         '#>rig#i',
-        /** Match Request(s) */
-        '#Request(s?)#',
+        /** Match [Rr]equest(s) */
+        '#[Rr]equest(s?)#',
         /** Match GlobalResponse(s) */
         '#(\s)GlobalResponse(s?)#',
-        /** Match Response(s) */
-        '#(\s)Response(s?)#',
+        /** Match [Rr]esponse(s) */
+        '#(\s)[Rr]esponse(s?)#',
         /** Match DynamicOutputComponent(s) */
         '#(\s)DynamicOutputComponent(s?)#',
         /** Match OutputComponent(s) */
@@ -192,11 +192,11 @@ $output = preg_replace(
         '<a href="index.php?request=rig">${0}</a>',
         /** Match rig */
         '><a href="index.php?request=rig">rig</a>',
-        /** Replace Request(s?) */
+        /** Replace [Rr]equest(s?) */
         '<a href="index.php?request=Request">${0}</a>',
         /** Replace GlobalResponse(s?) */
         '<a href="index.php?request=GlobalResponse">${0}</a>',
-        /** Replace Response(s?) */
+        /** Replace [Rr]esponse(s?) */
         '<a href="index.php?request=Response">${0}</a>',
         /** Replace DynamicOutputComponent(s?) */
         '<a href="index.php?request=DynamicOutputComponent">${0}</a>',
