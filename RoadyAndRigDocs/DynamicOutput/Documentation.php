@@ -1,4 +1,4 @@
-<?php
+used <?php
 
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
@@ -92,12 +92,12 @@ $output = preg_replace(
         '#(\s)rig#i',
         /** Match rig */
         '#>rig#i',
-        /** Match Request(s) */
-        '#Request(s?)#',
+        /** Match [Rr]equest(s) */
+        '#\s[Rr]equest(s?)#',
         /** Match GlobalResponse(s) */
         '#(\s)GlobalResponse(s?)#',
-        /** Match Response(s) */
-        '#(\s)Response(s?)#',
+        /** Match [Rr]esponse(s) */
+        '#(\s)[Rr]esponse(s?)#',
         /** Match DynamicOutputComponent(s) */
         '#(\s)DynamicOutputComponent(s?)#',
         /** Match OutputComponent(s) */
@@ -155,11 +155,17 @@ $output = preg_replace(
         /** Match Components.php */
         '#Components[.]php#',
         /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
-        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#'
+        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#',
+        /** Match \s[Cc]ss\s */
+        '#\s[Cc]ss\s#',
+        /** Match [Ss]tylesheet(s)? */
+        '#[Ss]tylesheet(s)?#',
+        /** Match \s[Ss]cript(s)? */
+        '#\s[Ss]cript(s)?#'
     ],
     [
         /** Replace within ``` and ``` */
-        '<pre>${0}</pre>',
+        '<pre><code class="rr-docs-code rr-docs-code-ml">${0}</code></pre>',
         /** Remove occurences of ``` */
         '',
         /** Replace within ` and ` */
@@ -192,11 +198,11 @@ $output = preg_replace(
         '<a href="index.php?request=rig">${0}</a>',
         /** Match rig */
         '><a href="index.php?request=rig">rig</a>',
-        /** Replace Request(s?) */
+        /** Replace [Rr]equest(s?) */
         '<a href="index.php?request=Request">${0}</a>',
         /** Replace GlobalResponse(s?) */
         '<a href="index.php?request=GlobalResponse">${0}</a>',
-        /** Replace Response(s?) */
+        /** Replace [Rr]esponse(s?) */
         '<a href="index.php?request=Response">${0}</a>',
         /** Replace DynamicOutputComponent(s?) */
         '<a href="index.php?request=DynamicOutputComponent">${0}</a>',
@@ -260,7 +266,13 @@ $output = preg_replace(
         /** Match Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
         /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
-        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:'
+        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:',
+        /** Replace \s[Cc]ss\s */
+        '<a href="index.php?request=css">${0}</a>',
+        /** Replace [Ss]tylesheet(s)? */
+        '<a href="index.php?request=css">${0}</a>',
+        /** Match \s[Ss]cript(s)? */
+        '<a href="index.php?request=js">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
