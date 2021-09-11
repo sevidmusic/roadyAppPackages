@@ -1,4 +1,4 @@
-<?php
+used <?php
 
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
@@ -165,7 +165,7 @@ $output = preg_replace(
     ],
     [
         /** Replace within ``` and ``` */
-        '<pre>${0}</pre>',
+        '<pre><code class="rr-docs-code rr-docs-code-ml">${0}</code></pre>',
         /** Remove occurences of ``` */
         '',
         /** Replace within ` and ` */
