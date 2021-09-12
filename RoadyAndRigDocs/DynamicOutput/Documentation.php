@@ -143,7 +143,7 @@ $output = preg_replace(
         '#(--)?new-output-component#',
         /** Match --new-dynamic-output-component or new-dynamic-output-component */
         '#(--)?new-dynamic-output-component#',
-        /** Match links to Apps followed by the word Package or Packages */
+        /** Match links to Apps followed by the word Package */
         '#<a href="index.php\?request=Apps">(\s)?App</a>(\s)[pP]ackage#',
         /** Match <a href="index.php?request=App"> App</a>[pP]ackager */
         '#<a href="index.php\?request=App"> App</a>[pP]ackager#',
