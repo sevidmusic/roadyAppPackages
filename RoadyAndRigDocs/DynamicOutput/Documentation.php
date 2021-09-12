@@ -25,8 +25,9 @@ $rigHelpFilesDirectoryPath = strval(
     )
 );
 
+$helpFilesDirectoryScan = scandir($rigHelpFilesDirectoryPath);
 $helpFilesListing = array_diff(
-    scandir($rigHelpFilesDirectoryPath),
+    (is_array($helpFilesDirectoryScan) ? $helpFilesDirectoryScan : []),
     ['.', '..']
 );
 
@@ -53,7 +54,7 @@ if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
 /** Help File Output */
 $lines = explode(PHP_EOL, $helpFileOutput);
 foreach($lines as $key => $line) {
-    $lines[$key] = trim($line);
+    $lines[$key] = $line;
 }
 
 $output = preg_replace(
