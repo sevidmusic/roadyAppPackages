@@ -1,14 +1,27 @@
 :root {
-    --container-opacity: 0.80;
+    --code-ml-text-color: #b9ffcc;
+    --code-text-color: #c9ffb9;
+    --dark-bg-gradient: linear-gradient(45deg, var(--defualt-container-bg-color) 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--defualt-container-bg-color) 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
     --default-font-family: monospace;
+    --default-font-size: 1.39rem;
+    --default-text-color: white;
+    --defualt-container-bg-color: #002c3c;
+    --h3-bg-color: #4b98b4;
+    --h3-text-color: #fcfcff;
+    --link-active-color: #00ffc3;
     --link-color: #86dfff;
+    --link-default-text-decoration: none;
+    --link-hover-color: #33c9ff;
+    --link-visited-color: #b9ecff;
     --main-bg-color: #020203;
     --main-bg-gradient: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
-    --dark-bg-gradient: linear-gradient(45deg, #002c3c 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #002c3c 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
     --main-bg-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
     --main-bg-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     --main-bg-size: 10rem 10rem;
-    --default-font-size: 1.39rem;
+    --note-icon-text-color: #b9c9ff;
+    --note-text-color: #fff3ee;
+    --text-shadow-color: #0052cf;
+    --warning-text-color: #ff4400;
 }
 
 * {
@@ -20,145 +33,81 @@ body {
     background-image: var(--main-bg-image);
 }
 
+.rr-docs-code {
+    background: var(--defualt-container-bg-color);
+    color: var(--code-text-color);
+    padding: 0.127rem;
+    font-size: 1rem;
+}
+
+.rr-docs-code-ml {
+    font-size: 0.87rem;
+    color: var(--code-ml-text-color);
+}
+
+.rr-docs-code:hover {
+    color: var(--default-text-color);
+}
+
+.rr-docs-container a {
+    color: var(--link-color);
+    text-decoration: var(--link-default-text-decoration);
+}
+
+.rr-docs-container a:link {
+    color: var(--link-color);
+    text-decoration: var(--link-default-text-decoration);
+}
+
+.rr-docs-container a:visited {
+    color: var(--link-visited-color);
+}
+
+.rr-docs-container a:hover {
+    color: var(--link-hover-color);
+    text-shadow: 2px 2px var(--main-bg-color);
+}
+
+.rr-docs-container a:active {
+    color: var(--link-active-color);
+}
+
+.rr-docs-container h1 {
+    font-size: var(--default-font-size);
+    background: var(--defualt-container-bg-color);
+    opacity: 1;
+    padding: 0.5rem;
+    margin: 0;
+    border-radius: 0.7rem 0.7rem 0 0;
+    text-shadow: -1px 1px var(--text-shadow-color);
+}
+
+.rr-docs-container h3 {
+    text-align: center;
+    background: var(--h3-bg-color);
+    padding: 0.5rem 0;
+    color: var(--h3-text-color);
+    text-shadow: -1px 1px var(--text-shadow-color);
+}
+
+.rr-docs-container pre {
+    padding: 1rem;
+    overflow: auto;
+    background: var(--defualt-container-bg-color);
+}
+
+.rr-docs-container pre:hover {
+    color: var(--default-text-color);
+}
+
 .rr-docs-container {
     background-image: var(--main-bg-gradient);
     background-position: var(--main-bg-position);
     background-size: var(--main-bg-size);
     font-family: var(--default-font-family);
-    opacity: var(--container-opacity);
-}
-
-.rr-docs-output,
-.rr-docs-video
-{
-    background: var(--main-bg-color);
-    margin: 0 auto;
-    opacity: 0.93;
-    padding: 0 2.7rem;
-    width: 87%;
-}
-
-.rr-docs-container a,
-.rr-docs-container a:link
-{
-    color: var(--link-color);
-    text-decoration: none;
-}
-
-.rr-docs-container a:visited {
-    color: #b9ecff;
-}
-
-.rr-docs-container a:hover {
-    color: #33c9ff;
-    text-shadow: 2px 2px var(--main-bg-color);
-}
-
-.rr-docs-container a:active {
-    color: #00ffc3;
-}
-
-.rr-docs-container h1,
-.rr-docs-container,
-.rr-docs-file-path,
-.rr-docs-special-char,
-.rr-docs-var
-{
+    opacity: 0.8;
     font-size: var(--default-font-size);
-}
-
-.rr-docs-file-path,
-.rr-docs-var
-{
-    background: #283b38;
-}
-
-.rr-docs-code
-{
-    color: #c9ffb9;
-    padding: 0.127rem;
-}
-
-.rr-docs-code
-{
-    font-size: 1rem;
-}
-
-.rr-docs-code-ml
-{
-    font-size: 0.87rem;
-    color: #b9ffcc;
-}
-
-.rr-docs-container pre,
-.rr-docs-rig-menu,
-.rr-docs-plaintext
-{
-    padding: 1rem;
-}
-
-
-.rr-docs-container pre,
-.rr-docs-output,
-.rr-docs-video
-{
-    overflow: auto;
-}
-
-
-.rr-docs-special-char {
-    color: #ecffb9;
-}
-
-.rr-docs-file-path {
-    color: #ffccb9;
-}
-
-.rr-docs-var {
-    color: #ccb9ff;
-}
-
-.rr-docs-container,
-.rr-docs-code:hover,
-.rr-docs-special-char:hover,
-.rr-docs-file-path:hover,
-.rr-docs-var:hover,
-.rr-docs-container pre:hover
-{
-    color: white;
-}
-
-.rr-docs-warning
-{
-    color: #ff4400;
-}
-
-.rr-docs-note
-{
-    color: #b9c9ff;
-}
-
-.rr-docs-warning,
-.rr-docs-note,
-.rr-docs-container h1,
-.rr-docs-code,
-.rr-docs-special-char,
-.rr-docs-container pre
-{
-    background: #002c3c;
-}
-
-.rr-docs-video {
-    height: auto;
-    display: block;
-}
-
-.rr-docs-rig-menu ul {
-    list-style-type: none;
-}
-
-.rr-docs-rig-menu li {
-    display: inline;
+    color: var(--default-text-color);
 }
 
 .rr-docs-logo img {
@@ -169,6 +118,58 @@ body {
     margin-right: 2rem;
 }
 
+.rr-docs-note-container code {
+    font-size: 0.87rem;
+    text-shadow: -1px 1px black;
+}
+
+.rr-docs-note-container {
+    font-size: 0.87rem;
+    text-shadow: -1px 1px black;
+    color: var(--note-text-color);
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-radius: 0.7rem 0 0.7rem 0;
+    background-image: var(--dark-bg-gradient);
+    width: 94%;
+    margin: 1rem auto;
+}
+
+.rr-docs-note-icon {
+    background-color: var(--main-bg-color);
+    background-image: var(--main-bg-image);
+    color: var(--note-icon-text-color);
+    display: inline-block;
+    font-size: 0.87rem;
+    margin-bottom: 1rem;
+    padding: 0.1rem 0.85rem 0 0.5rem;
+    text-shadow: 5px 0px var(--link-hover-color);
+}
+
+.rr-docs-output {
+    overflow: auto;
+    background: var(--main-bg-color);
+    margin: 0 auto;
+    opacity: 0.93;
+    padding: 0 2.7rem;
+    width: 87%;
+}
+
+.rr-docs-plaintext {
+    padding: 1rem;
+}
+
+.rr-docs-rig-menu li {
+    display: inline;
+}
+
+.rr-docs-rig-menu ul {
+    list-style-type: none;
+}
+
+.rr-docs-rig-menu {
+    padding: 1rem;
+}
 .rr-docs-sticky-top {
     position: sticky;
     top: 0;
@@ -177,33 +178,19 @@ body {
     margin-bottom: 2rem;
 }
 
-.rr-docs-container h1 {
-    opacity: 1;
-    padding: 0.5rem;
-    margin: 0;
-    border-radius: 0.7rem 0.7rem 0 0;
-    text-shadow: -1px 1px #0052cf;
+.rr-docs-video {
+    overflow: auto;
+    background: var(--main-bg-color);
+    margin: 0 auto;
+    opacity: 0.93;
+    padding: 0 2.7rem;
+    width: 87%;
+    height: auto;
+    display: block;
 }
 
-.rr-docs-container h3 {
-    text-align: center;
-    background: #4b98b4;
-    padding: 0.5rem 0;
-    color: #fcfcff;
-    text-shadow: -1px 1px #0052cf;
+.rr-docs-warning {
+    background: var(--defualt-container-bg-color);
+    color: var(--warning-text-color);
 }
 
-.rr-docs-note-container code,
-.rr-docs-note-container {
-    font-size: 0.87rem;
-}
-
-.rr-docs-note-container {
-    color: #53d2ff;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-    border-radius: 0.7rem 0 0.7rem 0;
-    background-image: var(--dark-bg-gradient);
-    width: 94%;
-    margin: 1rem auto;
-}
