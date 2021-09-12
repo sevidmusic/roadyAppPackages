@@ -6,6 +6,7 @@
     --link-color: #86dfff;
     --link-hover-color: #33c9ff;
     --link-visited-color: #b9ecff;
+    --link-default-text-decoration: none;
     --main-bg-color: #020203;
     --main-bg-gradient: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
     --main-bg-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
@@ -24,39 +25,30 @@ body {
     background-image: var(--main-bg-image);
 }
 
-.rr-docs-container {
-    background-image: var(--main-bg-gradient);
-    background-position: var(--main-bg-position);
-    background-size: var(--main-bg-size);
-    font-family: var(--default-font-family);
-    opacity: 0.8;
+.rr-docs-code {
+    background: #002c3c;
+    color: #c9ffb9;
+    padding: 0.127rem;
+    font-size: 1rem;
 }
 
-.rr-docs-container h1,
-.rr-docs-container
-{
-    font-size: var(--default-font-size);
+.rr-docs-code-ml {
+    font-size: 0.87rem;
+    color: #b9ffcc;
 }
 
-.rr-docs-container pre,
-.rr-docs-rig-menu,
-.rr-docs-plaintext
-{
-    padding: 1rem;
+.rr-docs-code:hover {
+    color: white;
 }
 
-.rr-docs-container pre,
-.rr-docs-output,
-.rr-docs-video
-{
-    overflow: auto;
-}
-
-.rr-docs-container a,
-.rr-docs-container a:link
-{
+.rr-docs-container a {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: var(--link-default-text-decoration);
+}
+
+.rr-docs-container a:link {
+    color: var(--link-color);
+    text-decoration: var(--link-default-text-decoration);
 }
 
 .rr-docs-container a:visited {
@@ -72,24 +64,95 @@ body {
     color: var(--link-active-color);
 }
 
-.rr-docs-container pre,
+
+
+.rr-docs-container h1 {
+    font-size: var(--default-font-size);
+    background: #002c3c;
+    opacity: 1;
+    padding: 0.5rem;
+    margin: 0;
+    border-radius: 0.7rem 0.7rem 0 0;
+    text-shadow: -1px 1px #0052cf;
+}
+
+.rr-docs-container h3 {
+    text-align: center;
+    background: #4b98b4;
+    padding: 0.5rem 0;
+    color: #fcfcff;
+    text-shadow: -1px 1px #0052cf;
+}
+
+.rr-docs-container pre {
+    padding: 1rem;
+    overflow: auto;
+    background: #002c3c;
+}
+
+.rr-docs-container pre:hover {
+    color: white;
+}
+
+.rr-docs-container {
+    background-image: var(--main-bg-gradient);
+    background-position: var(--main-bg-position);
+    background-size: var(--main-bg-size);
+    font-family: var(--default-font-family);
+    opacity: 0.8;
+}
+
+.rr-docs-logo img {
+    border-radius: 50%;
+    max-width: 12%;
+    height: auto;
+    float: left;
+    margin-right: 2rem;
+}
+.rr-docs-note-container code {}
+.rr-docs-note-container {}
+.rr-docs-note-icon {}
+.rr-docs-output {}
+.rr-docs-plaintext {}
+.rr-docs-rig-menu li {}
+.rr-docs-rig-menu ul {}
+.rr-docs-rig-menu {}
+.rr-docs-sticky-top {}
+.rr-docs-video {}
+.rr-docs-warning {}
+
+
+/******************************/
+
+.rr-docs-container
+{
+    font-size: var(--default-font-size);
+}
+
 .rr-docs-rig-menu,
 .rr-docs-plaintext
 {
     padding: 1rem;
 }
 
-.rr-docs-container,
-.rr-docs-code:hover,
-.rr-docs-container pre:hover
+.rr-docs-output,
+.rr-docs-video
+{
+    overflow: auto;
+}
+
+.rr-docs-rig-menu,
+.rr-docs-plaintext
+{
+    padding: 1rem;
+}
+
+.rr-docs-container
 {
     color: white;
 }
 
-.rr-docs-warning,
-.rr-docs-container h1,
-.rr-docs-code,
-.rr-docs-container pre
+.rr-docs-warning
 {
     background: #002c3c;
 }
@@ -110,22 +173,6 @@ body {
     margin: 1rem auto;
 }
 
-.rr-docs-container h1 {
-    opacity: 1;
-    padding: 0.5rem;
-    margin: 0;
-    border-radius: 0.7rem 0.7rem 0 0;
-    text-shadow: -1px 1px #0052cf;
-}
-
-.rr-docs-container h3 {
-    text-align: center;
-    background: #4b98b4;
-    padding: 0.5rem 0;
-    color: #fcfcff;
-    text-shadow: -1px 1px #0052cf;
-}
-
 .rr-docs-output,
 .rr-docs-video
 {
@@ -141,23 +188,6 @@ body {
     display: block;
 }
 
-.rr-docs-code
-{
-    color: #c9ffb9;
-    padding: 0.127rem;
-}
-
-.rr-docs-code
-{
-    font-size: 1rem;
-}
-
-.rr-docs-code-ml
-{
-    font-size: 0.87rem;
-    color: #b9ffcc;
-}
-
 .rr-docs-warning
 {
     color: #ff4400;
@@ -169,14 +199,6 @@ body {
 
 .rr-docs-rig-menu li {
     display: inline;
-}
-
-.rr-docs-logo img {
-    border-radius: 50%;
-    max-width: 12%;
-    height: auto;
-    float: left;
-    margin-right: 2rem;
 }
 
 .rr-docs-sticky-top {
