@@ -157,12 +157,16 @@ $output = preg_replace(
         '#Components[.]php#',
         /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
         '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#',
-        /** Match \s[Cc]ss\s */
+        /** Match css or Css */
         '#\s[Cc]ss\s#',
-        /** Match [Ss]tylesheet(s)? */
+        /** Match Stylesheet(s) or stylesheet(s) */
         '#[Ss]tylesheet(s)?#',
-        /** Match \s[Ss]cript(s)? */
-        '#\s[Ss]cript(s)?#'
+        /** Match Script(s) or script(s) */
+        '#\s[Ss]cript(s)?#',
+        /** Match DynamicOutput or Dynamic Output */
+        '#\sDynamic(\s)?Output\s#',
+        /** Match >DynamicOutput< or >Dynamic Output< */
+        '#[>]Dynamic(\s)?Output[<]#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -264,16 +268,20 @@ $output = preg_replace(
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">roadyAppPackages</a>',
         /** Replace HelloWorld */
         '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
-        /** Match Components.php */
+        /** Replace Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
-        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
+        /** Replace <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
         '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:',
-        /** Replace \s[Cc]ss\s */
+        /** Replace Css or css */
         '<a href="index.php?request=css">${0}</a>',
-        /** Replace [Ss]tylesheet(s)? */
+        /** Replace Stylesheet(s) or stylesheet(s) */
         '<a href="index.php?request=css">${0}</a>',
-        /** Match \s[Ss]cript(s)? */
+        /** Replace Script(s) or script(s) */
         '<a href="index.php?request=js">${0}</a>',
+        /** Replace DynamicOutput */
+        '<a href="index.php?request=DynamicOutput">${0}</a>',
+        /** Replace >DynamicOutput< or >Dynamic Output< */
+        '><a href="index.php?request=DynamicOutput"${0}/a><',
     ],
     implode(PHP_EOL, $lines)
 );
