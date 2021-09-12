@@ -155,8 +155,8 @@ $output = preg_replace(
         '#\sHelloWorld\s?#',
         /** Match Components.php */
         '#Components[.]php#',
-        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
-        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE:#',
+        /** Match <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note-icon">NOTE: */
+        '#<div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note-icon">NOTE:#',
         /** Match css or Css */
         '#\s[Cc]ss\s#',
         /** Match Stylesheet(s) or stylesheet(s) */
@@ -198,7 +198,7 @@ $output = preg_replace(
         /** Replace WARNING: */
         '<span class="rr-docs-warning">WARNING:</span>',
         /** Replace NOTE: */
-        '<span class="rr-docs-note">NOTE:</span>',
+        '<span class="rr-docs-note-icon">NOTE:</span><br>',
         /** Replace rig */
         '<a href="index.php?request=rig">${0}</a>',
         /** Match rig */
@@ -270,8 +270,8 @@ $output = preg_replace(
         '<a href="https://github.com/sevidmusic/roadyAppPackages/tree/main/HelloWorld">${0}</a>',
         /** Replace Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
-        /** Replace <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note">NOTE: */
-        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note">NOTE:',
+        /** Replace <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note-icon">NOTE: */
+        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note-icon">&raquo; ',
         /** Replace Css or css */
         '<a href="index.php?request=css">${0}</a>',
         /** Replace Stylesheet(s) or stylesheet(s) */

@@ -11,7 +11,8 @@
     --main-bg-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
     --main-bg-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     --main-bg-size: 10rem 10rem;
-    --note-text-color: #53d2ff;
+    --note-text-color: #fff3ee;
+    --note-icon-text-color: #b9c9ff;
 }
 
 * {
@@ -86,7 +87,6 @@ body {
 }
 
 .rr-docs-warning,
-.rr-docs-note,
 .rr-docs-container h1,
 .rr-docs-code,
 .rr-docs-container pre
@@ -97,6 +97,7 @@ body {
 .rr-docs-note-container code,
 .rr-docs-note-container {
     font-size: 0.87rem;
+    text-shadow: -1px 1px black;
 }
 
 .rr-docs-note-container {
@@ -162,11 +163,6 @@ body {
     color: #ff4400;
 }
 
-.rr-docs-note
-{
-    color: #b9c9ff;
-}
-
 .rr-docs-rig-menu ul {
     list-style-type: none;
 }
@@ -191,3 +187,13 @@ body {
     margin-bottom: 2rem;
 }
 
+.rr-docs-note-icon {
+    background-color: var(--main-bg-color);
+    background-image: var(--main-bg-image);
+    color: var(--note-icon-text-color);
+    display: inline-block;
+    font-size: 0.87rem;
+    margin-bottom: 1rem;
+    padding: 0.1rem 0.85rem 0 0.5rem;
+    text-shadow: 5px 0px var(--link-hover-color);
+}
