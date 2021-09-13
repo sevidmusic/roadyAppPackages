@@ -137,14 +137,15 @@ body {
     line-height: 1.583rem;
     max-height: 60px;
     overflow: auto;
+    transition: max-height 5s;
 }
 
 .rr-docs-note-container:hover {
     cursor: help;
-    animation: rr-docs-note-hover-ani 5s;
     border-top: 1px solid var(--link-active-color);
     border-bottom: 1px solid var(--link-active-color);
     border-radius: 0 0.7rem 0 0.7rem;
+    max-height: 500px;
 }
 
 .rr-docs-note-icon {
@@ -211,7 +212,3 @@ body {
     color: var(--warning-text-color);
 }
 
-@keyframes rr-docs-note-hover-ani {
-    from {max-height: 60px;}
-    to {max-height: 420px;}
-}
