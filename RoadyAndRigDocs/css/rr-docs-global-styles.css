@@ -140,7 +140,11 @@ body {
 }
 
 .rr-docs-note-container:hover {
+    cursor: help;
     animation: rr-docs-note-hover-ani 5s;
+    border-top: 1px solid var(--link-active-color);
+    border-bottom: 1px solid var(--link-active-color);
+    border-radius: 0 0.7rem 0 0.7rem;
 }
 
 .rr-docs-note-icon {
@@ -152,6 +156,11 @@ body {
     margin-bottom: 1rem;
     padding: 0.1rem 0.85rem 0 0.5rem;
     text-shadow: 5px 0px var(--link-hover-color);
+}
+
+.rr-docs-note-icon:hover {
+    text-shadow: 5px 0px var(--link-active-color);
+    cursor: help;
 }
 
 .rr-docs-output {
