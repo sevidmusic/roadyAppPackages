@@ -7,7 +7,7 @@
     --default-text-color: white;
     --defualt-container-bg-color: #002c3c;
     --h3-bg-color: #4b98b4;
-    --h3-text-color: #fcfcff;
+    --h3-text-color: #f2f6fb;
     --link-active-color: #00ffc3;
     --link-color: #86dfff;
     --link-default-text-decoration: none;
@@ -22,6 +22,7 @@
     --note-text-color: #fff3ee;
     --text-shadow-color: #0052cf;
     --warning-text-color: #ff4400;
+    --border-radius-value: 0.7rem;
 }
 
 * {
@@ -78,14 +79,16 @@ body {
     opacity: 1;
     padding: 0.5rem;
     margin: 0;
-    border-radius: 0.7rem 0.7rem 0 0;
+    border-radius: var(--border-radius-value) var(--border-radius-value) 0 0;
     text-shadow: -1px 1px var(--text-shadow-color);
 }
 
 .rr-docs-container h3 {
     text-align: center;
     background: var(--h3-bg-color);
-    padding: 0.5rem 0;
+    border: 2px solid white;
+    border-radius: var(--border-radius-value) 0 var(--border-radius-value) 0;
+    padding: 0.42rem;
     color: var(--h3-text-color);
     text-shadow: -1px 1px var(--text-shadow-color);
 }
@@ -131,7 +134,7 @@ body {
     color: var(--note-text-color);
     border-top: 1px solid white;
     border-bottom: 1px solid white;
-    border-radius: 0.7rem 0 0.7rem 0;
+    border-radius: var(--border-radius-value) 0 var(--border-radius-value) 0;
     background-image: var(--dark-bg-gradient);
     width: 94%;
     margin: 1rem auto;
@@ -145,7 +148,7 @@ body {
     cursor: help;
     border-top: 1px solid var(--link-active-color);
     border-bottom: 1px solid var(--link-active-color);
-    border-radius: 0 0.7rem 0 0.7rem;
+    border-radius: 0 var(--border-radius-value) 0 var(--border-radius-value);
     max-height: 500px;
 }
 
