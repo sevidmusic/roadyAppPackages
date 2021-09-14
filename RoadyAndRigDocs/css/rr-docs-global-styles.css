@@ -109,6 +109,7 @@ body {
     font-size: var(--default-font-size);
     color: var(--default-text-color);
     line-height: 1.387rem;
+    letter-spacing: 0.1027rem;
 }
 
 .rr-docs-logo img {
