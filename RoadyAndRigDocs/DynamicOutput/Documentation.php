@@ -68,7 +68,7 @@ $output = preg_replace(
         /** Match occurences of ` */
         '#`{1}#',
         /** Match links */
-        '#http(s?):/(/[a-zA-Z0-9_.:?=-]+)+[a-zA-Z0-9/]#',
+        '#http(s?)://([a-zA-Z0-9_.:?=/-]+(&amp;)?)+[a-zA-Z0-9/]#',
         /** Match ~~~~~ for replacement */
         '#~{5}#',
         /** Match ~~~~~ for removal */

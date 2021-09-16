@@ -7,7 +7,7 @@
     --default-text-color: white;
     --defualt-container-bg-color: #002c3c;
     --h3-bg-color: #4b98b4;
-    --h3-text-color: #fcfcff;
+    --h3-text-color: #f2f6fb;
     --link-active-color: #00ffc3;
     --link-color: #86dfff;
     --link-default-text-decoration: none;
@@ -22,6 +22,7 @@
     --note-text-color: #fff3ee;
     --text-shadow-color: #0052cf;
     --warning-text-color: #ff4400;
+    --border-radius-value: 0.7rem;
 }
 
 * {
@@ -78,14 +79,16 @@ body {
     opacity: 1;
     padding: 0.5rem;
     margin: 0;
-    border-radius: 0.7rem 0.7rem 0 0;
+    border-radius: var(--border-radius-value) var(--border-radius-value) 0 0;
     text-shadow: -1px 1px var(--text-shadow-color);
 }
 
 .rr-docs-container h3 {
     text-align: center;
     background: var(--h3-bg-color);
-    padding: 0.5rem 0;
+    border: 2px solid white;
+    border-radius: var(--border-radius-value) 0 var(--border-radius-value) 0;
+    padding: 0.42rem;
     color: var(--h3-text-color);
     text-shadow: -1px 1px var(--text-shadow-color);
 }
@@ -109,6 +112,7 @@ body {
     font-size: var(--default-font-size);
     color: var(--default-text-color);
     line-height: 1.387rem;
+    letter-spacing: 0.1027rem;
 }
 
 .rr-docs-logo img {
@@ -130,21 +134,22 @@ body {
     color: var(--note-text-color);
     border-top: 1px solid white;
     border-bottom: 1px solid white;
-    border-radius: 0.7rem 0 0.7rem 0;
+    border-radius: var(--border-radius-value) 0 var(--border-radius-value) 0;
     background-image: var(--dark-bg-gradient);
     width: 94%;
     margin: 1rem auto;
     line-height: 1.583rem;
     max-height: 60px;
     overflow: auto;
+    transition: max-height 5s;
 }
 
 .rr-docs-note-container:hover {
     cursor: help;
-    animation: rr-docs-note-hover-ani 5s;
     border-top: 1px solid var(--link-active-color);
     border-bottom: 1px solid var(--link-active-color);
-    border-radius: 0 0.7rem 0 0.7rem;
+    border-radius: 0 var(--border-radius-value) 0 var(--border-radius-value);
+    max-height: 500px;
 }
 
 .rr-docs-note-icon {
@@ -211,7 +216,3 @@ body {
     color: var(--warning-text-color);
 }
 
-@keyframes rr-docs-note-hover-ani {
-    from {max-height: 60px;}
-    to {max-height: 420px;}
-}
