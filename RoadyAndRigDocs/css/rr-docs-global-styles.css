@@ -1,11 +1,11 @@
 :root {
+    --border-radius-value: 0.7rem;
     --code-ml-text-color: #b9ffcc;
     --code-text-color: #c9ffb9;
-    --dark-bg-gradient: linear-gradient(45deg, var(--defualt-container-bg-color) 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--defualt-container-bg-color) 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
+    --default-bg-color: #09131d;
     --default-font-family: monospace;
     --default-font-size: 1.39rem;
     --default-text-color: white;
-    --defualt-container-bg-color: #002c3c;
     --h3-bg-color: #4b98b4;
     --h3-text-color: #f2f6fb;
     --link-active-color: #00ffc3;
@@ -14,15 +14,25 @@
     --link-hover-color: #33c9ff;
     --link-visited-color: #b9ecff;
     --main-bg-color: #020203;
-    --main-bg-gradient: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
-    --main-bg-image: url("https://roadyapppackagesmedia.us-east-1.linodeobjects.com/main-background.png");
+    --main-bg-gradient:
+        linear-gradient(
+            35deg,
+            var(--default-bg-color) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            -17deg,
+            #1d1309 25%,
+            transparent 25%
+        )
+    ;
+    --main-bg-image: url("https://roadymedia.us-east-1.linodeobjects.com/roadyLogo.png");
     --main-bg-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
     --main-bg-size: 10rem 10rem;
     --note-icon-text-color: #b9c9ff;
     --note-text-color: #fff3ee;
     --text-shadow-color: #0052cf;
     --warning-text-color: #ff4400;
-    --border-radius-value: 0.7rem;
 }
 
 * {
@@ -32,10 +42,12 @@
 body {
     background-color: var(--main-bg-color);
     background-image: var(--main-bg-image);
+    background-repeat: round;
+    background-size: 0.3rem 120rem;
 }
 
 .rr-docs-code {
-    background: var(--defualt-container-bg-color);
+    background: var(--default-bg-color);
     color: var(--code-text-color);
     padding: 0.127rem;
     font-size: 1rem;
@@ -75,7 +87,7 @@ body {
 
 .rr-docs-container h1 {
     font-size: var(--default-font-size);
-    background: var(--defualt-container-bg-color);
+    background: var(--default-bg-color);
     opacity: 1;
     padding: 0.5rem;
     margin: 0;
@@ -96,7 +108,7 @@ body {
 .rr-docs-container pre {
     padding: 1rem;
     overflow: auto;
-    background: var(--defualt-container-bg-color);
+    background: var(--default-bg-color);
 }
 
 .rr-docs-container pre:hover {
@@ -108,7 +120,7 @@ body {
     background-position: var(--main-bg-position);
     background-size: var(--main-bg-size);
     font-family: var(--default-font-family);
-    opacity: 0.8;
+    opacity: 0.989;
     font-size: var(--default-font-size);
     color: var(--default-text-color);
     line-height: 1.387rem;
@@ -135,7 +147,7 @@ body {
     border-top: 1px solid white;
     border-bottom: 1px solid white;
     border-radius: var(--border-radius-value) 0 var(--border-radius-value) 0;
-    background-image: var(--dark-bg-gradient);
+    background-image: var(--main-bg-gradient);
     width: 94%;
     margin: 1rem auto;
     line-height: 1.583rem;
@@ -196,8 +208,9 @@ body {
     position: sticky;
     top: 0;
     z-index: 10000;
-    opacity: 1;
+    opacity: 0.9;
     margin-bottom: 1;
+    background: #020203;
 }
 
 .rr-docs-video {
@@ -212,7 +225,7 @@ body {
 }
 
 .rr-docs-warning {
-    background: var(--defualt-container-bg-color);
+    background: var(--default-bg-color);
     color: var(--warning-text-color);
 }
 
