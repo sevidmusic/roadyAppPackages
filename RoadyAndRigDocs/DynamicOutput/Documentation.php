@@ -1,4 +1,4 @@
-used <?php
+<?php
 
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
@@ -167,6 +167,10 @@ $output = preg_replace(
         '#\sDynamic(\s)?Output\s#',
         /** Match >DynamicOutput< or >Dynamic Output< */
         '#[>]Dynamic(\s)?Output[<]#',
+        /** Match Symphony */
+        '#[Ss]ymphony#',
+        /** Match Laravel */
+        '#[Ll]aravel#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -282,6 +286,10 @@ $output = preg_replace(
         '<a href="index.php?request=DynamicOutput">${0}</a>',
         /** Replace >DynamicOutput< or >Dynamic Output< */
         '><a href="index.php?request=DynamicOutput"${0}/a><',
+        /** Replace Symphony */
+        '<a href="https://symfony.com">${0}</a>',
+        /** Replace Laravel */
+        '<a href="https://laravel.com">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );
