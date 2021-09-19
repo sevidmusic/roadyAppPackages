@@ -1,19 +1,21 @@
 :root {
+    --body-bg-color: #020203;
     --border-radius-value: 0.7rem;
     --code-ml-text-color: #b9ffcc;
     --code-text-color: #c9ffb9;
+    --dark-red-bg: #1d0913;
+    --default-bg-color-compliment: #1d1309;
     --default-bg-color: #09131d;
     --default-font-family: monospace;
     --default-font-size: 1.39rem;
     --default-text-color: white;
-    --h3-bg-color: #4b98b4;
+    --h3-bg-color: #152c44;
     --h3-text-color: #f2f6fb;
     --link-active-color: #00ffc3;
     --link-color: #86dfff;
     --link-default-text-decoration: none;
     --link-hover-color: #33c9ff;
     --link-visited-color: #b9ecff;
-    --main-bg-color: #020203;
     --main-bg-gradient:
         linear-gradient(
             35deg,
@@ -22,7 +24,7 @@
         ),
         linear-gradient(
             -17deg,
-            #1d1309 25%,
+            var(--default-bg-color-compliment) 25%,
             transparent 25%
         )
     ;
@@ -40,7 +42,7 @@
 }
 
 body {
-    background-color: var(--main-bg-color);
+    background-color: var(--body-bg-color);
     background-image: var(--main-bg-image);
     background-repeat: round;
     background-size: 0.3rem 120rem;
@@ -78,7 +80,7 @@ body {
 
 .rr-docs-container a:hover {
     color: var(--link-hover-color);
-    text-shadow: 2px 2px var(--main-bg-color);
+    text-shadow: 2px 2px var(--body-bg-color);
 }
 
 .rr-docs-container a:active {
@@ -165,7 +167,7 @@ body {
 }
 
 .rr-docs-note-icon {
-    background-color: var(--main-bg-color);
+    background-color: var(--body-bg-color);
     background-image: var(--main-bg-image);
     color: var(--note-icon-text-color);
     display: inline-block;
@@ -182,7 +184,7 @@ body {
 
 .rr-docs-output {
     overflow: auto;
-    background: var(--main-bg-color);
+    background: var(--body-bg-color);
     margin: 0 auto;
     opacity: 0.93;
     padding: 0 2.7rem;
@@ -214,7 +216,7 @@ body {
 
 .rr-docs-video {
     overflow: auto;
-    background: var(--main-bg-color);
+    background: var(--body-bg-color);
     margin: 0 auto;
     opacity: 0.93;
     padding: 0 2.7rem;
@@ -228,3 +230,15 @@ body {
     color: var(--warning-text-color);
 }
 
+.rr-docs-tiny-msg {
+    font-size: 0.757rem;
+    padding: 0.3rem;
+    width: 72%;
+    transition: font-size 1s;
+    background-image: var(--main-bg-gradient);
+    margin: 0 auto;
+}
+
+.rr-docs-tiny-msg:hover {
+   font-size: 1rem;
+}
