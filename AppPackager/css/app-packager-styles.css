@@ -16,6 +16,24 @@
     height: 97%;
 }
 
+.app-packager-app-packager-output a,
+.app-packager-app-packager-output a:link,
+.app-packager-app-packager-output a:visited
+{
+    text-decoration: none;
+    color: #86dfff;
+}
+
+.app-packager-app-packager-output a:hover
+{
+    color: #33c9ff;
+}
+
+.app-packager-app-packager-output a:active
+{
+    color: #00ffc3;
+}
+
 .app-packager-error-message {
     color: red;
 }

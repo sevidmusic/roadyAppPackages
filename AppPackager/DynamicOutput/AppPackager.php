@@ -205,6 +205,7 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
 
 
 <div class="app-packager-content">
+    <p><a href="/">Go Home</a></p>
     <h3>Welcome to the App Packager App</h3>
 
     <p>
