@@ -7,7 +7,7 @@
     --default-bg-color-compliment: #1d1309;
     --default-bg-color: #09131d;
     --default-font-family: monospace;
-    --default-font-size: 1.39rem;
+    --default-font-size: 1.29rem;
     --default-text-color: white;
     --h3-bg-color: #152c44;
     --h3-text-color: #f2f6fb;
@@ -18,14 +18,14 @@
     --link-visited-color: #b9ecff;
     --main-bg-gradient:
         linear-gradient(
-            35deg,
-            var(--default-bg-color) 25%,
-            transparent 25%
+            27deg,
+            var(--default-bg-color) 12%,
+            transparent 23%
         ),
         linear-gradient(
-            -17deg,
-            var(--default-bg-color-compliment) 25%,
-            transparent 25%
+            -27deg,
+            var(--default-bg-color-compliment) 12%,
+            transparent 23%
         )
     ;
     --main-bg-image: url("https://roadymedia.us-east-1.linodeobjects.com/roadyLogo.png");
@@ -45,14 +45,14 @@ body {
     background-color: var(--body-bg-color);
     background-image: var(--main-bg-image);
     background-repeat: round;
-    background-size: 0.3rem 120rem;
+    background-size: 0.47rem 470rem;
 }
 
 .rr-docs-code {
     background: var(--default-bg-color);
     color: var(--code-text-color);
     padding: 0.127rem;
-    font-size: 1rem;
+    font-size: 0.97rem;
 }
 
 .rr-docs-code-ml {
@@ -118,9 +118,6 @@ body {
 }
 
 .rr-docs-container {
-    background-image: var(--main-bg-gradient);
-    background-position: var(--main-bg-position);
-    background-size: var(--main-bg-size);
     font-family: var(--default-font-family);
     opacity: 0.989;
     font-size: var(--default-font-size);

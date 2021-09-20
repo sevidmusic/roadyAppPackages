@@ -1,10 +1,9 @@
 
 .app-packager-app-packager-output-container {
     background: #140a09;
-    background-image: linear-gradient(45deg, #00bbff 25%, transparent 25%), linear-gradient(-45deg, #020203 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00bbff 75%), linear-gradient(-45deg, transparent 75%, #020203 75%);
-    background-position: 0 0, 0 10rem, 10rem -10rem, -10rem 0rem;
-    background-size: 10rem 10rem;
     padding: 1rem;
+    width: 50%;
+    margin: 0 auto;
 }
 
 /**
@@ -17,12 +16,12 @@
     font-family: monospace;
     font-size: 1.3rem;
     min-height: calc(100vh - 0px);
-    opacity: .93;
     overflow: auto;
-    position: sticky;
+    position: fixed;
     right: 0;
     top: 0;
     width: 100%;
+    z-index: 100000;
 }
 
 .app-packager-error-message {
@@ -52,9 +51,6 @@
     padding: 1rem;
 }
 
-.app-packager-app-selection-form {
-}
-
 .app-packager-select-form-label {
     color: #00bbff;
     padding-top: 1rem;
@@ -68,10 +64,16 @@
     font-size: .7rem;
     color: #00bbff;
     background-color: #020203;
-    border-radius: 0;
+    border-radius: 1rem 1rem 0 0;
     padding: .3rem;
     margin: .5rem auto;
     display: block;
+    padding: 0.5rem;
+}
+
+.app-packager-submit-button:hover, .app-packager-select-form:hover {
+    background-color: #09131d;
+    cursor: pointer;
 }
 
 .app-packager-make-file-preview {
