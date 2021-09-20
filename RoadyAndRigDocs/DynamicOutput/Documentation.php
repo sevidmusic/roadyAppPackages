@@ -171,6 +171,8 @@ $output = preg_replace(
         '#[Ss]ymphony#',
         /** Match Laravel */
         '#[Ll]aravel#',
+        /** Match composer */
+        '#[Cc]omposer#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -290,6 +292,8 @@ $output = preg_replace(
         '<a href="https://symfony.com">${0}</a>',
         /** Replace Laravel */
         '<a href="https://laravel.com">${0}</a>',
+        /** Replace composer */
+        '<a href="https://getcomposer.org">${0}</a>',
     ],
     implode(PHP_EOL, $lines)
 );

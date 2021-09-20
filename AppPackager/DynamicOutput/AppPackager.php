@@ -205,32 +205,60 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
 
 
 <div class="app-packager-content">
+    <p><a href="/">Go Home</a></p>
     <h3>Welcome to the App Packager App</h3>
 
     <p>
-        The App Pcakager can be used to create app packages from existing Roady
-        Apps that were built for the same domain the App Packager was built for.
+        The App Packager can be used to convert existing roady
+        Apps into roady App Packages.
     </p>
 
     <p>
-        App Packages can be used to save stripped down versions of an App that
-        can be re-made into Roady App via <code>`rig --make-app-package`</code>.
-    <p>
-
-    <p>
-        Instead of defining configuration files, App Packages define a single
-        make.sh script that can be used to re-make an actual Roady App.
+        To convert an App into an App Package, select it from the list
+        below, and click the Submit button.
     </p>
 
     <p>
-        App Packages also can provide any additional resources that may be needed
-        by the App, such as stylesheets, scripts, etc.
+        Note: The App to be converted must have been built for the domain
+        <?php
+            $parsedUrl = parse_url($currentRequest->getUrl());
+            $root = strstr(
+                $currentRequest->getUrl(),
+                (
+                    is_array($parsedUrl) && isset($parsedUrl['path'])
+                    ? $parsedUrl['path']
+                    : ''
+                ),
+                true
+            );
+            echo $root;
+        ?>
+        for the conversion to be successful.
     </p>
+
+    <p>
+        Note: The resulting App Package will be located at the
+        following path relative to the App Packager App's root
+        directory:
+    </p>
+    <p>
+        resources/AppPackages
+    </p>
+
+    <p>
+        For example, if roady is installed at ~/, then the new
+        App Packages will be located at:
+    </p>
+    <p>
+        ~/roady/Apps/AppPackager/resources/AppPackages
+    </p>
+
+
 </div>
 
 <form class="app-packager-app-selection-form" action="<?php echo $currentRequest->getUrl(); ?>" method="post">
 
-    <label class="app-packager-select-form-label" for="AppToPackSelector">Select an App to create an App Package from:</label><br/>
+    <label class="app-packager-select-form-label" for="AppToPackSelector">Select an App to convert into an App Package:</label><br/>
 
     <select id="AppToPackSelector" class="app-packager-select-form" name="AppToPack">
         <?php $generateAvailableAppSelectionOptions($appName); ?>
