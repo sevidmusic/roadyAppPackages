@@ -1,11 +1,4 @@
 
-.app-packager-app-packager-output-container {
-    background: #140a09;
-    padding: 1rem;
-    width: 50%;
-    margin: 0 auto;
-}
-
 /**
  * .app-packager-app-packager-output
  * Main container div for all AppPackager output.
@@ -14,14 +7,13 @@
     background: #020203;
     color: #00bbff;
     font-family: monospace;
-    font-size: 1.3rem;
-    min-height: calc(100vh - 0px);
-    overflow: auto;
     position: fixed;
-    right: 0;
-    top: 0;
-    width: 100%;
+    top: 0.5rem;
+    width: 99.3%;
     z-index: 100000;
+    font-size: 1.537rem;
+    overflow: auto;
+    height: 97%;
 }
 
 .app-packager-error-message {
@@ -47,7 +39,6 @@
     background: #030302;
     color: #afa79f;
     display: block;
-    font-size: .5rem;
     padding: 1rem;
 }
 
@@ -56,12 +47,10 @@
     padding-top: 1rem;
     display: block;
     margin: 0 auto;
-    font-size: 1rem;
 }
 
 .app-packager-submit-button, .app-packager-select-form {
     border: 1px solid #999;
-    font-size: .7rem;
     color: #00bbff;
     background-color: #020203;
     border-radius: 1rem 1rem 0 0;
@@ -74,22 +63,22 @@
 .app-packager-submit-button:hover, .app-packager-select-form:hover {
     background-color: #09131d;
     cursor: pointer;
+    color: #00ffc3;
 }
 
 .app-packager-make-file-preview {
-    color: #a79faf;
+    color: #00ffc3;
 }
 
 .app-packager-submit-button {
 }
 
 .makeFileOutput {
-    color: limegreen;
+    color: #00ffc3;
 }
 
 .app-packager-content {
     margin: 0 auto;
-    font-size: 0.9rem;
 }
 
 .app-packager-content p {
