@@ -172,7 +172,9 @@ $output = preg_replace(
         /** Match Laravel */
         '#[Ll]aravel#',
         /** Match composer */
-        '#[Cc]omposer#',
+        '#\s[Cc]omposer#',
+        /** Match Apps"> App</a>Packages */
+        '#Apps"[>](\s)?App[<]/a[>]Packages#',
     ],
     [
         /** Replace within ``` and ``` */
@@ -212,13 +214,13 @@ $output = preg_replace(
         /** Replace [Rr]equest(s?) */
         '<a href="index.php?request=Request">${0}</a>',
         /** Replace GlobalResponse(s?) */
-        '<a href="index.php?request=GlobalResponse">${0}</a>',
+        '<a href="index.php?request=GlobalResponses">${0}</a>',
         /** Replace [Rr]esponse(s?) */
-        '<a href="index.php?request=Response">${0}</a>',
+        '<a href="index.php?request=Responses">${0}</a>',
         /** Replace DynamicOutputComponent(s?) */
-        '<a href="index.php?request=DynamicOutputComponent">${0}</a>',
+        '<a href="index.php?request=DynamicOutputComponents">${0}</a>',
         /** Replace OutputComponent(s?) */
-        '<a href="index.php?request=OutputComponent">${0}</a>',
+        '<a href="index.php?request=OutputComponents">${0}</a>',
         /** Replace App(s?) */
         '<a href="index.php?request=Apps">${0}</a>',
         /** Replace roady */
@@ -265,7 +267,7 @@ $output = preg_replace(
         /** Replace --new-dynamic-output-component or new-dynamic-output-component */
         '<a href="index.php?request=new-dynamic-output-component">${0}</a>',
         /** Replace <a href="index.php?request=App"> App</a> Packages */
-        ' <a href="index.php?request=AppPackage">App Package</a>',
+        ' <a href="index.php?request=AppPackages">App Package</a>',
         /** Replace <a href="index.php?request=App"> App</a>[pP]ackager */
         ' <a href="https://github.com/sevidmusic/roadyAppPackages">AppPackager</a>',
         /** Replace getting(-\s)started */
@@ -294,6 +296,8 @@ $output = preg_replace(
         '<a href="https://laravel.com">${0}</a>',
         /** Replace composer */
         '<a href="https://getcomposer.org">${0}</a>',
+        /** Replace Apps"> App</a>Packages */
+        'AppPackages"> AppPackages</a>',
     ],
     implode(PHP_EOL, $lines)
 );
