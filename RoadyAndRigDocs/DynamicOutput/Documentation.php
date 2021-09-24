@@ -212,7 +212,7 @@ $output = preg_replace(
         /** Match rig */
         '><a href="index.php?request=rig">rig</a>',
         /** Replace [Rr]equest(s?) */
-        '<a href="index.php?request=Request">${0}</a>',
+        '<a href="index.php?request=Requests">${0}</a>',
         /** Replace GlobalResponse(s?) */
         '<a href="index.php?request=GlobalResponses">${0}</a>',
         /** Replace [Rr]esponse(s?) */
