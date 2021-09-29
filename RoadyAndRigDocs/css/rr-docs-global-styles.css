@@ -10,7 +10,7 @@
     --default-bg-color-analogous: #091d1d;
     --default-bg-color: #09131d;
     --default-font-family: monospace;
-    --default-font-size: 1rem;
+    --default-font-size: 1.17rem;
     --default-letter-spacing: 0.1032rem;
     --default-line-height: 2.399rem;
     --default-opacity: 0.964;
@@ -124,7 +124,7 @@ body {
 
 .rr-docs-container pre:hover {
     color: var(--default-text-color);
-    border-left: var(--default-border-width) solid white;
+    border-left: var(--default-border-width) solid var(--link-active-color);
     border-radius: var(--border-radius-value) 0 0 var(--border-radius-value);
     cursor: copy;
 }
@@ -237,7 +237,7 @@ body {
 }
 
 .rr-docs-tiny-msg {
-    font-size: 0.757rem;
+    font-size: 0.85rem;
     padding: 0.3rem;
     transition: background-image 5s;
     transition: color 3s;
