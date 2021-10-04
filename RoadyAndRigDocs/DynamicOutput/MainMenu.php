@@ -1,9 +1,9 @@
 <div class="rr-docs-container">
     <div class="rr-docs-output">
         <p class="rr-docs-plaintext rr-docs-tiny-msg">
-            <span class="rr-docs-warning">Warning:</span> The documentation is still being written,
-            some sections are incomplete, and some sections may
-            change.
+            <span class="rr-docs-warning">Warning:</span> 
+            The documentation is still being written, some sections 
+            are incomplete, and some sections may change.
         </p>
     </div>
 </div>
