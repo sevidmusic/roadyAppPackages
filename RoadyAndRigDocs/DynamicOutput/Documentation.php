@@ -54,7 +54,7 @@ if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
 /** Help File Output */
 $lines = explode(PHP_EOL, $helpFileOutput);
 foreach($lines as $key => $line) {
-    $lines[$key] = $line;
+    $lines[$key] = trim($line);
 }
 
 $output = preg_replace(
