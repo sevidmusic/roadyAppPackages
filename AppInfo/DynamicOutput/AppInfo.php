@@ -68,6 +68,13 @@ foreach (
             '<p>Container:</p>' .
             '<p>' . $factory->getContainer() . '</p>' .
             '</div>' .
+            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
+            '<p><a href="index.php?request=AppResponseInfo">Responses</a></p>' . 
+            '<p><a href="index.php?request=AppGlobalResponseInfo">GlobalResponses</a></p>' . 
+            '<p><a href="index.php?request=AppRequestInfo">Requests</a></p>' . 
+            '<p><a href="index.php?request=AppOutputComponentInfo">OutputComponents</a></p>' . 
+            '<p><a href="index.php?request=AppDynamicOutputComponentInfo">DynamicOutputComponents</a></p>' . 
+            '</div>' .
             '</div>';
     }
 }
