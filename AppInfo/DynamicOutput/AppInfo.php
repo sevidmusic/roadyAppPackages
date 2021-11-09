@@ -9,14 +9,35 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
 
-$appName = 'AppInfo';
+const APP_INFO_SPRINT = '
+<div class="roady-app-output-container">
+    <h1>%s</h1>
+    <p>Unique Id:</p>
+    <p>%s</p>
+    <p>Type:</p>
+    <p>%s</p>
+    <p>Location:</p>
+    <p>%s</p>
+    <p>Container:</p>
+    <p>%s</p>
+    <div>
+    <nav>
+        <p><a href="index.php?request=AppResponseInfo&appName=%s">Responses</a></p>
+        <p><a href="index.php?request=AppGlobalResponseInfo&appName=%s">GlobalResponses</a></p>
+        <p><a href="index.php?request=AppRequestInfo&appName=%s">Requests</a></p>
+        <p><a href="index.php?request=AppOutputComponentInfo&appName=%s">OutputComponents</a></p>
+        <p><a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">DynamicOutputComponents</a></p>
+    </nav>
+</div>
+';
+
 $currentRequest = new Request(
-        new Storable(
-                'CurrentRequest',
-                'AppInfoRequests',
-                'CurrentRequests'
-        ),
-        new Switchable()
+    new Storable(
+        'CurrentRequest',
+        'AppInfoRequests',
+        'CurrentRequests'
+    ),
+    new Switchable()
 );
 
 $componentCrud = new ComponentCrud(
@@ -37,7 +58,10 @@ $componentCrud = new ComponentCrud(
 );
 
 foreach (
-        $componentCrud->readAll(App::deriveAppLocationFromRequest($currentRequest), Factory::CONTAINER)
+        $componentCrud->readAll(
+            App::deriveAppLocationFromRequest($currentRequest),
+            Factory::CONTAINER
+        )
         as
         $factory
 ) {
@@ -48,33 +72,18 @@ foreach (
         /**
          * @var AppComponentsFactory $factory
          */
-        echo '<div style="color: white; background: black; font-family: monospace; padding: 2rem; margin-bottom: 2rem;">' .
-            '<div style="padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<h1>' . $factory->getName() . '</h1>' .
-            '</div>' .
-            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<p>Unique Id:</p>' .
-            '<p>' . $factory->getUniqueId() . '</p>' .
-            '</div>' .
-            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<p>Type:</p>' .
-            '<p>' . $factory->getType() . '</p>' .
-            '</div>' .
-            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<p>Location:</p>' .
-            '<p>' . $factory->getLocation() . '</p>' .
-            '</div>' .
-            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<p>Container:</p>' .
-            '<p>' . $factory->getContainer() . '</p>' .
-            '</div>' .
-            '<div style="border: 3px solid #b9ecff; border-radius: 2rem; padding: 0.5rem; margin: 2rem; overflow: auto;">' .
-            '<p><a href="index.php?request=AppResponseInfo">Responses</a></p>' . 
-            '<p><a href="index.php?request=AppGlobalResponseInfo">GlobalResponses</a></p>' . 
-            '<p><a href="index.php?request=AppRequestInfo">Requests</a></p>' . 
-            '<p><a href="index.php?request=AppOutputComponentInfo">OutputComponents</a></p>' . 
-            '<p><a href="index.php?request=AppDynamicOutputComponentInfo">DynamicOutputComponents</a></p>' . 
-            '</div>' .
-            '</div>';
+        echo sprintf(
+            APP_INFO_SPRINT,
+            $factory->getName(),
+            $factory->getUniqueId(),
+            $factory->getType(),
+            $factory->getLocation(),
+            $factory->getContainer(),
+            $factory->getName(),
+            $factory->getName(),
+            $factory->getName(),
+            $factory->getName(),
+            $factory->getName()
+        );
     }
 }
