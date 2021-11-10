@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
+.roady-app-output-container {
+    background: black;
+    color: white;
+    font-family: monospace;
+    width: 100%;
+    overflow: auto;
+}
+
+.roady-app-output-container p {
+    border-bottom: 2px solid purple;
+}

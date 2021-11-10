@@ -8,29 +8,22 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
+use roady\interfaces\component\Component;
 use roady\classes\component\Web\Routing\Response;
 
 const APP_INFO_SPRINT = '
-<div class="roady-app-output-container">
     <h1>%s</h1>
-    <p>Unique Id:</p>
-    <p>%s</p>
-    <p>Type:</p>
-    <p>%s</p>
-    <p>Location:</p>
-    <p>%s</p>
-    <p>Container:</p>
-    <p>%s</p>
-    <p>Position</p>
-    <p>%s</p>
-    <div>
+    <p>Unique Id: %s</p>
+    <p>Type: %s</p>
+    <p>Location: %s</p>
+    <p>Container: %s</p>
+    <p>Position: %s</p>
     <nav>
         <a href="index.php?request=ResponseRequestInfo&appName=%s&responseName=%s">Requests</a>
         <a href="index.php?request=ResponseOutputComponentInfo&appName=%s&responseName=%s">OutputComponents</a>
         <a href="index.php?request=ResponseDynamicOutputComponentInfo&appName=%s&responseName=%s">DynamicOutputComponents</a>
     </nav>
-</div>
-<div style="margin-top: 2rem; border-bottom: .3rem double black;"></div>
+    <div style="margin-top: 2rem; border-bottom: .3rem double black;"></div>
 ';
 
 $currentRequest = new Request(
@@ -59,6 +52,9 @@ $componentCrud = new ComponentCrud(
     )
 );
 
+/**
+ * @var AppComponentsFactory 
+ */
 $factory = $componentCrud->readByNameAndType(
     ($currentRequest->getGet()['appName'] ?? 'roady'),
     AppComponentsFactory::class,
@@ -68,14 +64,12 @@ $factory = $componentCrud->readByNameAndType(
 
 $responseInfo = [];
 
-/**
- * @var Factory $factory
- */
 if($factory->getType() === AppComponentsFactory::class) {
-    /**
-     * @var AppComponentsFactory $factory
-     */
-    foreach ($factory->getStoredComponentRegistry()->getRegisteredComponents() as $registeredComponent) {
+    foreach (
+        $factory->getStoredComponentRegistry()->getRegisteredComponents() 
+        as 
+        $registeredComponent
+    ) {
         if($registeredComponent->getType() === Response::class) {
             /**
              * @var Response $registeredComponent
@@ -102,10 +96,15 @@ if($factory->getType() === AppComponentsFactory::class) {
     }
 }
 
-echo (
+$appInfoOutput = '<h1>Response configured for the ' . 
+    ($currentRequest->getGet()['appName'] ?? 'roady') . 
+    ' app</h1>' . 
+    implode(PHP_EOL, $responseInfo);
+
+echo '<div class="roady-app-output-container">' . (
     empty($responseInfo)
         ? '<p>There are no Responses configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
-        : implode(PHP_EOL, $responseInfo)
-);
+        : $appInfoOutput
+) . '</div>';

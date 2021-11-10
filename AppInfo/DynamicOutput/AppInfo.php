@@ -58,6 +58,8 @@ $componentCrud = new ComponentCrud(
     )
 );
 
+$appInfo = [];
+
 foreach (
         $componentCrud->readAll(
             App::deriveAppLocationFromRequest($currentRequest),
@@ -69,22 +71,37 @@ foreach (
     /**
      * @var Factory $factory
      */
-    if($factory->getType() === AppComponentsFactory::class) {
+    if(
+        $factory->getType() === AppComponentsFactory::class
+        &&
+        $factory->getApp()->getName() !== 'roady'
+    ) {
         /**
          * @var AppComponentsFactory $factory
          */
-        echo sprintf(
-            APP_INFO_SPRINT,
-            $factory->getApp()->getName(),
-            $factory->getApp()->getUniqueId(),
-            $factory->getApp()->getType(),
-            $factory->getApp()->getLocation(),
-            $factory->getApp()->getContainer(),
-            $factory->getApp()->getName(),
-            $factory->getApp()->getName(),
-            $factory->getApp()->getName(),
-            $factory->getApp()->getName(),
-            $factory->getApp()->getName()
+        array_push(
+            $appInfo,
+            sprintf(
+                APP_INFO_SPRINT,
+                $factory->getApp()->getName(),
+                $factory->getApp()->getUniqueId(),
+                $factory->getApp()->getType(),
+                $factory->getApp()->getLocation(),
+                $factory->getApp()->getContainer(),
+                $factory->getApp()->getName(),
+                $factory->getApp()->getName(),
+                $factory->getApp()->getName(),
+                $factory->getApp()->getName(),
+                $factory->getApp()->getName()
+            )
         );
     }
 }
+
+echo (
+    empty($appInfo)
+        ? '<p>There are no Apps running on ' .
+           $currentRequest->getUrl() .
+           ' app</p>'
+        : implode(PHP_EOL, $appInfo)
+);
