@@ -22,13 +22,14 @@ const APP_INFO_SPRINT = '
     <p>%s</p>
     <div>
     <nav>
-        <p><a href="index.php?request=AppResponseInfo&appName=%s">Responses</a></p>
-        <p><a href="index.php?request=AppGlobalResponseInfo&appName=%s">GlobalResponses</a></p>
-        <p><a href="index.php?request=AppRequestInfo&appName=%s">Requests</a></p>
-        <p><a href="index.php?request=AppOutputComponentInfo&appName=%s">OutputComponents</a></p>
-        <p><a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">DynamicOutputComponents</a></p>
+        <a href="index.php?request=AppResponseInfo&appName=%s">Responses</a>
+        <a href="index.php?request=AppGlobalResponseInfo&appName=%s">GlobalResponses</a>
+        <a href="index.php?request=AppRequestInfo&appName=%s">Requests</a>
+        <a href="index.php?request=AppOutputComponentInfo&appName=%s">OutputComponents</a>
+        <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">DynamicOutputComponents</a>
     </nav>
 </div>
+<div style="margin-top: 2rem; border-bottom: .3rem double black;"></div>
 ';
 
 $currentRequest = new Request(
@@ -74,16 +75,16 @@ foreach (
          */
         echo sprintf(
             APP_INFO_SPRINT,
-            $factory->getName(),
-            $factory->getUniqueId(),
-            $factory->getType(),
-            $factory->getLocation(),
-            $factory->getContainer(),
-            $factory->getName(),
-            $factory->getName(),
-            $factory->getName(),
-            $factory->getName(),
-            $factory->getName()
+            $factory->getApp()->getName(),
+            $factory->getApp()->getUniqueId(),
+            $factory->getApp()->getType(),
+            $factory->getApp()->getLocation(),
+            $factory->getApp()->getContainer(),
+            $factory->getApp()->getName(),
+            $factory->getApp()->getName(),
+            $factory->getApp()->getName(),
+            $factory->getApp()->getName(),
+            $factory->getApp()->getName()
         );
     }
 }
