@@ -21,13 +21,13 @@ const APP_INFO_SPRINT = '
     <p>%s</p>
     <p>Container:</p>
     <p>%s</p>
+    <p>Position</p>
+    <p>%s</p>
     <div>
     <nav>
-        <a href="index.php?request=AppResponseInfo&appName=%s">Responses</a>
-        <a href="index.php?request=AppGlobalResponseInfo&appName=%s">GlobalResponses</a>
-        <a href="index.php?request=AppRequestInfo&appName=%s">Requests</a>
-        <a href="index.php?request=AppOutputComponentInfo&appName=%s">OutputComponents</a>
-        <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">DynamicOutputComponents</a>
+        <a href="index.php?request=ResponseRequestInfo&appName=%s&responseName=%s">Requests</a>
+        <a href="index.php?request=ResponseOutputComponentInfo&appName=%s&responseName=%s">OutputComponents</a>
+        <a href="index.php?request=ResponseDynamicOutputComponentInfo&appName=%s&responseName=%s">DynamicOutputComponents</a>
     </nav>
 </div>
 <div style="margin-top: 2rem; border-bottom: .3rem double black;"></div>
@@ -66,6 +66,8 @@ $factory = $componentCrud->readByNameAndType(
     Factory::CONTAINER
 );
 
+$responseInfo = [];
+
 /**
  * @var Factory $factory
  */
@@ -75,19 +77,35 @@ if($factory->getType() === AppComponentsFactory::class) {
      */
     foreach ($factory->getStoredComponentRegistry()->getRegisteredComponents() as $registeredComponent) {
         if($registeredComponent->getType() === Response::class) {
-            echo sprintf(
-                APP_INFO_SPRINT,
-                $registeredComponent->getName(),
-                $registeredComponent->getUniqueId(),
-                $registeredComponent->getType(),
-                $registeredComponent->getLocation(),
-                $registeredComponent->getContainer(),
-                $registeredComponent->getName(),
-                $registeredComponent->getName(),
-                $registeredComponent->getName(),
-                $registeredComponent->getName(),
-                $registeredComponent->getName()
+            /**
+             * @var Response $registeredComponent
+             */
+            array_push(
+                $responseInfo,
+                sprintf(
+                    APP_INFO_SPRINT,
+                    $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getType(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
+                    $registeredComponent->getPosition(),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName(),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName(),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName()
+                )
             );
         }
     }
 }
+
+echo (
+    empty($responseInfo)
+        ? '<p>There are no Responses configured for the ' .
+           ($currentRequest->getGet()['appName'] ?? 'roady') .
+           ' app</p>'
+        : implode(PHP_EOL, $responseInfo)
+);
