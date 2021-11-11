@@ -12,10 +12,23 @@ use roady\classes\component\Web\Routing\Response;
 
 /** Vars and Constants */
 
-const OUTPUT_CONTAINER_SPRINT = '<div class="roady-app-output-container">%s</div>';
-const RESPONDS_TO_SPRINT='<h3>Responds to:</h3><nav>%s</nav>';
-const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
-const QUERY_STRING_SPRINT = "&appName=%s&responseName=%s";
+const OUTPUT_CONTAINER_SPRINT = '
+    <div class="roady-app-output-container">%s</div>
+';
+const RESPONDS_TO_SPRINT='
+    <p>
+        <span class="roady-name-value-name">
+            Responds to:    
+        </span>
+    </p>
+    <nav>%s</nav>
+';
+const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
+const QUERY_STRING_SPRINT = 'appName=%s&responseName=%s';
+const ASSIGNED_COMPONENT_INFO_LINKS = '
+    <h1>Responses configured for the %s app:</h1>
+    %s
+';
 const RESPONSE_INFO_SPRINT = '
     <h2>%s</h2>
     <p>
@@ -38,13 +51,19 @@ const RESPONSE_INFO_SPRINT = '
         <span class="roady-name-value-name">Position</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <h3>Component Info</h3>
+    <!-- Start Responds To: -->
+    %s
+    <!-- End Responds To: -->
+    <p>
+        <span class="roady-name-value-name">
+            Assigned Components:
+        </span>
+    </p>
     <nav>
         <a href="index.php?request=ResponseRequestInfo' . QUERY_STRING_SPRINT . '">Requests</a>
         <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
         <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
-    %s
 ';
 
 $currentRequest = new Request(
@@ -138,12 +157,6 @@ if($factory->getType() === AppComponentsFactory::class) {
                     $registeredComponent->getLocation(),
                     $registeredComponent->getContainer(),
                     $registeredComponent->getPosition(),
-                    ($currentRequest->getGet()['appName'] ?? 'roady'),
-                    $registeredComponent->getName(),
-                    ($currentRequest->getGet()['appName'] ?? 'roady'),
-                    $registeredComponent->getName(),
-                    ($currentRequest->getGet()['appName'] ?? 'roady'),
-                    $registeredComponent->getName(),
                     sprintf(
                         RESPONDS_TO_SPRINT,
                         implode(
@@ -153,7 +166,13 @@ if($factory->getType() === AppComponentsFactory::class) {
                                 $componentCrud
                             )
                         )
-                    )
+                    ),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName(),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName(),
+                    ($currentRequest->getGet()['appName'] ?? 'roady'),
+                    $registeredComponent->getName(),
                 ),
             );
         }
@@ -161,7 +180,7 @@ if($factory->getType() === AppComponentsFactory::class) {
 }
 
 $appInfoOutput = sprintf(
-    "<h1>Response configured for the %s app:</h1>%s",
+    ASSIGNED_COMPONENT_INFO_LINKS,
     $currentRequest->getGet()['appName'] ?? 'roady',
     implode(PHP_EOL, $responseInfo)
 );

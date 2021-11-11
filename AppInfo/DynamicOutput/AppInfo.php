@@ -15,11 +15,25 @@ const OUTPUT_CONTAINER_SPRINT = '<div class="roady-app-output-container">%s</div
 const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
     <h2>%s</h2>
-    <p>Unique Id: %s</p>
-    <p>Type: %s</p>
-    <p>Location: %s</p>
-    <p>Container: %s</p>
-    <h3>Component Information</h3>
+    <p>
+        <span class="roady-name-value-name">Unique Id:</span>
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Type</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Location</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Container</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Configured Components:</span>
+    </p>
     <nav>
         <a href="index.php?request=AppResponseInfo&appName=%s">
             Responses
