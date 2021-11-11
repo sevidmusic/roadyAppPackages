@@ -9,6 +9,10 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
 
+/** Constants & Vars */
+
+const OUTPUT_CONTAINER_SPRINT = '<div class="roady-app-output-container">%s</div>';
+const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
     <h2>%s</h2>
     <p>Unique Id: %s</p>
@@ -17,11 +21,21 @@ const APP_INFO_SPRINT = '
     <p>Container: %s</p>
     <h3>Component Information</h3>
     <nav>
-        <a href="index.php?request=AppResponseInfo&appName=%s">Responses</a>
-        <a href="index.php?request=AppGlobalResponseInfo&appName=%s">GlobalResponses</a>
-        <a href="index.php?request=AppRequestInfo&appName=%s">Requests</a>
-        <a href="index.php?request=AppOutputComponentInfo&appName=%s">OutputComponents</a>
-        <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">DynamicOutputComponents</a>
+        <a href="index.php?request=AppResponseInfo&appName=%s">
+            Responses
+        </a>
+        <a href="index.php?request=AppGlobalResponseInfo&appName=%s">
+            GlobalResponses
+        </a>
+        <a href="index.php?request=AppRequestInfo&appName=%s">
+            Requests
+        </a>
+        <a href="index.php?request=AppOutputComponentInfo&appName=%s">
+            OutputComponents
+        </a>
+        <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">
+            DynamicOutputComponents
+        </a>
     </nav>
     <div style="border-bottom: .3rem double purple; margin-top: 1rem; margin-bottom: 2rem;"></div>
 ';
@@ -33,6 +47,18 @@ $currentRequest = new Request(
         'CurrentRequests'
     ),
     new Switchable()
+);
+
+$parsedDomain = parse_url($currentRequest->getUrl(), PHP_URL_SCHEME) . 
+    '://' .
+    parse_url($currentRequest->getUrl(), PHP_URL_HOST) .
+    ':' . parse_url($currentRequest->getUrl(), PHP_URL_PORT) . 
+    '/';
+
+$domain = sprintf(
+    REQUEST_LINK_SPRINT,
+    $parsedDomain,
+    $parsedDomain
 );
 
 $componentCrud = new ComponentCrud(
@@ -53,6 +79,8 @@ $componentCrud = new ComponentCrud(
 );
 
 $appInfo = [];
+
+/** Logic */
 
 foreach (
         $componentCrud->readAll(
@@ -92,10 +120,13 @@ foreach (
     }
 }
 
-echo '<div class="roady-app-output-container">' . (
+printf(
+    OUTPUT_CONTAINER_SPRINT,
+    (
     empty($appInfo)
-        ? '<h1>There are no Apps running.</h1>'
-        : '<h1>The following Apps are running:</h1>' . 
+        ? '<h1>There are no Apps running ' . $domain . '.</h1>'
+        : '<h1>The following Apps are running on ' . $domain . ':</h1>' . 
         implode(PHP_EOL, $appInfo)
-    ) .
-    '</div>';
+    )
+);
+
