@@ -8,8 +8,34 @@
     font-family: monospace;
     width: 100%;
     overflow: auto;
+    padding: 1rem;
 }
 
 .roady-app-output-container p {
+    padding-bottom: 0.5rem;
     border-bottom: 2px solid purple;
+}
+
+.roady-app-output-container a, 
+.roady-app-output-container a:link, 
+.roady-app-output-container a:visited {
+    color: lightblue;
+    text-decoration: none;
+    line-height: 2rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
+
+.roady-app-output-container a:hover {
+    color: seagreen;
+    border-right: 2px solid purple;
+    border-left: 2px solid purple;
+}
+
+.roady-app-output-container a:active {
+    color: orange;
+}
+
+.roady-app-output-container h1 {
+    color: limegreen;
 }
