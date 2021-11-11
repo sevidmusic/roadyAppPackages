@@ -61,3 +61,10 @@
     margin-top: 1rem; 
     margin-bottom: 2rem;
 }
+
+.roady-note-container {
+    font-size: 0.7rem;
+    color: var(--color-triadic-1);
+    background: #222233;
+    padding: 0.1rem 0.5rem;
+}

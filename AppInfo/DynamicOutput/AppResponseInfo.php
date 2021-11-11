@@ -25,9 +25,11 @@ const RESPONDS_TO_SPRINT='
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const QUERY_STRING_SPRINT = 'appName=%s&responseName=%s';
-const ASSIGNED_COMPONENT_INFO_LINKS = '
-    <h1>Responses configured for the %s app:</h1>
+const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
+    <h1>Responses configured by the %s app:</h1>
+    <!-- Start RESPONSE_INFO_SPRINT output -->
     %s
+    <!-- End RESPONSE_INFO_SPRINT output -->
 ';
 const RESPONSE_INFO_SPRINT = '
     <h2>%s</h2>
@@ -181,7 +183,7 @@ if($factory->getType() === AppComponentsFactory::class) {
 }
 
 $appInfoOutput = sprintf(
-    ASSIGNED_COMPONENT_INFO_LINKS,
+    APPS_ASSIGNED_RESPONSE_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
     implode(PHP_EOL, $responseInfo)
 );

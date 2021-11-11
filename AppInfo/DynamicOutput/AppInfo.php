@@ -32,7 +32,9 @@ const APP_INFO_SPRINT = '
         <span class="roady-name-value-value"> %s</span>
     </p>
     <p>
-        <span class="roady-name-value-name">Configured Components:</span>
+        <span class="roady-name-value-name">
+            Configured Components:
+        </span>
     </p>
     <nav>
         <a href="index.php?request=AppResponseInfo&appName=%s">
@@ -63,7 +65,9 @@ $currentRequest = new Request(
     new Switchable()
 );
 
-$parsedDomain = parse_url($currentRequest->getUrl(), PHP_URL_SCHEME) . 
+$parsedDomain = parse_url(
+        $currentRequest->getUrl(), PHP_URL_SCHEME
+    ) . 
     '://' .
     parse_url($currentRequest->getUrl(), PHP_URL_HOST) .
     ':' . parse_url($currentRequest->getUrl(), PHP_URL_PORT) . 
@@ -139,8 +143,8 @@ printf(
     (
     empty($appInfo)
         ? '<h1>There are no Apps running ' . $domain . '.</h1>'
-        : '<h1>The following Apps are running on ' . $domain . ':</h1>' . 
-        implode(PHP_EOL, $appInfo)
+        : '<h1>The following Apps are running on ' . 
+        $domain . ':</h1>' . PHP_EOL .implode(PHP_EOL, $appInfo)
     )
 );
 
