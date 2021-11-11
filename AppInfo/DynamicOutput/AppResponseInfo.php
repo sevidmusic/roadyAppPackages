@@ -8,23 +8,40 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
-use roady\interfaces\component\Component;
 use roady\classes\component\Web\Routing\Response;
 
+const QUERY_STRING_SPRINT = "&appName=%s&responseName=%s";
 const RESPONSE_INFO_SPRINT = '
     <h2>%s</h2>
-    <p>Unique Id: %s</p>
-    <p>Type: %s</p>
-    <p>Location: %s</p>
-    <p>Container: %s</p>
-    <p>Position: %s</p>
+    <p>
+        <span class="roady-name-value-name">Unique Id:</span>
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Type</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Location</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Container</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Position</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
     <h3>Component Info</h3>
     <nav>
-        <a href="index.php?request=ResponseRequestInfo&appName=%s&responseName=%s">Requests</a>
-        <a href="index.php?request=ResponseOutputComponentInfo&appName=%s&responseName=%s">OutputComponents</a>
-        <a href="index.php?request=ResponseDynamicOutputComponentInfo&appName=%s&responseName=%s">DynamicOutputComponents</a>
+        <a href="index.php?request=ResponseRequestInfo' . QUERY_STRING_SPRINT . '">Requests</a>
+        <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
+        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
 ';
+
+const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 
 $currentRequest = new Request(
     new Storable(
@@ -66,10 +83,13 @@ $responseRequestUrls = [];
 
 $responseInfo = [];
 
+/**
+ * @var AppComponentsFactory $factory
+ */
 if($factory->getType() === AppComponentsFactory::class) {
     foreach (
-        $factory->getStoredComponentRegistry()->getRegisteredComponents() 
-        as 
+        $factory->getStoredComponentRegistry()->getRegisteredComponents()
+        as
         $registeredComponent
     ) {
         if($registeredComponent->getType() === Response::class) {
@@ -96,30 +116,41 @@ if($factory->getType() === AppComponentsFactory::class) {
             ); 
             array_push(
                 $responseInfo, 
-                '<div style="border-bottom: 3px solid purple;"></div><h3>Responds to:</h3><nav>'
+                '<h3>Responds to:</h3>',
+                '<nav>'
             );
             foreach(
                 $registeredComponent->getRequestStorageInfo() 
                 as 
-                $requestStorageInfo) 
+                $requestStorageInfo
+            )
             {
-                $url = $componentCrud->read($requestStorageInfo)->getUrl();
+                /**
+                 * @var Request $request
+                 */
+                $request = $componentCrud->read($requestStorageInfo);
                 array_push(
-                    $responseInfo, 
-                    '<a href="' . $url . '">' .
-                    $url .
-                    '</a>'
+                    $responseInfo,
+                    sprintf(
+                        REQUEST_LINK_SPRINT,
+                        $request->getUrl(),
+                        $request->getUrl()
+                    )
                 );
             }
-            array_push($responseInfo, '</nav><div style="border-bottom: 0.3rem double limegreen; margin-top: 1rem; margin-bottom: 3rem;"></div>');
+            array_push(
+                $responseInfo,
+                '</nav>'
+            );
         }
     }
 }
 
-$appInfoOutput = '<h1>Response configured for the ' . 
-    ($currentRequest->getGet()['appName'] ?? 'roady') . 
-    ' app:</h1>' . 
-    implode(PHP_EOL, $responseInfo);
+$appInfoOutput = sprintf(
+    "<h1>Response configured for the %s app:</h1>%s",
+    $currentRequest->getGet()['appName'] ?? 'roady',
+    implode(PHP_EOL, $responseInfo)
+);
 
 echo '<div class="roady-app-output-container">' . (
     empty($responseInfo)

@@ -1,41 +1,57 @@
+:root {
+    --color-main: #07c2ff;
+    --color-complimentary: #ff4407;
+    --color-monochromatic: #009fd3;
+    --color-analogous-3: #07ffc0;
+    --color-analogous-2: #0746ff;
+    --color-triadic-1: #ff07c2;
+    --color-triadic-2: #c2ff07;
+}
+
 * {
     box-sizing: border-box;
 }
 
 .roady-app-output-container {
-    background: black;
-    color: white;
+    background: #020211;
+    color: var(--color-main);
     font-family: monospace;
     width: 100%;
     overflow: auto;
     padding: 1rem;
 }
 
-.roady-app-output-container p {
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid purple;
+.roady-app-output-container h1, h2, h3, h4, h5, h6 {
+    color: white;
 }
 
 .roady-app-output-container a, 
 .roady-app-output-container a:link, 
 .roady-app-output-container a:visited {
-    color: lightblue;
+    color: var(--color-analogous-2);
     text-decoration: none;
     line-height: 2rem;
     padding-left: 0.3rem;
     padding-right: 0.3rem;
+    text-align: center;
 }
 
 .roady-app-output-container a:hover {
-    color: seagreen;
-    border-right: 2px solid purple;
-    border-left: 2px solid purple;
+    color: var(--color-main);
+    border-right: 2px solid var(--color-complimentary);
+    border-left: 2px solid var(--color-complimentary);
+    padding-left: 0.187rem;
+    padding-right: 0.187rem;
 }
 
 .roady-app-output-container a:active {
-    color: orange;
+    color: var(--color-complimentary);
 }
 
-.roady-app-output-container h1 {
-    color: limegreen;
+.roady-name-value-name {
+    color: var(--color-monochromatic);
+}
+
+.roady-name-value-value {
+    color: var(--color-analogous-3);
 }
