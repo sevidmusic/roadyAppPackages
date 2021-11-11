@@ -55,3 +55,9 @@
 .roady-name-value-value {
     color: var(--color-analogous-3);
 }
+
+.roady-content-seperator {
+    border-bottom: .3rem double purple; 
+    margin-top: 1rem; 
+    margin-bottom: 2rem;
+}

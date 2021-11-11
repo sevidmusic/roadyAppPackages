@@ -51,7 +51,7 @@ const APP_INFO_SPRINT = '
             DynamicOutputComponents
         </a>
     </nav>
-    <div style="border-bottom: .3rem double purple; margin-top: 1rem; margin-bottom: 2rem;"></div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
