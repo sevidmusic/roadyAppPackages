@@ -21,6 +21,12 @@ const RESPONDS_TO_SPRINT='
             Responds to:    
         </span>
     </p>
+    <div class="roady-note-container">
+        <p>
+            Note: The following urls are associated with the 
+            Requests assigned to this Response.
+        </p>
+    </div>
     <nav>%s</nav>
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';

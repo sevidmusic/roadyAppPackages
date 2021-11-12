@@ -24,8 +24,10 @@ const RESPONDS_TO_SPRINT='
     </p>
     <div class="roady-note-container">
         <p>
-            Note: GlobalResponses respond to all Requests,
-            but may still be assigned specific Requests.
+            Note: GlobalResponses will respond to all Requests,
+            but may still be assigned specific Requests. The
+            following urls are associated with the Requests 
+            assigned to this GlobalResponse.
         </p>
     </div>
     <nav>%s</nav>

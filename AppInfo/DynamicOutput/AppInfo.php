@@ -11,7 +11,9 @@ use roady\interfaces\component\Factory\Factory;
 
 /** Constants & Vars */
 
-const OUTPUT_CONTAINER_SPRINT = '<div class="roady-app-output-container">%s</div>';
+const OUTPUT_CONTAINER_SPRINT = '
+    <div class="roady-app-output-container">%s</div>
+';
 const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
     <h2>%s</h2>
