@@ -1,15 +1,11 @@
 <?php
 
-use roady\classes\component\Factory\App\AppComponentsFactory;
-use roady\classes\component\Web\App;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
-use roady\interfaces\component\Factory\Factory;
 use roady\classes\component\Web\Routing\Response;
-use roady\classes\component\Web\Routing\GlobalResponse;
 
 /** Vars and Constants */
 
@@ -45,7 +41,7 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">Url</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

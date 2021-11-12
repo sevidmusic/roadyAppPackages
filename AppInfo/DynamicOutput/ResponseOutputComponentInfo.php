@@ -1,13 +1,11 @@
 <?php
 
-use roady\classes\component\Factory\App\AppComponentsFactory;
-use roady\classes\component\Web\App;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
-use roady\interfaces\component\Factory\Factory;
+use roady\classes\component\Web\Routing\Response;
 use roady\classes\component\OutputComponent;
 
 /** Vars and Constants */
@@ -16,8 +14,8 @@ const OUTPUT_PREVIEW_SPRINT = '<div class="roady-output-preview">%s</div>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
-const APPS_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h1>OutputComponents configured by the %s app:</h1>
+const RESPONSES_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
+    <h1>OutputComponents assigned to the %s app\'s %s Response:</h1>
     <!-- Start OUTPUT_COMPONENT_INFO_SPRINT output -->
     %s
     <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->
@@ -84,73 +82,63 @@ $componentCrud = new ComponentCrud(
 );
 
 /**
- * @var AppComponentsFactory 
+ * @var Response $response
  */
-$factory = $componentCrud->readByNameAndType(
-    ($currentRequest->getGet()['appName'] ?? 'roady'),
-    AppComponentsFactory::class,
-    App::deriveAppLocationFromRequest($currentRequest),
-    Factory::CONTAINER
+$response = $componentCrud->readByNameAndType(
+    ($currentRequest->getGet()['responseName'] ?? 'unknown'),
+    Response::class,
+    ($currentRequest->getGet()['responseLocation'] ?? 'unknown'),
+    ($currentRequest->getGet()['responseContainer'] ?? 'unknown'),
 );
 
-$responseRequestUrls = [];
-
-$responseInfo = [];
-
-/** Logic */
-
-/**
- * @var AppComponentsFactory $factory
- */
-if($factory->getType() === AppComponentsFactory::class) {
-    foreach (
-        $factory->getStoredComponentRegistry()->getRegisteredComponents()
-        as
-        $registeredComponent
-    ) {
-        /**
-         * @var OutputComponent $registeredComponent
-         */
-        if($registeredComponent->getType() === OutputComponent::class) {
-            array_push(
-                $responseInfo,
-                sprintf(
-                    OUTPUT_COMPONENT_INFO_SPRINT,
-                    $registeredComponent->getName(),
-                    $registeredComponent->getUniqueId(),
-                    $registeredComponent->getType(),
-                    $registeredComponent->getLocation(),
-                    $registeredComponent->getContainer(),
-                    $registeredComponent->getPosition(),
-                    (
-                        $registeredComponent->getState() === true
-                        ? 'true'
-                        : 'false'
-                    ),
-                    sprintf(
-                        OUTPUT_PREVIEW_SPRINT,
-                        $registeredComponent->getOutput()
-                    ),
+$requestInfo = [];
+foreach($response->getOutputComponentStorageInfo() as $requestStorable) {
+    /**
+     * @var OutputComponent $request
+     */
+    $request = $componentCrud->read($requestStorable);
+    if($request->getType() === OutputComponent::class) {
+        array_push(
+            $requestInfo,
+            sprintf(
+                OUTPUT_COMPONENT_INFO_SPRINT,
+                $request->getName(),
+                $request->getUniqueId(),
+                $request->getType(),
+                $request->getLocation(),
+                $request->getContainer(),
+                $request->getPosition(),
+                (
+                    $request->getState() === true
+                    ? 'true'
+                    : 'false'
                 ),
-            );
-        }
+                sprintf(
+                    OUTPUT_PREVIEW_SPRINT,
+                    $request->getOutput()
+                ),
+            ),
+        );
     }
 }
 
-$appInfoOutput = sprintf(
-    APPS_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT,
-    $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
-);
 
+$appInfoOutput = sprintf(
+    RESPONSES_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT,
+    $currentRequest->getGet()['appName'] ?? 'unknown',
+    $currentRequest->getGet()['responseName'] ?? 'unknown',
+    implode(PHP_EOL, $requestInfo)
+);
 
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
-        ? '<p>There are no OutputComponents configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
+    empty($requestInfo)
+        ? '<p>There are no Requests assigned to the ' .
+           ($currentRequest->getGet()['appName'] ?? 'unknown') .
+           ' app\'s ' .
+           ($currentRequest->getGet()['responseName'] ?? 'unknown') .
+           ' Response</p>'
         : $appInfoOutput
     )
 );

@@ -73,7 +73,7 @@ const RESPONSE_INFO_SPRINT = '
         <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
         <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

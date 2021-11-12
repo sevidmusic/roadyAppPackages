@@ -8,14 +8,10 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
-use roady\classes\component\Web\Routing\Response;
-use roady\classes\component\Web\Routing\GlobalResponse;
-use roady\classes\component\OutputComponent;
 use roady\classes\component\DynamicOutputComponent;
 
 /** Vars and Constants */
 
-const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
@@ -55,7 +51,7 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">DynamicOutput file:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

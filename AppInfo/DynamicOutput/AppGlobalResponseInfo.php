@@ -8,7 +8,6 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
-use roady\classes\component\Web\Routing\Response;
 use roady\classes\component\Web\Routing\GlobalResponse;
 
 /** Vars and Constants */
@@ -75,7 +74,7 @@ const RESPONSE_INFO_SPRINT = '
         <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
         <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

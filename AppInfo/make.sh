@@ -20,6 +20,8 @@ rig --new-response --for-app 'AppInfo' --name 'AppResponseInfo' --position '0'
 
 rig --new-global-response --for-app 'AppInfo' --name 'MainMenu' --position '0'
 
+rig --new-response --for-app 'AppInfo' --name 'ResponseOutputComponentInfo' --position '0'
+
 rig --new-response --for-app 'AppInfo' --name 'ResponseRequestInfo' --position '0'
 
 rig --new-request --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --relative-url 'index.php?request=AppDynamicOutputComponentInfo' --container 'AppInfoRequests'
@@ -36,6 +38,8 @@ rig --new-request --for-app 'AppInfo' --name 'AppResponseInfo' --relative-url 'i
 
 rig --new-request --for-app 'AppInfo' --name 'MainMenu' --relative-url 'index.php?request=MainMenu' --container 'AppInfoRequests'
 
+rig --new-request --for-app 'AppInfo' --name 'ResponseOutputComponentInfo' --relative-url 'index.php?request=ResponseOutputComponentInfo' --container 'AppInfoRequests'
+
 rig --new-request --for-app 'AppInfo' --name 'ResponseRequestInfo' --relative-url 'index.php?request=ResponseRequestInfo' --container 'AppInfoRequests'
 
 rig --new-dynamic-output-component --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --container 'AppInfoDynamicOutput' --position '0' 
@@ -51,6 +55,8 @@ rig --new-dynamic-output-component --for-app 'AppInfo' --name 'AppRequestInfo' -
 rig --new-dynamic-output-component --for-app 'AppInfo' --name 'AppResponseInfo' --container 'AppInfoDynamicOutput' --position '0' 
 
 rig --new-dynamic-output-component --for-app 'AppInfo' --name 'MainMenu' --container 'AppInfoDynamicOutput' --position '0' 
+
+rig --new-dynamic-output-component --for-app 'AppInfo' --name 'ResponseOutputComponentInfo' --container 'AppInfoDynamicOutput' --position '0' 
 
 rig --new-dynamic-output-component --for-app 'AppInfo' --name 'ResponseRequestInfo' --container 'AppInfoDynamicOutput' --position '0' 
 
@@ -79,6 +85,10 @@ rig --assign-to-response --for-app 'AppInfo' --response 'AppResponseInfo' --requ
 rig --assign-to-response --for-app 'AppInfo' --response 'AppResponseInfo' --dynamic-output-components 'AppResponseInfo' 
 
 rig --assign-to-response --for-app 'AppInfo' --response 'MainMenu' --dynamic-output-components 'MainMenu' 
+
+rig --assign-to-response --for-app 'AppInfo' --response 'ResponseOutputComponentInfo' --requests 'ResponseOutputComponentInfo' 
+
+rig --assign-to-response --for-app 'AppInfo' --response 'ResponseOutputComponentInfo' --dynamic-output-components 'ResponseOutputComponentInfo' 
 
 rig --assign-to-response --for-app 'AppInfo' --response 'ResponseRequestInfo' --requests 'ResponseRequestInfo' 
 
