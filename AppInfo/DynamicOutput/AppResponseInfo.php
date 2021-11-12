@@ -30,7 +30,8 @@ const RESPONDS_TO_SPRINT='
     <nav>%s</nav>
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
-const QUERY_STRING_SPRINT = 'appName=%s&responseName=%s';
+const QUERY_STRING_SPRINT = 
+    '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s';
 const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
     <h1>Responses configured by the %s app:</h1>
     <!-- Start RESPONSE_INFO_SPRINT output -->
@@ -178,10 +179,20 @@ if($factory->getType() === AppComponentsFactory::class) {
                     ),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
+
                 ),
             );
         }
