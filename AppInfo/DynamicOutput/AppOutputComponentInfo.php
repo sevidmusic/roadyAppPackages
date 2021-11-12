@@ -14,12 +14,13 @@ use roady\classes\component\OutputComponent;
 
 /** Vars and Constants */
 
+const OUTPUT_PREVIEW_SPRINT = '<div class="roady-output-preview">%s</div>';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const APPS_ASSIGNED_REQUEST_INFO_SPRINT = '
-    <h1>Requests configured by the %s app:</h1>
+    <h1>OutputComponents configured by the %s app:</h1>
     <!-- Start REQUEST_INFO_SPRINT output -->
     %s
     <!-- End REQUEST_INFO_SPRINT output -->
@@ -31,17 +32,31 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-value"> %s</span>
     </p>
     <p>
-        <span class="roady-name-value-name">Type</span>:
+        <span class="roady-name-value-name">Type:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
     <p>
-        <span class="roady-name-value-name">Location</span>:
+        <span class="roady-name-value-name">Location:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
     <p>
-        <span class="roady-name-value-name">Container</span>:
+        <span class="roady-name-value-name">Container:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
+    <p>
+        <span class="roady-name-value-name">Position:</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">State:</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">Output:</span>:
+    </p>
+    <!-- Start OUTPUT_PREVIEW_SPRINT -->
+    %s
+    <!-- End OUTPUT_PREVIEW_SPRINT -->
     <div class="roady-content-seperator"></div>
 ';
 
@@ -97,7 +112,7 @@ if($factory->getType() === AppComponentsFactory::class) {
         $registeredComponent
     ) {
         /**
-         * @var Request $registeredComponent
+         * @var OutputComponent $registeredComponent
          */
         if($registeredComponent->getType() === OutputComponent::class) {
             array_push(
@@ -109,6 +124,16 @@ if($factory->getType() === AppComponentsFactory::class) {
                     $registeredComponent->getType(),
                     $registeredComponent->getLocation(),
                     $registeredComponent->getContainer(),
+                    $registeredComponent->getPosition(),
+                    (
+                        $registeredComponent->getState() === true
+                        ? 'true'
+                        : 'false'
+                    ),
+                    sprintf(
+                        OUTPUT_PREVIEW_SPRINT,
+                        $registeredComponent->getOutput()
+                    ),
                 ),
             );
         }
@@ -126,7 +151,7 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($responseInfo)
-        ? '<p>There are no Requests configured for the ' .
+        ? '<p>There are no OutputComponents configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
         : $appInfoOutput
