@@ -24,7 +24,9 @@
 .roady-app-output-container h1, h2, h3, h4, h5, h6 {
     color: white;
 }
-
+.roady-left-app-nav a,
+.roady-left-app-nav a:link,
+.roady-left-app-nav a:visited,
 .roady-app-output-container a, 
 .roady-app-output-container a:link, 
 .roady-app-output-container a:visited {
@@ -35,7 +37,7 @@
     padding-right: 0.3rem;
     text-align: center;
 }
-
+.roady-left-app-nav a:hover,
 .roady-app-output-container a:hover {
     color: var(--color-main);
     border-right: 2px solid var(--color-complimentary);
@@ -44,6 +46,7 @@
     padding-right: 0.187rem;
 }
 
+.roady-left-app-nav a:active,
 .roady-app-output-container a:active {
     color: var(--color-complimentary);
 }
@@ -67,4 +70,25 @@
     color: var(--color-triadic-1);
     background: #222233;
     padding: 0.1rem 0.5rem;
+}
+
+.roady-left-app-nav {
+    position: fixed;
+    top: 0.333rem;
+    left: 0.17rem;
+    background: black;
+    width: 1.2rem;
+    overflow: hidden;
+    height: 1.2rem;
+    border-radius: 50% 50%;
+    border-top: 0.23rem double var(--color-complimentary);
+    border-right: 0.23rem double var(--color-main);
+    text-align: center;
+}
+
+.roady-left-app-nav:hover, 
+.roady-left-app-nav:active {
+    width: 33%;
+    height: 1.7rem;
+    border-radius: 0.3rem;
 }
