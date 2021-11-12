@@ -6,6 +6,8 @@
     --color-analogous-2: #0746ff;
     --color-triadic-1: #ff07c2;
     --color-triadic-2: #c2ff07;
+    --default-border-color: white;
+    --default-background-color: #020211;
 }
 
 * {
@@ -13,7 +15,7 @@
 }
 
 .roady-app-output-container {
-    background: #020211;
+    background: var(--default-background-color);
     color: var(--color-main);
     font-family: monospace;
     width: 100%;
@@ -60,7 +62,7 @@
 }
 
 .roady-content-seperator {
-    border-bottom: .3rem double purple; 
+    border-bottom: .3rem double var(--default-border-color); 
     margin-top: 1rem; 
     margin-bottom: 2rem;
 }
@@ -84,11 +86,20 @@
     border-top: 0.23rem double var(--color-complimentary);
     border-right: 0.23rem double var(--color-main);
     text-align: center;
+    z-index: 2000;
+    transform: rotate(4deg);
+    transition: width 1.3s;
 }
 
 .roady-left-app-nav:hover, 
 .roady-left-app-nav:active {
     width: 33%;
-    height: 1.7rem;
+    height: 2rem;
     border-radius: 0.3rem;
+}
+
+.roady-output-preview {
+    background: #0d0d0f;
+    padding: 2rem;
+    border: 0.1rem double var(--color-analogous-3);
 }
