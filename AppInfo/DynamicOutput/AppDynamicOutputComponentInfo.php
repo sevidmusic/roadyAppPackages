@@ -61,7 +61,7 @@ const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
             generating this DynamicOutputComponent\'s output.
         </p>
     </div>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

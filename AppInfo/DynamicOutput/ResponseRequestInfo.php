@@ -6,6 +6,7 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\classes\component\Web\Routing\Response;
+use roady\classes\component\Web\Routing\GlobalResponse;
 
 /** Vars and Constants */
 
@@ -41,7 +42,7 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">Url</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(
@@ -75,7 +76,11 @@ $componentCrud = new ComponentCrud(
  */
 $response = $componentCrud->readByNameAndType(
     ($currentRequest->getGet()['responseName'] ?? 'unknown'),
-    Response::class,
+    (
+        isset($currentRequest->getGet()['global'])
+        ? GlobalResponse::class 
+        : Response::class
+    ),
     ($currentRequest->getGet()['responseLocation'] ?? 'unknown'),
     ($currentRequest->getGet()['responseContainer'] ?? 'unknown'),
 );

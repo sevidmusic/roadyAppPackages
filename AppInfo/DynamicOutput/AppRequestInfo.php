@@ -43,7 +43,7 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">Url</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(

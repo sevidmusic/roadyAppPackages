@@ -8,6 +8,8 @@
     --color-triadic-2: #d7f5ad;
     --default-border-color: #b3f5ad;
     --default-background-color: #03111b;
+    --background-soft-dark: #222233;
+    --background-dark: #0d0d0f;
 }
 
 * {
@@ -70,7 +72,7 @@
 .roady-note-container {
     font-size: 0.7rem;
     color: var(--color-triadic-1);
-    background: #222233;
+    background: var(--background-soft-dark);
     padding: 0.1rem 0.5rem;
 }
 
@@ -78,28 +80,28 @@
     position: fixed;
     top: 0.333rem;
     left: 0.17rem;
-    background: black;
-    width: 1.2rem;
+    background: var(--background-dark);
+    max-width: 12px;
     overflow: hidden;
     height: 1.2rem;
-    border-radius: 50% 50%;
-    border-top: 0.23rem double var(--color-complimentary);
-    border-right: 0.23rem double var(--color-main);
-    text-align: center;
+    border-radius: 70% 30%;
+    border-top: 0.43rem double var(--color-complimentary);
+    border-right: 0.43rem double var(--color-main);
     z-index: 2000;
-    transform: rotate(4deg);
-    transition: width 1.3s;
+    transition: height 1.27s, padding 1.27s, border-radius 1.27s, max-width 1.27s;
+    padding-left: 2rem;
 }
 
 .roady-left-app-nav:hover, 
 .roady-left-app-nav:active {
-    width: 33%;
+    max-width: 33%;
     height: 2rem;
     border-radius: 0.3rem;
+    padding: 0 0.5rem 0 1rem;
 }
 
 .roady-output-preview {
-    background: #0d0d0f;
+    background: var(--background-dark);
     padding: 2rem;
     border: 0.1rem double var(--color-analogous-3);
 }

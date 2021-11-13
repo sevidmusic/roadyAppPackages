@@ -6,6 +6,7 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\classes\component\Web\Routing\Response;
+use roady\classes\component\Web\Routing\GlobalResponse;
 use roady\classes\component\OutputComponent;
 
 /** Vars and Constants */
@@ -15,7 +16,9 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONSES_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h1>OutputComponents assigned to the %s app\'s %s Response:</h1>
+    <h1>
+        OutputComponents assigned to the %s app\'s %s Response:
+    </h1>
     <!-- Start OUTPUT_COMPONENT_INFO_SPRINT output -->
     %s
     <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->
@@ -52,7 +55,7 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
     <!-- Start OUTPUT_PREVIEW_SPRINT -->
     %s
     <!-- End OUTPUT_PREVIEW_SPRINT -->
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(
@@ -86,7 +89,11 @@ $componentCrud = new ComponentCrud(
  */
 $response = $componentCrud->readByNameAndType(
     ($currentRequest->getGet()['responseName'] ?? 'unknown'),
-    Response::class,
+    (
+        isset($currentRequest->getGet()['global'])
+        ? GlobalResponse::class 
+        : Response::class
+    ),
     ($currentRequest->getGet()['responseLocation'] ?? 'unknown'),
     ($currentRequest->getGet()['responseContainer'] ?? 'unknown'),
 );

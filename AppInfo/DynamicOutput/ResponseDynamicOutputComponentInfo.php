@@ -6,12 +6,11 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\classes\component\Web\Routing\Response;
+use roady\classes\component\Web\Routing\GlobalResponse;
 use roady\classes\component\DynamicOutputComponent;
 
 /** Vars and Constants */
 
-const OUTPUT_PREVIEW_SPRINT = '
-    <div class="roady-output-preview">%s</div>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
@@ -54,7 +53,7 @@ const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
         <span class="roady-name-value-name">DynamicOutput file:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-content-separator"></div>
 ';
 
 $currentRequest = new Request(
@@ -88,7 +87,11 @@ $componentCrud = new ComponentCrud(
  */
 $response = $componentCrud->readByNameAndType(
     ($currentRequest->getGet()['responseName'] ?? 'unknown'),
-    Response::class,
+    (
+        isset($currentRequest->getGet()['global'])
+        ? GlobalResponse::class 
+        : Response::class
+    ),
     ($currentRequest->getGet()['responseLocation'] ?? 'unknown'),
     ($currentRequest->getGet()['responseContainer'] ?? 'unknown'),
 );

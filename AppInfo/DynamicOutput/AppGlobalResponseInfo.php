@@ -33,7 +33,7 @@ const RESPONDS_TO_SPRINT='
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const QUERY_STRING_SPRINT = 
-    '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s';
+    '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
 const APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT = '
     <h1>GlobalResponses configured by the %s app:</h1>
     <!-- Start GLOBAL_RESPONSE_INFO_SPRINT -->
