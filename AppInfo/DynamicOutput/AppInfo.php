@@ -9,13 +9,12 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
 
-/** Constants & Vars */
-
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
+    <!-- App name -->
     <h2>%s</h2>
     <p>
         <span class="roady-name-value-name">Unique Id:</span>
@@ -31,6 +30,10 @@ const APP_INFO_SPRINT = '
     </p>
     <p>
         <span class="roady-name-value-name">Container</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
+    <p>
+        <span class="roady-name-value-name">State</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
     <p>
@@ -100,8 +103,6 @@ $componentCrud = new ComponentCrud(
 
 $appInfo = [];
 
-/** Logic */
-
 foreach (
         $componentCrud->readAll(
             App::deriveAppLocationFromRequest($currentRequest),
@@ -130,11 +131,12 @@ foreach (
                 $factory->getApp()->getType(),
                 $factory->getApp()->getLocation(),
                 $factory->getApp()->getContainer(),
+                ($factory->getApp()->getState() ? 'true' : 'false'),
                 $factory->getApp()->getName(),
                 $factory->getApp()->getName(),
                 $factory->getApp()->getName(),
                 $factory->getApp()->getName(),
-                $factory->getApp()->getName()
+                $factory->getApp()->getName(),
             )
         );
     }
@@ -144,9 +146,10 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($appInfo)
-        ? '<h1>There are no Apps running ' . $domain . '.</h1>'
-        : '<h1>The following Apps are running on ' . 
-        $domain . ':</h1>' . PHP_EOL .implode(PHP_EOL, $appInfo)
+    ? '<h1>Unable to determine which Apps are running on ' . 
+        $domain . '.</h1>' . PHP_EOL
+    : '<h1>The following Apps are running on ' . 
+        $domain . ':</h1>' . PHP_EOL . implode(PHP_EOL, $appInfo)
     )
 );
 

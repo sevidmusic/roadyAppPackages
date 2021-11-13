@@ -134,7 +134,7 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($requestInfo)
-        ? '<p>There are no Requests assigned to the ' .
+        ? '<p>There are no OutputComponents assigned to the ' .
            ($currentRequest->getGet()['appName'] ?? 'unknown') .
            ' app\'s ' .
            ($currentRequest->getGet()['responseName'] ?? 'unknown') .

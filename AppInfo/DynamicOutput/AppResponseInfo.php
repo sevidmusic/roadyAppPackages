@@ -60,6 +60,10 @@ const RESPONSE_INFO_SPRINT = '
         <span class="roady-name-value-name">Position</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
+    <p>
+        <span class="roady-name-value-name">State</span>:
+        <span class="roady-name-value-value"> %s</span>
+    </p>
     <!-- Start Responds To: -->
     %s
     <!-- End Responds To: -->
@@ -69,9 +73,12 @@ const RESPONSE_INFO_SPRINT = '
         </span>
     </p>
     <nav>
-        <a href="index.php?request=ResponseRequestInfo' . QUERY_STRING_SPRINT . '">Requests</a>
-        <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
-        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
+        <a href="index.php?request=ResponseRequestInfo' . 
+            QUERY_STRING_SPRINT . '">Requests</a>
+        <a href="index.php?request=ResponseOutputComponentInfo' . 
+            QUERY_STRING_SPRINT . '">OutputComponents</a>
+        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
+            QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
     <div class="roady-content-separator"></div>
 ';
@@ -167,6 +174,11 @@ if($factory->getType() === AppComponentsFactory::class) {
                     $registeredComponent->getLocation(),
                     $registeredComponent->getContainer(),
                     $registeredComponent->getPosition(),
+                    (
+                        $registeredComponent->getState() 
+                        ? 'true' 
+                        : 'false'
+                    ),
                     sprintf(
                         RESPONDS_TO_SPRINT,
                         implode(
