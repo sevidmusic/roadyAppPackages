@@ -15,13 +15,17 @@ use roady\classes\component\DynamicOutputComponent;
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
-const APPS_ASSIGNED_REQUEST_INFO_SPRINT = '
+const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h1>DynamicOutputComponents configured by the %s app:</h1>
-    <!-- Start REQUEST_INFO_SPRINT output -->
+    <!-- 
+        Start APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT 
+    -->
     %s
-    <!-- End REQUEST_INFO_SPRINT output -->
+    <!-- 
+        End APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT 
+    -->
 ';
-const REQUEST_INFO_SPRINT = '
+const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h2>%s</h2>
     <p>
         <span class="roady-name-value-name">Unique Id:</span>
@@ -51,7 +55,13 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">DynamicOutput file:</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-separator"></div>
+    <div class="roady-note-container">
+        <p>
+            Note: The DynamicOutput file is responsible for 
+            generating this DynamicOutputComponent\'s output.
+        </p>
+    </div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
@@ -90,9 +100,7 @@ $factory = $componentCrud->readByNameAndType(
     Factory::CONTAINER
 );
 
-$responseRequestUrls = [];
-
-$responseInfo = [];
+$dynamicOutputComponentInfo = [];
 
 /** Logic */
 
@@ -108,11 +116,15 @@ if($factory->getType() === AppComponentsFactory::class) {
         /**
          * @var DynamicOutputComponent $registeredComponent
          */
-        if($registeredComponent->getType() === DynamicOutputComponent::class) {
+        if(
+            $registeredComponent->getType() 
+            === 
+            DynamicOutputComponent::class
+        ) {
             array_push(
-                $responseInfo,
+                $dynamicOutputComponentInfo,
                 sprintf(
-                    REQUEST_INFO_SPRINT,
+                    DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
                     $registeredComponent->getName(),
                     $registeredComponent->getUniqueId(),
                     $registeredComponent->getType(),
@@ -120,7 +132,7 @@ if($factory->getType() === AppComponentsFactory::class) {
                     $registeredComponent->getContainer(),
                     $registeredComponent->getPosition(),
                     (
-                        $registeredComponent->getState() === true
+                        $registeredComponent->getState() 
                         ? 'true'
                         : 'false'
                     ),
@@ -131,20 +143,20 @@ if($factory->getType() === AppComponentsFactory::class) {
     }
 }
 
-$appInfoOutput = sprintf(
-    APPS_ASSIGNED_REQUEST_INFO_SPRINT,
+$appDynamicOutputComponentInfo = sprintf(
+    APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
+    implode(PHP_EOL, $dynamicOutputComponentInfo)
 );
 
 
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
+    empty($dynamicOutputComponentInfo)
         ? '<p>There are no DynamicOutputComponents configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
-        : $appInfoOutput
+        : $appDynamicOutputComponentInfo
     )
 );

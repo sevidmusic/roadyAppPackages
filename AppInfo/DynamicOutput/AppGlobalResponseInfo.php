@@ -32,14 +32,15 @@ const RESPONDS_TO_SPRINT='
     <nav>%s</nav>
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
-const QUERY_STRING_SPRINT = 'appName=%s&responseName=%s';
-const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
+const QUERY_STRING_SPRINT = 
+    '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s';
+const APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT = '
     <h1>GlobalResponses configured by the %s app:</h1>
-    <!-- Start RESPONSE_INFO_SPRINT output -->
+    <!-- Start GLOBAL_RESPONSE_INFO_SPRINT -->
     %s
-    <!-- End RESPONSE_INFO_SPRINT output -->
+    <!-- End GLOBAL_RESPONSE_INFO_SPRINT -->
 ';
-const RESPONSE_INFO_SPRINT = '
+const GLOBAL_RESPONSE_INFO_SPRINT = '
     <h2>%s</h2>
     <p>
         <span class="roady-name-value-name">Unique Id:</span>
@@ -70,11 +71,20 @@ const RESPONSE_INFO_SPRINT = '
         </span>
     </p>
     <nav>
-        <a href="index.php?request=ResponseRequestInfo' . QUERY_STRING_SPRINT . '">Requests</a>
-        <a href="index.php?request=ResponseOutputComponentInfo' . QUERY_STRING_SPRINT . '">OutputComponents</a>
-        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
+        <a href="index.php?request=ResponseRequestInfo' . 
+        QUERY_STRING_SPRINT . '">
+            Requests
+        </a>
+        <a href="index.php?request=ResponseOutputComponentInfo' . 
+        QUERY_STRING_SPRINT . '">
+            OutputComponents
+        </a>
+        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
+        QUERY_STRING_SPRINT . '">
+            DynamicOutputComponents
+        </a>
     </nav>
-    <div class="roady-content-separator"></div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
@@ -113,14 +123,18 @@ $factory = $componentCrud->readByNameAndType(
     Factory::CONTAINER
 );
 
-$responseRequestUrls = [];
+$globalResponseRequestUrls = [];
 
-$responseInfo = [];
+$globalResponseInfo = [];
 
 /** Functions */
 
-$generateRequestInfoStrings = function(GlobalResponse $registeredComponent, ComponentCrud $componentCrud): array {
-    $responseRequestInfo = [];
+$generateRequestInfoStrings = 
+function (
+    GlobalResponse $registeredComponent, 
+    ComponentCrud $componentCrud
+): array {
+    $globalResponseRequestInfo = [];
     foreach(
         $registeredComponent->getRequestStorageInfo()
         as
@@ -132,7 +146,7 @@ $generateRequestInfoStrings = function(GlobalResponse $registeredComponent, Comp
          */
         $request = $componentCrud->read($requestStorageInfo);
         array_push(
-            $responseRequestInfo,
+            $globalResponseRequestInfo,
             sprintf(
                 REQUEST_LINK_SPRINT,
                 $request->getUrl(),
@@ -140,7 +154,7 @@ $generateRequestInfoStrings = function(GlobalResponse $registeredComponent, Comp
             )
         );
     }
-    return $responseRequestInfo;
+    return $globalResponseRequestInfo;
 };
 
 /** Logic */
@@ -159,9 +173,9 @@ if($factory->getType() === AppComponentsFactory::class) {
          */
         if($registeredComponent->getType() === GlobalResponse::class) {
             array_push(
-                $responseInfo,
+                $globalResponseInfo,
                 sprintf(
-                    RESPONSE_INFO_SPRINT,
+                    GLOBAL_RESPONSE_INFO_SPRINT,
                     $registeredComponent->getName(),
                     $registeredComponent->getUniqueId(),
                     $registeredComponent->getType(),
@@ -180,10 +194,19 @@ if($factory->getType() === AppComponentsFactory::class) {
                     ),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
                     ($currentRequest->getGet()['appName'] ?? 'roady'),
                     $registeredComponent->getName(),
+                    $registeredComponent->getUniqueId(),
+                    $registeredComponent->getLocation(),
+                    $registeredComponent->getContainer(),
                 ),
             );
         }
@@ -191,16 +214,15 @@ if($factory->getType() === AppComponentsFactory::class) {
 }
 
 $appInfoOutput = sprintf(
-    APPS_ASSIGNED_RESPONSE_INFO_SPRINT,
+    APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
+    implode(PHP_EOL, $globalResponseInfo)
 );
-
 
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
+    empty($globalResponseInfo)
         ? '<p>There are no Responses configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'

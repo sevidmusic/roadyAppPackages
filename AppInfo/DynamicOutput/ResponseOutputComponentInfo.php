@@ -52,7 +52,7 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
     <!-- Start OUTPUT_PREVIEW_SPRINT -->
     %s
     <!-- End OUTPUT_PREVIEW_SPRINT -->
-    <div class="roady-content-separator"></div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(

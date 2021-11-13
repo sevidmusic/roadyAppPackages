@@ -80,7 +80,7 @@ const RESPONSE_INFO_SPRINT = '
         <a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
             QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
     </nav>
-    <div class="roady-content-separator"></div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
@@ -125,7 +125,11 @@ $responseInfo = [];
 
 /** Functions */
 
-$generateRequestInfoStrings = function(Response $registeredComponent, ComponentCrud $componentCrud): array {
+$generateRequestInfoStrings = 
+function(
+    Response $registeredComponent, 
+    ComponentCrud $componentCrud
+): array {
     $responseRequestInfo = [];
     foreach(
         $registeredComponent->getRequestStorageInfo()
@@ -148,8 +152,6 @@ $generateRequestInfoStrings = function(Response $registeredComponent, ComponentC
     }
     return $responseRequestInfo;
 };
-
-/** Logic */
 
 /**
  * @var AppComponentsFactory $factory
@@ -204,14 +206,13 @@ if($factory->getType() === AppComponentsFactory::class) {
                     $registeredComponent->getUniqueId(),
                     $registeredComponent->getLocation(),
                     $registeredComponent->getContainer(),
-
                 ),
             );
         }
     }
 }
 
-$appInfoOutput = sprintf(
+$appResponseInfo = sprintf(
     APPS_ASSIGNED_RESPONSE_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
     implode(PHP_EOL, $responseInfo)
@@ -225,6 +226,6 @@ printf(
         ? '<p>There are no Responses configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
-        : $appInfoOutput
+        : $appResponseInfo
     )
 );

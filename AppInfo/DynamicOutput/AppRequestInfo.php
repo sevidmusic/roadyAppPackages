@@ -43,7 +43,7 @@ const REQUEST_INFO_SPRINT = '
         <span class="roady-name-value-name">Url</span>:
         <span class="roady-name-value-value"> %s</span>
     </p>
-    <div class="roady-content-separator"></div>
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
@@ -82,9 +82,7 @@ $factory = $componentCrud->readByNameAndType(
     Factory::CONTAINER
 );
 
-$responseRequestUrls = [];
-
-$responseInfo = [];
+$requestInfo = [];
 
 /** Logic */
 
@@ -102,7 +100,7 @@ if($factory->getType() === AppComponentsFactory::class) {
          */
         if($registeredComponent->getType() === Request::class) {
             array_push(
-                $responseInfo,
+                $requestInfo,
                 sprintf(
                     REQUEST_INFO_SPRINT,
                     $registeredComponent->getName(),
@@ -121,20 +119,20 @@ if($factory->getType() === AppComponentsFactory::class) {
     }
 }
 
-$appInfoOutput = sprintf(
+$appRequestInfo = sprintf(
     APPS_ASSIGNED_REQUEST_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
+    implode(PHP_EOL, $requestInfo)
 );
 
 
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
+    empty($requestInfo)
         ? '<p>There are no Requests configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
-        : $appInfoOutput
+        : $appRequestInfo
     )
 );

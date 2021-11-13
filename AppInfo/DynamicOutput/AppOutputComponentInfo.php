@@ -12,16 +12,18 @@ use roady\classes\component\OutputComponent;
 
 /** Vars and Constants */
 
-const OUTPUT_PREVIEW_SPRINT = '<div class="roady-output-preview">%s</div>';
+const OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT = 
+    '<div class="roady-output-preview">%s</div>';
+
 const OUTPUT_CONTAINER_SPRINT = '
-    <div class="roady-app-output-container">%s</div>
-';
+    <div class="roady-app-output-container">%s</div>';
+
 const APPS_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h1>OutputComponents configured by the %s app:</h1>
     <!-- Start OUTPUT_COMPONENT_INFO_SPRINT output -->
     %s
-    <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->
-';
+    <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->';
+
 const OUTPUT_COMPONENT_INFO_SPRINT = '
     <h2>%s</h2>
     <p>
@@ -51,10 +53,10 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
     <p>
         <span class="roady-name-value-name">Output:</span>:
     </p>
-    <!-- Start OUTPUT_PREVIEW_SPRINT -->
+    <!-- Start OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT -->
     %s
-    <!-- End OUTPUT_PREVIEW_SPRINT -->
-    <div class="roady-content-separator"></div>
+    <!-- End OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT -->
+    <div class="roady-content-seperator"></div>
 ';
 
 $currentRequest = new Request(
@@ -93,9 +95,7 @@ $factory = $componentCrud->readByNameAndType(
     Factory::CONTAINER
 );
 
-$responseRequestUrls = [];
-
-$responseInfo = [];
+$outputComponentInfo = [];
 
 /** Logic */
 
@@ -111,9 +111,13 @@ if($factory->getType() === AppComponentsFactory::class) {
         /**
          * @var OutputComponent $registeredComponent
          */
-        if($registeredComponent->getType() === OutputComponent::class) {
+        if(
+            $registeredComponent->getType() 
+            === 
+            OutputComponent::class
+        ) {
             array_push(
-                $responseInfo,
+                $outputComponentInfo,
                 sprintf(
                     OUTPUT_COMPONENT_INFO_SPRINT,
                     $registeredComponent->getName(),
@@ -128,7 +132,7 @@ if($factory->getType() === AppComponentsFactory::class) {
                         : 'false'
                     ),
                     sprintf(
-                        OUTPUT_PREVIEW_SPRINT,
+                        OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT,
                         $registeredComponent->getOutput()
                     ),
                 ),
@@ -137,20 +141,20 @@ if($factory->getType() === AppComponentsFactory::class) {
     }
 }
 
-$appInfoOutput = sprintf(
+$appOutputComponentInfo = sprintf(
     APPS_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
+    implode(PHP_EOL, $outputComponentInfo)
 );
 
 
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
+    empty($outputComponentInfo)
         ? '<p>There are no OutputComponents configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
-        : $appInfoOutput
+        : $appOutputComponentInfo
     )
 );
