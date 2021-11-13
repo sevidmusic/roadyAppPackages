@@ -1006,6 +1006,14 @@ rig --new-request --for-app 'FooBarBaz' --name 'Foo99Bar76Baz1' --relative-url '
 
 rig --new-request --for-app 'FooBarBaz' --name 'Foo99Bar76Baz2' --relative-url '?Foo38Bar80Baz' --container 'FooBarBazRequests'
 
+rig --new-output-component --for-app 'FooBarBaz' --name 'AAA' --output '<p>AAA</p>' --container 'OutputComponents' --position '0'
+
+rig --new-output-component --for-app 'FooBarBaz' --name 'BBB' --output '<p>BBB</p>' --container 'OutputComponents' --position '0'
+
+rig --new-output-component --for-app 'FooBarBaz' --name 'CCC' --output '<p>CCC</p>' --container 'AltOutput' --position '100'
+
+rig --new-dynamic-output-component --for-app 'FooBarBaz' --name 'DDD' --container 'DynamicOutputComponents' --position '4.2' 
+
 rig --new-dynamic-output-component --for-app 'FooBarBaz' --name 'Foo100Bar18Baz' --container 'FooBarBazDynamicOutput' --position '68.2' 
 
 rig --new-output-component --for-app 'FooBarBaz' --name 'Foo100Bar64Baz' --output '<h1>Duo Reges: constructio interrete.</h1>
@@ -2415,6 +2423,14 @@ rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --req
 rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --requests 'Foo100Bar18Baz1' 
 
 rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --requests 'Foo100Bar18Baz2' 
+
+rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --dynamic-output-components 'DDD' 
+
+rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --output-components 'CCC'
+
+rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --output-components 'BBB'
+
+rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --output-components 'AAA'
 
 rig --assign-to-response --for-app 'FooBarBaz' --response 'Foo100Bar18Baz' --dynamic-output-components 'Foo100Bar18Baz' 
 
