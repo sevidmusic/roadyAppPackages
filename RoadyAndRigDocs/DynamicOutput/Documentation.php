@@ -9,6 +9,10 @@ $currentRequest = new Request(
     new Switchable()
 );
 
+$requestedDocumentation = (
+    $currentRequest->getGet()['request'] ?? 'roady'
+);
+
 $roadyRootDirectoryPath = str_replace(
     'Apps' . DIRECTORY_SEPARATOR .
     'RoadyAndRigDocs' . DIRECTORY_SEPARATOR .
@@ -20,14 +24,16 @@ $roadyRootDirectoryPath = str_replace(
 $rigHelpFilesDirectoryPath = strval(
     realpath(
         $roadyRootDirectoryPath . DIRECTORY_SEPARATOR . 'vendor' .
-        DIRECTORY_SEPARATOR . 'darling' . DIRECTORY_SEPARATOR . 'rig' .
-        DIRECTORY_SEPARATOR . 'helpFiles'
+        DIRECTORY_SEPARATOR . 'darling' . DIRECTORY_SEPARATOR . 
+        'rig' . DIRECTORY_SEPARATOR . 'helpFiles'
     )
 );
 
 $helpFilesDirectoryScan = scandir($rigHelpFilesDirectoryPath);
 $helpFilesListing = array_diff(
-    (is_array($helpFilesDirectoryScan) ? $helpFilesDirectoryScan : []),
+    (is_array(
+        $helpFilesDirectoryScan) ? $helpFilesDirectoryScan : []
+    ),
     ['.', '..']
 );
 
@@ -45,7 +51,7 @@ if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
         strval(
             file_get_contents(
                 $rigHelpFilesDirectoryPath . DIRECTORY_SEPARATOR .
-                ($currentRequest->getGet()['request'] ?? 'roady') . '.txt'
+                $requestedDocumentation . '.txt'
             )
         )
     );
@@ -53,8 +59,29 @@ if(($currentRequest->getGet()['request'] ?? '') === 'rig') {
 
 /** Help File Output */
 $lines = explode(PHP_EOL, $helpFileOutput);
+$dontTrim = [
+    'getting-started', 
+    'roady', 
+    'Apps', 
+    'AppPackages',
+    'Components.php',
+    'css',
+    'js',
+    'OutputComponents',
+    'DynamicOutputComponents',
+    'Responses',
+    'Requests',
+    'GlobalResponses',
+];
 foreach($lines as $key => $line) {
-    $lines[$key] = trim($line);
+    $lines[$key] = (
+        !in_array(
+            $requestedDocumentation,
+            $dontTrim
+        )
+        ? trim($line)
+        : $line
+    );
 }
 
 $output = preg_replace(
@@ -111,7 +138,11 @@ $output = preg_replace(
         '#(--)?configure-app-output#',
         /** Match --new-app or new-app*/
         '#(--)?new-app#',
-        /** Pattern conflict fix | Match <a href="index.php?request=new-app">--new-app</a>-package */
+        /** 
+         * Pattern conflict fix | 
+         * Match:
+         *   <a href="index.php?request=new-app">--new-app</a>-package
+         */
         '#<a href="index.php[?]request=new-app">--new-app</a>-package#',
         /** Pattern conflict fix | Match <a href="index.php?request=new-app">new-app</a>-package */
         '#<a href="index.php[?]request=new-app">new-app</a>-package#',
@@ -307,10 +338,30 @@ $output = preg_replace(
 <div class="rr-docs-container">
     <div class="rr-docs-output">
     <?php
-        if(empty($output) && (($currentRequest->getGet()['request'] ?? '') !== 'GettingStarted')) {
+if(
+    empty($output) 
+    && 
+    (
+        ($currentRequest->getGet()['request'] ?? '') 
+        !== 'GettingStarted'
+    )
+) {
     ?>
-            <p>Sorry, documentation for <code class="rr-docs-code">
-            <?php echo ($currentRequest->getGet()['request'] ?? 'help'); ?></code> is not available yet.</p>
+            <p>
+                Sorry, documentation for 
+                <code class="rr-docs-code">
+                <?php 
+                    echo (
+                        !empty($requestedDocumentation) 
+                        && 
+                        is_string($requestedDocumentation)
+                        ? $requestedDocumentation
+                        : 'the requested documentation'
+                    ); 
+                ?>
+                </code> 
+                is not available yet.
+            </p>
             <video class="rr-docs-video" controls autoplay>
                 <source src="https://roadydemos.us-east-1.linodeobjects.com/roadyInstallAndHelloWorldTake3-2021-07-31_14.06.34.webm" type="video/webm">
                 Sorry, the video failed to load.
@@ -318,9 +369,7 @@ $output = preg_replace(
             <p><a href="index.php">Return to Homepage</a></p>
     <?php
         } else {
-#            if(($currentRequest->getGet()['request'] ?? 'roady') !== 'installation-and-setup') {
-                echo $output;
-#            }
+            echo $output;
         }
     ?>
     </div>
