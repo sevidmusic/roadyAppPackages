@@ -256,3 +256,27 @@ body {
     );
     color: var(--note-icon-text-color);
 }
+
+::-webkit-scrollbar {
+   width: 1rem; 
+}
+
+::-webkit-scrollbar-track {
+    background: var(--body-bg-color);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 100vw;
+    border: 0.25rem solid var(--body-bg-color);
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--link-hover-color);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--link-active-color);
+}
