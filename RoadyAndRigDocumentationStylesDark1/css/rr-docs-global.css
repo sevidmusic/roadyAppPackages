@@ -1,3 +1,22 @@
+/** 
+ * rr-docs-global.css
+ *
+ * This stylesheet defines styles for the 
+ * RoadyAndRigDocumentation App.
+ *
+ * Style definition sections:
+ * (listed to make it easy to search this document)
+ *
+ * Resets 
+ * Generic 
+ * Container Styles
+ * Text Styles 
+ * Browser Elements 
+ * Links 
+ * Sticky Elements 
+ * Menus 
+ */
+
 :root {
     --bg-color-docs-code-ml-container: black;
     --bg-color-docs-grid-30-70: black;
@@ -22,16 +41,20 @@
     --margin-centered: 0 auto;
 }
 
+/** Resets **/
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/** Generic **/
+
 body {
     background: var(--bg-color-body-default);
     color: var(--text-color-default);
     font-family: var(--font-family-default);
     font-size: var(--font-size-default);
     line-height: 2.399rem;
-}
-
-*, *::before, *::after {
-    box-sizing: border-box;
 }
 
 /** Container Styles**/
@@ -72,7 +95,7 @@ body {
     grid-template-columns: 30% 70%;
 }
 
-/** Text styles **/
+/** Text Styles **/
 
 .rr-docs-tiny-msg {
     font-size: 0.76rem;
@@ -163,7 +186,7 @@ body {
     margin-bottom: 1;
 }
 
-/** Main Menu **/
+/** Menus **/
 
 .rr-docs-rig-menu {
     padding-top: 0.9rem;
