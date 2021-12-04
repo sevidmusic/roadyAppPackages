@@ -218,7 +218,7 @@ $formattedOutput = preg_replace(
     ],
     [
         /** Replace within ``` and ``` */
-        '<pre><code class="rr-docs-code rr-docs-code-ml">${0}</code></pre>',
+        '<pre class="rr-docs-code-ml-container"><code class="rr-docs-code rr-docs-code-ml">${0}</code></pre>',
         /** Remove occurences of ``` */
         '',
         /** Replace within ` and ` */
