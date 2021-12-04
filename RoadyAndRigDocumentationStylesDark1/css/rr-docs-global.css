@@ -18,27 +18,28 @@
  */
 
 :root {
-    --bg-color-docs-code-ml-container: black;
-    --bg-color-docs-grid-30-70: black;
-    --bg-color-docs-rig-menu: black;
-    --bg-color-docs-logo: black;
-    --bg-color-docs-plaintext: black;
-    --bg-color-docs-output: black;
-    --bg-color-docs-container: black;
-    --bg-color-body-default: #020203;
-    --bg-color-note-container: #091d1d;
+    --bg-color-body-default: black;
+    --bg-color-docs-code-ml-container: darkslategrey;
+    --bg-color-docs-container: dimgrey;
+    --bg-color-docs-grid-30-70: gainsboro;
+    --bg-color-docs-logo: ghostwhite;
+    --bg-color-docs-output: lightslategrey;
+    --bg-color-docs-plaintext: lightsteelblue;
+    --bg-color-docs-rig-menu: mediumslateblue;
+    --bg-color-note-container: midnightblue;
     --font-family-default: monospace;
     --font-size-default: 1.17rem;
-    --text-color-default: white;
-    --text-color-code-inline: #c9ffb9;
-    --text-color-code-multi-line: #b9ffcc;
-    --text-color-link-active: #00ffc3;
-    --text-color-link-hover: #33c9ff;
-    --text-color-link-visited: #b9ecff;
-    --text-color-link: #86dfff;
-    --text-color-warning-message: #ff4400;
-    --text-decoration-link: none;
     --margin-centered: 0 auto;
+    --text-color-default: white;
+    --text-color-docs-code-ml: aquamarine;
+    --text-color-docs-code: orange;
+    --text-color-docs-tiny-msg: magenta;
+    --text-color-link-active: blueviolet;
+    --text-color-link-hover: brown;
+    --text-color-link-visited: cadetblue;
+    --text-color-link: chocolate;
+    --text-color-warning-message: cornflowerblue;
+    --text-decoration-link: none;
 }
 
 /** Resets **/
@@ -55,6 +56,7 @@ body {
     font-family: var(--font-family-default);
     font-size: var(--font-size-default);
     line-height: 2.399rem;
+    letter-spacing: 0.17rem;
 }
 
 /** Container Styles**/
@@ -97,23 +99,27 @@ body {
 
 /** Text Styles **/
 
+
 .rr-docs-tiny-msg {
+    color: var(--text-color-docs-tiny-msg);
     font-size: 0.76rem;
-    color: magenta;
 }
 
 .rr-docs-warning {
-    font-size: 0.9rem;
     color: var(--text-color-warning-message);
+    font-size: 0.9rem;
 }
+
 
 .rr-docs-code {
-    color: orange;
+    color: var(--text-color-docs-code);
 }
 
+
 .rr-docs-code-ml {
-    color: aqua;
+    color: var(--text-color-docs-code-ml);
 }
+
 /** Media Elements **/
 
 .rr-docs-video {
