@@ -1,0 +1,152 @@
+:root {
+    --body-bg-color: #020203;
+    --code-ml-text-color: #b9ffcc;
+    --code-text-color: #c9ffb9;
+    --dark-red-bg: #1d0913;
+    --default-bg-color-compliment: #1d1309;
+    --default-bg-color-analogous: #091d1d;
+    --default-bg-color: #09131d;
+    --default-font-family: monospace;
+    --default-font-size: 1.17rem;
+    --default-letter-spacing: 0.1032rem;
+    --default-line-height: 2.399rem;
+    --default-text-color: white;
+    --h3-bg-color: #152c44;
+    --h3-text-color: #f2f6fb;
+    --link-active-color: #00ffc3;
+    --link-color: #86dfff;
+    --link-default-text-decoration: none;
+    --link-hover-color: #33c9ff;
+    --link-visited-color: #b9ecff;
+    --note-icon-text-color: #b9c9ff;
+    --note-text-color: #fff3ee;
+    --text-shadow-color: #0052cf;
+    --warning-text-color: #ff4400;
+}
+body {
+    background: black;
+    color: white;
+    line-height: 1.7rem;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.rr-docs-container a {
+    color: var(--link-color);
+    text-decoration: var(--link-default-text-decoration);
+}
+
+.rr-docs-container a:link {
+    color: var(--link-color);
+    text-decoration: var(--link-default-text-decoration);
+}
+
+.rr-docs-container a:visited {
+    color: var(--link-visited-color);
+}
+
+.rr-docs-container a:hover {
+    color: var(--link-hover-color);
+    text-shadow: 2px 2px var(--body-bg-color);
+}
+
+.rr-docs-container a:active {
+    color: var(--link-active-color);
+}
+
+.rr-docs-container {
+}
+
+.rr-docs-output {
+    max-width: 72ch;
+    margin: 0 auto;
+}
+
+.rr-docs-plaintext {
+}
+
+
+.rr-docs-sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    margin-bottom: 1;
+}
+
+.rr-docs-logo {
+    background: red;
+}
+
+.rr-docs-logo img {
+    border-radius: 50%;
+    max-width: 33%;
+    height: auto;
+}
+
+.rr-docs-rig-menu {
+    background: blue;
+}
+
+.rr-docs-rig-menu li {
+    display: inline;
+}
+
+.rr-docs-rig-menu ul {
+    list-style-type: none;
+}
+
+.rr-docs-rig-menu {
+}
+
+.rr-docs-code {
+}
+
+.rr-docs-code-ml {
+}
+
+
+.rr-docs-note-container {
+}
+
+.rr-docs-tiny-msg {
+}
+
+.rr-docs-warning {
+}
+
+
+.rr-docs-video {
+    max-width: 100%;
+}
+
+::-webkit-scrollbar {
+   width: 1rem; 
+}
+
+::-webkit-scrollbar-track {
+    background: var(--body-bg-color);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 100vw;
+    border: 0.25rem solid var(--body-bg-color);
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--link-hover-color);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--link-active-color);
+}
+
+.rr-docs-grid {
+    display: grid;
+    grid-template-columns: 50%;
+    width: auto;
+}
