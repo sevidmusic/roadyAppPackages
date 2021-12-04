@@ -76,17 +76,17 @@ body {
 }
 
 .rr-docs-logo {
-    background: red;
 }
 
 .rr-docs-logo img {
     border-radius: 50%;
-    max-width: 33%;
+    max-width: 50%;
     height: auto;
 }
 
 .rr-docs-rig-menu {
-    background: blue;
+    padding-top: 0.9rem;
+    text-align: right;
 }
 
 .rr-docs-rig-menu li {
@@ -108,6 +108,7 @@ body {
 
 
 .rr-docs-note-container {
+    background: var(--default-bg-color-analogous);
 }
 
 .rr-docs-tiny-msg {
@@ -145,8 +146,8 @@ body {
     background: var(--link-active-color);
 }
 
-.rr-docs-grid {
+.rr-docs-grid-30-70 {
     display: grid;
-    grid-template-columns: 50%;
-    width: auto;
+    grid-template-columns: 30% 70%;
+    background: black;
 }
