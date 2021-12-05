@@ -1,0 +1,253 @@
+/** 
+ * rr-docs-global.css
+ *
+ * This stylesheet defines styles for the 
+ * RoadyAndRigDocumentation App.
+ *
+ * Style definition sections:
+ * (listed to make it easy to search this document)
+ *
+ * Resets 
+ * Generic 
+ * Container Styles
+ * Text Styles 
+ * Browser Elements 
+ * Links 
+ * Sticky Elements 
+ * Menus 
+ */
+
+:root {
+    --bg-color-body-default: #030208;
+    --bg-color-docs-code-ml-container: #121720;
+    --bg-color-docs-container: #030208;
+    --bg-color-docs-grid-30-70: #09090c;
+    --bg-color-docs-logo: none;
+    --bg-color-docs-output: none;
+    --bg-color-docs-plaintext: #09090c;
+    --bg-color-docs-rig-menu: none;
+    --bg-color-note-container: #1a1d23;
+    --font-family-default: monospace;
+    --font-size-default: 1rem;
+    --margin-centered: 0 auto;
+    --text-color-default: #fff8e8;
+    --text-color-docs-code-ml: #467c79;
+    --text-color-docs-code: #467c79;
+    --text-color-docs-tiny-msg: #5f7975;
+    --text-color-link-active: #47e9b2;
+    --text-color-link-hover: #e96147;
+    --text-color-link-visited: #47cfe9;
+    --text-color-link: #47cfe9;
+    --text-color-warning-message: #7f0a00;
+    --text-decoration-link: none;
+    --border-color-headers: #d59853;
+}
+
+/** Resets **/
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/** Generic **/
+
+body {
+    background: var(--bg-color-body-default);
+    color: var(--text-color-default);
+    font-family: var(--font-family-default);
+    font-size: var(--font-size-default);
+    line-height: 2.399rem;
+    letter-spacing: 0.17rem;
+}
+
+.rr-docs-container h1 {
+    padding-top: 1.27rem;
+    padding-bottom: 2.27rem;
+    text-align: center;
+}
+
+.rr-docs-container h3 {
+    border-left: 0.68rem double var(--border-color-headers);
+    border-right: 0.68rem double var(--border-color-headers);
+    border-radius: 5%;
+    padding-left: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.87rem;
+}
+
+/** Container Styles**/
+
+.rr-docs-container {
+    background: var(--bg-color-docs-container);
+}
+
+.rr-docs-output {
+    background: var(--bg-color-docs-output);
+    max-width: 72ch;
+    margin: var(--margin-centered);
+}
+
+.rr-docs-plaintext {
+    background: var(--bg-color-docs-plaintext);
+    padding: 0 2rem;
+    margin-top: 1.27rem;
+}
+
+.rr-docs-logo {
+    background: var(--bg-color-docs-logo);
+}
+
+.rr-docs-rig-menu {
+    background: var(--bg-color-docs-rig-menu);
+    padding-top: 2.572rem;
+    padding-right: 2rem;
+}
+
+.rr-docs-code-ml-container {
+    background: var(--bg-color-docs-code-ml-container);
+    padding-bottom: 2.5rem;
+    padding-left: 2rem;
+    overflow: auto;
+}
+
+.rr-docs-note-container {
+    background: var(--bg-color-note-container);
+    font-size: 0.72rem;
+    max-height: 2.3rem;
+    overflow: hidden;
+    margin-top: 0;
+    border-bottom: 1px solid var(--bg-color-docs-plaintext);
+    transition: 
+        max-height 300ms, 
+        padding 720ms, 
+        background 720ms;
+}
+
+.rr-docs-note-container:hover {
+    max-height: 17.3rem;
+    overflow: auto;
+    padding: 3rem;
+    background: #070802;
+}
+
+.rr-docs-grid-30-70 {
+    background: var(--bg-color-docs-grid-30-70);
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+/** Text Styles **/
+
+
+.rr-docs-tiny-msg {
+    color: var(--text-color-docs-tiny-msg);
+    font-size: 0.76rem;
+}
+
+.rr-docs-warning {
+    color: var(--text-color-warning-message);
+    font-size: 0.9rem;
+}
+
+
+.rr-docs-code {
+    color: var(--text-color-docs-code);
+    font-size: 0.77rem;
+}
+
+
+.rr-docs-code-ml {
+    color: var(--text-color-docs-code-ml);
+    font-size: 0.587rem;
+}
+
+/** Media Elements **/
+
+.rr-docs-video {
+    max-width: 100%;
+}
+
+.rr-docs-logo img {
+    border-radius: 50%;
+    max-width: 50%;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    height: auto;
+}
+
+/** Browser Elements **/
+
+::-webkit-scrollbar {
+   width: 1rem; 
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color-body-default);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 100vw;
+    border: 0.25rem solid var(--bg-color-body-default);
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color-link-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--text-color-link-active);
+}
+
+/** Links **/
+
+.rr-docs-container a {
+    color: var(--text-color-link);
+    text-decoration: var(--text-decoration-link);
+    transition: color 420ms;
+}
+
+.rr-docs-container a:link {
+    color: var(--text-color-link);
+    text-decoration: var(--text-decoration-link);
+}
+
+.rr-docs-container a:visited {
+    color: var(--text-color-link-visited);
+}
+
+.rr-docs-container a:hover {
+    color: var(--text-color-link-hover);
+    text-shadow: 2px 2px var(--bg-color-body-default);
+}
+
+.rr-docs-container a:active {
+    color: var(--text-color-link-active);
+}
+
+/** Sticky Elements **/
+
+.rr-docs-sticky-top {
+    position: sticky;
+    top: 0;
+    opacity: .967;
+    z-index: 10000;
+}
+
+/** Menus **/
+
+.rr-docs-rig-menu {
+    text-align: right;
+}
+
+.rr-docs-rig-menu li {
+    display: inline;
+}
+
+.rr-docs-rig-menu ul {
+    list-style-type: none;
+}
