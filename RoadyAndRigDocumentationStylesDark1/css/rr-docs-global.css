@@ -102,11 +102,13 @@ body {
 .rr-docs-rig-menu {
     background: var(--bg-color-docs-rig-menu);
     padding-top: 2.572rem;
+    padding-right: 2rem;
 }
 
 .rr-docs-code-ml-container {
     background: var(--bg-color-docs-code-ml-container);
     padding-bottom: 2.5rem;
+    padding-left: 2rem;
     overflow: auto;
 }
 
@@ -170,6 +172,8 @@ body {
 .rr-docs-logo img {
     border-radius: 50%;
     max-width: 50%;
+    margin-top: 1rem;
+    margin-left: 2rem;
     height: auto;
 }
 
@@ -204,6 +208,7 @@ body {
 .rr-docs-container a {
     color: var(--text-color-link);
     text-decoration: var(--text-decoration-link);
+    transition: color 420ms;
 }
 
 .rr-docs-container a:link {
@@ -229,6 +234,7 @@ body {
 .rr-docs-sticky-top {
     position: sticky;
     top: 0;
+    opacity: .967;
     z-index: 10000;
 }
 
