@@ -61,6 +61,15 @@ body {
     letter-spacing: 0.17rem;
 }
 
+h1, h2, h3 {
+    padding-top: 1.27rem;
+    padding-bottom: 2.27rem;
+}
+
+h1, h2 { 
+    text-align: center;
+}
+
 /** Container Styles**/
 
 .rr-docs-container {
@@ -75,6 +84,7 @@ body {
 
 .rr-docs-plaintext {
     background: var(--bg-color-docs-plaintext);
+    padding: 0 2rem;
 }
 
 .rr-docs-logo {
@@ -83,7 +93,7 @@ body {
 
 .rr-docs-rig-menu {
     background: var(--bg-color-docs-rig-menu);
-    padding-top: 2.027rem;
+    padding-top: 2.572rem;
 }
 
 .rr-docs-code-ml-container {
