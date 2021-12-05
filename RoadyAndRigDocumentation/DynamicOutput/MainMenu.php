@@ -1,3 +1,4 @@
+<!--
 <div class="rr-docs-container">
     <div class="rr-docs-output">
         <p class="rr-docs-plaintext rr-docs-tiny-msg">
@@ -7,6 +8,7 @@
         </p>
     </div>
 </div>
+-->
 <div class="rr-docs-container rr-docs-sticky-top">
     <div class="rr-docs-output rr-docs-grid-30-70">
         <div class="rr-docs-logo"><a href="index.php"><img src="roadyLogo.png" alt="roadyLogo"/></a></div>
