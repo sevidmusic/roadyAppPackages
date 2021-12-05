@@ -28,7 +28,7 @@
     --bg-color-docs-rig-menu: none;
     --bg-color-note-container: #1a1d23;
     --font-family-default: monospace;
-    --font-size-default: 1.17rem;
+    --font-size-default: 1rem;
     --margin-centered: 0 auto;
     --text-color-default: #fff8e8;
     --text-color-docs-code-ml: #467c79;
@@ -107,6 +107,7 @@ h1, h2 {
     font-size: 0.72rem;
     margin: 1rem 0;
     max-height: 2.3rem;
+    margin: 2rem auto;
     overflow: hidden;
     transition: 
         max-height 300ms, 
