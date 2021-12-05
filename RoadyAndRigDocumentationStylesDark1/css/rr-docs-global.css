@@ -18,27 +18,27 @@
  */
 
 :root {
-    --bg-color-body-default: black;
-    --bg-color-docs-code-ml-container: darkslategrey;
-    --bg-color-docs-container: dimgrey;
-    --bg-color-docs-grid-30-70: gainsboro;
-    --bg-color-docs-logo: ghostwhite;
-    --bg-color-docs-output: lightslategrey;
-    --bg-color-docs-plaintext: lightsteelblue;
-    --bg-color-docs-rig-menu: mediumslateblue;
-    --bg-color-note-container: midnightblue;
+    --bg-color-body-default: #030208;
+    --bg-color-docs-code-ml-container: #121720;
+    --bg-color-docs-container: #030208;
+    --bg-color-docs-grid-30-70: #09090c;
+    --bg-color-docs-logo: none;
+    --bg-color-docs-output: none;
+    --bg-color-docs-plaintext: #09090c;
+    --bg-color-docs-rig-menu: none;
+    --bg-color-note-container: #1a1d23;
     --font-family-default: monospace;
     --font-size-default: 1.17rem;
     --margin-centered: 0 auto;
-    --text-color-default: white;
-    --text-color-docs-code-ml: aquamarine;
-    --text-color-docs-code: orange;
-    --text-color-docs-tiny-msg: magenta;
-    --text-color-link-active: blueviolet;
-    --text-color-link-hover: brown;
-    --text-color-link-visited: cadetblue;
-    --text-color-link: chocolate;
-    --text-color-warning-message: cornflowerblue;
+    --text-color-default: #fff8e8;
+    --text-color-docs-code-ml: #467c79;
+    --text-color-docs-code: #467c79;
+    --text-color-docs-tiny-msg: #5f7975;
+    --text-color-link-active: #47e9b2;
+    --text-color-link-hover: #e96147;
+    --text-color-link-visited: #47cfe9;
+    --text-color-link: #47cfe9;
+    --text-color-warning-message: #7f0a00;
     --text-decoration-link: none;
 }
 
@@ -83,15 +83,32 @@ body {
 
 .rr-docs-rig-menu {
     background: var(--bg-color-docs-rig-menu);
+    padding-top: 2.027rem;
 }
 
 .rr-docs-code-ml-container {
     background: var(--bg-color-docs-code-ml-container);
     padding-bottom: 2.5rem;
+    overflow: auto;
 }
 
 .rr-docs-note-container {
     background: var(--bg-color-note-container);
+    font-size: 0.72rem;
+    margin: 1rem 0;
+    max-height: 2.3rem;
+    overflow: hidden;
+    transition: 
+        max-height 300ms, 
+        padding 720ms, 
+        background 720ms;
+}
+
+.rr-docs-note-container:hover {
+    max-height: 17.3rem;
+    overflow: auto;
+    padding: 3rem;
+    background: #070802;
 }
 
 .rr-docs-grid-30-70 {
@@ -116,11 +133,13 @@ body {
 
 .rr-docs-code {
     color: var(--text-color-docs-code);
+    font-size: 0.77rem;
 }
 
 
 .rr-docs-code-ml {
     color: var(--text-color-docs-code-ml);
+    font-size: 0.587rem;
 }
 
 /** Media Elements **/
@@ -192,13 +211,11 @@ body {
     position: sticky;
     top: 0;
     z-index: 10000;
-    margin-bottom: 1;
 }
 
 /** Menus **/
 
 .rr-docs-rig-menu {
-    padding-top: 0.9rem;
     text-align: right;
 }
 
