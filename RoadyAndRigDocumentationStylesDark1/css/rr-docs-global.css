@@ -61,13 +61,17 @@ body {
     letter-spacing: 0.17rem;
 }
 
-h1, h2, h3 {
+.rr-docs-container h1 {
     padding-top: 1.27rem;
     padding-bottom: 2.27rem;
+    text-align: center;
 }
 
-h1, h2 { 
-    text-align: center;
+.rr-docs-container h3 {
+    border-left: 1rem double var(--text-color-default);
+    border-radius: 5%;
+    padding-left: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 /** Container Styles**/
