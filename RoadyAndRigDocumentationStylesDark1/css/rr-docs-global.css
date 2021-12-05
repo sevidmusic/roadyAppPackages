@@ -40,6 +40,7 @@
     --text-color-link: #47cfe9;
     --text-color-warning-message: #7f0a00;
     --text-decoration-link: none;
+    --border-color-headers: #d59853;
 }
 
 /** Resets **/
@@ -68,10 +69,12 @@ body {
 }
 
 .rr-docs-container h3 {
-    border-left: 1rem double var(--text-color-default);
+    border-left: 0.68rem double var(--border-color-headers);
+    border-right: 0.68rem double var(--border-color-headers);
     border-radius: 5%;
     padding-left: 0.5rem;
     margin-top: 0.5rem;
+    font-size: 0.87rem;
 }
 
 /** Container Styles**/
@@ -89,6 +92,7 @@ body {
 .rr-docs-plaintext {
     background: var(--bg-color-docs-plaintext);
     padding: 0 2rem;
+    margin-top: 1.27rem;
 }
 
 .rr-docs-logo {
@@ -109,10 +113,10 @@ body {
 .rr-docs-note-container {
     background: var(--bg-color-note-container);
     font-size: 0.72rem;
-    margin: 1rem 0;
     max-height: 2.3rem;
-    margin: 2rem auto;
     overflow: hidden;
+    margin-top: 0;
+    border-bottom: 1px solid var(--bg-color-docs-plaintext);
     transition: 
         max-height 300ms, 
         padding 720ms, 
