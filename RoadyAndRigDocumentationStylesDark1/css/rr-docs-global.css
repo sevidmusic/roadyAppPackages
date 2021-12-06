@@ -1,20 +1,20 @@
-/** 
+/**
  * rr-docs-global.css
  *
- * This stylesheet defines styles for the 
+ * This stylesheet defines styles for the
  * RoadyAndRigDocumentation App.
  *
  * Style definition sections:
  * (listed to make it easy to search this document)
  *
- * Resets 
- * Generic 
+ * Resets
+ * Generic
  * Container Styles
- * Text Styles 
- * Browser Elements 
- * Links 
- * Sticky Elements 
- * Menus 
+ * Text Styles
+ * Browser Elements
+ * Links
+ * Sticky Elements
+ * Menus
  */
 
 :root {
@@ -27,6 +27,7 @@
     --bg-color-docs-plaintext: #09090c;
     --bg-color-docs-rig-menu: none;
     --bg-color-note-container: #1a1d23;
+    --border-color-headers: #d59853;
     --font-family-default: monospace;
     --font-size-default: 1rem;
     --margin-centered: 0 auto;
@@ -40,7 +41,7 @@
     --text-color-link: #47cfe9;
     --text-color-warning-message: #7f0a00;
     --text-decoration-link: none;
-    --border-color-headers: #d59853;
+    --text-shadow-color-highlighted-text: #1be29e;
 }
 
 /** Resets **/
@@ -93,6 +94,7 @@ body {
     background: var(--bg-color-docs-plaintext);
     padding: 0 2rem;
     margin-top: 1.27rem;
+    overflow: auto;
 }
 
 .rr-docs-logo {
@@ -119,9 +121,9 @@ body {
     overflow: hidden;
     margin-top: 0;
     border-bottom: 1px solid var(--bg-color-docs-plaintext);
-    transition: 
-        max-height 300ms, 
-        padding 720ms, 
+    transition:
+        max-height 300ms,
+        padding 720ms,
         background 720ms;
 }
 
@@ -179,8 +181,14 @@ body {
 
 /** Browser Elements **/
 
+::selection {
+    background: var(--bg-color-docs-code-ml-container);
+    color: var(--text-color-link-active);
+    text-shadow: 1px 1px var(--text-shadow-color-highlighted-text);
+}
+
 ::-webkit-scrollbar {
-   width: 1rem; 
+   width: 1rem;
 }
 
 ::-webkit-scrollbar-track {
