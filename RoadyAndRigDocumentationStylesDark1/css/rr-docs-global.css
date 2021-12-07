@@ -117,20 +117,20 @@ body {
 .rr-docs-note-container {
     background: var(--bg-color-note-container);
     font-size: 0.72rem;
-    max-height: 2.3rem;
+    max-height: 27rem;
+    padding: 1rem;
     overflow: hidden;
-    margin-top: 0;
+    margin-top: 0.5rem;
     border-bottom: 1px solid var(--bg-color-docs-plaintext);
     transition:
-        max-height 300ms,
+        overflow 720ms,
         padding 720ms,
         background 720ms;
 }
 
 .rr-docs-note-container:hover {
-    max-height: 17.3rem;
     overflow: auto;
-    padding: 3rem;
+    padding: 4.2rem;
     background: #070802;
 }
 
