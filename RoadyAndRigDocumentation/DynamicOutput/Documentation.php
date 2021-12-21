@@ -355,14 +355,10 @@ $formattedOutput = preg_replace(
               Sorry, documentation for 
               <code class="rr-docs-code">
           ' . 
-              !empty($requestedDocumentation) 
-              && 
-              is_string($requestedDocumentation)
-              ? $requestedDocumentation
-              : 'the requested documentation'
-              . '
-                </code> 
-                is not available yet.
+              $requestedDocumentation
+          . '
+              </code> 
+              is not available yet.
             </p>
             <p>
                 <a href="index.php">Return to Homepage</a>

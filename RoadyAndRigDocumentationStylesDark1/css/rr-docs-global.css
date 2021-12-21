@@ -59,8 +59,8 @@ body {
     color: var(--text-color-default);
     font-family: var(--font-family-default);
     font-size: var(--font-size-default);
-    line-height: 2.399rem;
-    letter-spacing: 0.17rem;
+    line-height: 1.399rem;
+    letter-spacing: 0.1rem;
 }
 
 .rr-docs-container h1 {

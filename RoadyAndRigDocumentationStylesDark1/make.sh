@@ -4,4 +4,4 @@
 set -o posix
 
 
-rig --new-app --name RoadyAndRigDocumentationStylesDark1 --domain 'http://localhost:8080'
+rig --new-app --name RoadyAndRigDocumentationStylesDark1 --domain 'https://roady.tech'
