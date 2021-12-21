@@ -4,7 +4,7 @@
 set -o posix
 
 
-rig --new-app --name RoadyAndRigDocumentation --domain 'http://localhost:8420'
+rig --new-app --name RoadyAndRigDocumentation --domain 'https://roady.tech'
 
 rig --new-global-response --for-app 'RoadyAndRigDocumentation' --name 'Documentation' --position '2'
 
