@@ -2,11 +2,13 @@
 
 namespace Apps\RoadyMediaPlayer\resources\interfaces\component\media;
 
+use roady\interfaces\primary\Positionable;
+
 /**
  * A SwitchableComponent that represents a piece of media that 
  * accessible at a specific url.
  */
-interface Media
+interface Media extends Positionable
 {
 
     /**
