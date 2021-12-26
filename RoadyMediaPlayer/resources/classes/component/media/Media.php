@@ -31,11 +31,7 @@ class Media extends SwitchableComponent implements MediaInterface {
 
     public function metaData(): array
     {
-        return [
-            'Title' => 'Quick Installation, setup, and Hello World Video',
-            'Description' => 'Brief guide on installing and setting up roady, and creating a Hello World App',
-            'RepoUrl' => 'https://roadydemos.us-east-1.linodeobjects.com',
-        ];
+        return $this->metaData;
     }
 
     public function mediaUrl(): string 

@@ -10,6 +10,7 @@ use roady\classes\primary\Switchable;
 
 class MediaTest extends TestCase 
 {
+
     public function testMediaUrlReturnsAssignedMediaUrl(): void 
     {
         $specifiedUrl = 'http://localhost:' . rand(8000, 8999);
@@ -27,6 +28,29 @@ class MediaTest extends TestCase
         $this->assertEquals(
             $specifiedUrl,
             $media->mediaUrl()
+        );
+    }
+
+    public function testMetaDataReturnsAssignedMetaData(): void 
+    {
+        $specifiedMetaData = [
+            'foo' => 'bar',
+            'baz' => strval(rand(0, 10)),
+        ];
+        $media = new Media(
+            new Storable(
+                'name',
+                'location',
+                'container'
+            ),
+            new Switchable(),
+            new Positionable(),
+            'http://localhost:8080',
+            $specifiedMetaData
+        );
+        $this->assertEquals(
+            $specifiedMetaData,
+            $media->metaData()
         );
     }
 }
