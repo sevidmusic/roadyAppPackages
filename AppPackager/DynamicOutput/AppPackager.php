@@ -87,6 +87,7 @@ $getAvailableAppNames = function(Request $currentRequest, ComponentCrud $compone
             $appInfo[] = $factory->getApp()->getName();
         }
     }
+    sort($appInfo);
     return $appInfo;
 };
 
