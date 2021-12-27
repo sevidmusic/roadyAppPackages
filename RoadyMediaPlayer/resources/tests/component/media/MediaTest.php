@@ -22,7 +22,7 @@ class MediaTest extends TestCase
      * @param array<string, string> $metaData The meta data to assign
      *                                        to the test Media.
      */
-    private function newMediaInstance(
+    protected function newMediaInstance(
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
