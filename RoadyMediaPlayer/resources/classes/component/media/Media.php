@@ -30,8 +30,26 @@ class Media extends SwitchableComponent implements MediaInterface {
         parent::__construct($storable, $switchable);
     }
 
+    /**
+     * Purge any items in the array whose key and value are not of
+     * type string.
+     *
+     * @param array<mixed> $array The array to purge.
+     *
+     */
+    private function purgeNonStrings(array &$array): void
+    {
+        foreach($array as $key => $value) {
+            if(is_string($key) && is_string($value)) {
+                continue;
+            }
+            unset($array[$key]);
+        }
+    }
+
     public function metaData(): array
     {
+        $this->purgeNonStrings($this->metaData);
         return $this->metaData;
     }
 

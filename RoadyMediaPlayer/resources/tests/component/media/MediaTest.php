@@ -51,6 +51,33 @@ class MediaTest extends TestCase
         );
     }
 
+    public function testMetaDataReturnsASingleDimensionalAssociativeArrayWhoseKeysAndValuesAreStrings(): void 
+    {
+        $specifiedMetaData = [
+            'foo' => 'bar' . rand(1000, 9999),
+            'bar' => strval(rand(0, 10)),
+            'baz' => [
+                'foo' => 'value should be ignored',
+                'bar' => 'value should be ignored',
+            ],
+            rand(0, 9999),
+            123.456789,
+            (object) ['foo' => 'bar'],
+        ];
+        /** @phpstan-ignore-next-line */
+        $media = $this->newMediaInstance(metaData:$specifiedMetaData);
+        foreach($media->metaData() as $key => $value) {
+            $this->assertTrue(
+                is_string($key), 
+                'Media::metaData() must return an array whose keys are strings.'
+            );
+            $this->assertTrue(
+                is_string($value), 
+                'Media::metaData() must return an array whose values are strings.'
+            );
+        }
+    }
+
     public function testMetaDataReturnsAssignedMetaData(): void 
     {
         $specifiedMetaData = [
