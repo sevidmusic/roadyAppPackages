@@ -7,6 +7,7 @@ use roady\classes\component\SwitchableComponent ;
 use roady\interfaces\primary\Positionable;
 use roady\interfaces\primary\Storable;
 use roady\interfaces\primary\Switchable;
+use \Exception;
 
 class Media extends SwitchableComponent implements MediaInterface {
 
@@ -41,7 +42,30 @@ class Media extends SwitchableComponent implements MediaInterface {
 
     public function mediaIsAccessible(): bool 
     {
-        return true;
+        try {
+            $headers = get_headers(
+                $this->mediaUrl(), 
+                associative: true
+            );
+            $responseCode = (
+                is_array($headers) 
+                ? ($headers[0] ?? 'COULD_NOT_DETERMINE_RESPONSE_CODE') 
+                : 'FAILED_TO_GET_HEADER'
+            );
+            if($responseCode === 'HTTP/1.1 200 OK') {
+                return true; 
+            }
+        } catch (Exception $e) {
+            $this->log(
+                'Failed to determine if media is accessible, an error occurred: %s',
+                $e->getMessage()
+            );
+        }
+        $this->log(
+            'The requested media is not available at the url: %s',
+            $this->mediaUrl()
+        );
+        return false;
     }
 
     public function increasePosition(): bool 
