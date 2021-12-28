@@ -1,6 +1,6 @@
 <?php
 
-namespace Apps\RoadyMediaPlayer\resources\tests\media;
+namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 
 use PHPUnit\Framework\TestCase;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
