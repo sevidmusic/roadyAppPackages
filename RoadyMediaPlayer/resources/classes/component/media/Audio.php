@@ -4,18 +4,17 @@ namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 
 use \Exception;
 
-class Video extends Media 
+class Audio extends Media 
 {
 
     /**
      * @return array<int, string> An array of Mime types supported 
      *                            video Mime Types.
      */
-    private function supportedVideoMimeTypes(): array 
+    private function supportedAudioMimeTypes(): array 
     {
         return [
-            'video/webm',
-            'video/mp4',
+            'audio/mpeg',
         ];
     }
 
@@ -31,7 +30,7 @@ class Video extends Media
                 ? ($headers['Content-Type'] ?? 'COULD_NOT_DETERMINE_MIME_TYPE') 
                 : 'FAILED_TO_GET_HEADER'
             );
-            if(in_array($contentType, $this->supportedVideoMimeTypes())) {
+            if(in_array($contentType, $this->supportedAudioMimeTypes())) {
                 return parent::mediaIsAccessible(); 
             }
         } catch (Exception $e) {
@@ -41,7 +40,7 @@ class Video extends Media
             );
         }
         $this->log(
-            'The requested media is not a supported Video type, media url: %s',
+            'The requested media is not a supported Audio type, media url: %s',
             $this->mediaUrl()
         );
         return false; 
