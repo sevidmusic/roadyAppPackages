@@ -5,18 +5,18 @@ namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
 use roady\classes\primary\Positionable;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 
 class AudioTest extends MediaTest
 {
 
     protected function newMediaInstance(
+        string $mediaName = 'Media',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {
         return $this->newAudioInstance(
+            audioName: $mediaName,
             mediaUrl: $mediaUrl, 
             mediaPosition: $mediaPosition, 
             metaData: $metaData
@@ -35,17 +35,13 @@ class AudioTest extends MediaTest
      *                                        to the test Audio.
      */
     protected function newAudioInstance(
+        string $audioName = 'Audio',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Audio {
         return new Audio(
-            new Storable(
-                'name',
-                'location',
-                'container'
-            ),
-            new Switchable(),
+            $audioName,
             new Positionable($mediaPosition),
             $mediaUrl,
             $metaData

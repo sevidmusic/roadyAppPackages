@@ -5,8 +5,6 @@ namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 use PHPUnit\Framework\TestCase;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use roady\classes\primary\Positionable;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 
 class MediaTest extends TestCase 
 {
@@ -23,20 +21,46 @@ class MediaTest extends TestCase
      *                                        to the test Media.
      */
     protected function newMediaInstance(
+        string $mediaName = 'Media',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {
         return new Media(
-            new Storable(
-                'name',
-                'location',
-                'container'
-            ),
-            new Switchable(),
+            $mediaName,
             new Positionable($mediaPosition),
             $mediaUrl,
             $metaData
+        );
+    }
+
+    public function testGetNameReturnsAssignedName(): void
+    {
+        $expectedName = 'MediaName' . rand(0, 10000);
+        $media = $this->newMediaInstance(mediaName: $expectedName);
+        $this->assertEquals(
+            $expectedName,
+            $media->getName()
+        );
+    }
+
+    public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
+    {
+        $media = $this->newMediaInstance();
+        $this->assertEquals(
+            Media::MEDIA_LOCATION,
+            $media->getLocation(),
+        );
+    }
+
+    public function testGetContainerReturnsMediTypeWithoutNamespace(): void
+    {
+        $media = $this->newMediaInstance();
+        $typeName = explode('\\', $media->getType());
+        $typeName = array_pop($typeName);
+        $this->assertEquals(
+            $typeName,
+            $media->getContainer(),
         );
     }
 
@@ -153,7 +177,7 @@ class MediaTest extends TestCase
 
     public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
     {
-        $specifiedUrl = 'https://roady.tech/index.php';
+        $specifiedUrl = 'https://darlingdata.tech/index.php';
         $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
         $this->assertTrue(
             $media->mediaIsAccessible()

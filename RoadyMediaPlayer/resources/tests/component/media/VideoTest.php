@@ -5,18 +5,18 @@ namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
 use roady\classes\primary\Positionable;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 
 class VideoTest extends MediaTest
 {
 
     protected function newMediaInstance(
+        string $mediaName = 'Media',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {
         return $this->newVideoInstance(
+            videoName: $mediaName,
             mediaUrl: $mediaUrl, 
             mediaPosition: $mediaPosition, 
             metaData: $metaData
@@ -35,17 +35,13 @@ class VideoTest extends MediaTest
      *                                        to the test Video.
      */
     protected function newVideoInstance(
+        string $videoName = 'Video',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Video {
         return new Video(
-            new Storable(
-                'name',
-                'location',
-                'container'
-            ),
-            new Switchable(),
+            $videoName,
             new Positionable($mediaPosition),
             $mediaUrl,
             $metaData

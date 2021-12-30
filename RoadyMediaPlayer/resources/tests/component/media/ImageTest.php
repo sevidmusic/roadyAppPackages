@@ -5,18 +5,18 @@ namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
 use roady\classes\primary\Positionable;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 
 class ImageTest extends MediaTest
 {
 
     protected function newMediaInstance(
+        string $mediaName = 'Media',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {
         return $this->newImageInstance(
+            imageName: $mediaName,
             mediaUrl: $mediaUrl, 
             mediaPosition: $mediaPosition, 
             metaData: $metaData
@@ -35,17 +35,13 @@ class ImageTest extends MediaTest
      *                                        to the test Image.
      */
     protected function newImageInstance(
+        string $imageName = 'Image',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Image {
         return new Image(
-            new Storable(
-                'name',
-                'location',
-                'container'
-            ),
-            new Switchable(),
+            $imageName,
             new Positionable($mediaPosition),
             $mediaUrl,
             $metaData

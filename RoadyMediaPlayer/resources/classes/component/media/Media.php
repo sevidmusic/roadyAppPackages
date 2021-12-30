@@ -3,31 +3,46 @@
 namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
-use roady\classes\component\SwitchableComponent ;
-use roady\interfaces\primary\Positionable;
-use roady\interfaces\primary\Storable;
-use roady\interfaces\primary\Switchable;
 use \Exception;
+use roady\classes\component\SwitchableComponent ;
+use roady\classes\primary\Storable;
+use roady\interfaces\primary\Positionable;
+use roady\classes\primary\Switchable;
 
-class Media extends SwitchableComponent implements MediaInterface {
+class Media extends SwitchableComponent implements MediaInterface 
+{
 
     /**
      * Instantiate a new Media instance.
      *
+     * @param string $name The name to assign to the Media.
+     *
+     * @param Positionable $positionable A Positionable instance 
+     *                                   that will manage 
+     *                                   the media's position.
+     *
      * @param string $mediaUrl The Media's url.
+     *
      * @param array <string, string> $metaData An array of the Media's
      *                                         meta data.
      *
      */
     public function __construct(
-        Storable $storable, 
-        Switchable $switchable,
+        string $name,
         private Positionable $positionable,
         private string $mediaUrl, 
         private array $metaData,
     )
     {
-        parent::__construct($storable, $switchable);
+        $mediaClass = get_class($this);
+        $typeName = explode('\\', $mediaClass);
+        $typeName = array_pop($typeName);
+        $storable = new Storable(
+            $name,
+            self::MEDIA_LOCATION,
+            $typeName
+        );
+        parent::__construct($storable, new Switchable());
     }
 
     /**

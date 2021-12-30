@@ -11,6 +11,8 @@ use roady\interfaces\primary\Positionable;
 interface Media extends Positionable
 {
 
+    const MEDIA_LOCATION = 'RoadyMediaPlayer';
+
     /**
      * Return a single dimensional associative array of the
      * Media's meta data.
