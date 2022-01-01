@@ -7,6 +7,7 @@ use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
 use PHPUnit\Framework\TestCase;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
+use roady\interfaces\primary\Storable as StorableInteface;
 use roady\classes\primary\Positionable;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
@@ -72,6 +73,26 @@ class MediaCrudTest extends TestCase
         );
     }
 
+
+    /**
+     * Return an array of the meta data expected to be assigned
+     * to the Media instance returned when the specified media
+     * could not be read from stroage by of the readMedai()
+     * method.
+     *
+     * @return array<string, string> 
+     */
+    public function expectedErrorMetaData(StorableInteface $storable): array
+    {
+        return [
+            'Error' => 'MEDIA_DOES_NOT_EXIST_IN_STORAGE',
+            'MediaName' => $storable->getName(),
+            'MediaUniqueId' => $storable->getUniqueId(),
+            'MediaLocation' => $storable->getLocation(),
+            'MediaContainer' => $storable->getContainer(),
+        ];
+    }
+
     /**
      * The createMedia() method must save the Media to storage.
      *
@@ -89,4 +110,37 @@ class MediaCrudTest extends TestCase
         );
     }
 
+    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaDoesNotExistInStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertFalse(
+            $storedMedia->mediaIsAccessible()
+        );
+    }
+
+    public function testReadMediaReturnsMediaWhoseNameMatchesTheSpecifiedMediasNameIfSpecifiedMediaDoesNotExistInStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
+            $media->getName(),
+            $storedMedia->getName()
+        );
+    }
+
+    public function testReadMediaReturnsMediaWhoseMetaDataMatchesTheExpectedErrorMetaDataThatShouldBeAssignedWhenMediaCantBeReadFromStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
+            $this->expectedErrorMetaData($media),
+            $storedMedia->metaData()
+        );
+    }
+    // public function testReadMediaReturnsMediaWhoseIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
+    // public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
 }

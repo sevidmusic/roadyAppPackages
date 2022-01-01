@@ -4,6 +4,7 @@ namespace Apps\RoadyMediaPlayer\resources\interfaces\component\crud;
 
 use roady\interfaces\component\Crud\ComponentCrud;
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media;
+use roady\interfaces\primary\Storable;
 
 /**
  * A MediaCrud is a ComponentCrud that can be used to create, read, 
@@ -30,4 +31,5 @@ use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media;
 interface MediaCrud extends ComponentCrud
 {
     public function createMedia(Media $media): bool;
+    public function readMedia(Storable $storable): Media;
 }
