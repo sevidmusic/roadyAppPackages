@@ -6,6 +6,28 @@ use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use roady\classes\primary\Positionable;
 
+/**
+ * Defines tests for the Image calass.
+ *
+ * - Methods -
+ *
+ * protected function newMediaInstance(
+ *     string $imageName = 'Image',
+ *     string $mediaUrl = 'http://localhost:8080', 
+ *     int|float $mediaPosition = 0, 
+ *     array $metaData = []
+ * ): Image
+ *
+ * protected function newImageInstance(
+ *     string $imageName = 'Image',
+ *     string $mediaUrl = 'http://localhost:8080', 
+ *     int|float $mediaPosition = 0, 
+ *     array $metaData = []
+ * ): Image 
+ *
+ * public function testMediaIsAccessibleReturnsTrueIfMediasUrlPointsToMediaWithASupportedMimeType(): void
+ * public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
+ */
 class ImageTest extends MediaTest
 {
 

@@ -17,9 +17,7 @@ use roady\classes\primary\Switchable;
  * - Methods - 
  *
  * private function getTestMediaCrud(): MediaCrud
- *
  * protected function newMediaInstance(): MediaInterface 
- *
  * public function testCreateMediaSavesMediaToStorage(): void
  *
  */

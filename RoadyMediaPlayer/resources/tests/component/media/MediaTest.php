@@ -6,6 +6,31 @@ use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use UnitTests\classes\component\SwitchableComponentTest;
 use roady\classes\primary\Positionable;
 
+/**
+ * Defines tests for the Media class.
+ *
+ * - Methods -
+ *
+ * protected function newMediaInstance(
+ *     string $mediaName = 'Media', 
+ *     string $mediaUrl = 'https://localhost:8080', 
+ *     string $mediaPosition = 0, 
+ *     array $metaData = []
+ * ): Media
+ * public function testDecreasePositionDecreasesPosition(): void
+ * public function testGetContainerReturnsMediaTypeWithoutNamespace(): void
+ * public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
+ * public function testGetNameReturnsAssignedName(): void
+ * public function testGetPositionReturnsAssignedPosition(): void
+ * public function testIncreasePositionIncreasesPosition(): void
+ * public function testMediaIsAccessibleReturnsFalseIfMediasUrlIsNotAccessible(): void
+ * public function testMediaIsAccessibleReturnsFalseIfRequestToMediasUrlDoesNotReturnHttpResponseCode200(): void
+ * public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
+ * public function testMediaUrlReturnsAssignedMediaUrl(): void
+ * public function testMetaDataReturnsASingleDimensionalAssociativeArrayWhoseKeysAndValuesAreStrings(): void
+ * public function testMetaDataReturnsAssignedMetaData(): void
+ * public function testSwitchStateSwitchesState(): void
+ */
 class MediaTest extends SwitchableComponentTest 
 {
 
@@ -34,24 +59,14 @@ class MediaTest extends SwitchableComponentTest
         );
     }
 
-    public function testGetNameReturnsAssignedName(): void
+    public function testDecreasePositionDecreasesPosition(): void 
     {
-        $expectedName = 'MediaName' . rand(0, 10000);
-        $media = $this->newMediaInstance(mediaName: $expectedName);
-        $this->assertEquals(
-            $expectedName,
-            $media->getName(),
-            'getName() must return assigned name.',
-        );
-    }
-
-    public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
-    {
-        $media = $this->newMediaInstance();
-        $this->assertEquals(
-            $media::MEDIA_LOCATION,
-            $media->getLocation(),
-            'getLocation() must return value of Media::MEDIA_LOCATION'
+        $specifiedPosition = rand(0, 1000);
+        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
+        $media->decreasePosition();
+        $this->assertTrue(
+            $media->getPosition() < $specifiedPosition,
+            'decreasePosition() must decrease the assigned position.',
         );
     }
 
@@ -64,6 +79,78 @@ class MediaTest extends SwitchableComponentTest
             $typeName,
             $media->getContainer(),
             'getContainer() must return the Media\'s type excluding the namespace.',
+        );
+    }
+
+    public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
+    {
+        $media = $this->newMediaInstance();
+        $this->assertEquals(
+            $media::MEDIA_LOCATION,
+            $media->getLocation(),
+            'getLocation() must return value of Media::MEDIA_LOCATION'
+        );
+    }
+    public function testGetNameReturnsAssignedName(): void
+    {
+        $expectedName = 'MediaName' . rand(0, 10000);
+        $media = $this->newMediaInstance(mediaName: $expectedName);
+        $this->assertEquals(
+            $expectedName,
+            $media->getName(),
+            'getName() must return assigned name.',
+        );
+    }
+
+    public function testGetPositionReturnsAssignedPosition(): void 
+    {
+        $specifiedPosition = rand(0, 1000);
+        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
+        $this->assertEquals(
+            $specifiedPosition,
+            $media->getPosition(),
+            'getPosition() must return the assigned position.',
+        );
+    }
+
+    public function testIncreasePositionIncreasesPosition(): void 
+    {
+        $specifiedPosition = rand(0, 1000);
+        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
+        $media->increasePosition();
+        $this->assertTrue(
+            $media->getPosition() > $specifiedPosition,
+            'increasePosition() must increase the assigned position.',
+        );
+    }
+
+    public function testMediaIsAccessibleReturnsFalseIfMediasUrlIsNotAccessible(): void
+    {
+        $specifiedUrl = 'http://localhost:' . rand(8000, 8999) . '/' . rand(0, 1000) . '/url/is/not/accessible';
+        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
+        $this->assertFalse(
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the false if the media url is not accessible.',
+        );
+    }
+
+    public function testMediaIsAccessibleReturnsFalseIfRequestToMediasUrlDoesNotReturnHttpResponseCode200(): void
+    {
+        $specifiedUrl = 'https://roady.tech/page/does/not/exist.html';
+        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
+        $this->assertFalse(
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the false if a request to the media url does not return http response code 200.',
+        );
+    }
+
+    public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
+    {
+        $specifiedUrl = 'https://darlingdata.tech/index.php';
+        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
+        $this->assertTrue(
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the true if a request to the media url returns http response code 200.',
         );
     }
 
@@ -119,39 +206,6 @@ class MediaTest extends SwitchableComponentTest
         );
     }
 
-    public function testIncreasePositionIncreasesPosition(): void 
-    {
-        $specifiedPosition = rand(0, 1000);
-        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
-        $media->increasePosition();
-        $this->assertTrue(
-            $media->getPosition() > $specifiedPosition,
-            'increasePosition() must increase the assigned position.',
-        );
-    }
-
-    public function testDecreasePositionDecreasesPosition(): void 
-    {
-        $specifiedPosition = rand(0, 1000);
-        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
-        $media->decreasePosition();
-        $this->assertTrue(
-            $media->getPosition() < $specifiedPosition,
-            'decreasePosition() must decrease the assigned position.',
-        );
-    }
-
-    public function testGetPositionReturnsAssignedPosition(): void 
-    {
-        $specifiedPosition = rand(0, 1000);
-        $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
-        $this->assertEquals(
-            $specifiedPosition,
-            $media->getPosition(),
-            'getPosition() must return the assigned position.',
-        );
-    }
-
     public function testSwitchStateSwitchesState(): void
     {
         $media = $this->newMediaInstance();
@@ -164,34 +218,5 @@ class MediaTest extends SwitchableComponentTest
         );
     }
 
-    public function testMediaIsAccessibleReturnsFalseIfMediasUrlIsNotAccessible(): void
-    {
-        $specifiedUrl = 'http://localhost:' . rand(8000, 8999) . '/' . rand(0, 1000) . '/url/is/not/accessible';
-        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
-        $this->assertFalse(
-            $media->mediaIsAccessible(),
-            'mediaIsAccessible() must return the false if the media url is not accessible.',
-        );
-    }
-
-    public function testMediaIsAccessibleReturnsFalseIfRequestToMediasUrlDoesNotReturnHttpResponseCode200(): void
-    {
-        $specifiedUrl = 'https://roady.tech/page/does/not/exist.html';
-        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
-        $this->assertFalse(
-            $media->mediaIsAccessible(),
-            'mediaIsAccessible() must return the false if a request to the media url does not return http response code 200.',
-        );
-    }
-
-    public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
-    {
-        $specifiedUrl = 'https://darlingdata.tech/index.php';
-        $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
-        $this->assertTrue(
-            $media->mediaIsAccessible(),
-            'mediaIsAccessible() must return the true if a request to the media url returns http response code 200.',
-        );
-    }
 }
 

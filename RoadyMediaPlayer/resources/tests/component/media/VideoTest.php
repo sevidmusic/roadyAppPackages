@@ -6,6 +6,29 @@ use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
 use roady\classes\primary\Positionable;
 
+/**
+ * Defines tests for the Video class.
+ *  
+ * - Methods -
+ *
+ * protected function newMediaInstance(
+ *     string $mediaName = 'Media',
+ *     string $mediaUrl = 'http://localhost:8080', 
+ *     int|float $mediaPosition = 0, 
+ *     array $metaData = []
+ * ): Media
+ *
+ * protected function newVideoInstance(
+ *     string $videoName = 'Video',
+ *     string $mediaUrl = 'http://localhost:8080', 
+ *     int|float $mediaPosition = 0, 
+ *     array $metaData = []
+ * }
+ * public function testMediaIsAccessibleReturnsFalseIfMediasUrlPointsToMediaWithAnUnSupportedMimeType(): void
+ * public function testMediaIsAccessibleReturnsTrueIfMediasUrlPointsToMediaWithASupportedMimeType(): void
+ * public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
+ *
+ */
 class VideoTest extends MediaTest
 {
 
