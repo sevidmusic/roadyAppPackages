@@ -33,14 +33,14 @@ class MediaCrudTest extends TestCase
     {
         return new MediaCrud(
             new Storable(
-                'TestMediaCrud',
+                'TestMediaCrud' . rand(0, 1000),
                 'TestComponents',
                 'Cruds'
             ),
             new Switchable(),
             new JsonStorageDriver(
                 new Storable(
-                    'TestJsonStorageDriver',
+                    'TestJsonStorageDriver' . rand(0, 1000),
                     'TestComponents',
                     'StorageDrivers'
                 ),
@@ -62,7 +62,7 @@ class MediaCrudTest extends TestCase
             'https://sevidmusic.us-east-1.linodeobjects.com/Lies_by_SeviD_20210902.mp3',
         ];
         return new Media(
-            'name',
+            'Media' . rand(0, 1000),
             new Positionable(rand(0, 1000)),
             $mediaUrls[array_rand($mediaUrls)],
             [
@@ -94,12 +94,6 @@ class MediaCrudTest extends TestCase
         ];
     }
 
-    /**
-     * The createMedia() method must save the Media to storage.
-     *
-     * After createMedia() is called, the Media must be able to
-     * be retrieved from storage by the read() method. 
-     */
     public function testCreateMediaSavesMediaToStorage(): void
     {
         $media = $this->newMediaInstance();
@@ -166,6 +160,19 @@ class MediaCrudTest extends TestCase
         $this->assertEquals(
             $media,
             $storedMedia
+        );
+    }
+
+    public function testUpdateMediaUpdateSpecifiedMedia(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $mediaCrud->createMedia($media);
+        $newMedia = $this->newMediaInstance();
+        $mediaCrud->updateMedia($media, $newMedia);
+        $this->assertEquals(
+            $newMedia,
+            $mediaCrud->readMedia($newMedia)
         );
     }
 }

@@ -23,13 +23,13 @@ use roady\interfaces\primary\Storable;
  *
  * public function createMedia(Media $media): bool;
  * public function readMedia(Storable $storable): Media;
- * public function readAllMedia(string $name, string $container): array;
- * public function updateMedia(Media $originalMedia, Media $newMedia): bool;
  * public function deleteMedia(Media $media): bool;
+ * public function readAllMedia(string $mediaType): array;
  *
  */
 interface MediaCrud extends ComponentCrud
 {
     public function createMedia(Media $media): bool;
     public function readMedia(Storable $storable): Media;
+    public function updateMedia(Media $originalMedia, Media $newMedia): bool;
 }

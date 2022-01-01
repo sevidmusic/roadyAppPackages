@@ -39,4 +39,9 @@ class MediaCrud extends ComponentCrud
             ]
         );
     }
+
+    public function updateMedia(MediaInterface $originalMedia, MediaInterface $newMedia): bool 
+    {
+        return parent::update($originalMedia, $newMedia);
+    }
 }
