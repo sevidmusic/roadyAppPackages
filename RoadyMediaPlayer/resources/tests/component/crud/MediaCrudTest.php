@@ -6,11 +6,12 @@ use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
 use PHPUnit\Framework\TestCase;
+use roady\classes\component\Component;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
-use roady\interfaces\primary\Storable as StorableInteface;
 use roady\classes\primary\Positionable;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
+use roady\interfaces\primary\Storable as StorableInteface;
 
 /**
  * Defines tests for the MediaCrud class.
@@ -141,6 +142,30 @@ class MediaCrudTest extends TestCase
             $storedMedia->metaData()
         );
     }
-    // public function testReadMediaReturnsMediaWhoseIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
-    // public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
+
+    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
+    {
+        $media = $this->newMediaInstance();
+        $component = new Component(
+            $media->export()['storable']
+        );
+        $mediaCrud = $this->getTestMediaCrud();
+        $mediaCrud->create($component);
+        $storedCompnent = $mediaCrud->readMedia($media);
+        $this->assertFalse(
+            $storedCompnent->mediaIsAccessible()
+        );
+    }
+
+    public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $mediaCrud->createMedia($media);
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
+            $media,
+            $storedMedia
+        );
+    }
 }

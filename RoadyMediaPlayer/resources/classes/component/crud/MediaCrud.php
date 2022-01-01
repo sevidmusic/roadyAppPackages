@@ -20,6 +20,12 @@ class MediaCrud extends ComponentCrud
 
     public function readMedia(Storable $storable): MediaInterface 
     {
+        $storedCompnent = parent::read($storable);
+        $storedCompnentImplements = class_implements($storedCompnent);
+        if(is_array($storedCompnentImplements) && in_array(MediaInterface::class, $storedCompnentImplements)) {
+            /** @var MediaInterface $storedCompnent */
+            return $storedCompnent;
+        }
         return new Media(
             $storable->getName(),
             new Positionable(),
