@@ -2,8 +2,8 @@
 
 namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use roady\classes\primary\Positionable;
 
 class AudioTest extends MediaTest
@@ -46,17 +46,6 @@ class AudioTest extends MediaTest
             $mediaUrl,
             $metaData
         );
-    }
-
-    /**
-     * @return array<int, string> An array of Mime types supported 
-     *                            video Mime Types.
-     */
-    private function supportedAudioMimeTypes(): array 
-    {
-        return [
-            'audio/mpeg',
-        ];
     }
 
     public function testMediaIsAccessibleReturnsFalseIfMediasUrlPointsToMediaWithAnUnSupportedMimeType(): void

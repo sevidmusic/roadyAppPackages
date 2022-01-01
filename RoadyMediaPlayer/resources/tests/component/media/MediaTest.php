@@ -2,11 +2,11 @@
 
 namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 
-use PHPUnit\Framework\TestCase;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
+use UnitTests\classes\component\SwitchableComponentTest;
 use roady\classes\primary\Positionable;
 
-class MediaTest extends TestCase 
+class MediaTest extends SwitchableComponentTest 
 {
 
     /**
@@ -40,7 +40,8 @@ class MediaTest extends TestCase
         $media = $this->newMediaInstance(mediaName: $expectedName);
         $this->assertEquals(
             $expectedName,
-            $media->getName()
+            $media->getName(),
+            'getName() must return assigned name.',
         );
     }
 
@@ -48,12 +49,13 @@ class MediaTest extends TestCase
     {
         $media = $this->newMediaInstance();
         $this->assertEquals(
-            Media::MEDIA_LOCATION,
+            $media::MEDIA_LOCATION,
             $media->getLocation(),
+            'getLocation() must return value of Media::MEDIA_LOCATION'
         );
     }
 
-    public function testGetContainerReturnsMediTypeWithoutNamespace(): void
+    public function testGetContainerReturnsMediaTypeWithoutNamespace(): void
     {
         $media = $this->newMediaInstance();
         $typeName = explode('\\', $media->getType());
@@ -61,6 +63,7 @@ class MediaTest extends TestCase
         $this->assertEquals(
             $typeName,
             $media->getContainer(),
+            'getContainer() must return the Media\'s type excluding the namespace.',
         );
     }
 
@@ -71,7 +74,7 @@ class MediaTest extends TestCase
         $this->assertEquals(
             $specifiedUrl,
             $media->mediaUrl(),
-            'Media::mediaUrl() must return the url assigned on instantiation.'
+            'Media::mediaUrl() must return the assigned url.'
         );
     }
 
@@ -112,7 +115,7 @@ class MediaTest extends TestCase
         $this->assertEquals(
             $specifiedMetaData,
             $media->metaData(),
-            'Media::metaData() must return the array of meta data assigned on instantiation.'
+            'Media::metaData() must return the assigned metadata.'
         );
     }
 
@@ -122,7 +125,8 @@ class MediaTest extends TestCase
         $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
         $media->increasePosition();
         $this->assertTrue(
-            $media->getPosition() > $specifiedPosition
+            $media->getPosition() > $specifiedPosition,
+            'increasePosition() must increase the assigned position.',
         );
     }
 
@@ -132,7 +136,8 @@ class MediaTest extends TestCase
         $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
         $media->decreasePosition();
         $this->assertTrue(
-            $media->getPosition() < $specifiedPosition
+            $media->getPosition() < $specifiedPosition,
+            'decreasePosition() must decrease the assigned position.',
         );
     }
 
@@ -142,7 +147,8 @@ class MediaTest extends TestCase
         $media = $this->newMediaInstance(mediaPosition:$specifiedPosition);
         $this->assertEquals(
             $specifiedPosition,
-            $media->getPosition()
+            $media->getPosition(),
+            'getPosition() must return the assigned position.',
         );
     }
 
@@ -153,7 +159,8 @@ class MediaTest extends TestCase
         $media->switchState();
         $this->assertNotEquals(
             $initialState,
-            $media->getState()
+            $media->getState(),
+            'getState() must return the assigned state.',
         );
     }
 
@@ -162,7 +169,8 @@ class MediaTest extends TestCase
         $specifiedUrl = 'http://localhost:' . rand(8000, 8999) . '/' . rand(0, 1000) . '/url/is/not/accessible';
         $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
         $this->assertFalse(
-            $media->mediaIsAccessible()
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the false if the media url is not accessible.',
         );
     }
 
@@ -171,7 +179,8 @@ class MediaTest extends TestCase
         $specifiedUrl = 'https://roady.tech/page/does/not/exist.html';
         $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
         $this->assertFalse(
-            $media->mediaIsAccessible()
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the false if a request to the media url does not return http response code 200.',
         );
     }
 
@@ -180,7 +189,8 @@ class MediaTest extends TestCase
         $specifiedUrl = 'https://darlingdata.tech/index.php';
         $media = $this->newMediaInstance(mediaUrl:$specifiedUrl);
         $this->assertTrue(
-            $media->mediaIsAccessible()
+            $media->mediaIsAccessible(),
+            'mediaIsAccessible() must return the true if a request to the media url returns http response code 200.',
         );
     }
 }

@@ -48,18 +48,6 @@ class VideoTest extends MediaTest
         );
     }
 
-    /**
-     * @return array<int, string> An array of Mime types supported 
-     *                            video Mime Types.
-     */
-    private function supportedVideoMimeTypes(): array 
-    {
-        return [
-            'video/webm',
-            'video/mp4',
-        ];
-    }
-
     public function testMediaIsAccessibleReturnsFalseIfMediasUrlPointsToMediaWithAnUnSupportedMimeType(): void
     {
         $video = $this->newVideoInstance(mediaUrl: 'https://sevidmusic.us-east-1.linodeobjects.com/Lies_by_SeviD_20210902.mp3');

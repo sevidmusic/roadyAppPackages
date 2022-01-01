@@ -3,11 +3,11 @@
 namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
-use \Exception;
+use Exception;
 use roady\classes\component\SwitchableComponent ;
 use roady\classes\primary\Storable;
-use roady\interfaces\primary\Positionable;
 use roady\classes\primary\Switchable;
+use roady\interfaces\primary\Positionable;
 
 class Media extends SwitchableComponent implements MediaInterface 
 {
@@ -24,7 +24,7 @@ class Media extends SwitchableComponent implements MediaInterface
      * @param string $mediaUrl The Media's url.
      *
      * @param array <string, string> $metaData An array of the Media's
-     *                                         meta data.
+     *                                         metadata.
      *
      */
     public function __construct(

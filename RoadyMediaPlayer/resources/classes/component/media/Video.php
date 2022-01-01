@@ -2,7 +2,7 @@
 
 namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 
-use \Exception;
+use Exception;
 
 class Video extends Media 
 {

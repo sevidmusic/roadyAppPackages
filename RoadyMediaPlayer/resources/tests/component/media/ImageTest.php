@@ -2,8 +2,8 @@
 
 namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use roady\classes\primary\Positionable;
 
 class ImageTest extends MediaTest
@@ -46,20 +46,6 @@ class ImageTest extends MediaTest
             $mediaUrl,
             $metaData
         );
-    }
-
-    /**
-     * @return array<int, string> An array of Mime types supported 
-     *                            video Mime Types.
-     */
-    private function supportedImageMimeTypes(): array 
-    {
-        return [
-            'image/png',
-            'image/x-icon',
-            'image/jpeg',
-            'image/gif',
-        ];
     }
 
     public function testMediaIsAccessibleReturnsFalseIfMediasUrlPointsToMediaWithAnUnSupportedMimeType(): void
