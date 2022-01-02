@@ -3,19 +3,19 @@
 namespace Apps\RoadyMediaPlayer\resources\tests\component\crud;
 
 use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
 use PHPUnit\Framework\TestCase;
+use UnitTests\classes\component\Crud\ComponentCrudTest;
 use roady\classes\component\Component;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 use roady\classes\primary\Positionable;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\primary\Storable as StorableInteface;
-use UnitTests\classes\component\Crud\ComponentCrudTest;
 
 /**
  * Defines tests for the MediaCrud class.
@@ -23,34 +23,44 @@ use UnitTests\classes\component\Crud\ComponentCrudTest;
  * - Methods - 
  *
  * private function getTestMediaCrud(): MediaCrud
- * protected function newMediaInstance(): MediaInterface 
+ * private function mockMetatData(): array
+ * private function removeMedia(array $media): void
+ * private function storeMedia(array $media): void
+ * protected function newAudioInstance(): Audio
+ * protected function newImageInstance(): Image
+ * protected function newMediaInstance(): MediaInterface
+ * protected function newVideoInstance(): Video
+ * public function expectedErrorMetaData(StorableInteface $storable): array
+ * public function setUp(): void
  * public function testCreateMediaSavesMediaToStorage(): void
- *
+ * public function testDeleteMediaDeletesSpecifiedMedia(): void
+ * public function testReadAllMediaReturnsAllStoredMediaOfSpecifiedType(): void
+ * public function testReadAllMediaReturnsAnEmptyArrayIfThereIsNoStoredMediaOfTheSpecifiedType(): void
+ * public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaDoesNotExistInStorage(): void
+ * public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
+ * public function testReadMediaReturnsMediaWhoseMetaDataMatchesTheExpectedErrorMetaDataThatShouldBeAssignedWhenMediaCantBeReadFromStorage(): void
+ * public function testReadMediaReturnsMediaWhoseNameMatchesTheSpecifiedMediasNameIfSpecifiedMediaDoesNotExistInStorage(): void
+ * public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
+ * public function testUpdateMediaUpdateSpecifiedMedia(): void
  */
 class MediaCrudTest extends ComponentCrudTest 
 {
-
-    public function setUp(): void
-    {
-        $this->setComponentCrud(
-            $this->getTestMediaCrud()
-        );
-        $this->setComponentCrudParentTestInstances();
-    }
 
     /** @var array<int, string> $validAudioUrls */
     private array $validAudioUrls = [
         'https://sevidmusic.us-east-1.linodeobjects.com/Lies_by_SeviD_20210902.mp3',
     ];
-    /** @var array<int, string> $validVideoUrls */
-    private array $validVideoUrls = [
-        'https://roadydemos.us-east-1.linodeobjects.com/GettingStarted.webm',
-        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
-    ];
+
     /** @var array<int, string> $validImageUrls */
     private array $validImageUrls = [
         'https://ddmsmedia.us-east-1.linodeobjects.com/DDMSDemoImg4.png',
         'https://ddmsmedia.us-east-1.linodeobjects.com/READMEDemo.gif',
+    ];
+
+    /** @var array<int, string> $validVideoUrls */
+    private array $validVideoUrls = [
+        'https://roadydemos.us-east-1.linodeobjects.com/GettingStarted.webm',
+        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
     ];
 
     /**
@@ -77,21 +87,41 @@ class MediaCrudTest extends ComponentCrudTest
     }
 
     /**
-     * Return a new Media instance that can be used for testing.
+     * Return an array of mock meta data that can be used
+     * for testing.
+     *
+     * @return array<string, string> 
      */
-    protected function newMediaInstance(): MediaInterface 
+    private function mockMetatData(): array
     {
-        $mediaUrls = array_merge(
-            $this->validAudioUrls,
-            $this->validVideoUrls,
-            $this->validImageUrls
-        );
-        return new Media(
-            'Media' . rand(0, 1000),
-            new Positionable(rand(0, 1000)),
-            $mediaUrls[array_rand($mediaUrls)],
-            $this->mockMetatData()
-        );
+        return [
+            'Artist' => 'Foo' . rand(0, 1000),
+            'Title' => 'Bar' . rand(0, 1000),
+            'Description' => 'Lorem ' . rand(0, 87) . 'ipsum',
+            'Added' => date('YmdHms'),
+        ];
+    }
+
+    /**
+     * @param array<int, MediaInterface> $media
+     */
+    private function removeMedia(array $media): void
+    {
+        $mediaCrud = $this->getTestMediaCrud();
+        foreach($media as $component) {
+            $mediaCrud->delete($component);
+        }
+    }
+
+    /**
+     * @param array<int, MediaInterface> $media
+     */
+    private function storeMedia(array $media): void
+    {
+        $mediaCrud = $this->getTestMediaCrud();
+        foreach($media as $component) {
+            $mediaCrud->create($component);
+        }
     }
 
     /**
@@ -103,19 +133,6 @@ class MediaCrudTest extends ComponentCrudTest
             'Audio' . rand(0, 1000),
             new Positionable(rand(0, 1000)),
             $this->validAudioUrls[array_rand($this->validAudioUrls)],
-            $this->mockMetatData()
-        );
-    }
-
-    /**
-     * Return a new Video instance that can be used for testing.
-     */
-    protected function newVideoInstance(): Video 
-    {
-        return new Video(
-            'Video' . rand(0, 1000),
-            new Positionable(rand(0, 1000)),
-            $this->validVideoUrls[array_rand($this->validVideoUrls)],
             $this->mockMetatData()
         );
     }
@@ -134,19 +151,34 @@ class MediaCrudTest extends ComponentCrudTest
     }
 
     /**
-     * Return an array of mock meta data that can be used
-     * for testing.
-     *
-     * @return array<string, string> 
+     * Return a new Media instance that can be used for testing.
      */
-    private function mockMetatData(): array
+    protected function newMediaInstance(): MediaInterface 
     {
-        return [
-            'Artist' => 'Foo' . rand(0, 1000),
-            'Title' => 'Bar' . rand(0, 1000),
-            'Description' => 'Lorem ' . rand(0, 87) . 'ipsum',
-            'Added' => date('YmdHms'),
-        ];
+        $mediaUrls = array_merge(
+            $this->validAudioUrls,
+            $this->validVideoUrls,
+            $this->validImageUrls
+        );
+        return new Media(
+            'Media' . rand(0, 1000),
+            new Positionable(rand(0, 1000)),
+            $mediaUrls[array_rand($mediaUrls)],
+            $this->mockMetatData()
+        );
+    }
+
+    /**
+     * Return a new Video instance that can be used for testing.
+     */
+    protected function newVideoInstance(): Video 
+    {
+        return new Video(
+            'Video' . rand(0, 1000),
+            new Positionable(rand(0, 1000)),
+            $this->validVideoUrls[array_rand($this->validVideoUrls)],
+            $this->mockMetatData()
+        );
     }
 
     /**
@@ -168,6 +200,14 @@ class MediaCrudTest extends ComponentCrudTest
         ];
     }
 
+    public function setUp(): void
+    {
+        $this->setComponentCrud(
+            $this->getTestMediaCrud()
+        );
+        $this->setComponentCrudParentTestInstances();
+    }
+
     public function testCreateMediaSavesMediaToStorage(): void
     {
         $media = $this->newMediaInstance();
@@ -180,85 +220,17 @@ class MediaCrudTest extends ComponentCrudTest
         $mediaCrud->delete($media);
     }
 
-    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaDoesNotExistInStorage(): void
-    {
-        $media = $this->newMediaInstance();
-        $mediaCrud = $this->getTestMediaCrud();
-        $storedMedia = $mediaCrud->readMedia($media);
-        $this->assertFalse(
-            $storedMedia->mediaIsAccessible()
-        );
-    }
-
-    public function testReadMediaReturnsMediaWhoseNameMatchesTheSpecifiedMediasNameIfSpecifiedMediaDoesNotExistInStorage(): void
-    {
-        $media = $this->newMediaInstance();
-        $mediaCrud = $this->getTestMediaCrud();
-        $storedMedia = $mediaCrud->readMedia($media);
-        $this->assertEquals(
-            $media->getName(),
-            $storedMedia->getName()
-        );
-    }
-
-    public function testReadMediaReturnsMediaWhoseMetaDataMatchesTheExpectedErrorMetaDataThatShouldBeAssignedWhenMediaCantBeReadFromStorage(): void
-    {
-        $media = $this->newMediaInstance();
-        $mediaCrud = $this->getTestMediaCrud();
-        $storedMedia = $mediaCrud->readMedia($media);
-        $this->assertEquals(
-            $this->expectedErrorMetaData($media),
-            $storedMedia->metaData()
-        );
-    }
-
-    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
-    {
-        $media = $this->newMediaInstance();
-        $component = new Component(
-            $media->export()['storable']
-        );
-        $mediaCrud = $this->getTestMediaCrud();
-        $mediaCrud->create($component);
-        $storedCompnent = $mediaCrud->readMedia($media);
-        $this->assertFalse(
-            $storedCompnent->mediaIsAccessible()
-        );
-        $mediaCrud->delete($component);
-    }
-
-    public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
+    public function testDeleteMediaDeletesSpecifiedMedia(): void
     {
         $media = $this->newMediaInstance();
         $mediaCrud = $this->getTestMediaCrud();
         $mediaCrud->createMedia($media);
-        $storedMedia = $mediaCrud->readMedia($media);
-        $this->assertEquals(
+        $mediaCrud->deleteMedia($media);
+        $this->assertNotEquals(
             $media,
-            $storedMedia
+            $mediaCrud->readMedia($media)
         );
         $mediaCrud->delete($media);
-    }
-
-    public function testUpdateMediaUpdateSpecifiedMedia(): void
-    {
-        $media = $this->newMediaInstance();
-        $mediaCrud = $this->getTestMediaCrud();
-        $mediaCrud->createMedia($media);
-        $newMedia = $this->newMediaInstance();
-        $mediaCrud->updateMedia($media, $newMedia);
-        $this->assertEquals(
-            $newMedia,
-            $mediaCrud->readMedia($newMedia)
-        );
-        $mediaCrud->delete($newMedia);
-    }
-
-    public function testReadAllMediaReturnsAnEmptyArrayIfThereIsNoStoredMediaOfTheSpecifiedType(): void
-    {
-        $media = $this->newMediaInstance();
-        $mediaCrud = $this->getTestMediaCrud();
-        $this->assertEmpty($mediaCrud->readAllMedia($media));
     }
 
     public function testReadAllMediaReturnsAllStoredMediaOfSpecifiedType(): void
@@ -311,39 +283,85 @@ class MediaCrudTest extends ComponentCrudTest
         $this->removeMedia($images);
     }
 
-    /**
-     * @param array<int, MediaInterface> $media
-     */
-    private function storeMedia(array $media): void
+    public function testReadAllMediaReturnsAnEmptyArrayIfThereIsNoStoredMediaOfTheSpecifiedType(): void
     {
+        $media = $this->newMediaInstance();
         $mediaCrud = $this->getTestMediaCrud();
-        foreach($media as $component) {
-            $mediaCrud->create($component);
-        }
+        $this->assertEmpty($mediaCrud->readAllMedia($media));
     }
 
-    /**
-     * @param array<int, MediaInterface> $media
-     */
-    private function removeMedia(array $media): void
+    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaDoesNotExistInStorage(): void
     {
+        $media = $this->newMediaInstance();
         $mediaCrud = $this->getTestMediaCrud();
-        foreach($media as $component) {
-            $mediaCrud->delete($component);
-        }
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertFalse(
+            $storedMedia->mediaIsAccessible()
+        );
     }
 
-    public function testDeleteMediaDeletesSpecifiedMedia(): void
+    public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
+    {
+        $media = $this->newMediaInstance();
+        $component = new Component(
+            $media->export()['storable']
+        );
+        $mediaCrud = $this->getTestMediaCrud();
+        $mediaCrud->create($component);
+        $storedCompnent = $mediaCrud->readMedia($media);
+        $this->assertFalse(
+            $storedCompnent->mediaIsAccessible()
+        );
+        $mediaCrud->delete($component);
+    }
+
+    public function testReadMediaReturnsMediaWhoseMetaDataMatchesTheExpectedErrorMetaDataThatShouldBeAssignedWhenMediaCantBeReadFromStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
+            $this->expectedErrorMetaData($media),
+            $storedMedia->metaData()
+        );
+    }
+
+    public function testReadMediaReturnsMediaWhoseNameMatchesTheSpecifiedMediasNameIfSpecifiedMediaDoesNotExistInStorage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
+            $media->getName(),
+            $storedMedia->getName()
+        );
+    }
+
+    public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
     {
         $media = $this->newMediaInstance();
         $mediaCrud = $this->getTestMediaCrud();
         $mediaCrud->createMedia($media);
-        $mediaCrud->deleteMedia($media);
-        $this->assertNotEquals(
+        $storedMedia = $mediaCrud->readMedia($media);
+        $this->assertEquals(
             $media,
-            $mediaCrud->readMedia($media)
+            $storedMedia
         );
         $mediaCrud->delete($media);
+    }
+
+    public function testUpdateMediaUpdateSpecifiedMedia(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $mediaCrud->createMedia($media);
+        $newMedia = $this->newMediaInstance();
+        $mediaCrud->updateMedia($media, $newMedia);
+        $this->assertEquals(
+            $newMedia,
+            $mediaCrud->readMedia($newMedia)
+        );
+        $mediaCrud->delete($newMedia);
     }
 
 }
