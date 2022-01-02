@@ -21,10 +21,6 @@ use roady\interfaces\primary\Storable;
  *
  * - Methods -
  *
- * public function createMedia(Media $media): bool;
- * public function readMedia(Storable $storable): Media;
- * public function deleteMedia(Media $media): bool;
- * public function readAllMedia(string $mediaType): array;
  *
  */
 interface MediaCrud extends ComponentCrud
@@ -32,4 +28,38 @@ interface MediaCrud extends ComponentCrud
     public function createMedia(Media $media): bool;
     public function readMedia(Storable $storable): Media;
     public function updateMedia(Media $originalMedia, Media $newMedia): bool;
+    /**
+     * Read all stored Media of a specified type from storage.
+     *
+     * For example:
+     *
+     * $mediaCrud->readAll(Media::class)
+     * $mediaCrud->readAll(Audio::class)
+     * $mediaCrud->readAll($videoInstance)
+     * $mediaCrud->readAll($imageInstance)
+     *
+     *
+     * @param class-string<object>|object $mediaType A fully qualified
+     *                                               class name, or an
+     *                                               object instance
+     *                                               that will be used
+     *                                               to determine where
+     *                                               in storage the 
+     *                                               Media should be
+     *                                               read from.
+     *                                               Note: If the 
+     *                                               specified class
+     *                                               or object is not
+     *                                               an implementation
+     *                                               of the Media 
+     *                                               interface then an
+     *                                               empty array will
+     *                                               be returned.
+     *
+     * @return array<int, string> A numerically indexed array of
+     *                            the all stored Media of the 
+     *                            specified type.
+     */
+    public function readAllMedia(string|object $mediaType): array;
+    public function deleteMedia(Media $media): bool;
 }

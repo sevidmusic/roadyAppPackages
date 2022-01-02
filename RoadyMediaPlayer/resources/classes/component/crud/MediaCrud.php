@@ -3,6 +3,7 @@
 namespace Apps\RoadyMediaPlayer\resources\classes\component\crud;
 
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
+use Apps\RoadyMediaPlayer\resources\interfaces\component\crud\MediaCrud as MediaCrudInterface;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\interfaces\component\Component;
@@ -10,7 +11,7 @@ use roady\interfaces\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\primary\Positionable;
 
-class MediaCrud extends ComponentCrud 
+class MediaCrud extends ComponentCrud implements MediaCrudInterface
 {
 
     public function createMedia(MediaInterface $media): bool 
@@ -43,5 +44,15 @@ class MediaCrud extends ComponentCrud
     public function updateMedia(MediaInterface $originalMedia, MediaInterface $newMedia): bool 
     {
         return parent::update($originalMedia, $newMedia);
+    }
+
+    public function readAllMedia(string|object $mediaType): array
+    {
+        return [];
+    }
+
+    public function deleteMedia(MediaInterface $media): bool 
+    {
+        return parent::delete($media);
     }
 }

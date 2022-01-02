@@ -34,6 +34,13 @@ use roady\classes\primary\Positionable;
 class MediaTest extends SwitchableComponentTest 
 {
 
+    public function setUp(): void
+    {
+        $this->setSwitchableComponent(
+            $this->newMediaInstance()
+        );
+        $this->setSwitchableComponentParentTestInstances();
+    }
     /**
      * Return a new Media instance for testing.
      *
