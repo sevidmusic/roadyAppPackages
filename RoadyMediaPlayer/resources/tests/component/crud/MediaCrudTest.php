@@ -189,7 +189,9 @@ class MediaCrudTest extends ComponentCrudTest
      *
      * @return array<string, string> 
      */
-    public function expectedErrorMetaData(StorableInteface $storable): array
+    public function expectedErrorMetaData(
+        StorableInteface $storable
+    ): array
     {
         return [
             'Error' => 'MEDIA_DOES_NOT_EXIST_IN_STORAGE',
@@ -233,50 +235,79 @@ class MediaCrudTest extends ComponentCrudTest
         $mediaCrud->delete($media);
     }
 
-    public function testReadAllMediaReturnsAllStoredMediaOfSpecifiedType(): void
+    /**
+     * @param int $mediaCount The number of Media instances that the
+     *                        array should contain.
+     *
+     * @param class-string<object>|object $mediaType A fully qualified
+     *                                               class name, or an
+     *                                               object instance
+     *                                               that will be used
+     *                                               to determine 
+     *                                               what type of 
+     *                                               Media to populate
+     *                                               the array with.
+     *
+     * @return array<int, MediaInterface> An array of Media, the
+     *                                    number of Media instances
+     *                                    in the array will match
+     *                                    the specified $mediaCount.
+     */
+    public function arrayOfMedia(
+        int $mediaCount = 1, 
+        string|object $mediaType = Media::class
+    ): array
     {
-        $media = [
-            $this->newMediaInstance(),
-            $this->newMediaInstance(),
-            $this->newMediaInstance(),
-        ];
+        $media = [];
+        $mediaType = explode(
+            '\\', 
+            (is_string($mediaType) ? $mediaType : $mediaType::class)
+        );
+        $mediaType = implode('\\', $mediaType);
+        for($i=0; $i<=$mediaCount;$i++) {
+            switch($mediaType) {
+            case Media::class:
+                array_push($media, $this->newMediaInstance());
+                break;
+            case Audio::class:
+                array_push($media, $this->newAudioInstance());
+                break;
+            case Video::class:
+                array_push($media, $this->newVideoInstance());
+                break;
+            case Image::class:
+                array_push($media, $this->newImageInstance());
+                break;
+            }
+        }
+        return $media;
+    }
+
+    public function testReadAllMediaReturnsAllStoredMediaOfTheSpecifiedType(): void
+    {
+        $media = $this->arrayOfMedia(rand(1, 10), Media::class);
         $this->storeMedia($media);
-        $audio = [
-            $this->newAudioInstance(),
-        ];
+        $audio = $this->arrayOfMedia(rand(1, 10), Audio::class);
         $this->storeMedia($audio);
-        $videos = [
-            $this->newVideoInstance(),
-            $this->newVideoInstance(),
-            $this->newVideoInstance(),
-            $this->newVideoInstance(),
-            $this->newVideoInstance(),
-        ];
+        $videos = $this->arrayOfMedia(rand(1, 10), Video::class);
         $this->storeMedia($videos);
-        $images = [
-            $this->newImageInstance(),
-            $this->newImageInstance(),
-            $this->newImageInstance(),
-            $this->newImageInstance(),
-        ];
+        $images = $this->arrayOfMedia(rand(1, 10), Image::class);
         $this->storeMedia($images);
         $mediaCrud = $this->getTestMediaCrud();
-        $this->assertEquals(
-            $media,
-            $mediaCrud->readAllMedia(Media::class)
-        );
-        $this->assertEquals(
-            $audio,
-            $mediaCrud->readAllMedia(Audio::class)
-        );
-        $this->assertEquals(
-            $videos,
-            $mediaCrud->readAllMedia(Video::class)
-        );
-        $this->assertEquals(
-            $images,
-            $mediaCrud->readAllMedia(Image::class)
-        );
+        $mediaTypes = [
+            'media' => [Media::class, $media[array_rand($media)]],
+            'audio' => [Audio::class, $audio[array_rand($audio)]],
+            'videos' => [Video::class, $videos[array_rand($videos)]],
+            'images' => [Image::class, $images[array_rand($images)]],
+        ];
+        foreach($mediaTypes as $mediaArrayVarName => $typeAndInstance) {
+            foreach($typeAndInstance as $mediaType) {
+                $this->assertEquals(
+                    $$mediaArrayVarName,
+                    $mediaCrud->readAllMedia($mediaType)
+                );
+            }
+        }
         $this->removeMedia($media);
         $this->removeMedia($audio);
         $this->removeMedia($videos);
