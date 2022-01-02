@@ -288,8 +288,23 @@ class MediaCrudTest extends ComponentCrudTest
             $this->newImageInstance(),
         ];
         $this->storeMedia($images);
-        //$mediaCrud = $this->getTestMediaCrud();
-        //$this->assertEmpty($mediaCrud->readAllMedia($media));
+        $mediaCrud = $this->getTestMediaCrud();
+        $this->assertEquals(
+            $media,
+            $mediaCrud->readAllMedia(Media::class)
+        );
+        $this->assertEquals(
+            $audio,
+            $mediaCrud->readAllMedia(Audio::class)
+        );
+        $this->assertEquals(
+            $videos,
+            $mediaCrud->readAllMedia(Video::class)
+        );
+        $this->assertEquals(
+            $images,
+            $mediaCrud->readAllMedia(Image::class)
+        );
         $this->removeMedia($media);
         $this->removeMedia($audio);
         $this->removeMedia($videos);

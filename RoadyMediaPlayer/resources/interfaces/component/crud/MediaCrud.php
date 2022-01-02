@@ -56,7 +56,7 @@ interface MediaCrud extends ComponentCrud
      *                                               empty array will
      *                                               be returned.
      *
-     * @return array<int, string> A numerically indexed array of
+     * @return array<int, Media> A numerically indexed array of
      *                            the all stored Media of the 
      *                            specified type.
      */

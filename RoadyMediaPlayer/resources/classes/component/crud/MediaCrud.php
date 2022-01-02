@@ -23,7 +23,7 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
     {
         $storedCompnent = parent::read($storable);
         $storedCompnentImplements = class_implements($storedCompnent);
-        if(is_array($storedCompnentImplements) && in_array(MediaInterface::class, $storedCompnentImplements)) {
+        if($this->isAMediaImplementation($storedCompnent)) {
             /** @var MediaInterface $storedCompnent */
             return $storedCompnent;
         }
@@ -48,11 +48,37 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
 
     public function readAllMedia(string|object $mediaType): array
     {
-        return [];
+        $typeName = explode(
+            '\\', 
+            (is_string($mediaType) ? $mediaType : $mediaType::class)
+        );
+        $mediaContainer = array_pop($typeName);
+        $storedComponents = parent::readAll(
+            MediaInterface::MEDIA_LOCATION,
+            $mediaContainer
+        );
+        $media = [];
+        foreach($storedComponents as $component) {
+            if($this->isAMediaImplementation($component)) {
+                array_push($media, $component);
+            }
+        }
+        /** @var array<int, MediaInterface> $media */
+        return $media;
     }
 
     public function deleteMedia(MediaInterface $media): bool 
     {
         return parent::delete($media);
+    }
+
+
+    private function isAMediaImplementation(Component $component): bool
+    {
+        $compnentImplements = class_implements($component);
+        if(is_array($compnentImplements) && in_array(MediaInterface::class, $compnentImplements)) {
+            return true;
+        }
+        return false;
     }
 }
