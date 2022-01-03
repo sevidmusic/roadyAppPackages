@@ -19,9 +19,6 @@ use roady\interfaces\primary\Storable;
  * Media interface, as opposed to the create() method which will 
  * accept any implementation of the Component interface.
  *
- * - Methods -
- *
- *
  */
 interface MediaCrud extends ComponentCrud
 {

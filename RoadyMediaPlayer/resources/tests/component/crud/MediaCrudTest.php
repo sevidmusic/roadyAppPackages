@@ -19,29 +19,6 @@ use roady\interfaces\primary\Storable as StorableInteface;
 
 /**
  * Defines tests for the MediaCrud class.
- *
- * - Methods - 
- *
- * private function getTestMediaCrud(): MediaCrud
- * private function mockMetatData(): array
- * private function removeMedia(array $media): void
- * private function storeMedia(array $media): void
- * protected function newAudioInstance(): Audio
- * protected function newImageInstance(): Image
- * protected function newMediaInstance(): MediaInterface
- * protected function newVideoInstance(): Video
- * public function expectedErrorMetaData(StorableInteface $storable): array
- * public function setUp(): void
- * public function testCreateMediaSavesMediaToStorage(): void
- * public function testDeleteMediaDeletesSpecifiedMedia(): void
- * public function testReadAllMediaReturnsAllStoredMediaOfSpecifiedType(): void
- * public function testReadAllMediaReturnsAnEmptyArrayIfThereIsNoStoredMediaOfTheSpecifiedType(): void
- * public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaDoesNotExistInStorage(): void
- * public function testReadMediaReturnsMediaWhoseMediaIsAccessibleMethodReturnsFalseIfSpecifiedMediaMatchesAStoredComponentThatIsNotAMediaComponent(): void
- * public function testReadMediaReturnsMediaWhoseMetaDataMatchesTheExpectedErrorMetaDataThatShouldBeAssignedWhenMediaCantBeReadFromStorage(): void
- * public function testReadMediaReturnsMediaWhoseNameMatchesTheSpecifiedMediasNameIfSpecifiedMediaDoesNotExistInStorage(): void
- * public function testReadMediaReturnsSpecifiedMediaIfSpecifiedMediaExistsInStorage(): void
- * public function testUpdateMediaUpdateSpecifiedMedia(): void
  */
 class MediaCrudTest extends ComponentCrudTest 
 {
@@ -312,6 +289,25 @@ class MediaCrudTest extends ComponentCrudTest
         $this->removeMedia($audio);
         $this->removeMedia($videos);
         $this->removeMedia($images);
+    }
+
+    public function testReadAllOnlyReturnsMediaComponentsFromStroage(): void
+    {
+        $media = $this->newMediaInstance();
+        $mediaCrud = $this->getTestMediaCrud();
+        $component = new Component($media->export()['storable']);
+        $mediaCrud->create($component);
+        $media2 = $this->newMediaInstance();
+        $mediaCrud->createMedia($media2);
+        $storedMedia = $mediaCrud->readAllMedia(Media::class);
+        $this->assertFalse(
+            in_array($component, $storedMedia)
+        );
+        $this->assertTrue(
+            in_array($media2, $storedMedia)
+        );
+        $mediaCrud->delete($component);
+        $mediaCrud->deleteMedia($media2);
     }
 
     public function testReadAllMediaReturnsAnEmptyArrayIfThereIsNoStoredMediaOfTheSpecifiedType(): void

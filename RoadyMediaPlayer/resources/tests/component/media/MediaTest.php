@@ -8,28 +8,6 @@ use roady\classes\primary\Positionable;
 
 /**
  * Defines tests for the Media class.
- *
- * - Methods -
- *
- * protected function newMediaInstance(
- *     string $mediaName = 'Media', 
- *     string $mediaUrl = 'https://localhost:8080', 
- *     string $mediaPosition = 0, 
- *     array $metaData = []
- * ): Media
- * public function testDecreasePositionDecreasesPosition(): void
- * public function testGetContainerReturnsMediaTypeWithoutNamespace(): void
- * public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
- * public function testGetNameReturnsAssignedName(): void
- * public function testGetPositionReturnsAssignedPosition(): void
- * public function testIncreasePositionIncreasesPosition(): void
- * public function testMediaIsAccessibleReturnsFalseIfMediasUrlIsNotAccessible(): void
- * public function testMediaIsAccessibleReturnsFalseIfRequestToMediasUrlDoesNotReturnHttpResponseCode200(): void
- * public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
- * public function testMediaUrlReturnsAssignedMediaUrl(): void
- * public function testMetaDataReturnsASingleDimensionalAssociativeArrayWhoseKeysAndValuesAreStrings(): void
- * public function testMetaDataReturnsAssignedMetaData(): void
- * public function testSwitchStateSwitchesState(): void
  */
 class MediaTest extends SwitchableComponentTest 
 {

@@ -8,17 +8,6 @@ use roady\interfaces\primary\Positionable;
 /**
  * Media is type of SwitchableComponent that represents a piece of 
  * media that is accessible at a url.
- *
- * - Constants -
- *
- * MEDIA_LOCATION:            The name of the location assigned to 
- *                            all Media.
- *
- * - Methods -
- *
- * public function metaData(): array
- * public function mediaUrl(): string
- * public function mediaIsAccessible(): bool
  */
 interface Media extends Positionable, SwitchableComponent
 {

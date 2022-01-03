@@ -8,24 +8,6 @@ use roady\classes\primary\Positionable;
 
 /**
  * Defines tests for the Audio class.
- *
- * - Methods -
- *
- * protected function newMediaInstance(
- *    string $mediaName = 'Media',
- *    string $mediaUrl = 'http://localhost:8080', 
- *    int|float $mediaPosition = 0, 
- *    array $metaData = []
- * ): Media
- * protected function newAudioInstance(
-      string $audioName = 'Audio',
-      string $mediaUrl = 'http://localhost:8080', 
-      int|float $mediaPosition = 0, 
-      array $metaData = []
-   ): Audio
- * public function testMediaIsAccessibleReturnsFalseIfMediasUrlPointsToMediaWithAnUnSupportedMimeType(): void
- * public function testMediaIsAccessibleReturnsTrueIfMediasUrlPointsToMediaWithASupportedMimeType(): void
- * public function testMediaIsAccessibleReturnsTrueIfRequestToMediasUrlReturnsHttpResponseCode200(): void
  */
 class AudioTest extends MediaTest
 {
