@@ -13,7 +13,7 @@ class VideoTest extends MediaTest
 {
 
     protected function newMediaInstance(
-        string $mediaName = 'Media',
+        string $mediaName = 'Video',
         string $mediaUrl = 'http://localhost:8080', 
         int|float $mediaPosition = 0, 
         array $metaData = []

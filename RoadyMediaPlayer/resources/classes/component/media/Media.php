@@ -73,8 +73,9 @@ class Media extends SwitchableComponent implements MediaInterface
         return $this->mediaUrl;
     }
 
-    protected function mimeContentType(): string
+    public function mimeContentType(): string
     {
+        $couldNotDetermineMime = 'COULD_NOT_DETERMINE_MIME_TYPE';
         try {
             $headers = get_headers(
                 $this->mediaUrl(), 
@@ -82,16 +83,16 @@ class Media extends SwitchableComponent implements MediaInterface
             );
             return (
                 is_array($headers) 
-                ? ($headers['Content-Type'] ?? 'COULD_NOT_DETERMINE_MIME_TYPE') 
-                : 'FAILED_TO_GET_HEADER'
+                ? ($headers['Content-Type'] ?? $couldNotDetermineMime) 
+                : $couldNotDetermineMime
             );
         } catch (Exception $e) {
             $this->log(
-                'Failed to determine if media\'s mime/content type, an error occurred: %s',
+                'Failed to determine media\'s mime/content type, an error occurred: %s',
                 $e->getMessage()
             );
         }
-        return 'UNKNOWN_MIME_CONTENT_TYPE'; 
+        return $couldNotDetermineMime;
     }
 
     public function mediaIsAccessible(): bool 

@@ -5,6 +5,7 @@ namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use UnitTests\classes\component\SwitchableComponentTest;
 use roady\classes\primary\Positionable;
+use Exception;
 
 /**
  * Defines tests for the Media class.
@@ -203,5 +204,27 @@ class MediaTest extends SwitchableComponentTest
         );
     }
 
+    public function testMimeContentTypeReturnsContentTypeReturnedOnGetHeadersRequestToMediaUrl(): void
+    {
+        $media = $this->newMediaInstance();
+        $expectedErrorValue = 'COULD_NOT_DETERMINE_MIME_TYPE';
+        try {
+            $headers = get_headers(
+                $media->mediaUrl(), 
+                associative: true
+            );
+            $mimeContentType = (
+                is_array($headers) 
+                ? ($headers['Content-Type'] ?? $expectedErrorValue) 
+                : $expectedErrorValue
+            );
+        } catch (Exception $e) {
+            $mimeContentType = $expectedErrorValue;
+        }
+        $this->assertEquals(
+            $mimeContentType,
+            $media->mimeContentType()
+        );
+    }
 }
 

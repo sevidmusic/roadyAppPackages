@@ -45,4 +45,13 @@ interface Media extends Positionable, SwitchableComponent
      * @return bool True if the Media is accessible, false otherwise.
      */
     public function mediaIsAccessible(): bool;
+
+
+    /**
+     * Return the ContentType returned on get_headers() request
+     * to Media's url.
+     *
+     * @return string
+     */
+    public function mimeContentType(): string;
 }
