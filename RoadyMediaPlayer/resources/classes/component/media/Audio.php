@@ -21,15 +21,7 @@ class Audio extends Media
     public function mediaIsAccessible(): bool
     {
         try {
-            $headers = get_headers(
-                $this->mediaUrl(), 
-                associative: true
-            );
-            $contentType = (
-                is_array($headers) 
-                ? ($headers['Content-Type'] ?? 'COULD_NOT_DETERMINE_MIME_TYPE') 
-                : 'FAILED_TO_GET_HEADER'
-            );
+            $contentType = $this->mimeContentType();
             if(in_array($contentType, $this->supportedAudioMimeTypes())) {
                 return parent::mediaIsAccessible(); 
             }

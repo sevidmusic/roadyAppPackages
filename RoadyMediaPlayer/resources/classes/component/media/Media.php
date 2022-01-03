@@ -73,6 +73,27 @@ class Media extends SwitchableComponent implements MediaInterface
         return $this->mediaUrl;
     }
 
+    protected function mimeContentType(): string
+    {
+        try {
+            $headers = get_headers(
+                $this->mediaUrl(), 
+                associative: true
+            );
+            return (
+                is_array($headers) 
+                ? ($headers['Content-Type'] ?? 'COULD_NOT_DETERMINE_MIME_TYPE') 
+                : 'FAILED_TO_GET_HEADER'
+            );
+        } catch (Exception $e) {
+            $this->log(
+                'Failed to determine if media\'s mime/content type, an error occurred: %s',
+                $e->getMessage()
+            );
+        }
+        return 'UNKNOWN_MIME_CONTENT_TYPE'; 
+    }
+
     public function mediaIsAccessible(): bool 
     {
         try {
