@@ -14,7 +14,7 @@ class VideoTest extends MediaTest
 
     protected function newMediaInstance(
         string $mediaName = 'Video',
-        string $mediaUrl = 'http://localhost:8080', 
+        string $mediaUrl = 'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {

@@ -14,7 +14,7 @@ class ImageTest extends MediaTest
 
     protected function newMediaInstance(
         string $mediaName = 'Image',
-        string $mediaUrl = 'http://localhost:8080', 
+        string $mediaUrl = 'https://roady.tech/roadyLogo.png', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {

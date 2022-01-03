@@ -33,7 +33,7 @@ class MediaTest extends SwitchableComponentTest
      */
     protected function newMediaInstance(
         string $mediaName = 'Media',
-        string $mediaUrl = 'http://localhost:8080', 
+        string $mediaUrl = 'https://roady.tech/roadyLogo.png', 
         int|float $mediaPosition = 0, 
         array $metaData = []
     ): Media {
