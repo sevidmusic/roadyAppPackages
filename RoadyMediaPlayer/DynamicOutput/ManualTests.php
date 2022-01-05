@@ -1,15 +1,22 @@
 <?php 
+/**
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+ */
 
+use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
+use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
+use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Positionable;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
-use roady\classes\primary\Positionable;
-use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
-use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
-use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 
+$currentRequest = new Request(new Storable('CurrentRequest', 'Requests', 'Index'), new Switchable());
 $mediaCrud = new MediaCrud(
     new Storable(
         'TestMediaCrud' . rand(0, 1000),
@@ -67,31 +74,47 @@ $media = [
 ];
 
 foreach($media as $testMedia) {
-    if($mediaCrud->readMedia($testMedia)->mediaUrl() !== $testMedia->mediaUrl()) {
+    if(($currentRequest->getGet()['createTestMedia'] ?? '') === 'true') {
         $mediaCrud->createMedia($testMedia);
     }
 }
 
-$getOutput = function(): string {
-    // $this->>requestedMedia()
-    $requestedMedia = new Media(
-        'QuickInstallationSetupAndHelloWorld',
-        new Positionable(),
-        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
-        [
-            'Title' => 'Quick Installation, Setup, And Hello World Video',
-        ]
+$getOutput = function(MediaCrud $mediaCrud, Request $currentRequest): string {
+    $media = unserialize(
+        base64_decode(
+            (
+                $currentRequest->getGet()['requestedMedia']
+                ??
+                base64_encode(
+                    serialize(
+                        new Storable('MEDIA_IS_UNAVAILABLE', Media::MEDIA_LOCATION, 'Media')
+                    )
+                )
+            )
+        )
     );
-    //
+    $requestedMedia = $mediaCrud->readMedia($media);
     if ($requestedMedia->mediaIsAccessible()) {
-        return '
-        <video controls>
-        <source src="' . $requestedMedia->mediaUrl() . '" type="' . $requestedMedia->mimeContentType() . '">
-            ' . $requestedMedia->getName() . ' is not available at the moment.
-        </video>
-        ';
-    } else {
-        return '
+        switch($requestedMedia->getType()) {
+        case Audio::class:
+            return '
+                <audio controls>
+                <source src="' . $requestedMedia->mediaUrl() . '" type="' . $requestedMedia->mimeContentType() . '">
+                    ' . $requestedMedia->getName() . ' is not available at the moment.
+                </audio>
+            ';
+        case Video::class:
+            return '
+                <video controls>
+                <source src="' . $requestedMedia->mediaUrl() . '" type="' . $requestedMedia->mimeContentType() . '">
+                    ' . $requestedMedia->getName() . ' is not available at the moment.
+                </video>
+            ';
+        case Image::class:
+            return '<img src="' . $requestedMedia->mediaUrl() . '">';
+        }
+    } 
+    return '
         <div class="roady-media-player-system-message-container">
         <p>The requested media is not available at the moment.</p>
         <ul>
@@ -103,8 +126,7 @@ $getOutput = function(): string {
             </li>
         </ul>
         </div>
-        ';
-    }
+    ';
 };
 ?>
 
@@ -134,13 +156,5 @@ echo '<form action="index.php?request=ManualTests">' . $generateMediaSelection(
         $storedVideos,
         $storedImages,
     )
-) . '<input type="submit"></form>';
-echo $getOutput();
-var_dump(
-    $_GET, 
-    unserialize(
-        base64_decode(
-            $_GET['requestedMedia']
-        )
-    )
-);
+) . '<input type="submit"></form>' . 
+$getOutput($mediaCrud, $currentRequest);
