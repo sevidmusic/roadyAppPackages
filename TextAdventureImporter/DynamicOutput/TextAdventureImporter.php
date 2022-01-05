@@ -7,7 +7,7 @@ $target_dir = "Apps/TextAdventureImporter/resources/uploads/";
 
 $target_file = $target_dir . basename(($_FILES["fileToUpload"]["name"] ?? 'noname'));
 $uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+$uploadedFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $fileToUpload = ($_FILES["fileToUpload"]["tmp_name"] ?? 'notvalid');
 
 // Check if image file is a actual image or fake image
@@ -27,9 +27,8 @@ if(isset($_POST["submit"])) {
     }
     
     // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" ) {
-      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    if($uploadedFileType != "html") {
+      echo "Sorry, only html files are allowed.";
       $uploadOk = 0;
     }
     
@@ -46,12 +45,11 @@ if(isset($_POST["submit"])) {
         echo "Sorry, there was an error uploading your file.";
       }
     }
-    var_dump($_FILES);
 }
 ?>
 
 <form action="index.php?request=TextAdventureImporter" method="post" enctype="multipart/form-data">
   Select image to upload:
   <input type="file" name="fileToUpload" id="fileToUpload">
-  <input type="submit" value="Upload Image" name="submit">
+  <input type="submit" value="Import Twine File" name="submit">
 </form>
