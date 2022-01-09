@@ -45,12 +45,10 @@ if(
 ) {
 
     $media = new Media(
-        'QuickInstallationSetupAndHelloWorld',
+        $currentRequest->getPost()['name'],
         new Positionable(rand(1, 10)),
-        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
-        [
-            'Title' => 'Quick Installation, Setup, And Hello World Video',
-        ]
+        $currentRequest->getPost()['mediaUrl'],
+        []
     );
     $mediaCrud->create($media);
     echo '<p>Created ' . 
