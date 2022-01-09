@@ -44,12 +44,40 @@ if(
     isset($currentRequest->getPost()['mediaType']) 
 ) {
 
-    $media = new Media(
-        $currentRequest->getPost()['name'],
-        new Positionable(rand(1, 10)),
-        $currentRequest->getPost()['mediaUrl'],
-        []
-    );
+    switch($currentRequest->getPost()['mediaType'])
+    {
+    case 'Image':
+        $media = new Image(
+            $currentRequest->getPost()['name'],
+            new Positionable(rand(1, 10)),
+            $currentRequest->getPost()['mediaUrl'],
+            []
+        );
+        break;
+    case 'Video':
+        $media = new Video(
+            $currentRequest->getPost()['name'],
+            new Positionable(rand(1, 10)),
+            $currentRequest->getPost()['mediaUrl'],
+            []
+        );
+        break;
+    case 'Audio':
+        $media = new Audio(
+            $currentRequest->getPost()['name'],
+            new Positionable(rand(1, 10)),
+            $currentRequest->getPost()['mediaUrl'],
+            []
+        );
+        break;
+    default:
+        $media = new Media(
+            $currentRequest->getPost()['name'],
+            new Positionable(rand(1, 10)),
+            $currentRequest->getPost()['mediaUrl'],
+            []
+        );
+    }
     $mediaCrud->create($media);
     echo '<p>Created ' . 
         $media->getName() . 
