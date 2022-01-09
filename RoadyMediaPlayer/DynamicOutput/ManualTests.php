@@ -128,9 +128,35 @@ $getOutput = function(MediaCrud $mediaCrud, Request $currentRequest): string {
         </div>
     ';
 };
+var_dump(
+    $currentRequest->getPost(),
+    $currentRequest->getGet()
+);
 ?>
 
 <h1>Roady Media Player</h1>
+
+<!-- Begin Add Media Form -->
+<form 
+ action="index.php?request=<?php echo $this->getName(); ?>" 
+ method="post">
+    <label for="name">Name:</label>
+    <input type="text" name="name">
+    <label for="mediaUrl">Media Url:</label>
+    <input type="url" name="mediaUrl">
+    <label for="mediaType">Media Type:</label>
+    <select name="mediaType">
+        <option selected value="Media">Media (Generic)</option>
+        <option value="Audio">Audio</option>
+        <option value="Video">Video</option>
+        <option value="Image">Image</option>
+    </select>
+
+    <input type="submit" name="addMedia" value="Add Media">
+</form>
+<!-- End Add Media Form -->
+
+<!-- Begin Select Media Form -->
 <?php
 
 $storedMedia = $mediaCrud->readAllMedia(Media::class);
@@ -149,12 +175,17 @@ $generateMediaSelection = function(array $availableMedia): string {
     return $select;
 };
 
-echo '<form action="index.php?request=ManualTests">' . $generateMediaSelection(
-    array_merge(
-        $storedMedia,
-        $storedAudio,
-        $storedVideos,
-        $storedImages,
-    )
-) . '<input type="submit"></form>' . 
-$getOutput($mediaCrud, $currentRequest);
+echo '<form action="index.php?request=ManualTests">' . 
+    $generateMediaSelection(
+        array_merge(
+            $storedMedia,
+            $storedAudio,
+            $storedVideos,
+            $storedImages,
+        )
+    ) . 
+    '<input type="submit"></form>' .
+    '<!-- End Select Media Form -->' .
+    $getOutput($mediaCrud, $currentRequest)
+;
+
