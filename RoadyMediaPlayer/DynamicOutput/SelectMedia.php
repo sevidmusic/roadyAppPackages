@@ -1,9 +1,4 @@
 <?php 
-/*
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
- */
 
 use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
@@ -41,55 +36,6 @@ $mediaCrud = new MediaCrud(
         new Switchable()
     )
 );
-
-if(
-    isset($currentRequest->getPost()['name']) 
-    &&
-    isset($currentRequest->getPost()['mediaUrl']) 
-    &&
-    isset($currentRequest->getPost()['mediaType']) 
-) {
-
-    switch($currentRequest->getPost()['mediaType'])
-    {
-    case 'Image':
-        $media = new Image(
-            $currentRequest->getPost()['name'],
-            new Positionable(rand(1, 10)),
-            $currentRequest->getPost()['mediaUrl'],
-            []
-        );
-        break;
-    case 'Video':
-        $media = new Video(
-            $currentRequest->getPost()['name'],
-            new Positionable(rand(1, 10)),
-            $currentRequest->getPost()['mediaUrl'],
-            []
-        );
-        break;
-    case 'Audio':
-        $media = new Audio(
-            $currentRequest->getPost()['name'],
-            new Positionable(rand(1, 10)),
-            $currentRequest->getPost()['mediaUrl'],
-            []
-        );
-        break;
-    default:
-        $media = new Media(
-            $currentRequest->getPost()['name'],
-            new Positionable(rand(1, 10)),
-            $currentRequest->getPost()['mediaUrl'],
-            []
-        );
-    }
-    $mediaCrud->create($media);
-    echo '<p>Created ' . 
-        $media->getName() . 
-        ' with unique id ' . 
-        $media->getUniqueId();
-}
 
 /** Functions */
 $getOutput = function(
@@ -156,41 +102,18 @@ $getOutput = function(
         </div>
     ';
 };
-
-?>
-
-<h1>Roady Media Player</h1>
-
-<!-- Begin Add Media Form -->
-<form action="index.php?request=<?php echo (
-     isset($this) 
-     ? $this->getName() 
-     : 'Unknown'
- ); ?>" method="post">
-    <label for="name">Name:</label>
-    <input type="text" name="name" required>
-    <label for="mediaUrl">Media Url:</label>
-    <input type="url" name="mediaUrl" required>
-    <label for="mediaType">Media Type:</label>
-    <select name="mediaType">
-        <option selected value="Media">Media (Generic)</option>
-        <option value="Audio">Audio</option>
-        <option value="Video">Video</option>
-        <option value="Image">Image</option>
-    </select>
-
-    <input type="submit" name="addMedia" value="Add Media">
-</form>
-<!-- End Add Media Form -->
-
-<!-- Begin Select Media Form -->
-<?php
-
-$storedMedia = $mediaCrud->readAllMedia(Media::class);
 $storedAudio = $mediaCrud->readAllMedia(Audio::class);
-$storedVideos = $mediaCrud->readAllMedia(Video::class);
 $storedImages = $mediaCrud->readAllMedia(Image::class);
+$storedMedia = $mediaCrud->readAllMedia(Media::class);
+$storedVideos = $mediaCrud->readAllMedia(Video::class);
 
+/** 
+ * Generate a select form element for the $availableMedia.
+ * 
+ * @param array <int, Media> $availableMedia
+ *
+ * @return string The html for the select form.
+ */
 $generateMediaSelection = function(array $availableMedia): string {
     $select = '<select name="requestedMedia">';
     foreach($availableMedia as $media) {
@@ -202,17 +125,23 @@ $generateMediaSelection = function(array $availableMedia): string {
     return $select;
 };
 
-echo '<form action="index.php?request=ManualTests">' . 
-    $generateMediaSelection(
-        array_merge(
-            $storedMedia,
-            $storedAudio,
-            $storedVideos,
-            $storedImages,
-        )
-    ) . 
-    '<input type="submit"></form>' .
-    '<!-- End Select Media Form -->' .
-    $getOutput($mediaCrud, $currentRequest)
-;
+?>
 
+<h3>Select Media</h3>
+<!-- Begin Select Media Form -->
+<form action="index.php">
+<?php echo $generateMediaSelection(
+        array_merge(
+            $storedAudio,
+            $storedImages,
+            $storedMedia,
+            $storedVideos,
+        )
+); ?> 
+<input type="hidden" name="request" value="SelectMedia">
+<input type="submit">
+</form>
+<!-- End Select Media Form -->
+
+<?php
+echo $getOutput($mediaCrud, $currentRequest);
