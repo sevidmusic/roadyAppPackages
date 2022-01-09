@@ -17,6 +17,8 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
 $currentRequest = new Request(new Storable('CurrentRequest', 'Requests', 'Index'), new Switchable());
+
+// $currentRequest->getPost(),
 $mediaCrud = new MediaCrud(
     new Storable(
         'TestMediaCrud' . rand(0, 1000),
@@ -34,7 +36,31 @@ $mediaCrud = new MediaCrud(
     )
 );
 
-$media = [
+if(
+    isset($currentRequest->getPost()['name']) 
+    &&
+    isset($currentRequest->getPost()['mediaUrl']) 
+    &&
+    isset($currentRequest->getPost()['mediaType']) 
+) {
+
+    $media = new Media(
+        'QuickInstallationSetupAndHelloWorld',
+        new Positionable(rand(1, 10)),
+        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
+        [
+            'Title' => 'Quick Installation, Setup, And Hello World Video',
+        ]
+    );
+    $mediaCrud->create($media);
+    echo '<p>Created ' . 
+        $media->getName() . 
+        ' with unique id ' . 
+        $media->getUniqueId();
+}
+/*
+ *
+
     new Media(
         'QuickInstallationSetupAndHelloWorld',
         new Positionable(rand(1, 10)),
@@ -71,14 +97,9 @@ $media = [
             'Category' => 'roady media'
         ]
     ),
-];
+ */
 
-foreach($media as $testMedia) {
-    if(($currentRequest->getGet()['createTestMedia'] ?? '') === 'true') {
-        $mediaCrud->createMedia($testMedia);
-    }
-}
-
+/** Functions */
 $getOutput = function(MediaCrud $mediaCrud, Request $currentRequest): string {
     $media = unserialize(
         base64_decode(
@@ -128,6 +149,7 @@ $getOutput = function(MediaCrud $mediaCrud, Request $currentRequest): string {
         </div>
     ';
 };
+
 var_dump(
     $currentRequest->getPost(),
     $currentRequest->getGet()
@@ -138,12 +160,12 @@ var_dump(
 
 <!-- Begin Add Media Form -->
 <form 
- action="index.php?request=<?php echo $this->getName(); ?>" 
+ action="index.php?request=<?php echo (isset($this) ? $this->getName() : 'Unknown'); ?>" 
  method="post">
     <label for="name">Name:</label>
-    <input type="text" name="name">
+    <input type="text" name="name" required>
     <label for="mediaUrl">Media Url:</label>
-    <input type="url" name="mediaUrl">
+    <input type="url" name="mediaUrl" required>
     <label for="mediaType">Media Type:</label>
     <select name="mediaType">
         <option selected value="Media">Media (Generic)</option>
@@ -189,3 +211,49 @@ echo '<form action="index.php?request=ManualTests">' .
     $getOutput($mediaCrud, $currentRequest)
 ;
 
+/*
+$media = [
+    new Media(
+        'QuickInstallationSetupAndHelloWorld',
+        new Positionable(rand(1, 10)),
+        'https://roadydemos.us-east-1.linodeobjects.com/QuickInstallSetupHelloWorldFinal.webm',
+        [
+            'Title' => 'Quick Installation, Setup, And Hello World Video',
+        ]
+    ),
+    new Audio(
+        'Lies',
+        new Positionable(rand(1, 10)),
+        'https://sevidmusic.us-east-1.linodeobjects.com/Lies_by_SeviD_20210902.mp3',
+        [
+            'Title' => 'Lies',
+            'Album' => 'Sketches',
+            'Artist' => 'Sevi D',
+        ]
+    ),
+    new Video(
+        'GettingStartedWithRoady',
+        new Positionable(rand(1, 10)),
+        'https://roadydemos.us-east-1.linodeobjects.com/GettingStarted.webm',
+        [
+            'Title' => 'Getting Started',
+            'Category' => 'roady demos'
+        ]
+    ),
+    new Image(
+        'RoadyLogo',
+        new Positionable(rand(1, 10)),
+        'https://roady.tech/roadyLogo.png',
+        [
+            'Title' => 'Roady Logo',
+            'Category' => 'roady media'
+        ]
+    ),
+];
+
+foreach($media as $testMedia) {
+    if(($currentRequest->getGet()['createTestMedia'] ?? '') === 'true') {
+        $mediaCrud->createMedia($testMedia);
+    }
+}
+ */
