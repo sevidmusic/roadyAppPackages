@@ -5,39 +5,9 @@ use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
-use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Positionable;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 
-$currentRequest = new Request(
-    new Storable(
-        'CurrentRequest', 
-        'Requests', 
-        'Index'
-    ), 
-    new Switchable()
-);
-
-$mediaCrud = new MediaCrud(
-    new Storable(
-        'TestMediaCrud' . rand(0, 1000),
-        'TestComponents',
-        'Cruds'
-    ),
-    new Switchable(),
-    new JsonStorageDriver(
-        new Storable(
-            'TestJsonStorageDriver' . rand(0, 1000),
-            'TestComponents',
-            'StorageDrivers'
-        ),
-        new Switchable()
-    )
-);
-
-/** Functions */
 $getOutput = function(
     MediaCrud $mediaCrud, 
     Request $currentRequest
@@ -103,11 +73,6 @@ $getOutput = function(
     ';
 };
 
-$storedAudio = $mediaCrud->readAllMedia(Audio::class);
-$storedImages = $mediaCrud->readAllMedia(Image::class);
-$storedMedia = $mediaCrud->readAllMedia(Media::class);
-$storedVideos = $mediaCrud->readAllMedia(Video::class);
-
 /** 
  * Generate a select form element for the $availableMedia.
  * 
@@ -115,14 +80,37 @@ $storedVideos = $mediaCrud->readAllMedia(Video::class);
  *
  * @return string The html for the select form.
  */
-$generateMediaSelection = function(array $availableMedia): string {
-    $select = '<select name="requestedMedia">';
-    foreach($availableMedia as $media) {
-        $select .= '<option value="' .  base64_encode(serialize($media))  . '">' . 
-            $media->getName() . 
-        '</option>';
+$generateMediaSelection = function(
+    array $availableMedia, 
+    string $selectionType = 'select'
+): string {
+    if(empty($availableMedia)) {
+        return '<p>There is no available Media.</p>';
     }
-    $select .= '</select>';
-    return $select;
+    $selectorHtml = '';
+    switch($selectionType){
+    case 'links':
+            $selectorHtml .= '<ul name="requestedMedia">';
+            foreach($availableMedia as $media) {
+                $selectorHtml .= 
+                    '<li>' .
+                    '<a href="index.php?request=ViewMedia&requestedMedia=' .  base64_encode(serialize($media))  . '">' . 
+                        $media->getName() . 
+                    '</a>' . 
+                    '</li>';
+            }
+            $selectorHtml .= '</ul>';
+        break;
+        default:
+            $selectorHtml .= '<select name="requestedMedia">';
+            foreach($availableMedia as $media) {
+                $selectorHtml .= '<option value="' .  base64_encode(serialize($media))  . '">' . 
+                    $media->getName() . 
+                '</option>';
+            }
+            $selectorHtml .= '</select>';
+            break;
+    }
+    return $selectorHtml;
 };
 
