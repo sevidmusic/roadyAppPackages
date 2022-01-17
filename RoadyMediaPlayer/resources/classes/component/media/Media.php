@@ -5,6 +5,7 @@ namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
 use Exception;
 use roady\classes\component\SwitchableComponent ;
+use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\primary\Positionable;
@@ -39,10 +40,46 @@ class Media extends SwitchableComponent implements MediaInterface
         $typeName = array_pop($typeName);
         $storable = new Storable(
             $name,
-            self::MEDIA_LOCATION,
+            self::determineAppropriateLocation(),
             $typeName
         );
         parent::__construct($storable, new Switchable());
+    }
+
+    private static function currentRequest(): Request
+    {
+        return new Request(
+            new Storable(
+                'CurrentRequest', 
+                'Requests', 
+                'Media'
+            ), 
+            new Switchable()
+        );
+    }
+
+    private static function determineAppropriateLocation(): string
+    {
+
+        return strval(
+            preg_replace(
+                "#[^a-zA-Z0-9]+#",
+                '', 
+                strval(
+                    (
+                        parse_url(self::currentRequest()->getUrl(),  PHP_URL_HOST) 
+                        ?? 
+                        'localhost'
+                    )
+                )
+            ) . strval(
+                (
+                    parse_url(self::currentRequest()->getUrl(),  PHP_URL_PORT) 
+                    ?? 
+                    '8080'
+                )
+            ) . self::MEDIA_LOCATION
+        );
     }
 
     /**

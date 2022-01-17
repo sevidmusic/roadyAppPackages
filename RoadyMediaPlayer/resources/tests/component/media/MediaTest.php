@@ -2,10 +2,15 @@
 
 namespace Apps\RoadyMediaPlayer\resources\tests\component\media;
 
+use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
-use UnitTests\classes\component\SwitchableComponentTest;
-use roady\classes\primary\Positionable;
 use Exception;
+use UnitTests\classes\component\SwitchableComponentTest;
+use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Positionable;
+use roady\classes\primary\Storable;
+use roady\classes\primary\Switchable;
 
 /**
  * Defines tests for the Media class.
@@ -70,9 +75,51 @@ class MediaTest extends SwitchableComponentTest
 
     public function testGetLocationReturnsValueAssignedToMEDIA_LOCATIONConstant(): void
     {
+        $currentRequest = new Request(
+            new Storable(
+                'CurrentRequest', 
+                'Requests', 
+                'Index'
+            ), 
+            new Switchable()
+        );
+        $mediaCrud = new MediaCrud(
+            new Storable(
+                'TestMediaCrud' . rand(0, 1000),
+                'TestComponents',
+                'Cruds'
+            ),
+            new Switchable(),
+            new JsonStorageDriver(
+                new Storable(
+                    'TestJsonStorageDriver' . rand(0, 1000),
+                    'TestComponents',
+                    'StorageDrivers'
+                ),
+                new Switchable()
+            )
+        );
         $media = $this->newMediaInstance();
+        $domainPrefix = preg_replace(
+            "#[^a-zA-Z0-9]+#",
+            '', 
+            strval(
+                (
+                    parse_url($currentRequest->getUrl(),  PHP_URL_HOST) 
+                    ?? 
+                    'localhost'
+                )
+            )
+        ) . strval(
+                (
+                    parse_url($currentRequest->getUrl(),  PHP_URL_PORT) 
+                    ?? 
+                    '8080'
+                )
+            )
+        ;
         $this->assertEquals(
-            $media::MEDIA_LOCATION,
+            $domainPrefix . $media::MEDIA_LOCATION,
             $media->getLocation(),
             'getLocation() must return value of Media::MEDIA_LOCATION'
         );

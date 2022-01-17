@@ -46,6 +46,16 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
         return parent::update($originalMedia, $newMedia);
     }
 
+    private static function mockMedia(): MediaInterface
+    {
+        return new Media(
+            'MockMediaForMediaCrudUse',
+            new Positionable(),
+            '',
+            []
+        );
+    }
+
     public function readAllMedia(string|object $mediaType): array
     {
         $typeName = explode(
@@ -54,7 +64,7 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
         );
         $mediaContainer = array_pop($typeName);
         $storedComponents = parent::readAll(
-            MediaInterface::MEDIA_LOCATION,
+            self::mockMedia()->getLocation(),
             $mediaContainer
         );
         $media = [];
