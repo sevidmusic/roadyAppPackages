@@ -1,3 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
+
+body {
+    background: #020305;
+    color: #5576aa;
+    font-size: 1.3rem;
+    font-family: 'Fira Code', monospace;
+    padding: 2rem;
+}
+
+a,
+a:link,
+a:visited
+{
+    text-decoration: none;
+    color: #aa8955;
+}
+
+a:hover {
+    color: #55a0aa;
+}
+
+
+a:active {
+    color: #55aa5f;
+}
 input[type=text], input[type=url], select {
   width: 100%;
   padding: 1rem 2rem;
@@ -8,10 +34,19 @@ input[type=text], input[type=url], select {
   box-sizing: border-box;
 }
 
-input[type=submit] {
+input[type=text], 
+input[type=url], 
+input[type=submit], 
+select, 
+option {
+  background-color: #5576aa;
+  text-shadow: -1px 1px #aa8955;
+  color: #020305;
+  font-size: 1rem;
+}
+
+input[type=submit], select, option {
   width: 100%;
-  background-color: #050180;
-  color: #fafaf7;
   padding: 1rem 2rem;
   margin: 1rem 0;
   border: none;
@@ -20,6 +55,6 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-  background-color: #0703a1;
+  background-color: #55aa5f;
 }
 
