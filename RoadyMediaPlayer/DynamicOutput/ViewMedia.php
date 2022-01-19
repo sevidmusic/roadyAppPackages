@@ -39,9 +39,9 @@ $mediaCrud = new MediaCrud(
     )
 );
 
-echo (
+echo '<div class="roady-media-player-media-display">' . (
     isset($getOutput) && is_callable($getOutput)
     ? $getOutput($mediaCrud, $currentRequest) 
     : ''
-);
+) . '</div>';
 

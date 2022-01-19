@@ -8,6 +8,7 @@ use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Media;
+use Apps\RoadyMediaPlayer\resources\interfaces\component\media\Media as MediaInterface;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Video;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Positionable;
@@ -15,69 +16,137 @@ use roady\classes\primary\Switchable;
 use roady\classes\primary\Storable;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 
-$getOutput = function(
-    MediaCrud $mediaCrud, 
-    Request $currentRequest
-): string {
-    $defaultMedia = new Media(
+$defaultMedia = function(): Media {
+    return new Media(
         'MediaNotFound',
         new Positionable(rand(1, 10)),
         'http://localhost/media/not/found',
         []
     );
-    $media = unserialize(
+};
+
+/** 
+ * Encode a Media object as a string.
+ *
+ * @return string
+ */
+$encodeMedia = function(MediaInterface $media): string {
+    return urlencode(base64_encode(serialize($media)));
+};
+
+/** 
+ * Decode a string encoded with the $encodeMedia function.
+ *
+ * @return string
+ */
+$decodeMedia = function(string $encodedString) use ($defaultMedia): MediaInterface {
+    $decodedMedia = unserialize(
         base64_decode(
-            (
-                $currentRequest->getGet()['requestedMedia']
-                ??
-                base64_encode(serialize($defaultMedia))
-            )
+            urldecode($encodedString)
         )
     );
-    $media = (is_bool($media) ? $defaultMedia : $media);
-    $requestedMedia = $mediaCrud->readMedia($media);
-    if ($requestedMedia->mediaIsAccessible()) {
-        switch($requestedMedia->getType()) {
-        case Audio::class:
-            return '
-                <audio controls>
-                <source src="' . 
-                $requestedMedia->mediaUrl() . 
-                '" type="' . $requestedMedia->mimeContentType() . 
-                '">' . 
-                $requestedMedia->getName() . 
-                ' is not available at the moment.</audio>
-            ';
-        case Video::class:
-            return '
-                <video controls>
-                <source src="' . $requestedMedia->mediaUrl() . 
-                '" type="' . 
-                $requestedMedia->mimeContentType() . 
-                '">' . $requestedMedia->getName() . 
-                ' is not available at the moment.</video>
-            ';
-        case Image::class:
-            return '<img src="' . 
-                $requestedMedia->mediaUrl() . 
-            '">';
-        }
-    } 
+    $implements = (
+        is_object($decodedMedia) 
+        ? class_implements($decodedMedia)
+        : new StdClass()
+    );
+    return (
+        !in_array(
+            MediaInterface::class, 
+            (is_array($implements) ? $implements : [])
+        )
+        ? $defaultMedia() 
+        /** @var MediaInterface $decodedMedia */
+        : $decodedMedia
+    );
+};
+
+$mediaIsUnavailableMessage = function(MediaInterface $media): string {
     return '
         <div class="roady-media-player-system-message-container">
         <p>The requested media is not available at the moment.</p>
         <ul>
             <li>Media Name: ' . 
-                $requestedMedia->getName() . 
+                $media->getName() . 
             '</li>' .
             '<li>Media Url: 
-                <a href="' . $requestedMedia->mediaUrl() . '">' . 
-                    $requestedMedia->mediaUrl() . 
+                <a href="' . $media->mediaUrl() . '">' . 
+                    $media->mediaUrl() . 
                 '</a>
             </li>
         </ul>
         </div>
     ';
+};
+
+
+$imageView = function(Image $image): string {
+    return '<img src="' . 
+    $image->mediaUrl() . 
+    '">';
+};
+
+$videoView = function(Video $video): string {
+    return 
+        '<video controls>' .
+        '<source src="' . $video->mediaUrl() . 
+        '" type="' . $video->mimeContentType() . 
+        '">' . $video->getName() . 
+        ' is not available at the moment.</video>';
+};
+
+$audioView = function(Audio $audio): string {
+    return 
+        '<audio controls>' .
+        '<source src="' . 
+        $audio->mediaUrl() . 
+        '" type="' . 
+        $audio->mimeContentType() . 
+        '">' . 
+        $audio->getName() . 
+        ' is not available at the moment.</audio>';
+};
+
+$getRequestedMedia = function(Request $currentRequest) use ($defaultMedia, $encodeMedia, $decodeMedia): MediaInterface {
+    return $decodeMedia(
+        $currentRequest->getGet()['requestedMedia'] 
+        ?? 
+        $encodeMedia($defaultMedia())
+    );
+};
+
+/**
+ * Return the html for the requested Media.
+ *
+ * @return string
+ */
+$getOutput = function(
+    MediaCrud $mediaCrud, 
+    Request $currentRequest
+) use (
+    $mediaIsUnavailableMessage, 
+    $imageView, 
+    $videoView, 
+    $audioView,
+    $getRequestedMedia
+): string {
+    $requestedMedia = $mediaCrud->readMedia(
+        $getRequestedMedia($currentRequest)
+    ); 
+    if ($requestedMedia->mediaIsAccessible()) {
+        switch($requestedMedia->getType()) {
+        case Audio::class:
+            /** @var Audio $requestedMedia */
+            return $audioView($requestedMedia);
+        case Video::class:
+            /** @var Video $requestedMedia */
+            return $videoView($requestedMedia);
+        case Image::class:
+            /** @var Image $requestedMedia */
+            return $imageView($requestedMedia);
+        }
+    } 
+    return $mediaIsUnavailableMessage($requestedMedia);
 };
 
 /** 
@@ -90,7 +159,7 @@ $getOutput = function(
 $generateMediaSelection = function(
     array $availableMedia, 
     string $selectionType = 'select'
-): string {
+) use ($encodeMedia): string {
     if(empty($availableMedia)) {
         return '<p>There is no available Media.</p>';
     }
@@ -101,8 +170,10 @@ $generateMediaSelection = function(
             foreach($availableMedia as $media) {
                 $selectorHtml .= 
                     '<li>' .
-                    '<a href="index.php?request=ViewMedia&requestedMedia=' .  base64_encode(serialize($media))  . '">' . 
-                        $media->getName() . 
+                    '<a href="index.php?request=ViewMedia&requestedMedia=' .  
+                    $encodeMedia($media) . 
+                    '">' . 
+                    $media->getName() . 
                     '</a>' . 
                     '</li>';
             }
@@ -111,9 +182,12 @@ $generateMediaSelection = function(
         default:
             $selectorHtml .= '<select name="requestedMedia">';
             foreach($availableMedia as $media) {
-                $selectorHtml .= '<option value="' .  base64_encode(serialize($media))  . '">' . 
+                $selectorHtml .= 
+                    '<option value="' .  
+                    $encodeMedia($media) . 
+                    '">' . 
                     $media->getName() . 
-                '</option>';
+                    '</option>';
             }
             $selectorHtml .= '</select>';
             break;
