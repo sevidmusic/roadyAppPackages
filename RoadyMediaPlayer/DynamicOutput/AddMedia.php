@@ -35,6 +35,9 @@ $mediaCrud = new MediaCrud(
     )
 );
 
+if(isset($addMedia) && is_callable($addMedia)) {
+    $addMedia($currentRequest, $mediaCrud);
+}
 ?>
 
 <h1>Roady Media Player</h1>
@@ -73,8 +76,3 @@ $mediaCrud = new MediaCrud(
 </form>
 <!-- End Add Media Form -->
 
-<?php
-
-if(isset($addMedia) && is_callable($addMedia)) {
-    $addMedia($currentRequest, $mediaCrud);
-}

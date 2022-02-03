@@ -203,6 +203,7 @@ $currentRequest = new Request(
     ), 
     new Switchable()
 );
+
 $mediaCrud = new MediaCrud(
     new Storable(
         'TestMediaCrud' . rand(0, 1000),
@@ -219,6 +220,7 @@ $mediaCrud = new MediaCrud(
         new Switchable()
     )
 );
+
 $storedAudio = $mediaCrud->readAllMedia(Audio::class);
 $storedImages = $mediaCrud->readAllMedia(Image::class);
 $storedMedia = $mediaCrud->readAllMedia(Media::class);
