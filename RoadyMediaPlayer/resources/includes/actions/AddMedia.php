@@ -15,7 +15,7 @@ use roady\classes\primary\Positionable;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
-$addMedia = function(Request $currentRequest, MediaCrud $mediaCrud) {
+$addMedia = function(Request $currentRequest, MediaCrud $mediaCrud): bool {
     if(
         isset($currentRequest->getPost()['name']) 
         &&
@@ -60,9 +60,8 @@ $addMedia = function(Request $currentRequest, MediaCrud $mediaCrud) {
                 []
             );
         }
-        $mediaCrud->create($media);
-        echo '<p>Created ' . $media->getName() . ' with unique id ' . 
-            $media->getUniqueId();
+        return $mediaCrud->create($media);
     }
+    return false;
 };
 

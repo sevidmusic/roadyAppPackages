@@ -36,7 +36,11 @@ $mediaCrud = new MediaCrud(
 );
 
 if(isset($addMedia) && is_callable($addMedia)) {
-    $addMedia($currentRequest, $mediaCrud);
+    if(!$addMedia($currentRequest, $mediaCrud)) {
+        echo '<p>Use the form below to Add Media</p>';
+    } else {
+        echo '<p class="roady-success-message">Media Added</p>';
+    }
 }
 ?>
 
@@ -48,21 +52,15 @@ if(isset($addMedia) && is_callable($addMedia)) {
     <input type="text" name="name" required>
     <label for="mediaUrl">Media Url:</label>
     <input type="url" name="mediaUrl" required>
-    <label for="mediaPosition">Media Position:</label>
-    <select name="mediaPosition">
-        <?php
-            foreach(range(-50, 50) as $position)
-            {
-                echo 
-                    '<option ' . 
-                    ($position === 0 ? 'selected' : '') . 
-                    ' value="' . $position . 
-                    '">' . 
-                    $position . 
-                    '</option>';
-            }
-        ?>
-    </select>
+    <label for="mediaPosition">Media Position: <span id="specifiedRange">0</span></label>
+    <script>
+        function getRangeFromInput() {
+            var currentRange = document.getElementById("mediaPosition").value;
+            document.getElementById("specifiedRange").innerHTML = currentRange;
+        }
+    </script>
+    <input id="mediaPosition" type="range" name="mediaPosition" min="-50" max="50" oninput="getRangeFromInput()">
+    <br>
     <label for="mediaType">Media Type:</label>
     <select name="mediaType">
         <option selected value="Media">Media (Generic)</option>
@@ -70,7 +68,6 @@ if(isset($addMedia) && is_callable($addMedia)) {
         <option value="Video">Video</option>
         <option value="Image">Image</option>
     </select>
-
     <input type="hidden" name="request" value="AddMedia">
     <input type="submit" name="addMedia" value="Add Media">
 </form>
