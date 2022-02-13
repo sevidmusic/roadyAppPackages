@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&display=swap');
+
 /**
  * rr-docs-global.css
  *
@@ -18,19 +21,23 @@
  */
 
 :root {
-    --bg-color-body-default: #030208;
-    --bg-color-docs-code-ml-container: #121720;
-    --bg-color-docs-container: #030208;
-    --bg-color-docs-grid-30-70: #09090c;
-    --bg-color-docs-logo: none;
-    --bg-color-docs-output: none;
-    --bg-color-docs-plaintext: #09090c;
-    --bg-color-docs-rig-menu: none;
-    --bg-color-note-container: #1a1d23;
+    --background-color-body-default: #030208;
+    --background-color-docs-code-ml-container: #121720;
+    --background-color-docs-container: #030208;
+    --background-color-docs-grid-30-70: #09090c;
+    --background-color-docs-logo: none;
+    --background-color-docs-output: #09090c;
+    --background-color-docs-plaintext: none;
+    --background-color-docs-rig-menu: none;
+    --background-color-note-container: #1a1d23;
     --border-color-headers: #d59853;
-    --font-family-default: monospace;
-    --font-size-default: 1rem;
+    --font-family-code: 'Source Code Pro', monospace;
+    --font-family-default: 'Fira Sans', sans-serif;
+    --font-size-default: 1.42rem;
     --margin-centered: 0 auto;
+    --margin-note-right-left: 2rem;
+    --padding-note-container-default: 1rem;
+    --padding-note-container-hover: 1.7rem;
     --text-color-default: #fff8e8;
     --text-color-docs-code-ml: #467c79;
     --text-color-docs-code: #467c79;
@@ -42,100 +49,99 @@
     --text-color-warning-message: #7f0a00;
     --text-decoration-link: none;
     --text-shadow-color-highlighted-text: #1be29e;
+    --total-content-width: 87vw;
+    --transition-time-default: 720ms;
 }
 
 /** Resets **/
 
 *, *::before, *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 /** Generic **/
 
 body {
-    background: var(--bg-color-body-default);
+    background: var(--background-color-body-default);
     color: var(--text-color-default);
     font-family: var(--font-family-default);
     font-size: var(--font-size-default);
-    line-height: 1.399rem;
-    letter-spacing: 0.1rem;
 }
 
 .rr-docs-container h1 {
-    padding-top: 1.27rem;
-    padding-bottom: 2.27rem;
     text-align: center;
+}
+
+.rr-docs-container h3, 
+.rr-docs-container h1 {
+    line-height: 2rem;
+    font-family: var(--font-family-code);
 }
 
 .rr-docs-container h3 {
     border-left: 0.68rem double var(--border-color-headers);
     border-right: 0.68rem double var(--border-color-headers);
     border-radius: 5%;
-    padding-left: 0.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.87rem;
+    padding-left: var(--margin-note-right-left);
 }
 
 /** Container Styles**/
 
 .rr-docs-container {
-    background: var(--bg-color-docs-container);
+    background: var(--background-color-docs-container);
 }
 
 .rr-docs-output {
-    background: var(--bg-color-docs-output);
-    max-width: 72ch;
+    background: var(--background-color-docs-output);
+    max-width: var(--total-content-width);
     margin: var(--margin-centered);
 }
 
 .rr-docs-plaintext {
-    background: var(--bg-color-docs-plaintext);
-    padding: 0 2rem;
-    margin-top: 1.27rem;
+    background: var(--background-color-docs-plaintext);
     overflow: auto;
+    margin-bottom: 1rem;
+    padding: 0 var(--margin-note-right-left);
 }
 
 .rr-docs-logo {
-    background: var(--bg-color-docs-logo);
+    background: var(--background-color-docs-logo);
 }
 
 .rr-docs-rig-menu {
-    background: var(--bg-color-docs-rig-menu);
-    padding-top: 2.572rem;
-    padding-right: 2rem;
+    background: var(--background-color-docs-rig-menu);
+    font-family: var(--font-family-code);
 }
 
 .rr-docs-code-ml-container {
-    background: var(--bg-color-docs-code-ml-container);
-    padding-bottom: 2.5rem;
-    padding-left: 2rem;
+    background: var(--background-color-docs-code-ml-container);
     overflow: auto;
+    padding-bottom: 2rem;
 }
 
 .rr-docs-note-container {
-    background: var(--bg-color-note-container);
-    font-size: 0.72rem;
-    max-height: 27rem;
-    padding: 1rem;
+    font-size: calc(var(--font-size-default) / 2);
+    background: var(--background-color-note-container);
+    padding: var(--padding-note-container-default);
     overflow: hidden;
-    margin-top: 0.5rem;
-    border-bottom: 1px solid var(--bg-color-docs-plaintext);
+    margin: 0.5rem var(--margin-note-right-left) 0 var(--margin-note-right-left);
+    border-bottom: 1px solid var(--background-color-docs-plaintext);
     transition:
-        overflow 720ms,
-        padding 720ms,
-        background 720ms;
+        overflow var(--transition-time-default),
+        padding var(--transition-time-default),
+        font-size var(--transition-time-default),
+        background var(--transition-time-default);
 }
 
 .rr-docs-note-container:hover {
     overflow: auto;
-    padding: 4.2rem;
+    padding: var(--padding-note-container-hover);
     background: #070802;
+    font-size: calc(var(--font-size-default) / 1.7);
 }
 
 .rr-docs-grid-30-70 {
-    background: var(--bg-color-docs-grid-30-70);
+    background: var(--background-color-docs-grid-30-70);
     display: grid;
     grid-template-columns: 30% 70%;
 }
@@ -145,24 +151,20 @@ body {
 
 .rr-docs-tiny-msg {
     color: var(--text-color-docs-tiny-msg);
-    font-size: 0.76rem;
 }
 
 .rr-docs-warning {
     color: var(--text-color-warning-message);
-    font-size: 0.9rem;
 }
 
 
 .rr-docs-code {
     color: var(--text-color-docs-code);
-    font-size: 0.77rem;
 }
 
 
 .rr-docs-code-ml {
     color: var(--text-color-docs-code-ml);
-    font-size: 0.587rem;
 }
 
 /** Media Elements **/
@@ -173,7 +175,7 @@ body {
 
 .rr-docs-logo img {
     border-radius: 50%;
-    max-width: 50%;
+    max-width: 7vw;
     margin-top: 1rem;
     margin-left: 2rem;
     height: auto;
@@ -182,7 +184,7 @@ body {
 /** Browser Elements **/
 
 ::selection {
-    background: var(--bg-color-docs-code-ml-container);
+    background: var(--background-color-docs-code-ml-container);
     color: var(--text-color-link-active);
     text-shadow: 1px 1px var(--text-shadow-color-highlighted-text);
 }
@@ -192,14 +194,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-color-body-default);
+    background: var(--background-color-body-default);
 }
 
 
 ::-webkit-scrollbar-thumb {
     background: white;
     border-radius: 100vw;
-    border: 0.25rem solid var(--bg-color-body-default);
+    border: 0.25rem solid var(--background-color-body-default);
 }
 
 
@@ -230,7 +232,8 @@ body {
 
 .rr-docs-container a:hover {
     color: var(--text-color-link-hover);
-    text-shadow: 2px 2px var(--bg-color-body-default);
+    text-shadow: 2px 2px var(--background-color-body-default);
+    border-bottom: 0.2rem solid var(--text-color-link-active);
 }
 
 .rr-docs-container a:active {
@@ -244,6 +247,7 @@ body {
     top: 0;
     opacity: .967;
     z-index: 10000;
+    border-bottom: 0.7rem solid var(--background-color-body-default);
 }
 
 /** Menus **/
@@ -254,6 +258,8 @@ body {
 
 .rr-docs-rig-menu li {
     display: inline;
+    padding-right: 2rem;
+    font-size: calc(var(--font-size-default) / 1.242);
 }
 
 .rr-docs-rig-menu ul {
