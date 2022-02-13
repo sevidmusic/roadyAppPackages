@@ -321,7 +321,7 @@ $formattedOutput = preg_replace(
         /** Replace Components.php */
         '<a href="index.php?request=Components.php">Components.php</a>',
         /** Replace <div class="rr-docs-plaintext">(\s)+<span class="rr-docs-note-icon">NOTE: */
-        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note-icon">&raquo; Note &laquo;',
+        '<div class="rr-docs-plaintext rr-docs-note-container"><span class="rr-docs-note-icon">&raquo;',
         /** Replace Css or css */
         '<a href="index.php?request=css">${0}</a>',
         /** Replace Stylesheet(s) or stylesheet(s) */

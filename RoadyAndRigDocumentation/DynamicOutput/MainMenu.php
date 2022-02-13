@@ -17,6 +17,7 @@
                 <li><a href="index.php?request=roady">roady</a></li>
                 <li><a href="index.php?request=rig">rig</a></li>
                 <li><a href="index.php?request=getting-started">Getting Started</a></li>
+                <li><a href="https://github.com/sevidmusic/roady/archive/refs/heads/roady.zip">Download</a></li>
             </ul>
         </div>
     </div>
