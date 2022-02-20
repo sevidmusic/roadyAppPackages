@@ -1,0 +1,107 @@
+:root {
+    --color-main: #add7f5;
+    --color-complimentary: #f5cbad;
+    --color-monochromatic: #7fc1f0;
+    --color-analogous-3: #adb3f5;
+    --color-analogous-2: #adf5ef;
+    --color-triadic-1: #f5add7;
+    --color-triadic-2: #d7f5ad;
+    --default-border-color: #b3f5ad;
+    --default-background-color: #03111b;
+    --background-soft-dark: #222233;
+    --background-dark: #0d0d0f;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.roady-app-output-container {
+    background: var(--default-background-color);
+    color: var(--color-main);
+    font-family: monospace;
+    width: 100%;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.roady-app-output-container h1, h2, h3, h4, h5, h6 {
+    color: white;
+}
+.roady-left-app-nav a,
+.roady-left-app-nav a:link,
+.roady-left-app-nav a:visited,
+.roady-app-output-container a, 
+.roady-app-output-container a:link, 
+.roady-app-output-container a:visited {
+    color: var(--color-analogous-2);
+    text-decoration: none;
+    line-height: 2rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    text-align: center;
+}
+.roady-left-app-nav a:hover,
+.roady-app-output-container a:hover {
+    color: var(--color-main);
+    border-right: 2px solid var(--color-complimentary);
+    border-left: 2px solid var(--color-complimentary);
+    padding-left: 0.187rem;
+    padding-right: 0.187rem;
+}
+
+.roady-left-app-nav a:active,
+.roady-app-output-container a:active {
+    color: var(--color-complimentary);
+}
+
+.roady-name-value-name {
+    color: var(--color-monochromatic);
+}
+
+.roady-name-value-value {
+    color: var(--color-analogous-3);
+}
+
+.roady-content-seperator {
+    border-bottom: .3rem double var(--default-border-color); 
+    margin-top: 1rem; 
+    margin-bottom: 2rem;
+}
+
+.roady-note-container {
+    font-size: 0.7rem;
+    color: var(--color-triadic-1);
+    background: var(--background-soft-dark);
+    padding: 0.1rem 0.5rem;
+}
+
+.roady-left-app-nav {
+    position: fixed;
+    top: 0.333rem;
+    left: 0.17rem;
+    background: var(--background-dark);
+    max-width: 1rem;
+    overflow: hidden;
+    height: 2.2rem;
+    border-radius: 50%;
+    border-top: 0.43rem double var(--color-complimentary);
+    border-right: 0.43rem double var(--color-main);
+    z-index: 92000;
+    transition: height 1.27s, padding 1.27s, border-radius 1.27s, max-width 1.27s;
+    padding-left: 2rem;
+}
+
+.roady-left-app-nav:hover, 
+.roady-left-app-nav:active {
+    max-width: 33%;
+    height: 5rem;
+    border-radius: 0.3rem;
+    padding: 1rem 0.5rem 0 1rem;
+}
+
+.roady-output-preview {
+    background: var(--background-dark);
+    padding: 2rem;
+    border: 0.1rem double var(--color-analogous-3);
+}
