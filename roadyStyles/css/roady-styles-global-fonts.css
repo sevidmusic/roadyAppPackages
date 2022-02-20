@@ -9,3 +9,9 @@
     font-size: var(--font-size-default);
     font-family: var(--font-family-default);
 }
+
+.roady-app-output-example-container,
+.roady-app-output-note-container p,
+.roady-app-output-container pre {
+    font-size: 0.87rem;
+}

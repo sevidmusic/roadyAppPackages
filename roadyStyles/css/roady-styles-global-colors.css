@@ -2,13 +2,14 @@
     --color-analogous-1: #2642D9;
     --color-analogous-2: #26D9BD;
     --color-complimentary: #d96426;
-    --color-default: #269bd9;
+    --color-default: none;
     --color-monochromatic: #51afe1;
     --color-tetradic-1: #bd26d9;
     --color-tetradic-2: #D96426;
     --color-tetradic-3: #42D926;
     --color-triadic-1: #d9269b;
     --color-triadic-2: #9bd926;
+    --color-pre: #467c79;
 }
 
 .roady-app-output-container {
@@ -16,11 +17,11 @@
 }
 
 .roady-app-output-container pre {
-    color: var(--color-complimentary);
+    color: var(--color-pre);
 }
 
 .roady-app-output-container p {
-    color: var(--color-monochromatic);
+    color: var(--color-default);
 }
 
 .roady-app-output-container h1 {
