@@ -1,13 +1,15 @@
 :root {
-    --color-main: #07c2ff;
-    --color-complimentary: #ff4407;
-    --color-monochromatic: #009fd3;
-    --color-analogous-3: #07ffc0;
-    --color-analogous-2: #0746ff;
-    --color-triadic-1: #ff07c2;
-    --color-triadic-2: #c2ff07;
-    --default-border-color: white;
-    --default-background-color: #020211;
+    --color-main: #add7f5;
+    --color-complimentary: #f5cbad;
+    --color-monochromatic: #7fc1f0;
+    --color-analogous-3: #adb3f5;
+    --color-analogous-2: #adf5ef;
+    --color-triadic-1: #f5add7;
+    --color-triadic-2: #d7f5ad;
+    --default-border-color: #b3f5ad;
+    --default-background-color: #03111b;
+    --background-soft-dark: #222233;
+    --background-dark: #0d0d0f;
 }
 
 * {
@@ -70,7 +72,7 @@
 .roady-note-container {
     font-size: 0.7rem;
     color: var(--color-triadic-1);
-    background: #222233;
+    background: var(--background-soft-dark);
     padding: 0.1rem 0.5rem;
 }
 
@@ -78,28 +80,28 @@
     position: fixed;
     top: 0.333rem;
     left: 0.17rem;
-    background: black;
-    width: 1.2rem;
+    background: var(--background-dark);
+    max-width: 1rem;
     overflow: hidden;
-    height: 1.2rem;
-    border-radius: 50% 50%;
-    border-top: 0.23rem double var(--color-complimentary);
-    border-right: 0.23rem double var(--color-main);
-    text-align: center;
-    z-index: 2000;
-    transform: rotate(4deg);
-    transition: width 1.3s;
+    height: 2.2rem;
+    border-radius: 50%;
+    border-top: 0.43rem double var(--color-complimentary);
+    border-right: 0.43rem double var(--color-main);
+    z-index: 92000;
+    transition: height 1.27s, padding 1.27s, border-radius 1.27s, max-width 1.27s;
+    padding-left: 2rem;
 }
 
 .roady-left-app-nav:hover, 
 .roady-left-app-nav:active {
-    width: 33%;
-    height: 2rem;
+    max-width: 33%;
+    height: 5rem;
     border-radius: 0.3rem;
+    padding: 1rem 0.5rem 0 1rem;
 }
 
 .roady-output-preview {
-    background: #0d0d0f;
+    background: var(--background-dark);
     padding: 2rem;
     border: 0.1rem double var(--color-analogous-3);
 }

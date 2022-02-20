@@ -1,0 +1,40 @@
+
+:root {
+    --background-color-default: #061a25;
+    --background-color-complimentary: #251106;
+    --background-color-monochromatic: #0D3951;
+    --background-color-analogous-1: #060A25;
+    --background-color-analogous-2: #062521;
+    --background-color-triadic-1: #25061A;
+    --background-color-triadic-2: #1A2506;
+    --background-color-tetradic-1: #210625;
+    --background-color-tetradic-2: #251106;
+    --background-color-tetradic-3: #0A2506;
+    --color-analogous-1: #2642D9;
+    --color-analogous-2: #26D9BD;
+    --color-complimentary: #d96426;
+    --color-default: #269bd9;
+    --color-monochromatic: #51afe1;
+    --color-tetradic-1: #bd26d9;
+    --color-tetradic-2: #D96426;
+    --color-tetradic-3: #42D926;
+    --color-triadic-1: #d9269b;
+    --color-triadic-2: #9bd926;
+}
+
+body {
+    background: #030d13;
+}
+
+.roady-app-output-container {
+    background: var(--background-color-default);
+}
+
+.roady-app-output-container pre {
+    background: var(--background-color-monochromatic);
+}
+
+.roady-app-output-example-container {
+    background: var(--background-color-tetradic-3);
+}
+
