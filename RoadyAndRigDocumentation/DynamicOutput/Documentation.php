@@ -56,7 +56,7 @@ $helpFileOutput =
     )
     : htmlspecialchars(
         strval(
-            file_get_contents(
+            @file_get_contents(
                 $rigHelpFilesDirectoryPath . 
                 DIRECTORY_SEPARATOR .
                 $requestedDocumentation . '.txt'
@@ -344,28 +344,13 @@ $formattedOutput = preg_replace(
     implode(PHP_EOL, $lines)
 );
 
+if(!empty($formattedOutput)) {
 ?>
 
 <div class="rr-docs-container">
     <div class="rr-docs-output">
-    <?php
-    echo (empty($formattedOutput))
-        ? '
-          <p>
-              Sorry, documentation for 
-              <code class="rr-docs-code">
-          ' . 
-              $requestedDocumentation
-          . '
-              </code> 
-              is not available yet.
-            </p>
-            <p>
-                <a href="index.php">Return to Homepage</a>
-            </p>
-        '
-        : $formattedOutput;
-    ?>
+    <?php echo $formattedOutput; ?>
     </div>
 </div>
-
+<?php
+}

@@ -29,7 +29,7 @@ const RESPONDS_TO_SPRINT='
     </div>
     <nav>%s</nav>
 ';
-const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
+const REQUEST_LINK_SPRINT = '<div class="app-info-request-link"><a href="%s">%s</a></div>';
 const QUERY_STRING_SPRINT = 
     '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s';
 const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
