@@ -4,7 +4,7 @@
 set -o posix
 
 
-rig --new-app --name AppInfo --domain 'http://localhost:8420'
+rig --new-app --name AppInfo --domain 'http://localhost:8080'
 
 rig --new-response --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --position '0'
 

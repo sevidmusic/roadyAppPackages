@@ -4,7 +4,7 @@
 set -o posix
 
 
-rig --new-app --name AppPackager --domain 'http://localhost:8420'
+rig --new-app --name AppPackager --domain 'http://localhost:8080'
 
 rig --new-response --for-app 'AppPackager' --name 'AppPackager' --position '1'
 

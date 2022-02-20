@@ -51,11 +51,14 @@ $guitarManufacturers = [
     new Identifiable('Taylor'),
     new Identifiable('Gibson'),
     new Identifiable('Fender'),
+    new Identifiable('PRS'),
+    new Identifiable('Washburn'),
+    new Identifiable('Ibanez'),
 ];
 
 foreach($guitarManufacturers as $guitarManufacturer) {
-    echo '&lt;p&gt;Manufacturer&quot;s Name:' . $guitarManufacturer->getName() . '&lt;/p&gt;';
-    echo '&lt;p&gt;Unique Id:' . $guitarManufacturer->getUniqueId() . '&lt;/p&gt;';
+    echo '&lt;p&gt;Manufacturer&quot;s Name:' . $guitarManufacturer-&gt;getName() . '&lt;/p&gt;';
+    echo '&lt;p&gt;Unique Id:' . $guitarManufacturer-&gt;getUniqueId() . '&lt;/p&gt;';
 }
     </code>
     </pre>
@@ -67,6 +70,9 @@ foreach($guitarManufacturers as $guitarManufacturer) {
             new Identifiable('Taylor'),
             new Identifiable('Gibson'),
             new Identifiable('Fender'),
+            new Identifiable('PRS'),
+            new Identifiable('Washburn'),
+            new Identifiable('Ibanez'),
         ];
         
         foreach($guitarManufacturers as $guitarManufacturer) {
