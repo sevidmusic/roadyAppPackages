@@ -347,7 +347,7 @@ $formattedOutput = preg_replace(
 if(!empty($formattedOutput)) {
 ?>
 
-<div class="rr-docs-container">
+<div class="roady-app-output-container rr-docs-container">
     <div class="rr-docs-output">
     <?php echo $formattedOutput; ?>
     </div>
