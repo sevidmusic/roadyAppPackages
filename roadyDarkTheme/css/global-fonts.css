@@ -1,0 +1,41 @@
+/**
+ * This stylesheet defines fonts.
+ *
+ * Only fonts should be defined in this stylesheet.
+ *
+ * Available Classes:
+ *
+ * roady-app-output-contianer
+ * roady-app-output-contianer-grid
+ * roady-app-output-contianer-grid-item
+ * roady-inline-code
+ * roady-multi-line-code
+ * roady-multi-line-code-container
+ * roady-navigation-bar
+ * roady-navigation-list
+ * roady-navigation-menu
+ * roady-ol-list
+ * roady-ul-list
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&display=swap');
+
+:root {
+    --font-family-code: 'Source Code Pro', monospace;
+    --font-family-default: 'fira sans', sans-serif;
+}
+
+.roady-app-output-contianer {
+    font-family: var(--font-family-default);
+}
+.roady-app-output-contianer-grid {}
+.roady-app-output-contianer-grid-item {}
+.roady-navigation-bar {}
+.roady-navigation-list {}
+.roady-navigation-menu {}
+.roady-ol-list {}
+.roady-ul-list {}
+
+.roady-inline-code {
+    font-family: var(--font-family-code);
+}
