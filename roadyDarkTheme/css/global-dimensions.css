@@ -26,3 +26,9 @@
 .roady-navigation-menu {}
 .roady-ol-list {}
 .roady-ul-list {}
+
+
+.roady-app-output-container-grid img {
+    width: 100%;
+    height: auto;
+}

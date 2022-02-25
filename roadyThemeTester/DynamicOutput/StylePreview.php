@@ -51,10 +51,52 @@ Text within a &lt;pre&gt; tag.
         </code>
     </pre>
     <div class="roady-app-output-container-grid">
-        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
-        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
-        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
-        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <img src="roadyLogo.png">
+        </div>
+    </div>
+    <div class="roady-app-output-container-grid">
+        <div class="roady-app-output-container-grid-item">
+            <a href="index.php">&lt;nav&gt;</a>
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <a href="https://roady.tech" target="_blank" rel="noopener noreferrer">
+                roady.tech
+            </a>
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <a href="https://github.com/sevidmusic/roady" target="_blank" rel="noopener noreferrer">
+                roady on GitHub
+            </a>
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <a href="index.php">&lt;nav&gt;</a>
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <a href="https://roady.tech" target="_blank" rel="noopener noreferrer">
+                roady.tech
+            </a>
+        </div>
+        <div class="roady-app-output-container-grid-item">
+            <a href="https://github.com/sevidmusic/roady" target="_blank" rel="noopener noreferrer">
+                roady on GitHub
+            </a>
+        </div>
     </div>
 </div>
 <!-- End roady-app-output-container -->

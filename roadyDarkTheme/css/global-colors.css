@@ -94,11 +94,11 @@
 }
 
 .roady-app-output-container-grid {
-    background-color: var(--pale-tone-base-color);
+    background-color: var(--medium-tone-base-color);
 }
 
 .roady-app-output-container-grid-item {
-    background-color: var(--medium-tone-base-color);
+    background-color: var(--medium-tone-monochromatic-color);
 }
 
 .roady-navigation-bar {
