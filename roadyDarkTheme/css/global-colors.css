@@ -6,9 +6,9 @@
  *
  * Available Classes:
  *
- * roady-app-output-contianer
- * roady-app-output-contianer-grid
- * roady-app-output-contianer-grid-item
+ * roady-app-output-container
+ * roady-app-output-container-grid
+ * roady-app-output-container-grid-item
  * roady-inline-code
  * roady-multi-line-code
  * roady-multi-line-code-container
@@ -88,16 +88,16 @@
     --pale-tone-triadic-color-2: #DBFAD9;
 }
 
-.roady-app-output-contianer {
+.roady-app-output-container {
     background-color: var(--dark-tone-base-color);
     color: var(--gray-tone-base-color);
 }
 
-.roady-app-output-contianer-grid {
+.roady-app-output-container-grid {
     background-color: var(--pale-tone-base-color);
 }
 
-.roady-app-output-contianer-grid-item {
+.roady-app-output-container-grid-item {
     background-color: var(--medium-tone-base-color);
 }
 
@@ -106,11 +106,11 @@
 }
 
 .roady-navigation-list {
-    background-color: var(--light-tone-base-color);
+    background-color: var(--medium-tone-base-color);
 }
 
 .roady-navigation-menu {
-    background-color: var(--bright-tone-base-color);
+    background-color: var(--medium-tone-base-color);
 }
 
 .roady-ol-list {
@@ -128,6 +128,31 @@
     color: var(--bright-tone-tetradic-color-3);
 }
 
+.roady-multi-line-code-container,
 .roady-inline-code {
-    background-color: var(--gray-tone-complimentery-color);
+    background-color: var(--dark-tone-tetradic-color-1);
+}
+
+.roady-app-output-container a,
+.roady-navigation-bar a,
+.roady-navigation-bar a:link,
+.roady-navigation-list a, 
+.roady-navigation-list a:link, 
+.roady-navigation-menu a,
+.roady-navigation-menu a:link {
+    color: var(--bright-tone-base-color);
+}
+
+.roady-app-output-container a:hover,
+.roady-navigation-bar a:hover,
+.roady-navigation-list a:hover, 
+.roady-navigation-menu a:hover {
+    color: var(--bright-tone-complimentery-color);
+}
+
+.roady-app-output-container a:active,
+.roady-navigation-bar a:active,
+.roady-navigation-list a:active, 
+.roady-navigation-menu a:active {
+    color: var(--bright-tone-monochromatic-color);
 }

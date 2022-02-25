@@ -5,9 +5,9 @@
  *
  * Available Classes:
  *
- * roady-app-output-contianer
- * roady-app-output-contianer-grid
- * roady-app-output-contianer-grid-item
+ * roady-app-output-container
+ * roady-app-output-container-grid
+ * roady-app-output-container-grid-item
  * roady-inline-code
  * roady-multi-line-code
  * roady-multi-line-code-container
@@ -22,12 +22,12 @@
     --base-margin-and-padding-value: 3vw;
 }
 
-.roady-app-output-contianer {
+.roady-app-output-container {
     padding: var(--base-margin-and-padding-value);
 }
 
-.roady-app-output-contianer-grid,
-.roady-app-output-contianer-grid-item,
+.roady-app-output-container-grid,
+.roady-app-output-container-grid-item,
 .roady-navigation-bar,
 .roady-navigation-list,
 .roady-navigation-menu,
@@ -42,9 +42,20 @@
     );
 }
 
-.roady-app-output-contianer-grid {
+.roady-app-output-container-grid {
     display: grid;
     grid-template-columns: auto auto auto auto;
     column-gap: calc(var(--base-margin-and-padding-value) / 2);
     row-gap: var(--base-margin-and-padding-value);
+}
+
+.roady-multi-line-code-container,
+.roady-inline-code {
+    padding: 0 clamp(
+        0.5rem, 
+        calc(
+            var(--base-margin-and-padding-value) / 3 
+        ), 
+        2vw
+    );
 }

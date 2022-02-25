@@ -1,4 +1,5 @@
-<div class="roady-app-output-contianer">
+<!-- Start roady-app-output-container -->
+<div class="roady-app-output-container">
     <nav class="roady-navigation-menu">
         <a href="index.php">&lt;nav&gt;</a>
         <a href="https://roady.tech" target="_blank" rel="noopener noreferrer">roady.tech</a>
@@ -35,6 +36,7 @@
     <h5>A h1 header</h1>
     <h6>A h1 header</h1>
     <p>A paragraph, lorem ipsum, Puella in piscinam cecidit.</p>
+    <p>A paragraph with a <a href="#">Link</a> in it</p>
     <pre>
 Text within a &lt;pre&gt; tag.
     </pre>
@@ -48,10 +50,11 @@ Text within a &lt;pre&gt; tag.
 &lt;?php echo 'text within a &lt;pre&gt; tag'; ?&gt;
         </code>
     </pre>
-<div class="roady-app-output-contianer-grid">
-    <div class="roady-app-output-contianer-grid-item"><img src="roadyLogo.png"></div>
-    <div class="roady-app-output-contianer-grid-item"><img src="roadyLogo.png"></div>
-    <div class="roady-app-output-contianer-grid-item"><img src="roadyLogo.png"></div>
-    <div class="roady-app-output-contianer-grid-item"><img src="roadyLogo.png"></div>
+    <div class="roady-app-output-container-grid">
+        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
+        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
+        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
+        <div class="roady-app-output-container-grid-item"><img src="roadyLogo.png"></div>
+    </div>
 </div>
-</div>
+<!-- End roady-app-output-container -->

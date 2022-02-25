@@ -5,9 +5,9 @@
  *
  * Available Classes:
  *
- * roady-app-output-contianer
- * roady-app-output-contianer-grid
- * roady-app-output-contianer-grid-item
+ * roady-app-output-container
+ * roady-app-output-container-grid
+ * roady-app-output-container-grid-item
  * roady-inline-code
  * roady-multi-line-code
  * roady-multi-line-code-container
@@ -25,11 +25,11 @@
     --font-family-default: 'fira sans', sans-serif;
 }
 
-.roady-app-output-contianer {
+.roady-app-output-container {
     font-family: var(--font-family-default);
 }
-.roady-app-output-contianer-grid {}
-.roady-app-output-contianer-grid-item {}
+.roady-app-output-container-grid {}
+.roady-app-output-container-grid-item {}
 .roady-navigation-bar {}
 .roady-navigation-list {}
 .roady-navigation-menu {}
