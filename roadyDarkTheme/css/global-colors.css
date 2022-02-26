@@ -183,3 +183,10 @@
     background-color: var(--medium-tone-base-color);
 }
 
+.roady-message {
+    color: var(--bright-tone-tetradic-color-3);
+}
+
+.roady-error-message {
+    color: var(--bright-tone-tetradic-color-1);
+}
