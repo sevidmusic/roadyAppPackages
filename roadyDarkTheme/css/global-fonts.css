@@ -27,6 +27,7 @@
 
 .roady-app-output-container {
     font-family: var(--font-family-default);
+    font-size: clamp(1rem, 2vw, 32px);
 }
 .roady-app-output-container-grid {}
 .roady-app-output-container-grid-item {}
@@ -36,6 +37,11 @@
 .roady-ol-list {}
 .roady-ul-list {}
 
+.roady-multi-line-code,
 .roady-inline-code {
     font-family: var(--font-family-code);
+}
+
+.roady-multi-line-code {
+    font-size: 1.2rem;
 }

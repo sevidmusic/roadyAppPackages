@@ -1,3 +1,10 @@
+/**
+ * This stylesheet is meant to be a development canvas,
+ * the styles defined in this stylesheet will eventually
+ * be moved into an appropriately named stylesheet.
+ */
+
+/** Links **/
 .roady-app-output-container a,
 .roady-navigation-bar a,
 .roady-navigation-bar a:link,
@@ -17,11 +24,29 @@
     border-right: calc(1rem / 8) solid white;
 }
 
+/** Lists **/
 .roady-navigation-bar li {
     display: inline;
 }
 
-.roady-navigation-bar li,
-.roady-navigation-list li {
+.roady-ul-list,
+.roady-navigation-bar,
+.roady-navigation-list {
     list-style-type: none;
+}
+
+.roady-form-input-label {
+    display: block;
+}
+
+.roady-ol-list {
+    list-style-position: inside;
+}
+
+.roady-form input[type=text] {
+    border-radius: 3rem;
+}
+
+.roady-form select {
+    display: block;
 }

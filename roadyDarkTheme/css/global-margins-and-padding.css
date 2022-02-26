@@ -30,9 +30,7 @@
 .roady-app-output-container-grid-item,
 .roady-navigation-bar,
 .roady-navigation-list,
-.roady-navigation-menu,
-.roady-ol-list,
-.roady-ul-list {
+.roady-navigation-menu {
     padding: clamp(
         27px, 
         calc(
@@ -75,4 +73,33 @@
         ), 
         1vw
     );
+}
+
+.roady-form,
+.roady-ol-list li,
+.roady-ul-list li {
+    padding: clamp(
+        1rem, 
+        calc(
+            var(--base-margin-and-padding-value) / 3
+        ), 
+        2vw
+    );
+}
+
+/** Forms and Form Elements **/
+
+.roady-form > * {
+    padding: 0.1rem clamp(
+        0.7rem, 
+        calc(
+            var(--base-margin-and-padding-value) / 4
+        ), 
+        1.2vw
+    );
+}
+
+.roady-form select,
+.roady-form-input {
+    margin: 1rem 0;
 }

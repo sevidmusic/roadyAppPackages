@@ -32,3 +32,11 @@
     width: 100%;
     height: auto;
 }
+
+.roady-form-input  {
+    height: 3vh;
+}
+
+.roady-form select {
+    width: 100%;
+}

@@ -30,11 +30,11 @@
         <li>Ordered List item</li>
     </ol>
     <h1>A h1 header</h1>
-    <h2>A h1 header</h1>
-    <h3>A h1 header</h1>
-    <h4>A h1 header</h1>
-    <h5>A h1 header</h1>
-    <h6>A h1 header</h1>
+    <h2>A h2 header</h1>
+    <h3>A h3 header</h1>
+    <h4>A h4 header</h1>
+    <h5>A h5 header</h1>
+    <h6>A h6 header</h1>
     <p>A paragraph, lorem ipsum, Puella in piscinam cecidit.</p>
     <p>A paragraph with a <a href="#">Link</a> in it</p>
     <pre>
@@ -98,5 +98,24 @@ Text within a &lt;pre&gt; tag.
             </a>
         </div>
     </div>
+    <div class="roady-form-container">
+        <form class="roady-form">
+            <label class="roady-form-input-label" for="text">Text:</label>
+            <input class="roady-form-input" type="text" name="text" />
+            <label class="roady-form-input-label" for="radio">Radio:</label>
+            <input class="roady-form-input" type="radio" name="radio" value="radio" />
+            <label class="roady-form-input-label" for="checkbox">Checkbox:</label>
+            <input class="roady-form-input" type="checkbox" name="checkbox" value="checkbox" />
+            <label class="roady-form-input-label" for="select">Select:</label>
+            <select class="roady-form-input" name="select">
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+            </select>
+            <input class="roady-form-input" type="submit" name="submit" value="Submit" />
+            <input class="roady-form-input" type="hidden" name="request" value="StylePreview" />
+        </form>
+    </div>
+    <!-- End roady-form-container -->
 </div>
 <!-- End roady-app-output-container -->

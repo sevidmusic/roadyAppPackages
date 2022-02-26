@@ -6,25 +6,25 @@ set -o posix
 
 rig --new-app --name AppInfo --domain 'http://localhost:8080'
 
-rig --new-response --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'AppGlobalResponseInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppGlobalResponseInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'AppInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'AppOutputComponentInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppOutputComponentInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'AppRequestInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppRequestInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'AppResponseInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'AppResponseInfo' --position '1'
 
 rig --new-global-response --for-app 'AppInfo' --name 'MainMenu' --position '0'
 
-rig --new-response --for-app 'AppInfo' --name 'ResponseDynamicOutputComponentInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'ResponseDynamicOutputComponentInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'ResponseOutputComponentInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'ResponseOutputComponentInfo' --position '1'
 
-rig --new-response --for-app 'AppInfo' --name 'ResponseRequestInfo' --position '0'
+rig --new-response --for-app 'AppInfo' --name 'ResponseRequestInfo' --position '1'
 
 rig --new-request --for-app 'AppInfo' --name 'AppDynamicOutputComponentInfo' --relative-url 'index.php?request=AppDynamicOutputComponentInfo' --container 'AppInfoRequests'
 
