@@ -51,10 +51,14 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
             <li>State:</li>
             <li>%s</li>
         </ul>
-        <h3>Output</h3>
-        <pre class="roady-multi-line-code-container>
-            <code class="roady-inline-code">%s</code>
-        </pre> 
+        <ul class="roady-ul-list">
+            <li>Output:</li>
+            <li>
+                <pre class="roady-multi-line-code-container>
+                    <code class="roady-inline-code">%s</code>
+                </pre> 
+            </li>
+        </ul>
     </div>';
 
 const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';

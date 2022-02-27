@@ -37,8 +37,8 @@ const APP_INFO_SPRINT = '
             <li>State</li>
             <li>%s</li>
         </ul>
-        <h3>Configured Components:</h3>
-        <ul class="roady-navigation-bar">
+        <ul class="roady-ul-list">
+            <li>Configured Components:</li>
             <li>
                 <a href="index.php?request=AppResponseInfo&appName=%s">
                     Responses
