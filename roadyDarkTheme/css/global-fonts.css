@@ -5,7 +5,7 @@
  *
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&family=Bebas+Neue:wght@300&display=swap');
 
 :root {
     --font-family-code: 'Source Code Pro', monospace;
@@ -17,6 +17,16 @@
     font-family: var(--font-family-default);
     font-size: var(--font-size-default);
 }
+
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h5 {
+    font-family: 'Bebas Neue', monospace;
+}
+
 .roady-app-output-container-grid {}
 .roady-app-output-container-grid-item {}
 .roady-navigation-bar {}
@@ -34,3 +44,8 @@
 .roady-inline-code {
     font-size: 0.87em;
 }
+
+.roady-note {
+    font-size: 0.82em;
+}
+

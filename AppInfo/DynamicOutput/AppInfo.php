@@ -15,50 +15,57 @@ const OUTPUT_CONTAINER_SPRINT = '
 const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
     <!-- App name -->
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">
-            Configured Components:
-        </span>
-    </p>
-    <nav>
-        <a href="index.php?request=AppResponseInfo&appName=%s">
-            Responses
-        </a>
-        <a href="index.php?request=AppGlobalResponseInfo&appName=%s">
-            GlobalResponses
-        </a>
-        <a href="index.php?request=AppRequestInfo&appName=%s">
-            Requests
-        </a>
-        <a href="index.php?request=AppOutputComponentInfo&appName=%s">
-            OutputComponents
-        </a>
-        <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">
-            DynamicOutputComponents
-        </a>
-    </nav>
-    <div class="roady-content-separator"></div>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State</li>
+            <li>%s</li>
+        </ul>
+        <h3>Configured Components:</h3>
+        <ul class="roady-navigation-bar">
+            <li>
+                <a href="index.php?request=AppResponseInfo&appName=%s">
+                    Responses
+                </a>
+            </li>
+            <li>
+                <a href="index.php?request=AppGlobalResponseInfo&appName=%s">
+                    GlobalResponses
+                </a>
+            </li>
+            <li>
+                <a href="index.php?request=AppRequestInfo&appName=%s">
+                    Requests
+                </a>
+            </li>
+            <li>
+                <a href="index.php?request=AppOutputComponentInfo&appName=%s">
+                    OutputComponents
+                </a>
+            </li>
+            <li>
+                <a href="index.php?request=AppDynamicOutputComponentInfo&appName=%s">
+                    DynamicOutputComponents
+                </a>
+            </li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -146,10 +153,10 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($appInfo)
-    ? '<h1>Unable to determine which Apps are running on ' . 
-        $domain . '.</h1>' . PHP_EOL
-    : '<h1>The following Apps are running on ' . 
-        $domain . ':</h1>' . PHP_EOL . implode(PHP_EOL, $appInfo)
+    ? '<p class="roady-error-message">Unable to determine which ' .
+        'Apps are running on ' . $domain . '</p>' . PHP_EOL
+    : '<h2>The following Apps are running on ' . 
+        $domain . ':</h2>' . PHP_EOL . implode(PHP_EOL, $appInfo)
     )
 );
 

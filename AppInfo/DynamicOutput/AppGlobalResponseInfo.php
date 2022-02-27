@@ -16,19 +16,13 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONDS_TO_SPRINT='
-    <p>
-        <span class="roady-name-value-name">
-            Responds to:    
-        </span>
-    </p>
-    <div class="roady-note-container">
-        <p>
+    <h5>Responds to:</h5>
+    <p class="roady-note">
             Note: GlobalResponses will respond to all Requests,
             but may still be assigned specific Requests. The
             following urls are associated with the Requests 
             assigned to this GlobalResponse.
-        </p>
-    </div>
+    </p>
     <nav>%s</nav>
 ';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
@@ -36,56 +30,65 @@ const QUERY_STRING_SPRINT =
     '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
 const APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT = '
     <h1>GlobalResponses configured by the %s app:</h1>
-    <!-- Start GLOBAL_RESPONSE_INFO_SPRINT -->
     %s
-    <!-- End GLOBAL_RESPONSE_INFO_SPRINT -->
 ';
 const GLOBAL_RESPONSE_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <!-- Start Responds To: -->
-    %s
-    <!-- End Responds To: -->
-    <p>
-        <span class="roady-name-value-name">
-            Assigned Components:
-        </span>
-    </p>
-    <nav>
-        <a href="index.php?request=ResponseRequestInfo' . 
-        QUERY_STRING_SPRINT . '">
-            Requests
-        </a>
-        <a href="index.php?request=ResponseOutputComponentInfo' . 
-        QUERY_STRING_SPRINT . '">
-            OutputComponents
-        </a>
-        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
-        QUERY_STRING_SPRINT . '">
-            DynamicOutputComponents
-        </a>
-    </nav>
-    <div class="roady-content-seperator"></div>
+    <div class="roady-generic-container">
+        <h2>%s</h2>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>%s</li>
+        </ul>
+        <h3>Assigned Components:</h3>
+        <ul class="roady-navigation-bar">
+            <li>
+                <a href="index.php?' . 
+                    'request=ResponseRequestInfo' . 
+                    QUERY_STRING_SPRINT . 
+                '">
+                    Requests
+                </a>
+            </li>
+                <li>
+                    <a href="index.php?' . 
+                    'request=ResponseOutputComponentInfo' . 
+                        QUERY_STRING_SPRINT . 
+                    '">
+                        OutputComponents
+                    </a>
+            </li>
+                <li>
+                    <a href="index.php?' . 
+                    'request=ResponseDynamicOutputComponentInfo' . 
+                        QUERY_STRING_SPRINT . 
+                    '">
+                        DynamicOutputComponents
+                    </a>
+            </li>
+        </ul>
+    </div>
 ';
+
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 
 $currentRequest = new Request(
     new Storable(
@@ -222,10 +225,35 @@ $appInfoOutput = sprintf(
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($globalResponseInfo)
-        ? '<p>There are no Responses configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
-        : $appInfoOutput
+        empty($globalResponseInfo) 
+        ? 
+        '<p class="roady-message">' .
+        'There are no GlobalResponses configured for the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' app.' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To configure a new GlobalResponse' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'new-global-response" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --new-global-response --for-app --name' .
+        '</a>' .
+        '</code> or <code class="roady-inline-code">'.
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'configure-app-output" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --configure-app-output --for-app --name --output' .
+        ' --global</a></code>' .
+        '</p>'
+        : 
+        $appInfoOutput
     )
 );
