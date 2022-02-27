@@ -13,51 +13,51 @@ use roady\classes\component\OutputComponent;
 /** Vars and Constants */
 
 const OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT = 
-    '<div class="roady-output-preview">%s</div>';
+    '<pre class="roady-multi-line-code-container">' .
+    '<code class="roady-multi-line-code">%s</code>' . 
+    '</pre>';
 
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>';
 
 const APPS_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h1>OutputComponents configured by the %s app:</h1>
-    <!-- Start OUTPUT_COMPONENT_INFO_SPRINT output -->
-    %s
-    <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->';
+    %s';
 
 const OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Output:</span>:
-    </p>
-    <!-- Start OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT -->
-    %s
-    <!-- End OUTPUT_COMPONENT_OUTPUT_PREVIEW_SPRINT -->
-    <div class="roady-content-separator"></div>
-';
+    <div class="roady-generic-container">
+        <h2>%s</h2>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State:</li>
+            <li>%s</li>
+        </ul>
+        <h3>Output</h3>
+        <pre class="roady-multi-line-code-container>
+            <code class="roady-inline-code">%s</code>
+        </pre> 
+    </div>';
+
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 
 $currentRequest = new Request(
     new Storable(
@@ -152,9 +152,33 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($outputComponentInfo)
-        ? '<p>There are no OutputComponents configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
+    ? 
+        '<p class="roady-message">' .
+        'There are no OutputComponents configured for the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' app.' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To configure a new OutputComponent' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'new-global-response" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --new-output-component --for-app --name --output' .
+        '</a>' .
+        '</code> or <code class="roady-inline-code">'.
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'configure-app-output" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --configure-app-output --for-app --name --output' .
+        '</a></code>' .
+        '</p>'
         : $appOutputComponentInfo
     )
 );

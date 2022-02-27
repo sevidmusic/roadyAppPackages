@@ -17,13 +17,7 @@ const OUTPUT_CONTAINER_SPRINT = '
 ';
 const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h1>DynamicOutputComponents configured by the %s app:</h1>
-    <!-- 
-        Start APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT 
-    -->
     %s
-    <!-- 
-        End APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT 
-    -->
 ';
 const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h2>%s</h2>
@@ -147,7 +141,7 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($dynamicOutputComponentInfo)
-        ? '<p>There are no DynamicOutputComponents configured for the ' .
+        ? '<p class="roady-message">There are no DynamicOutputComponents configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
         : $appDynamicOutputComponentInfo

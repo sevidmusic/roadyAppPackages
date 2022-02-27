@@ -104,6 +104,7 @@
     margin: 1rem 0;
 }
 
+.roady-generic-container,
 .roady-message {
     padding: 1rem clamp(
         0.7rem, 
@@ -113,3 +114,4 @@
         1.2vw
     );
 }
+
