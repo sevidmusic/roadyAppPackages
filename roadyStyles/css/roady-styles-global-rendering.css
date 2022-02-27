@@ -1,9 +1,0 @@
-.roady-app-output-container {
-    overflow: hidden;
-}
-.roady-app-output-note-container,
-.roady-app-output-example-container,
-.roady-app-output-container pre,
-.roady-app-output-container p {
-    overflow: auto;
-}

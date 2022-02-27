@@ -1,7 +1,0 @@
-:root {
-    --container-width-default: 87vw;
-}
-
-.roady-app-output-container {
-    width: var(--container-width-default);
-}
