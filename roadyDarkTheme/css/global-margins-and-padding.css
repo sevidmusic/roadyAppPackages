@@ -50,7 +50,7 @@
 
 .roady-multi-line-code-container,
 .roady-inline-code {
-    padding: 0 clamp(
+    padding: 0.3vh clamp(
         0.5rem, 
         calc(
             var(--base-margin-and-padding-value) / 3 
@@ -102,4 +102,14 @@
 .roady-form select,
 .roady-form-input {
     margin: 1rem 0;
+}
+
+.roady-message {
+    padding: 1rem clamp(
+        0.7rem, 
+        calc(
+            var(--base-margin-and-padding-value) / 4
+        ), 
+        1.2vw
+    );
 }

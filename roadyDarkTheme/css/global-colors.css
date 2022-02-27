@@ -4,19 +4,6 @@
  * Only color related styles like background-color, color, etc.
  * should be defined in this stylesheet.
  *
- * Available Classes:
- *
- * roady-app-output-container
- * roady-app-output-container-grid
- * roady-app-output-container-grid-item
- * roady-inline-code
- * roady-multi-line-code
- * roady-multi-line-code-container
- * roady-navigation-bar
- * roady-navigation-list
- * roady-navigation-menu
- * roady-ol-list
- * roady-ul-list
  */
 
 :root {
@@ -189,4 +176,10 @@
 
 .roady-error-message {
     color: var(--bright-tone-tetradic-color-1);
+}
+
+.roady-message {
+    background-color: var(--medium-tone-monochromatic-color);
+    border-radius: calc(1vw / 9);
+    color: var(--pale-tone-monochromatic-color);
 }

@@ -27,41 +27,34 @@ const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
 ';
 const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">DynamicOutput file:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <div class="roady-note-container">
-        <p>
-            Note: The DynamicOutput file is responsible for 
-            generating this DynamicOutputComponent\'s output.
-        </p>
-    </div>
-    <div class="roady-content-separator"></div>
+    <ul class="roady-ul-list">
+        <li>Unique Id:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Type:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Location:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Container:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Position:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>State:</li>
+        <li> %s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>DynamicOutput file:</li>
+        <li> %s</li>
+    </ul>
 ';
 
 $currentRequest = new Request(

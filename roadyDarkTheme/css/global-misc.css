@@ -50,3 +50,7 @@
 .roady-form select {
     display: block;
 }
+
+.roady-multi-line-code-container {
+    overflow: auto;
+}

@@ -45,11 +45,15 @@ Text within a &lt;pre&gt; tag.
         Lorem ipsum, amo amor amas.
     </p>
     <pre class="roady-multi-line-code-container">
-        <code class="roady-multi-line-code">
+    <code class="roady-multi-line-code">
 // multi line code snippet within a &lt;pre&gt; tag
 &lt;?php echo 'text within a &lt;pre&gt; tag'; ?&gt;
-        </code>
-    </pre>
+    </code></pre>
+    <pre class="roady-multi-line-code-container">
+    <code class="roady-multi-line-code">
+// multi line code snippet that overflows 
+&lt;?php echo 'text within a &lt;pre&gt; tag'; ?&gt; // some overflowing code 1234567890098765432121234567654321234567876543234567876543456789765434567876543234567891098765432134567890298765432134567289187654231456789218765425678239817654342567890198765167824225628928762542rfgty2ui9876trf2dvgbhj2i876trf2vgbhj2ui7y6tr2fdcvb2njiu2876t25rfv2bnjki29876ytgbn
+    </code></pre>
     <div class="roady-app-output-container-grid">
         <div class="roady-app-output-container-grid-item">
             <img src="roadyLogo.png">

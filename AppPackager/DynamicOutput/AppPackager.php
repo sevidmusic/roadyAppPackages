@@ -141,7 +141,7 @@ $createMakeFile = function(string $appPackageDirectoryPath, array $components) {
         $makeFileOutput .= htmlspecialchars($line) . PHP_EOL;
     }
     $makeFileOutput .= '</code></pre>';
-    echo '<p class="roady-message">Created the following make.sh @ ' . $makeFilePath . ':</p>' . $makeFileOutput;
+    echo '<p class="roady-message">Created the following make.sh at <code class="roady-inline-code">' . $makeFilePath . '</code>:</p>' . $makeFileOutput;
     file_put_contents($makeFilePath, $makeFile);
     chmod($makeFilePath, 0755);
 };
