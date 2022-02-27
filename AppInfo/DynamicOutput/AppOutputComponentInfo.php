@@ -57,6 +57,8 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
         </pre> 
     </div>';
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
+
 $currentRequest = new Request(
     new Storable(
         'CurrentRequest',
