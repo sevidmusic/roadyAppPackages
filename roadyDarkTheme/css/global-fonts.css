@@ -1,0 +1,36 @@
+/**
+ * This stylesheet defines fonts.
+ *
+ * Only fonts should be defined in this stylesheet.
+ *
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&display=swap');
+
+:root {
+    --font-family-code: 'Source Code Pro', monospace;
+    --font-family-default: 'fira sans', sans-serif;
+    --font-size-default: clamp(1rem, 2vw, 32px);
+}
+
+.roady-app-output-container {
+    font-family: var(--font-family-default);
+    font-size: var(--font-size-default);
+}
+.roady-app-output-container-grid {}
+.roady-app-output-container-grid-item {}
+.roady-navigation-bar {}
+.roady-navigation-list {}
+.roady-navigation-menu {}
+.roady-ol-list {}
+.roady-ul-list {}
+
+.roady-multi-line-code,
+.roady-inline-code {
+    font-family: var(--font-family-code);
+}
+
+.roady-multi-line-code,
+.roady-inline-code {
+    font-size: 0.87em;
+}

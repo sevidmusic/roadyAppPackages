@@ -101,7 +101,7 @@ $generateAvailableAppSelectionOptions = function($selectedApp, $currentRequest, 
 
 $createDirectory = function($directoryPath) {
     if(!is_dir($directoryPath)) {
-        echo "<p class=\"app-packager-message\"><code class=\"app-packager-code-preview\">Created new directory at $directoryPath</code></p>";
+        echo "<p class=\"roady-message\">Created new directory at <code class=\"roady-inline-code\">$directoryPath</code></p>";
         mkdir($directoryPath, 0755, true);
     }
 };
@@ -109,7 +109,7 @@ $createDirectory = function($directoryPath) {
 $copyAppFilesAndDirectories = function(string $sourceDirectoryPath, string $targetDirectoryPath) use (&$copyAppFilesAndDirectories, &$createDirectory) {
     $sourceDirectoryPath = strval(realpath($sourceDirectoryPath));
     if(!is_dir($sourceDirectoryPath)) {
-        echo '<p class="app-packager-error-message">The ' . $sourceDirectoryPath . ' does not exist</p>';
+        echo '<p class="roady-error-message">The <code class="roady-inline-code">' . $sourceDirectoryPath . '</code> does not exist</p>';
         return;
     }
     $createDirectory($targetDirectoryPath);
@@ -120,7 +120,7 @@ $copyAppFilesAndDirectories = function(string $sourceDirectoryPath, string $targ
         $copyPath = $targetDirectoryPath . DIRECTORY_SEPARATOR . $fileName;
         if(!is_dir($realFilePath)) {
             if($fileName === 'Components.php') { continue; }
-            echo "<p class=\"app-packager-message\"><code class=\"app-packager-code-preview\">Copied new $realFilePath to $copyPath</code></p>";
+            echo "<p class=\"roady-message\">Copied new <code class=\"roady-inline-code\">$realFilePath</code> to <code class=\"roady-inline-code\">$copyPath</code></p>";
             copy($realFilePath, $copyPath);
             continue;
         }
@@ -134,13 +134,14 @@ $copyAppFilesAndDirectories = function(string $sourceDirectoryPath, string $targ
 
 $createMakeFile = function(string $appPackageDirectoryPath, array $components) {
     $makeFile = '#!/bin/bash' . PHP_EOL . '# make.sh' . PHP_EOL . PHP_EOL .'set -o posix' . PHP_EOL . PHP_EOL;
-    $makeFileOutput = '';
+    $makeFileOutput = '<pre class="roady-multi-line-code-container"><code class="roady-multi-line-code">';
     $makeFilePath = $appPackageDirectoryPath . DIRECTORY_SEPARATOR . 'make.sh';
     foreach($components as $line) {
         $makeFile .= PHP_EOL . $line . PHP_EOL;
-        $makeFileOutput .= '<code class="app-packager-code-preview makeFileOutput">' . htmlspecialchars($line) .'</code>';
+        $makeFileOutput .= htmlspecialchars($line) . PHP_EOL;
     }
-    echo "<p class=\"app-packager-message\"><code class=\"app-packager-code-preview\">Created the following make.sh @ $makeFilePath:</code>$makeFileOutput</p>";
+    $makeFileOutput .= '</code></pre>';
+    echo '<p class="roady-message">Created the following make.sh at <code class="roady-inline-code">' . $makeFilePath . '</code>:</p>' . $makeFileOutput;
     file_put_contents($makeFilePath, $makeFile);
     chmod($makeFilePath, 0755);
 };
@@ -201,11 +202,7 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
 
 ?>
 <!-- App Packager Output Start -->
-<div class="app-packager-app-packager-output-container">
-<div class="app-packager-app-packager-output">
-
-
-<div class="app-packager-content">
+<div class="roady-app-output-container">
     <p><a href="/">Go Home</a></p>
     <h3>Welcome to the App Packager App</h3>
 
@@ -254,37 +251,29 @@ $generateMakeFile = function(AppComponentsFactoryInterface $appComponentsFactory
         ~/roady/Apps/AppPackager/resources/AppPackages
     </p>
 
+    <form class="roady-form" action="<?php echo $currentRequest->getUrl(); ?>" method="post">
+    
+        <label class="roady-form-input-label" for="AppToPackSelector">Select an App to convert into an App Package:</label><br/>
+    
+        <select id="AppToPackSelector" class="roady-form-input" name="AppToPack">
+            <?php $generateAvailableAppSelectionOptions($appName, $currentRequest, $appComponentsFactory); ?>
+        </select>
+    
+        <input type="hidden" name="MakeAppPackage" value="True">
+    
+        <input class="roady-form-input" type="submit">
+    
+    </form>
+    
+    <?php if(isset($currentRequest->getPost()['MakeAppPackage']) && $currentRequest->getPost()['MakeAppPackage'] === 'True') { ?>
+    
+        <?php
+            $createDirectory($appPackageDirectoryPath);
+            $createMakeFile($appPackageDirectoryPath, $generateMakeFile($appComponentsFactory, $apps, $outputComponents, $requests, $responses, $assignments));
+            $copyAppFilesAndDirectories($appDirectoryPath, $appPackageDirectoryPath);
+        ?>
+    
+    <?php } ?>
 
 </div>
-
-<form class="app-packager-app-selection-form" action="<?php echo $currentRequest->getUrl(); ?>" method="post">
-
-    <label class="app-packager-select-form-label" for="AppToPackSelector">Select an App to convert into an App Package:</label><br/>
-
-    <select id="AppToPackSelector" class="app-packager-select-form" name="AppToPack">
-        <?php $generateAvailableAppSelectionOptions($appName, $currentRequest, $appComponentsFactory); ?>
-    </select>
-
-    <input type="hidden" name="MakeAppPackage" value="True">
-
-    <input class="app-packager-submit-button" type="submit">
-
-</form>
-
-<?php if(isset($currentRequest->getPost()['MakeAppPackage']) && $currentRequest->getPost()['MakeAppPackage'] === 'True') { ?>
-    <div class="app-packager-make-file-preview">
-
-    <?php
-        $createDirectory($appPackageDirectoryPath);
-        $createMakeFile($appPackageDirectoryPath, $generateMakeFile($appComponentsFactory, $apps, $outputComponents, $requests, $responses, $assignments));
-        $copyAppFilesAndDirectories($appDirectoryPath, $appPackageDirectoryPath);
-    ?>
-
-    </div>
-
-<?php } ?>
-
-</div>
-<!-- App Packager Output End -->
-</div>
-<!-- App Packager Output Container End -->
+<!-- End roady-app-output-container -->

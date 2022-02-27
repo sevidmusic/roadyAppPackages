@@ -1,0 +1,185 @@
+/**
+ * This stylesheet defines colors.
+ *
+ * Only color related styles like background-color, color, etc.
+ * should be defined in this stylesheet.
+ *
+ */
+
+:root {
+    /** bright */
+    --bright-tone-analagous-color-1: #8C4BE5;
+    --bright-tone-analagous-color-2: #4BA4E5;
+    --bright-tone-base-color: #4b57e5;
+    --bright-tone-complimentery-color: #E5D94B;
+    --bright-tone-monochromatic-color: #202FDD;
+    --bright-tone-tetradic-color-1: #E54BA4;
+    --bright-tone-tetradic-color-2: #E5D94B;
+    --bright-tone-tetradic-color-3: #4BE58C;
+    --bright-tone-triadic-color-1: #E54B57;
+    --bright-tone-triadic-color-2: #57E54B;
+    /** dark */
+    --dark-tone-analagous-color-1: #07020E;
+    --dark-tone-analagous-color-2: #02090E;
+    --dark-tone-base-color: #161b21;
+    --dark-tone-complimentery-color: #0E0D02;
+    --dark-tone-monochromatic-color: #080D3B;
+    --dark-tone-tetradic-color-1: #0E0209;
+    --dark-tone-tetradic-color-2: #0E0D02;
+    --dark-tone-tetradic-color-3: #020E07;
+    --dark-tone-triadic-color-1: #0E0203;
+    --dark-tone-triadic-color-2: #030E02;
+    /** DONE gray */
+    --gray-tone-analagous-color-1: #E5E4ED;
+    --gray-tone-analagous-color-2: #E4EDED;
+    --gray-tone-base-color: #E4E8ED;
+    --gray-tone-complimentery-color: #EDE9E4;
+    --gray-tone-monochromatic-color: #C5CED9;
+    --gray-tone-tetradic-color-1: #EDE4ED;
+    --gray-tone-tetradic-color-2: #EDE9E4;
+    --gray-tone-tetradic-color-3: #E4EDE5;
+    --gray-tone-triadic-color-1: #EDE4E8;
+    --gray-tone-triadic-color-2: #E8EDE4;
+    /** light */
+    --light-tone-analagous-color-1: #AB7CEC;
+    --light-tone-analagous-color-2: #7CBDEC;
+    --light-tone-base-color: #7c85ec;
+    --light-tone-complimentery-color: #ECE37C;
+    --light-tone-monochromatic-color: #4F5CE6;
+    --light-tone-tetradic-color-1: #EC7CBD;
+    --light-tone-tetradic-color-2: #ECE37C;
+    --light-tone-tetradic-color-3: #7CECAB;
+    --light-tone-triadic-color-1: #EC7C85;
+    --light-tone-triadic-color-2: #85EC7C;
+    /** DONE medium */
+    --medium-tone-analagous-color-1: #2C2B41;
+    --medium-tone-analagous-color-2: #2B4041;
+    --medium-tone-base-color: #2b3541;
+    --medium-tone-complimentery-color: #41372B;
+    --medium-tone-monochromatic-color: #3F4E60;
+    --medium-tone-tetradic-color-1: #412B40;
+    --medium-tone-tetradic-color-2: #41372B;
+    --medium-tone-tetradic-color-3: #2B412C;
+    --medium-tone-triadic-color-1: #412B35;
+    --medium-tone-triadic-color-2: #35412B;
+    /** pale */
+    --pale-tone-analagous-color-1: #E8D9FA;
+    --pale-tone-analagous-color-2: #D9EBFA;
+    --pale-tone-base-color: #d9dbfa;
+    --pale-tone-complimentery-color: #FAF8D9;
+    --pale-tone-monochromatic-color: #ACB0F4;
+    --pale-tone-tetradic-color-1: #FAD9EB;
+    --pale-tone-tetradic-color-2: #FAF8D9;
+    --pale-tone-tetradic-color-3: #D9FAE8;
+    --pale-tone-triadic-color-1: #FAD9DB;
+    --pale-tone-triadic-color-2: #DBFAD9;
+}
+
+.roady-app-output-container {
+    background-color: var(--dark-tone-base-color);
+    color: var(--gray-tone-base-color);
+}
+
+.roady-app-output-container-grid {
+    background-color: var(--medium-tone-base-color);
+}
+
+.roady-app-output-container-grid-item {
+    background-color: var(--medium-tone-monochromatic-color);
+}
+
+.roady-navigation-bar {
+    background-color: var(--medium-tone-base-color);
+}
+
+.roady-navigation-list {
+    background-color: var(--medium-tone-base-color);
+}
+
+.roady-navigation-menu {
+    background-color: var(--medium-tone-base-color);
+}
+
+/** Lists **/
+.roady-ul-list,
+.roady-ol-list {
+}
+
+.roady-ul-list li:nth-of-type(odd),
+.roady-ol-list li:nth-of-type(odd) {
+    background-color: var(--dark-tone-tetradic-color-1);
+    color: var(--light-tone-base-color);
+}
+
+.roady-ul-list li:nth-of-type(even),
+.roady-ol-list li:nth-of-type(even) {
+    background-color: var(--dark-tone-analagous-color-2);
+    color: var(--bright-tone-tetradic-color-3);
+}
+
+
+/** Code **/
+
+.roady-multi-line-code,
+.roady-inline-code {
+    color: var(--bright-tone-tetradic-color-3);
+}
+
+.roady-multi-line-code-container,
+.roady-inline-code {
+    background-color: var(--dark-tone-tetradic-color-1);
+}
+
+.roady-app-output-container a,
+.roady-navigation-bar a,
+.roady-navigation-bar a:link,
+.roady-navigation-list a, 
+.roady-navigation-list a:link, 
+.roady-navigation-menu a,
+.roady-navigation-menu a:link {
+    color: var(--bright-tone-base-color);
+}
+
+.roady-app-output-container a:hover,
+.roady-navigation-bar a:hover,
+.roady-navigation-list a:hover, 
+.roady-navigation-menu a:hover {
+    color: var(--bright-tone-complimentery-color);
+}
+
+.roady-app-output-container a:active,
+.roady-navigation-bar a:active,
+.roady-navigation-list a:active, 
+.roady-navigation-menu a:active {
+    color: var(--bright-tone-monochromatic-color);
+}
+
+
+/** Forms and Form Elements **/
+
+.roady-form-container {
+    background-color: var(--medium-tone-base-color);
+}
+
+.roady-form {
+    background-color: var(--medium-tone-monochromatic-color);
+    color: var(--pale-tone-base-color);
+}
+
+.roady-form-input-label {
+    background-color: var(--medium-tone-base-color);
+}
+
+.roady-message {
+    color: var(--bright-tone-tetradic-color-3);
+}
+
+.roady-error-message {
+    color: var(--bright-tone-tetradic-color-1);
+}
+
+.roady-message {
+    background-color: var(--medium-tone-monochromatic-color);
+    border-radius: calc(1vw / 9);
+    color: var(--pale-tone-monochromatic-color);
+}

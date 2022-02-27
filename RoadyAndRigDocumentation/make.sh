@@ -30,11 +30,11 @@ rig --new-dynamic-output-component --for-app 'RoadyAndRigDocumentation' --name '
 
 rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Documentation' --dynamic-output-components 'Documentation' 
 
-rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --requests 'Identifiable1' 
+rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --requests 'Identifiable' 
 
 rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --requests 'Identifiable0' 
 
-rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --requests 'Identifiable' 
+rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --requests 'Identifiable1' 
 
 rig --assign-to-response --for-app 'RoadyAndRigDocumentation' --response 'Identifiable' --dynamic-output-components 'Identifiable' 
 
