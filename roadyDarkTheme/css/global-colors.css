@@ -1,8 +1,5 @@
 /**
- * This stylesheet defines colors.
- *
- * Only color related styles like background-color, color, etc.
- * should be defined in this stylesheet.
+ * This stylesheet defines colors and background-colors.
  *
  */
 
@@ -75,60 +72,77 @@
     --pale-tone-triadic-color-2: #DBFAD9;
 }
 
+/** Background Colors **/
+
 .roady-app-output-container {
     background-color: var(--dark-tone-base-color);
-    color: var(--gray-tone-base-color);
 }
 
-.roady-app-output-container-grid {
+.roady-form-container,
+.roady-form-input-label,
+.roady-navigation-menu,
+.roady-navigation-list,
+.roady-navigation-bar,
+.roady-form select,
+.roady-app-output-container-grid,
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
     background-color: var(--medium-tone-base-color);
 }
 
+.roady-error-message {
+    background-color: var(--medium-tone-triadic-color-1);
+}
+
+.roady-success-message {
+    color: var(--medium-tone-analagous-color-2);
+    background-color: var(--light-tone-tetradic-color-3);
+}
+
+.roady-note {
+    background-color: var(--medium-tone-analagous-color-2);
+}
+.roady-message,
+.roady-generic-container,
+.roady-form,
 .roady-app-output-container-grid-item {
     background-color: var(--medium-tone-monochromatic-color);
-}
-
-.roady-navigation-bar {
-    background-color: var(--medium-tone-base-color);
-}
-
-.roady-navigation-list {
-    background-color: var(--medium-tone-base-color);
-}
-
-.roady-navigation-menu {
-    background-color: var(--medium-tone-base-color);
-}
-
-/** Lists **/
-.roady-ul-list,
-.roady-ol-list {
-}
-
-.roady-ul-list li:nth-of-type(odd),
-.roady-ol-list li:nth-of-type(odd) {
-    background-color: var(--dark-tone-tetradic-color-1);
-    color: var(--light-tone-base-color);
 }
 
 .roady-ul-list li:nth-of-type(even),
 .roady-ol-list li:nth-of-type(even) {
     background-color: var(--dark-tone-analagous-color-2);
-    color: var(--bright-tone-tetradic-color-3);
 }
 
+.roady-ul-list li:nth-of-type(odd),
+.roady-ol-list li:nth-of-type(odd),
+.roady-multi-line-code-container,
+.roady-inline-code {
+    background-color: var(--dark-tone-tetradic-color-1);
+}
 
-/** Code **/
+/** Text Colors **/
 
+.roady-ul-list li:nth-of-type(odd),
+.roady-ol-list li:nth-of-type(odd) {
+    color: var(--light-tone-base-color);
+}
+
+.roady-app-output-container {
+    color: var(--gray-tone-base-color);
+}
+
+.roady-ul-list li:nth-of-type(even),
+.roady-ol-list li:nth-of-type(even),
 .roady-multi-line-code,
 .roady-inline-code {
     color: var(--bright-tone-tetradic-color-3);
 }
 
-.roady-multi-line-code-container,
-.roady-inline-code {
-    background-color: var(--dark-tone-tetradic-color-1);
-}
 
 .roady-app-output-container a,
 .roady-navigation-bar a,
@@ -155,37 +169,18 @@
 }
 
 
-/** Forms and Form Elements **/
-
-.roady-form-container {
-    background-color: var(--medium-tone-base-color);
-}
-
+.roady-form select,
 .roady-form {
-    background-color: var(--medium-tone-monochromatic-color);
     color: var(--pale-tone-base-color);
 }
 
-.roady-form-input-label {
-    background-color: var(--medium-tone-base-color);
-}
-
 .roady-error-message {
-    background-color: var(--medium-tone-monochromatic-color);
     color: var(--bright-tone-tetradic-color-1);
 }
 
+.roady-note,
 .roady-message {
-    background-color: var(--medium-tone-monochromatic-color);
-    border-radius: calc(1vw / 9);
     color: var(--pale-tone-monochromatic-color);
 }
 
-.roady-note {
-    background-color: var(--medium-tone-triadic-color-1);
-    color: var(--pale-tone-monochromatic-color);
-}
 
-.roady-generic-container {
-    background-color: var(--medium-tone-monochromatic-color);
-}

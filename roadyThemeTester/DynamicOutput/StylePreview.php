@@ -121,5 +121,17 @@ Text within a &lt;pre&gt; tag.
         </form>
     </div>
     <!-- End roady-form-container -->
+    <p class="roady-note">
+        A note.
+    <p>
+    <p class="roady-message">
+        A message.
+    <p>
+    <p class="roady-success-message">
+        A success message.
+    <p>
+    <p class="roady-error-message">
+        An error message.
+    <p>
 </div>
 <!-- End roady-app-output-container -->

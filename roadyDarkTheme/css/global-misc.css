@@ -49,6 +49,7 @@
 
 .roady-form select {
     display: block;
+    border-radius: 1rem;
 }
 
 .roady-ul-list li,
@@ -56,3 +57,15 @@
     overflow: auto;
 }
 
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
+    border-radius: calc(1vw / 2);
+}
+
+.roady-message {
+    border-radius: calc(1vw / 9);
+}

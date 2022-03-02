@@ -1,36 +1,10 @@
 /**
- * This stylesheet defines dimensions.
- *
- * Only dimensions should be defined in this stylesheet.
- * 
- * Available Classes:
- *
- * roady-app-output-container
- * roady-app-output-container-grid
- * roady-app-output-container-grid-item
- * roady-inline-code
- * roady-multi-line-code
- * roady-multi-line-code-container
- * roady-navigation-bar
- * roady-navigation-list
- * roady-navigation-menu
- * roady-ol-list
- * roady-ul-list
+ * This stylesheet defines heights and widths.
  */
 
-.roady-app-output-container {}
-.roady-app-output-container-grid {}
-.roady-app-output-container-grid-item {}
-.roady-navigation-bar {}
-.roady-navigation-list {}
-.roady-navigation-menu {}
-.roady-ol-list {}
-.roady-ul-list {}
-
-
 .roady-app-output-container-grid img {
-    width: 100%;
     height: auto;
+    width: 100%;
 }
 
 .roady-form-input  {
