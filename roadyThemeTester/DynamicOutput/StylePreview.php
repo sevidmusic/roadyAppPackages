@@ -5,6 +5,10 @@
         <a href="https://roady.tech" target="_blank" rel="noopener noreferrer">roady.tech</a>
         <a href="https://github.com/sevidmusic/roady" target="_blank" rel="noopener noreferrer">roady on GitHub</a>
     </nav>
+    <nav class="roady-navigation-menu roady-sticky-navigation-menu">
+        <a href="index.php">Home</a>
+        <a href="index.php?request=AppInfo">AppInfo</a>
+    </nav>
     <ul class="roady-navigation-list">
         <li><a href="index.php">&lt;nav&gt;</a></li>
         <li><a href="https://roady.tech" target="_blank" rel="noopener noreferrer">roady.tech</a></li>
@@ -106,6 +110,10 @@ Text within a &lt;pre&gt; tag.
         <form class="roady-form">
             <label class="roady-form-input-label" for="text">Text:</label>
             <input class="roady-form-input" type="text" name="text" />
+
+            <label class="roady-form-input-label" for="text">Textarea:</label>
+            <textarea class="roady-form-input" name="text"></textarea>
+
             <label class="roady-form-input-label" for="radio">Radio:</label>
             <input class="roady-form-input" type="radio" name="radio" value="radio" />
             <label class="roady-form-input-label" for="checkbox">Checkbox:</label>
@@ -133,5 +141,9 @@ Text within a &lt;pre&gt; tag.
     <p class="roady-error-message">
         An error message.
     <p>
+    <nav class="roady-navigation-menu roady-sticky-navigation-menu">
+        <a href="index.php?request=AppPackager">AppPackager</a>
+        <a href="index.php?request=StylePreview">Styles Preview</a>
+    </nav>
 </div>
 <!-- End roady-app-output-container -->

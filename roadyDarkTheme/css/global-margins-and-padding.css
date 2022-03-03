@@ -88,6 +88,7 @@
 .roady-form select,
 .roady-form-input {
     margin: 0.5rem 0;
+    padding: clamp(10px, 0.9vh, 1.7em);
 }
 
 .roady-error-message,
@@ -104,8 +105,12 @@
     );
 }
 
+
+.roady-form {
+    padding: 3vw;
+}
+
 .roady-form-input-label,
-.roady-form,
 .roady-ol-list li,
 .roady-ul-list li,
 .roady-app-output-container h1,

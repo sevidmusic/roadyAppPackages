@@ -7,10 +7,8 @@
     width: 100%;
 }
 
-.roady-form-input  {
-    height: 3vh;
-}
-
+.roady-form input[type=text],
+.roady-form textarea,
 .roady-form select {
     width: 100%;
 }

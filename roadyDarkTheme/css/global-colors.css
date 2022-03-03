@@ -80,6 +80,7 @@
 
 .roady-form-container,
 .roady-form-input-label,
+.roady-form-input,
 .roady-navigation-menu,
 .roady-navigation-list,
 .roady-navigation-bar,
@@ -169,6 +170,8 @@
 }
 
 
+
+.roady-form-input,
 .roady-form select,
 .roady-form {
     color: var(--pale-tone-base-color);

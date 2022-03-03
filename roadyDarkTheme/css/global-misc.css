@@ -43,13 +43,18 @@
     list-style-position: inside;
 }
 
+.roady-form select,
+.roady-form textarea,
 .roady-form input[type=text] {
     border-radius: 3rem;
 }
 
+.roady-form textarea {
+    border-radius: 1rem;
+}
+
 .roady-form select {
     display: block;
-    border-radius: 1rem;
 }
 
 .roady-ul-list li,
@@ -68,4 +73,11 @@
 
 .roady-message {
     border-radius: calc(1vw / 9);
+}
+
+.roady-sticky-navigation-menu {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    opacity: 0.95;
 }
