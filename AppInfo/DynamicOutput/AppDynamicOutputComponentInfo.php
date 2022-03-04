@@ -12,6 +12,7 @@ use roady\classes\component\DynamicOutputComponent;
 
 /** Vars and Constants */
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
@@ -152,14 +153,29 @@ $appDynamicOutputComponentInfo = sprintf(
     '</div>'
 );
 
-
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($dynamicOutputComponentInfo)
-        ? '<p class="roady-message">There are no DynamicOutputComponents configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
+    empty($outputComponentInfo)
+    ? 
+        '<p class="roady-message">' .
+        'There are no DynamicOutputComponents configured for the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' app.' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To configure a new DynamicOutputComponent' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'new-dynamic-output-component" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --new-dynamic-output-component' . 
+        '</a>' .
+        '</code>'.
+        '</p>'
         : $appDynamicOutputComponentInfo
     )
 );

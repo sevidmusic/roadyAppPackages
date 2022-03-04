@@ -12,6 +12,7 @@ use roady\classes\component\Web\Routing\Response;
 
 /** Vars and Constants */
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
@@ -215,14 +216,29 @@ $appResponseInfo = sprintf(
     '</div>'
 );
 
-
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($responseInfo)
-        ? '<p class="roady-message">There are no Responses configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
+    empty($outputComponentInfo)
+    ? 
+        '<p class="roady-message">' .
+        'There are no Responses configured for the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' app.' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To configure a new Response' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'new-response" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --new-response' . 
+        '</a>' .
+        '</code>'.
+        '</p>'
         : $appResponseInfo
     )
 );

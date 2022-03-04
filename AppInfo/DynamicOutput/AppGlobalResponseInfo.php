@@ -234,17 +234,9 @@ printf(
             'target="_blank" ' .
             'rel="noopener noreferrer"' . 
         '>' .
-        'rig --new-global-response --for-app --name' .
+        'rig --new-global-response' .
         '</a>' .
-        '</code> or <code class="roady-inline-code">'.
-        '<a href="' .
-            ONLINE_DOCUMENTATION_REQUEST . 
-            'configure-app-output" ' .
-            'target="_blank" ' .
-            'rel="noopener noreferrer"' . 
-        '>' .
-        'rig --configure-app-output --for-app --name --output' .
-        ' --global</a></code>' .
+        '</code>'.
         '</p>'
         : 
         $appInfoOutput

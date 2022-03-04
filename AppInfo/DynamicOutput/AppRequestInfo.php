@@ -11,6 +11,7 @@ use roady\interfaces\component\Factory\Factory;
 
 /** Vars and Constants */
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
@@ -126,14 +127,29 @@ $appRequestInfo = sprintf(
     '</div>'
 );
 
-
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($requestInfo)
-        ? '<p class="roady-message">There are no Requests configured for the ' .
-           ($currentRequest->getGet()['appName'] ?? 'roady') .
-           ' app</p>'
+    empty($outputComponentInfo)
+    ? 
+        '<p class="roady-message">' .
+        'There are no Requests configured for the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' app.' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To configure a new Request' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'new-request" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --new-request' . 
+        '</a>' .
+        '</code>'.
+        '</p>'
         : $appRequestInfo
     )
 );

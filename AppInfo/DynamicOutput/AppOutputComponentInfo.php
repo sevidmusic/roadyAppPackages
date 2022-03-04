@@ -167,21 +167,13 @@ printf(
         ' use <code class="roady-inline-code">' .
         '<a href="' .
             ONLINE_DOCUMENTATION_REQUEST . 
-            'new-global-response" ' .
+            'new-output-component" ' .
             'target="_blank" ' .
             'rel="noopener noreferrer"' . 
         '>' .
-        'rig --new-output-component --for-app --name --output' .
+        'rig --new-output-component' .
         '</a>' .
-        '</code> or <code class="roady-inline-code">'.
-        '<a href="' .
-            ONLINE_DOCUMENTATION_REQUEST . 
-            'configure-app-output" ' .
-            'target="_blank" ' .
-            'rel="noopener noreferrer"' . 
-        '>' .
-        'rig --configure-app-output --for-app --name --output' .
-        '</a></code>' .
+        '</code>'.
         '</p>'
         : $appOutputComponentInfo
     )
