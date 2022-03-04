@@ -49,6 +49,10 @@ const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
         <li>DynamicOutput file:</li>
         <li> %s</li>
     </ul>
+    <ul class="roady-ul-list">
+        <li>Output:</li>
+        <li>%s</li>
+    </ul>
 ';
 
 $currentRequest = new Request(
@@ -124,6 +128,15 @@ if($factory->getType() === AppComponentsFactory::class) {
                         : 'false'
                     ),
                     $registeredComponent->getDynamicFilePath(),
+                    (
+                        ($currentRequest->getGet()['appName']  ?? '')
+                        ===
+                        'AppInfo'
+                        ? '<span class="roady-error-message">' . 
+                        'The App Info App\'s DynamicOutput cannot be previewed.' .
+                        '</span>'
+                        : $registeredComponent->getOutput()
+                    )
                 ),
             );
         }
