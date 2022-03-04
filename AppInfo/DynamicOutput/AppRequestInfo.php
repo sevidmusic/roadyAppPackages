@@ -16,34 +16,33 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const APPS_ASSIGNED_REQUEST_INFO_SPRINT = '
-    <h1>Requests configured by the %s app:</h1>
+    <h2>Requests configured by the %s app:</h2>
     <!-- Start REQUEST_INFO_SPRINT output -->
     %s
     <!-- End REQUEST_INFO_SPRINT output -->
 ';
 const REQUEST_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Url</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <div class="roady-content-separator"></div>
+    <h3>%s</h3>
+    <ul class="roady-ul-list">
+        <li>Unique Id:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Type:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Location:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Container:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Url:</li>
+        <li>%s</li>
+    </ul>
 ';
 
 $currentRequest = new Request(
@@ -122,7 +121,9 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appRequestInfo = sprintf(
     APPS_ASSIGNED_REQUEST_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $requestInfo)
+    '<div class="roady-generic-container">' .
+    implode(PHP_EOL, $requestInfo) .
+    '</div>'
 );
 
 
@@ -130,7 +131,7 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($requestInfo)
-        ? '<p>There are no Requests configured for the ' .
+        ? '<p class="roady-message">There are no Requests configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
         : $appRequestInfo
