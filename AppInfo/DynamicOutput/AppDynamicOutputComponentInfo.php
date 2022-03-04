@@ -16,11 +16,11 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h1>DynamicOutputComponents configured by the %s app:</h1>
+    <h2>DynamicOutputComponents configured by the %s App:</h2>
     %s
 ';
 const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h2>%s</h2>
+    <h3>%s</h3>
     <ul class="roady-ul-list">
         <li>Unique Id:</li>
         <li> %s</li>
@@ -133,7 +133,10 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appDynamicOutputComponentInfo = sprintf(
     APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $dynamicOutputComponentInfo)
+
+    '<div class="roady-generic-container">' .
+    implode(PHP_EOL, $dynamicOutputComponentInfo) .
+    '</div>'
 );
 
 

@@ -16,71 +16,66 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONDS_TO_SPRINT='
-    <p>
-        <span class="roady-name-value-name">
-            Responds to:    
-        </span>
-    </p>
-    <div class="roady-note-container">
-        <p>
+    <ul class="roady-ul-list">
+        <li>Responds to:</li>
+        <li class="roady-note">
             Note: The following urls are associated with the 
             Requests assigned to this Response.
-        </p>
-    </div>
-    <nav>%s</nav>
+        </li>
+        <li>
+        <!-- Start REQUEST_LINK_SPRINT output -->
+            %s
+        <!-- End REQUEST_LINK_SPRINT output -->
+        </li>
+    </ul>
 ';
-const REQUEST_LINK_SPRINT = '<div class="app-info-request-link"><a href="%s">%s</a></div>';
+const REQUEST_LINK_SPRINT = '<li><a href="%s">%s</a></li>';
 const QUERY_STRING_SPRINT = 
     '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s';
 const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
-    <h1>Responses configured by the %s app:</h1>
+    <h2>Responses configured by the %s app:</h2>
     <!-- Start RESPONSE_INFO_SPRINT output -->
     %s
     <!-- End RESPONSE_INFO_SPRINT output -->
 ';
 const RESPONSE_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
+    <h3>%s</h3>
+    <ul class="roady-ul-list">
+        <li>Unique Id:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Type:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Location:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Container:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>Position:</li>
+        <li>%s</li>
+    </ul>
+    <ul class="roady-ul-list">
+        <li>State:</li>
+        <li>%s</li>
+    </ul>
     <!-- Start Responds To: -->
     %s
     <!-- End Responds To: -->
-    <p>
-        <span class="roady-name-value-name">
-            Assigned Components:
-        </span>
-    </p>
-    <nav>
-        <a href="index.php?request=ResponseRequestInfo' . 
-            QUERY_STRING_SPRINT . '">Requests</a>
-        <a href="index.php?request=ResponseOutputComponentInfo' . 
-            QUERY_STRING_SPRINT . '">OutputComponents</a>
-        <a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
-            QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
-    </nav>
-    <div class="roady-content-seperator"></div>
+    <ul class="roady-ul-list">
+        <li>Assigned Components:</li>
+        <li><a href="index.php?request=ResponseRequestInfo' . 
+            QUERY_STRING_SPRINT . '">Requests</a></li>
+        <li><a href="index.php?request=ResponseOutputComponentInfo' . 
+            QUERY_STRING_SPRINT . '">OutputComponents</a></li>
+        <li><a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
+            QUERY_STRING_SPRINT . '">DynamicOutputComponents</a></li>
+    </ul>
 ';
 
 $currentRequest = new Request(
@@ -215,7 +210,9 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appResponseInfo = sprintf(
     APPS_ASSIGNED_RESPONSE_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    implode(PHP_EOL, $responseInfo)
+    '<div class="roady-generic-container">' .
+    implode(PHP_EOL, $responseInfo) .
+    '</div>'
 );
 
 
@@ -223,7 +220,7 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($responseInfo)
-        ? '<p>There are no Responses configured for the ' .
+        ? '<p class="roady-message">There are no Responses configured for the ' .
            ($currentRequest->getGet()['appName'] ?? 'roady') .
            ' app</p>'
         : $appResponseInfo

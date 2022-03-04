@@ -29,12 +29,12 @@ const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
 const QUERY_STRING_SPRINT = 
     '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
 const APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT = '
-    <h1>GlobalResponses configured by the %s app:</h1>
+    <h2>GlobalResponses configured by the %s app:</h2>
     %s
 ';
 const GLOBAL_RESPONSE_INFO_SPRINT = '
     <div class="roady-generic-container">
-        <h2>%s</h2>
+        <h3>%s</h3>
         <ul class="roady-ul-list">
             <li>Unique Id:</li>
             <li>%s</li>
