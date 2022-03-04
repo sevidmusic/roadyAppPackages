@@ -16,16 +16,18 @@ const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONDS_TO_SPRINT='
-    <h5>Responds to:</h5>
-    <p class="roady-note">
-            Note: GlobalResponses will respond to all Requests,
-            but may still be assigned specific Requests. The
-            following urls are associated with the Requests 
-            assigned to this GlobalResponse.
-    </p>
-    <nav>%s</nav>
+            <li>Responds to:</li>
+            <li class="roady-note">
+                Note: GlobalResponses will respond to all Requests,
+                but may still be assigned specific Requests. The
+                following urls are associated with the Requests 
+                assigned to this GlobalResponse.
+            </li>
+            <!-- Start REQUEST_LINK_SPRINT -->
+            %s
+            <!-- End REQUEST_LINK_SPRINT -->
 ';
-const REQUEST_LINK_SPRINT = '<a href="%s">%s</a>';
+const REQUEST_LINK_SPRINT = '<li><a href="%s">%s</a></li>';
 const QUERY_STRING_SPRINT = 
     '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
 const APPS_ASSIGNED_GLOBAL_GLOBAL_RESPONSE_INFO_SPRINT = '
@@ -56,33 +58,24 @@ const GLOBAL_RESPONSE_INFO_SPRINT = '
             <li>%s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>%s</li>
+            <!-- start RESPONDS_TO_SPRINT -->
+            %s
+            <!-- end RESPONDS_TO_SPRINT -->
         </ul>
-        <h3>Assigned Components:</h3>
-        <ul class="roady-navigation-bar">
+        <ul class="roady-ul-list">
+            <li>Assigned Components:</li>
+            <li>
+                <a href="index.php?request=ResponseRequestInfo' . 
+                QUERY_STRING_SPRINT . '">Requests</a>
+            </li>
+            <li>
+                <a href="index.php?request=ResponseOutputComponentInfo' . 
+                QUERY_STRING_SPRINT . '">OutputComponents</a>
+            </li>
             <li>
                 <a href="index.php?' . 
-                    'request=ResponseRequestInfo' . 
-                    QUERY_STRING_SPRINT . 
-                '">
-                    Requests
-                </a>
-            </li>
-                <li>
-                    <a href="index.php?' . 
-                    'request=ResponseOutputComponentInfo' . 
-                        QUERY_STRING_SPRINT . 
-                    '">
-                        OutputComponents
-                    </a>
-            </li>
-                <li>
-                    <a href="index.php?' . 
-                    'request=ResponseDynamicOutputComponentInfo' . 
-                        QUERY_STRING_SPRINT . 
-                    '">
-                        DynamicOutputComponents
-                    </a>
+                'request=ResponseDynamicOutputComponentInfo' . 
+                QUERY_STRING_SPRINT . '">DynamicOutputComponents</a>
             </li>
         </ul>
     </div>
