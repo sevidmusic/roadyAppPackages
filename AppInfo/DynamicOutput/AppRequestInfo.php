@@ -130,7 +130,7 @@ $appRequestInfo = sprintf(
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($outputComponentInfo)
+    empty($appRequestInfo)
     ? 
         '<p class="roady-message">' .
         'There are no Requests configured for the ' .

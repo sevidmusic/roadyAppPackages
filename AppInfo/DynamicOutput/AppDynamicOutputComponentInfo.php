@@ -156,7 +156,7 @@ $appDynamicOutputComponentInfo = sprintf(
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($outputComponentInfo)
+    empty($dynamicOutputComponentInfo)
     ? 
         '<p class="roady-message">' .
         'There are no DynamicOutputComponents configured for the ' .

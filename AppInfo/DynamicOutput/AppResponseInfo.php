@@ -219,7 +219,7 @@ $appResponseInfo = sprintf(
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($outputComponentInfo)
+    empty($appResponseInfo)
     ? 
         '<p class="roady-message">' .
         'There are no Responses configured for the ' .

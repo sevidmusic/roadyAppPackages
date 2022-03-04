@@ -155,7 +155,7 @@ $appOutputComponentInfo = sprintf(
 printf(
     OUTPUT_CONTAINER_SPRINT,
     (
-    empty($outputComponentInfo)
+    empty($appOutputComponentInfo)
     ? 
         '<p class="roady-message">' .
         'There are no OutputComponents configured for the ' .
