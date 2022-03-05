@@ -9,94 +9,20 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\interfaces\component\Factory\Factory;
 use roady\classes\component\DynamicOutputComponent;
-
-/** Vars and Constants */
-
-const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
-const OUTPUT_CONTAINER_SPRINT = '
-    <div class="roady-app-output-container">%s</div>
-';
-const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h2>DynamicOutputComponents configured by the %s App:</h2>
-    %s
-';
-const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <div class="roady-generic-container">
-        <h3>%s</h3>
-        <ul class="roady-ul-list">
-            <li>Unique Id:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>Type:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>Location:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>Container:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>Position:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>State:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>DynamicOutput file:</li>
-            <li> %s</li>
-        </ul>
-        <ul class="roady-ul-list">
-            <li>Output:</li>
-            <li>%s</li>
-        </ul>
-    </div>
-';
-
-$currentRequest = new Request(
-    new Storable(
-        'CurrentRequest',
-        'AppInfoRequests',
-        'CurrentRequests'
-    ),
-    new Switchable()
-);
-
-$componentCrud = new ComponentCrud(
-    new Storable(
-        'Crud',
-        'AppInfoCruds',
-        'ComponentCruds'
-    ),
-    new Switchable(),
-    new StorageDriver(
-        new Storable(
-            'AppInfoCrudStorageDriver',
-            'AppInfoDrivers',
-            'StorageDrivers'
-        ),
-        new Switchable()
-    )
-);
+use Apps\AppInfo\resources\config\Sprints;
+use Apps\AppInfo\resources\config\CoreComponents;
 
 /**
  * @var AppComponentsFactory 
  */
-$factory = $componentCrud->readByNameAndType(
-    ($currentRequest->getGet()['appName'] ?? 'roady'),
+$factory = CoreComponents::componentCrud()->readByNameAndType(
+    (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
     AppComponentsFactory::class,
-    App::deriveAppLocationFromRequest($currentRequest),
+    App::deriveAppLocationFromRequest(CoreComponents::currentRequest()),
     Factory::CONTAINER
 );
 
 $dynamicOutputComponentInfo = [];
-
-/** Logic */
 
 /**
  * @var AppComponentsFactory $factory
@@ -118,7 +44,7 @@ if($factory->getType() === AppComponentsFactory::class) {
             array_push(
                 $dynamicOutputComponentInfo,
                 sprintf(
-                    DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
+                    Sprints::dynamicOutputComponentInfoSprint(),
                     $registeredComponent->getName(),
                     $registeredComponent->getUniqueId(),
                     $registeredComponent->getType(),
@@ -132,7 +58,7 @@ if($factory->getType() === AppComponentsFactory::class) {
                     ),
                     $registeredComponent->getDynamicFilePath(),
                     (
-                        ($currentRequest->getGet()['appName']  ?? '')
+                        (CoreComponents::currentRequest()->getGet()['appName']  ?? '')
                         ===
                         'AppInfo'
                         ? '<span class="roady-error-message">' . 
@@ -147,26 +73,26 @@ if($factory->getType() === AppComponentsFactory::class) {
 }
 
 $appDynamicOutputComponentInfo = sprintf(
-    APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
-    $currentRequest->getGet()['appName'] ?? 'roady',
+    Sprints::appsConfiguredDynamicOutputComponentSprint(),
+    CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady',
     implode(PHP_EOL, $dynamicOutputComponentInfo)
 );
 
 printf(
-    OUTPUT_CONTAINER_SPRINT,
+    Sprints::outputContainerSprint(),
     (
     empty($dynamicOutputComponentInfo)
     ? 
         '<p class="roady-message">' .
         'There are no DynamicOutputComponents configured for the ' .
-        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady') .
         ' app.' .
         '</p>' .
         '<p class="roady-note">' .
         'To configure a new DynamicOutputComponent' .
         ' use <code class="roady-inline-code">' .
         '<a href="' .
-            ONLINE_DOCUMENTATION_REQUEST . 
+            Sprints::onlineDocumentationRequestSprint() . 
             'new-dynamic-output-component" ' .
             'target="_blank" ' .
             'rel="noopener noreferrer"' . 
