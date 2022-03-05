@@ -11,49 +11,55 @@ use roady\classes\component\DynamicOutputComponent;
 
 /** Vars and Constants */
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONSES_ASSIGNED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h1>
+    <h2>
         DynamicOutputComponents assigned to the %s app\'s %s 
         Response:
-    </h1>
+    </h2>
     <!-- Start DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT -->
     %s
     <!-- End DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT -->
 ';
 const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">DynamicOutput file:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <div class="roady-content-separator"></div>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>DynamicOutput file:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Output:</li>
+            <li>%s</li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -100,29 +106,38 @@ $dynamicOutputComponentInfo = [];
 foreach(
     $response->getOutputComponentStorageInfo() 
     as 
-    $requestStorable
+    $dynamicOutputComponentStorable
 ) {
     /**
-     * @var DynamicOutputComponent $request
+     * @var DynamicOutputComponent $dynamicOutputComponent
      */
-    $request = $componentCrud->read($requestStorable);
-    if($request->getType() === DynamicOutputComponent::class) {
+    $dynamicOutputComponent = $componentCrud->read($dynamicOutputComponentStorable);
+    if($dynamicOutputComponent->getType() === DynamicOutputComponent::class) {
         array_push(
             $dynamicOutputComponentInfo,
             sprintf(
                 DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
-                $request->getName(),
-                $request->getUniqueId(),
-                $request->getType(),
-                $request->getLocation(),
-                $request->getContainer(),
-                $request->getPosition(),
+                $dynamicOutputComponent->getName(),
+                $dynamicOutputComponent->getUniqueId(),
+                $dynamicOutputComponent->getType(),
+                $dynamicOutputComponent->getLocation(),
+                $dynamicOutputComponent->getContainer(),
+                $dynamicOutputComponent->getPosition(),
                 (
-                    $request->getState() === true
+                    $dynamicOutputComponent->getState() === true
                     ? 'true'
                     : 'false'
                 ),
-                $request->getDynamicFilePath(),
+                $dynamicOutputComponent->getDynamicFilePath(),
+                (
+                    ($currentRequest->getGet()['appName']  ?? '')
+                    ===
+                    'AppInfo'
+                    ? '<span class="roady-error-message">' . 
+                    'The App Info App\'s DynamicOutput cannot be previewed.' .
+                    '</span>'
+                    : $dynamicOutputComponent->getOutput()
+                )
             ),
         );
     }
@@ -140,13 +155,27 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($dynamicOutputComponentInfo)
-    ? '<p>
-        There are no DynamicOutputComponents assigned to the ' .
-        ($currentRequest->getGet()['appName'] ?? 'unknown') .
-        ' app\'s ' .
+    ? 
+        '<p class="roady-message">' .
+        'There are no DynamicOutputComponents assigned to the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' App\'s ' .
         ($currentRequest->getGet()['responseName'] ?? 'unknown') .
-        ' Response
-       </p>'
-    : $responseDynamicOutputComponentInfo
+        'Response' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To assign a DynamicOutputComponent to a Response' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'assign-to-response" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --assign-to-response' . 
+        '</a>' .
+        '</code>'.
+        '</p>'
+        : $responseDynamicOutputComponentInfo
     )
 );

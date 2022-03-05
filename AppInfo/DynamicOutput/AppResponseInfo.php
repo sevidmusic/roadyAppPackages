@@ -40,43 +40,45 @@ const APPS_ASSIGNED_RESPONSE_INFO_SPRINT = '
     <!-- End RESPONSE_INFO_SPRINT output -->
 ';
 const RESPONSE_INFO_SPRINT = '
-    <h3>%s</h3>
-    <ul class="roady-ul-list">
-        <li>Unique Id:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Type:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Location:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Container:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Position:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>State:</li>
-        <li>%s</li>
-    </ul>
-    <!-- Start Responds To: -->
-    %s
-    <!-- End Responds To: -->
-    <ul class="roady-ul-list">
-        <li>Assigned Components:</li>
-        <li><a href="index.php?request=ResponseRequestInfo' . 
-            QUERY_STRING_SPRINT . '">Requests</a></li>
-        <li><a href="index.php?request=ResponseOutputComponentInfo' . 
-            QUERY_STRING_SPRINT . '">OutputComponents</a></li>
-        <li><a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
-            QUERY_STRING_SPRINT . '">DynamicOutputComponents</a></li>
-    </ul>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State:</li>
+            <li>%s</li>
+        </ul>
+        <!-- Start Responds To: -->
+        %s
+        <!-- End Responds To: -->
+        <ul class="roady-ul-list">
+            <li>Assigned Components:</li>
+            <li><a href="index.php?request=ResponseRequestInfo' . 
+                QUERY_STRING_SPRINT . '">Requests</a></li>
+            <li><a href="index.php?request=ResponseOutputComponentInfo' . 
+                QUERY_STRING_SPRINT . '">OutputComponents</a></li>
+            <li><a href="index.php?request=ResponseDynamicOutputComponentInfo' . 
+                QUERY_STRING_SPRINT . '">DynamicOutputComponents</a></li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -211,9 +213,7 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appResponseInfo = sprintf(
     APPS_ASSIGNED_RESPONSE_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    '<div class="roady-generic-container">' .
-    implode(PHP_EOL, $responseInfo) .
-    '</div>'
+    implode(PHP_EOL, $responseInfo)
 );
 
 printf(

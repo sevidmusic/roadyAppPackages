@@ -11,51 +11,55 @@ use roady\classes\component\OutputComponent;
 
 /** Vars and Constants */
 
+const ONLINE_DOCUMENTATION_REQUEST = 'https://roady.tech/index.php?request=';
 const OUTPUT_PREVIEW_SPRINT = '<div class="roady-output-preview">%s</div>';
 const OUTPUT_CONTAINER_SPRINT = '
     <div class="roady-app-output-container">%s</div>
 ';
 const RESPONSES_ASSIGNED_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h1>
+    <h2>
         OutputComponents assigned to the %s app\'s %s Response:
-    </h1>
+    </h2>
     <!-- Start OUTPUT_COMPONENT_INFO_SPRINT output -->
     %s
     <!-- End OUTPUT_COMPONENT_INFO_SPRINT output -->
 ';
 const OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h2>%s</h2>
-    <p>
-        <span class="roady-name-value-name">Unique Id:</span>
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Type:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Location:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Container:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Position:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">State:</span>:
-        <span class="roady-name-value-value"> %s</span>
-    </p>
-    <p>
-        <span class="roady-name-value-name">Output:</span>:
-    </p>
-    <!-- Start OUTPUT_PREVIEW_SPRINT -->
-    %s
-    <!-- End OUTPUT_PREVIEW_SPRINT -->
-    <div class="roady-content-separator"></div>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</spanli
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</spanli
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</spanli
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position:</spanli
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State:</spanli
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Output:</spanli
+            <li>
+                <!-- Start OUTPUT_PREVIEW_SPRINT -->
+                %s
+                <!-- End OUTPUT_PREVIEW_SPRINT -->
+            </li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -141,11 +145,27 @@ printf(
     OUTPUT_CONTAINER_SPRINT,
     (
     empty($requestInfo)
-        ? '<p>There are no OutputComponents assigned to the ' .
-           ($currentRequest->getGet()['appName'] ?? 'unknown') .
-           ' app\'s ' .
-           ($currentRequest->getGet()['responseName'] ?? 'unknown') .
-           ' Response</p>'
+    ? 
+        '<p class="roady-message">' .
+        'There are no OutputComponents assigned to the ' .
+        ($currentRequest->getGet()['appName'] ?? 'roady') .
+        ' App\'s ' .
+        ($currentRequest->getGet()['responseName'] ?? 'unknown') .
+        'Response' .
+        '</p>' .
+        '<p class="roady-note">' .
+        'To assign an OutputComponent to a Response' .
+        ' use <code class="roady-inline-code">' .
+        '<a href="' .
+            ONLINE_DOCUMENTATION_REQUEST . 
+            'assign-to-response" ' .
+            'target="_blank" ' .
+            'rel="noopener noreferrer"' . 
+        '>' .
+        'rig --assign-to-response' . 
+        '</a>' .
+        '</code>'.
+        '</p>'
         : $appInfoOutput
     )
 );

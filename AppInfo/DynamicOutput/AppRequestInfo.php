@@ -23,27 +23,29 @@ const APPS_ASSIGNED_REQUEST_INFO_SPRINT = '
     <!-- End REQUEST_INFO_SPRINT output -->
 ';
 const REQUEST_INFO_SPRINT = '
-    <h3>%s</h3>
-    <ul class="roady-ul-list">
-        <li>Unique Id:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Type:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Location:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Container:</li>
-        <li>%s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Url:</li>
-        <li>%s</li>
-    </ul>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</li>
+            <li>%s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Url:</li>
+            <li>%s</li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -122,9 +124,7 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appRequestInfo = sprintf(
     APPS_ASSIGNED_REQUEST_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-    '<div class="roady-generic-container">' .
-    implode(PHP_EOL, $requestInfo) .
-    '</div>'
+    implode(PHP_EOL, $requestInfo)
 );
 
 printf(

@@ -21,39 +21,41 @@ const APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
     %s
 ';
 const DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT = '
-    <h3>%s</h3>
-    <ul class="roady-ul-list">
-        <li>Unique Id:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Type:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Location:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Container:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Position:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>State:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>DynamicOutput file:</li>
-        <li> %s</li>
-    </ul>
-    <ul class="roady-ul-list">
-        <li>Output:</li>
-        <li>%s</li>
-    </ul>
+    <div class="roady-generic-container">
+        <h3>%s</h3>
+        <ul class="roady-ul-list">
+            <li>Unique Id:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Type:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Location:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Container:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Position:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>State:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>DynamicOutput file:</li>
+            <li> %s</li>
+        </ul>
+        <ul class="roady-ul-list">
+            <li>Output:</li>
+            <li>%s</li>
+        </ul>
+    </div>
 ';
 
 $currentRequest = new Request(
@@ -147,10 +149,7 @@ if($factory->getType() === AppComponentsFactory::class) {
 $appDynamicOutputComponentInfo = sprintf(
     APPS_CONFIGURED_DYNAMIC_OUTPUT_COMPONENT_INFO_SPRINT,
     $currentRequest->getGet()['appName'] ?? 'roady',
-
-    '<div class="roady-generic-container">' .
-    implode(PHP_EOL, $dynamicOutputComponentInfo) .
-    '</div>'
+    implode(PHP_EOL, $dynamicOutputComponentInfo)
 );
 
 printf(
