@@ -12,24 +12,17 @@ use roady\classes\component\DynamicOutputComponent;
 use Apps\AppInfo\resources\config\Sprints;
 use Apps\AppInfo\resources\config\CoreComponents;
 
-/**
- * @var AppComponentsFactory 
- */
-$factory = CoreComponents::componentCrud()->readByNameAndType(
-    (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
-    AppComponentsFactory::class,
-    App::deriveAppLocationFromRequest(CoreComponents::currentRequest()),
-    Factory::CONTAINER
-);
-
 $dynamicOutputComponentInfo = [];
 
-/**
- * @var AppComponentsFactory $factory
- */
-if($factory->getType() === AppComponentsFactory::class) {
+if(
+    CoreComponents::appsAppComponentsFactory()->getType() 
+    === 
+    AppComponentsFactory::class
+) {
     foreach (
-        $factory->getStoredComponentRegistry()->getRegisteredComponents()
+        CoreComponents::appsAppComponentsFactory()
+            ->getStoredComponentRegistry()
+            ->getRegisteredComponents()
         as
         $registeredComponent
     ) {
@@ -58,12 +51,17 @@ if($factory->getType() === AppComponentsFactory::class) {
                     ),
                     $registeredComponent->getDynamicFilePath(),
                     (
-                        (CoreComponents::currentRequest()->getGet()['appName']  ?? '')
+                        (
+                            CoreComponents::currentRequest()
+                                ->getGet()['appName']  
+                            ?? 
+                            ''
+                        )
                         ===
                         'AppInfo'
                         ? '<span class="roady-error-message">' . 
-                        'The App Info App\'s DynamicOutput cannot be previewed.' .
-                        '</span>'
+                        'The App Info App\'s DynamicOutput ' .
+                        'cannot be previewed.</span>'
                         : $registeredComponent->getOutput()
                     )
                 ),
