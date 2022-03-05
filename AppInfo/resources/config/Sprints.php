@@ -2,6 +2,12 @@
 
 namespace Apps\AppInfo\resources\config;
 
+use roady\interfaces\component\Component;
+use roady\interfaces\component\DynamicOutputComponent as DynamicOutputComponentInterface;
+use roady\classes\component\DynamicOutputComponent;
+use Apps\AppInfo\resources\config\CoreComponents;
+use Apps\AppInfo\resources\config\Sprints;
+
 class Sprints
 {
 
@@ -13,16 +19,9 @@ class Sprints
         return '<div class="roady-app-output-container">%s</div>';
     }
 
-    public static function appsConfiguredDynamicOutputComponentSprint(): string
-    {
-        return '
-            <h2>DynamicOutputComponents configured by the %s App:</h2>
-            %s
-        ';
-    }
-
     public static function dynamicOutputComponentInfoSprint(): string {
         return '
+        <h2>DynamicOutputComponents configured by the %s App</h2>
         <div class="roady-generic-container">
             <h3>%s</h3>
             <ul class="roady-ul-list">
