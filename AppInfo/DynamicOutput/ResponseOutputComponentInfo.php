@@ -32,27 +32,27 @@ const OUTPUT_COMPONENT_INFO_SPRINT = '
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>Type:</spanli
+            <li>Type:</li>
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>Location:</spanli
+            <li>Location:</li>
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>Container:</spanli
+            <li>Container:</li>
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>Position:</spanli
+            <li>Position:</li>
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>State:</spanli
+            <li>State:</li>
             <li> %s</li>
         </ul>
         <ul class="roady-ul-list">
-            <li>Output:</spanli
+            <li>Output:</li>
             <li>
                 <!-- Start OUTPUT_PREVIEW_SPRINT -->
                 %s
