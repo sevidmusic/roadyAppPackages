@@ -14,59 +14,53 @@ use Apps\AppInfo\resources\config\CoreComponents;
 
 $dynamicOutputComponentInfo = [];
 
-if(
-    CoreComponents::appsAppComponentsFactory()->getType() 
-    === 
-    AppComponentsFactory::class
+foreach (
+    CoreComponents::appsAppComponentsFactory()
+        ->getStoredComponentRegistry()
+        ->getRegisteredComponents()
+    as
+    $registeredComponent
 ) {
-    foreach (
-        CoreComponents::appsAppComponentsFactory()
-            ->getStoredComponentRegistry()
-            ->getRegisteredComponents()
-        as
-        $registeredComponent
+    /**
+     * @var DynamicOutputComponent $registeredComponent
+     */
+    if(
+        $registeredComponent->getType() 
+        === 
+        DynamicOutputComponent::class
     ) {
-        /**
-         * @var DynamicOutputComponent $registeredComponent
-         */
-        if(
-            $registeredComponent->getType() 
-            === 
-            DynamicOutputComponent::class
-        ) {
-            array_push(
-                $dynamicOutputComponentInfo,
-                sprintf(
-                    Sprints::dynamicOutputComponentInfoSprint(),
-                    $registeredComponent->getName(),
-                    $registeredComponent->getUniqueId(),
-                    $registeredComponent->getType(),
-                    $registeredComponent->getLocation(),
-                    $registeredComponent->getContainer(),
-                    $registeredComponent->getPosition(),
-                    (
-                        $registeredComponent->getState() 
-                        ? 'true'
-                        : 'false'
-                    ),
-                    $registeredComponent->getDynamicFilePath(),
-                    (
-                        (
-                            CoreComponents::currentRequest()
-                                ->getGet()['appName']  
-                            ?? 
-                            ''
-                        )
-                        ===
-                        'AppInfo'
-                        ? '<span class="roady-error-message">' . 
-                        'The App Info App\'s DynamicOutput ' .
-                        'cannot be previewed.</span>'
-                        : $registeredComponent->getOutput()
-                    )
+        array_push(
+            $dynamicOutputComponentInfo,
+            sprintf(
+                Sprints::dynamicOutputComponentInfoSprint(),
+                $registeredComponent->getName(),
+                $registeredComponent->getUniqueId(),
+                $registeredComponent->getType(),
+                $registeredComponent->getLocation(),
+                $registeredComponent->getContainer(),
+                $registeredComponent->getPosition(),
+                (
+                    $registeredComponent->getState() 
+                    ? 'true'
+                    : 'false'
                 ),
-            );
-        }
+                $registeredComponent->getDynamicFilePath(),
+                (
+                    (
+                        CoreComponents::currentRequest()
+                            ->getGet()['appName']  
+                        ?? 
+                        ''
+                    )
+                    ===
+                    'AppInfo'
+                    ? '<span class="roady-error-message">' . 
+                    'The App Info App\'s DynamicOutput ' .
+                    'cannot be previewed.</span>'
+                    : $registeredComponent->getOutput()
+                )
+            ),
+        );
     }
 }
 
