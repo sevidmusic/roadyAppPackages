@@ -76,4 +76,27 @@ class ComponentInfo
         );
     }
 
+    public static function noConfiguredComponentsMessage(
+        string $componentType, 
+        string $commandHint
+    ): string
+    {
+        $appName = (
+            CoreComponents::currentRequest()->getGet()['appName'] 
+            ?? 
+            'roady'
+        );
+        return "
+        <p class='roady-message'>
+            There are no $componentType's configured for the 
+            $appName app.
+        </p>
+        <p class='roady-note'>To configure a new $componentType use 
+        <code class='roady-inline-code'>
+        <a href=\"" . Sprints::onlineDocumentationRequestSprint() . 
+        $commandHint . "\" target='_blank' rel='noopener noreferrer'>
+            rig --$commandHint
+        </a></code></p>";
+    }
+
 }
