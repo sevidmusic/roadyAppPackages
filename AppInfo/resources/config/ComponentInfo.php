@@ -6,7 +6,9 @@ use roady\interfaces\component\Component;
 use Apps\AppInfo\resources\config\CoreComponents;
 use Apps\AppInfo\resources\config\Sprints;
 use roady\classes\component\DynamicOutputComponent;
-use roady\classes\component\OutputComponent;
+use roady\classes\component\Web\Routing\GlobalResponse;
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\component\Crud\ComponentCrud;
 
 /**
  * Provides a number of static methods that return html formatted 
@@ -57,7 +59,7 @@ class ComponentInfo
             ? ComponentInfo::noConfiguredComponentsMessage(
                 $componentType
             )
-            : '<h2>DynamicOutputComponents configured by the ' . 
+            : '<h2>' . self::getClassName($componentType) . 's configured by the ' . 
             (
                 CoreComponents::currentRequest()->getGet()['appName'] 
                 ?? 
@@ -68,6 +70,16 @@ class ComponentInfo
                 $generatedHtmlOverviewOfAppsConfiguredComponents
             )
         );
+    }
+
+    /**
+     * @param class-string $class
+     * @return string The classes name, excluding the class's namespace.
+     */
+    private static function getClassName(string $class): string
+    {
+        $reflection = new \ReflectionClass($class);
+        return $reflection->getShortName();
     }
 
     /**
@@ -131,11 +143,11 @@ class ComponentInfo
                  * @var DynamicOutputComponent $component
                  */
                 return self::dynamicOutputComponentInfo($component);
-            case OutputComponent::class:
+            case GlobalResponse::class:
                 /**
-                 * @var OutputComponent $component
+                 * @var GlobalResponse $component
                  */
-                return self::outputComponentInfo($component);
+                return self::globalResponseComponentInfo($component);
             default: return '';
         }
     }
@@ -172,10 +184,75 @@ class ComponentInfo
             )
         );
     }
+    
+    /**
+     * @return array<int, string>
+     */
+    public static function generateRequestInfoStrings(
+        GlobalResponse $registeredComponent, 
+        ComponentCrud $componentCrud
+    ): array {
+        $globalResponseRequestInfo = [];
+        foreach(
+            $registeredComponent->getRequestStorageInfo()
+            as
+            $requestStorageInfo
+        )
+        {
+            /**
+             * @var Request $request
+             */
+            $request = $componentCrud->read($requestStorageInfo);
+            array_push(
+                $globalResponseRequestInfo,
+                sprintf(
+                    Sprints::listedRequestLinkSprint(),
+                    $request->getUrl(),
+                    $request->getUrl()
+                )
+            );
+        }
+        return $globalResponseRequestInfo;
+    }
 
-    private static function outputComponentInfo(OutputComponent $component): string
+
+
+    private static function globalResponseComponentInfo(GlobalResponse $component): string
     {
-        return 'OC OC OC';
+        return sprintf(
+                    Sprints::globalResponseInfoSprint(),
+                    $component->getName(),
+                    $component->getUniqueId(),
+                    $component->getType(),
+                    $component->getLocation(),
+                    $component->getContainer(),
+                    $component->getPosition(),
+                    sprintf(
+                        Sprints::respondsToSprint(),
+                        implode(
+                            PHP_EOL,
+                            self::generateRequestInfoStrings(
+                                $component,
+                                CoreComponents::ComponentCrud()
+                            )
+                        )
+                    ),
+                    (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+                    $component->getName(),
+                    $component->getUniqueId(),
+                    $component->getLocation(),
+                    $component->getContainer(),
+                    (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+                    $component->getName(),
+                    $component->getUniqueId(),
+                    $component->getLocation(),
+                    $component->getContainer(),
+                    (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+                    $component->getName(),
+                    $component->getUniqueId(),
+                    $component->getLocation(),
+                    $component->getContainer(),
+                );
     }
 
 }
