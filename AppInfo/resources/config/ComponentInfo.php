@@ -2,13 +2,14 @@
 
 namespace Apps\AppInfo\resources\config;
 
-use roady\interfaces\component\Component;
 use Apps\AppInfo\resources\config\CoreComponents;
 use Apps\AppInfo\resources\config\Sprints;
+use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\DynamicOutputComponent;
+use roady\classes\component\OutputComponent;
 use roady\classes\component\Web\Routing\GlobalResponse;
 use roady\classes\component\Web\Routing\Request;
-use roady\classes\component\Crud\ComponentCrud;
+use roady\interfaces\component\Component;
 
 /**
  * Provides a number of static methods that return html formatted 
@@ -138,6 +139,11 @@ class ComponentInfo
         Component $component
     ): string {
         switch($component->getType() ) {
+            case OutputComponent::class:
+                /**
+                 * @var OutputComponent $component
+                 */
+                return self::outputComponentInfo($component);
             case DynamicOutputComponent::class:
                 /**
                  * @var DynamicOutputComponent $component
@@ -152,6 +158,25 @@ class ComponentInfo
         }
     }
 
+    private static function outputComponentInfo(OutputComponent $component): string
+    {
+        return sprintf(
+            Sprints::outputComponentInfoSprint(),
+            $component->getName(),
+            $component->getUniqueId(),
+            $component->getType(),
+            $component->getLocation(),
+            $component->getContainer(),
+            $component->getPosition(),
+            (
+                $component->getState() 
+                ? 'true'
+                : 'false'
+            ),
+            $component->getOutput()
+        );
+    }
+    
     private static function dynamicOutputComponentInfo(DynamicOutputComponent $component): string
     {
         return sprintf(

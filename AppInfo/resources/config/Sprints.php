@@ -19,6 +19,41 @@ class Sprints
         return '<div class="roady-app-output-container">%s</div>';
     }
 
+    public static function outputComponentInfoSprint(): string {
+        return '
+        <div class="roady-generic-container">
+            <h3>%s</h3>
+            <ul class="roady-ul-list">
+                <li>Unique Id:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Type:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Location:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Container:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Position:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>State:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Output:</li>
+                <li>%s</li>
+            </ul>
+        </div>';
+    }
+
     public static function dynamicOutputComponentInfoSprint(): string {
         return '
         <div class="roady-generic-container">
