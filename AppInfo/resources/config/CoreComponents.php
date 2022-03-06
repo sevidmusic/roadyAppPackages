@@ -68,24 +68,35 @@ class CoreComponents
         );
     }
 
-    public static function appsAppComponentsFactory(): AppComponentsFactory
+    public static function appsAppComponentsFactory(string $appName): AppComponentsFactory
     {
         self::$appsAppComponentsFactory = (
-            self::$appsAppComponentsFactory ?? self::appComponentsFactoryInstance()
+            self::$appsAppComponentsFactory 
+            ?? 
+            self::appComponentsFactoryInstance($appName)
         );
         return self::$appsAppComponentsFactory;
     }
 
-    private static function appComponentsFactoryInstance(): AppComponentsFactory
+    private static function appComponentsFactoryInstance(
+        string $appName
+    ): AppComponentsFactory
     {
         /** First attempt to read App's stored AppComponentsFactory. */
-        $appsStoredAppComponentsFactory =  CoreComponents::componentCrud()->readByNameAndType(
-            (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
-            AppComponentsFactory::class,
-            App::deriveAppLocationFromRequest(CoreComponents::currentRequest()),
-            Factory::CONTAINER
-        );
-        if($appsStoredAppComponentsFactory::class === AppComponentsFactory::class) {
+        $appsStoredAppComponentsFactory =  
+            CoreComponents::componentCrud()->readByNameAndType(
+                $appName,
+                AppComponentsFactory::class,
+                App::deriveAppLocationFromRequest(
+                    CoreComponents::currentRequest()
+                ),
+                Factory::CONTAINER
+            );
+        if(
+            $appsStoredAppComponentsFactory::class 
+            === 
+            AppComponentsFactory::class
+        ) {
             /**
              * @var AppComponentsFactory $appsStoredAppComponentsFactory
              */

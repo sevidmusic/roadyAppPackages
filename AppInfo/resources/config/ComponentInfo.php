@@ -43,11 +43,13 @@ class ComponentInfo
      *                                    include in the overview.
      */
     public static function htmlOverviewOfAppsConfiguredComponents(
+        string $appName,
         string $componentType
     ): string 
     {
         $generatedHtmlOverviewOfAppsConfiguredComponents = 
             self::generateHtmlOverviewOfAppsConfiguredComponents(
+                $appName,
                 $componentType
             );
         return (
@@ -74,12 +76,13 @@ class ComponentInfo
      * @return array<int, string>
      */
     private static function generateHtmlOverviewOfAppsConfiguredComponents(
+        string $appName,
         string $componentType
     ): array 
     {
         $htmlOverviewOfAppsConfiguredComponents = [];
         foreach (
-            CoreComponents::appsAppComponentsFactory()
+            CoreComponents::appsAppComponentsFactory($appName)
                 ->getStoredComponentRegistry()
                 ->getRegisteredComponents()
             as
