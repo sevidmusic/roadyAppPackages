@@ -21,7 +21,6 @@ class Sprints
 
     public static function dynamicOutputComponentInfoSprint(): string {
         return '
-        <h2>DynamicOutputComponents configured by the %s App</h2>
         <div class="roady-generic-container">
             <h3>%s</h3>
             <ul class="roady-ul-list">

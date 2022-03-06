@@ -9,9 +9,14 @@ use roady\classes\component\DynamicOutputComponent;
 use roady\classes\component\OutputComponent;
 
 /**
+ * Provides a number of static methods that return html formatted 
+ * overviews of an App's configured Components.
  *
  * Methods:
- * public static function htmlOverviewOfAppsConfiguredComponents(string $componentType): string
+ * public static function htmlOverviewOfAppsConfiguredComponents(
+ *     string $componentType
+ * ): string
+ *
  * public static function noConfiguredComponentsMessage(
  *     string $componentType, 
  *     string $commandHint
@@ -21,26 +26,45 @@ class ComponentInfo
 {
 
     /**
-     * Return html formatted overview of the currently requested App's
-     * configured Components. Only the Components whose type matches
-     * the specified type will be included in the overview.
+     * Return an html formatted overview of the currently requested 
+     * App's configured Components. Only the Components whose type 
+     * matches the specified type will be included in the overview.
      *
-     * If there aren't any Components of the specified type configured
-     * by the requested App, then an empty string will be returned.
+     * If there aren't any Components of the specified type 
+     * configured by the requested App, then an empty string will 
+     * be returned.
      *
      * @example:
-     *     ComponentInfo::htmlOverviewOfAppsConfiguredComponents(DynamicOutputComponent::class);
+     *     ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
+     *         DynamicOutputComponent::class
+     *     );
      *
      * @param class-string $componentType The type of Component to 
      *                                    include in the overview.
      */
-    public static function htmlOverviewOfAppsConfiguredComponents(string $componentType): string 
+    public static function htmlOverviewOfAppsConfiguredComponents(
+        string $componentType
+    ): string 
     {
-        $generateHtmlOverviewOfAppsConfiguredComponents = self::generateHtmlOverviewOfAppsConfiguredComponents($componentType);
+        $generatedHtmlOverviewOfAppsConfiguredComponents = 
+            self::generateHtmlOverviewOfAppsConfiguredComponents(
+                $componentType
+            );
         return (
-            empty($generateHtmlOverviewOfAppsConfiguredComponents) 
-            ? ComponentInfo::noConfiguredComponentsMessage($componentType)
-            : implode(PHP_EOL, $generateHtmlOverviewOfAppsConfiguredComponents)
+            empty($generatedHtmlOverviewOfAppsConfiguredComponents) 
+            ? ComponentInfo::noConfiguredComponentsMessage(
+                $componentType
+            )
+            : '<h2>DynamicOutputComponents configured by the ' . 
+            (
+                CoreComponents::currentRequest()->getGet()['appName'] 
+                ?? 
+                'roady'
+            ) . ' App</h2>' . 
+            implode(
+                PHP_EOL, 
+                $generatedHtmlOverviewOfAppsConfiguredComponents
+            )
         );
     }
 
@@ -49,7 +73,9 @@ class ComponentInfo
      *                                    include in the overview.
      * @return array<int, string>
      */
-    private static function generateHtmlOverviewOfAppsConfiguredComponents(string $componentType): array 
+    private static function generateHtmlOverviewOfAppsConfiguredComponents(
+        string $componentType
+    ): array 
     {
         $htmlOverviewOfAppsConfiguredComponents = [];
         foreach (
@@ -84,14 +110,18 @@ class ComponentInfo
             $appName app.
         </p>
         <p class=\"roady-note\">
-            Hint: <a href=\"https://roady.tech/index.php?request=rig\">rig</a>
+            Hint: <a href=\"https://roady.tech/index.php?request=rig\">
+                rig
+            </a>
             can be used to configure various types of Components for
             an App.
         </a>
         ";
     }
 
-    private static function componentInfoHtml(Component $component): string {
+    private static function componentInfoHtml(
+        Component $component
+    ): string {
         switch($component->getType() ) {
             case DynamicOutputComponent::class:
                 /**
@@ -111,7 +141,6 @@ class ComponentInfo
     {
         return sprintf(
             Sprints::dynamicOutputComponentInfoSprint(),
-            (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
             $component->getName(),
             $component->getUniqueId(),
             $component->getType(),
