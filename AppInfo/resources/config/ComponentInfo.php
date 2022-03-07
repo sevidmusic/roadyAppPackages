@@ -386,22 +386,20 @@ class ComponentInfo
      */
     public static function htmlOverviewOfResponsesConfiguredComponents(string $componentType): string
     {
-        switch($componentType) {
-            case OutputComponent::class:
-            case DynamicOutputComponent::class:
-                $htmlOverview = self::htmlOverviewOfResponsesConfiguredOutputComponents($componentType);
-        }
-        return (
-            isset($htmlOverview) && !empty($htmlOverview) 
-            ? $htmlOverview
-            : self::noConfiguredComponentsMessage($componentType, true)
-        ); 
+        return match($componentType) {
+            OutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($componentType),
+            DynamicOutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($componentType),
+            Request::class => self::htmlOverviewOfResponsesConfiguredRequests($componentType),
+            default => '',
+        };
     }
 
     /**
      * @param class-string $componentType
      */
-    private static function htmlOverviewOfResponsesConfiguredOutputComponents(string $componentType): string
+    private static function htmlOverviewOfResponsesConfiguredOutputComponents(
+        string $componentType
+    ): string 
     {
         $htmlOverview = [];
         foreach(
@@ -410,14 +408,52 @@ class ComponentInfo
             $component
         ) {
             $storedComponent = CoreComponents::componentCrud()->read($component);
-            if($storedComponent->getType() === $componentType) {
+            if(
+                $storedComponent->getType() === $componentType 
+            ) {
                 array_push(
                     $htmlOverview,
                     self::componentInfoHtml($storedComponent)
                 );
             }
         }
-        return implode(PHP_EOL, $htmlOverview);
+        return (
+            empty($htmlOverview) 
+            ? self::noConfiguredComponentsMessage(
+                $componentType, 
+                true
+            )
+            : implode(PHP_EOL, $htmlOverview)
+        );
     }
 
+    /**
+     * @param class-string $componentType
+     */
+    private static function htmlOverviewOfResponsesConfiguredRequests(string $componentType): string
+    {
+
+        $htmlOverview = [];
+        foreach(
+            self::requestedResponse()->getRequestStorageInfo() 
+            as 
+            $component
+        ) {
+            $storedComponent = CoreComponents::componentCrud()->read($component);
+            if($storedComponent->getType() === Request::class) {
+                array_push(
+                    $htmlOverview,
+                    self::componentInfoHtml($storedComponent)
+                );
+            }
+        }
+        return (
+            empty($htmlOverview) 
+            ? self::noConfiguredComponentsMessage(
+                $componentType, 
+                true
+            )
+            : implode(PHP_EOL, $htmlOverview)
+        );
+    }
 }
