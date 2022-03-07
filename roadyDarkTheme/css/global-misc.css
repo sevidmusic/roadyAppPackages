@@ -43,8 +43,14 @@
     list-style-position: inside;
 }
 
+.roady-form select,
+.roady-form textarea,
 .roady-form input[type=text] {
     border-radius: 3rem;
+}
+
+.roady-form textarea {
+    border-radius: 1rem;
 }
 
 .roady-form select {
@@ -56,3 +62,22 @@
     overflow: auto;
 }
 
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
+    border-radius: calc(1vw / 2);
+}
+
+.roady-message {
+    border-radius: calc(1vw / 9);
+}
+
+.roady-sticky-navigation-menu {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    opacity: 0.95;
+}

@@ -32,9 +32,9 @@
 .roady-navigation-list,
 .roady-navigation-menu {
     padding: clamp(
-        27px, 
+        5px, 
         calc(
-            var(--base-margin-and-padding-value) / 1.42
+            var(--base-margin-and-padding-value) / 4
         ), 
         2vw
     );
@@ -45,11 +45,9 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: var(--base-margin-and-padding-value);
     row-gap: calc(var(--base-margin-and-padding-value) / 3);
-    margin: calc(var(--base-margin-and-padding-value) / 3) 0;
 }
 
-.roady-multi-line-code-container,
-.roady-inline-code {
+.roady-multi-line-code-container {
     padding: 0.3vh clamp(
         0.5rem, 
         calc(
@@ -75,18 +73,6 @@
     );
 }
 
-.roady-form,
-.roady-ol-list li,
-.roady-ul-list li {
-    padding: clamp(
-        1rem, 
-        calc(
-            var(--base-margin-and-padding-value) / 3
-        ), 
-        2vw
-    );
-}
-
 /** Forms and Form Elements **/
 
 .roady-form > * {
@@ -101,11 +87,15 @@
 
 .roady-form select,
 .roady-form-input {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
+    padding: clamp(10px, 0.9vh, 1.7em);
 }
 
+.roady-error-message,
 .roady-generic-container,
-.roady-message {
+.roady-message,
+.roady-note,
+.roady-success-message {
     padding: 1rem clamp(
         0.7rem, 
         calc(
@@ -115,3 +105,25 @@
     );
 }
 
+
+.roady-form {
+    padding: 3vw;
+}
+
+.roady-form-input-label,
+.roady-ol-list li,
+.roady-ul-list li,
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
+    padding: clamp(
+        0.3rem, 
+        calc(
+            var(--base-margin-and-padding-value) / 4
+        ), 
+        0.5vw
+    );
+}

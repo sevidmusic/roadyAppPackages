@@ -1,8 +1,5 @@
 /**
- * This stylesheet defines fonts.
- *
- * Only fonts should be defined in this stylesheet.
- *
+ * This stylesheet defines font styles.
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Source+Code+Pro:wght@300&family=Bebas+Neue:wght@300&display=swap');
@@ -10,7 +7,10 @@
 :root {
     --font-family-code: 'Source Code Pro', monospace;
     --font-family-default: 'fira sans', sans-serif;
-    --font-size-default: clamp(1rem, 2vw, 32px);
+    --font-family-headers: 'Bebas Neue', monospace;
+    --font-size-default: clamp(19px, 1.5rem, 2vw);
+    --font-size-code: 0.87em;
+    --font-size-messages: 0.82em;
 }
 
 .roady-app-output-container {
@@ -24,16 +24,8 @@
 .roady-app-output-container h4,
 .roady-app-output-container h5,
 .roady-app-output-container h5 {
-    font-family: 'Bebas Neue', monospace;
+    font-family: var(--font-family-headers);
 }
-
-.roady-app-output-container-grid {}
-.roady-app-output-container-grid-item {}
-.roady-navigation-bar {}
-.roady-navigation-list {}
-.roady-navigation-menu {}
-.roady-ol-list {}
-.roady-ul-list {}
 
 .roady-multi-line-code,
 .roady-inline-code {
@@ -42,10 +34,13 @@
 
 .roady-multi-line-code,
 .roady-inline-code {
-    font-size: 0.87em;
+    font-size: var(--font-size-code);
 }
 
-.roady-note {
-    font-size: 0.82em;
+.roady-message,
+.roady-note,
+.roady-success-message,
+.roady-error-message {
+    font-size: var(--font-size-messages);
 }
 
