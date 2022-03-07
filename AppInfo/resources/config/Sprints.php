@@ -100,7 +100,7 @@ class Sprints
     }
 
 
-    public static function globalResponseInfoSprint(): string
+    public static function responseInfoSprint(): string
     {
         return '
     <div class="roady-generic-container">
@@ -159,12 +159,6 @@ class Sprints
     {
         return '
             <li>Responds to:</li>
-            <li class="roady-note">
-                Note: GlobalResponses will respond to all Requests,
-                but may still be assigned specific Requests. The
-                following urls are associated with the Requests 
-                assigned to this GlobalResponse.
-            </li>
             <!-- Start REQUEST_LINK_SPRINT -->
             %s
             <!-- End REQUEST_LINK_SPRINT -->

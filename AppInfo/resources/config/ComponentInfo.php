@@ -7,7 +7,9 @@ use Apps\AppInfo\resources\config\Sprints;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\DynamicOutputComponent;
 use roady\classes\component\OutputComponent;
+use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 use roady\classes\component\Web\Routing\GlobalResponse;
+use roady\classes\component\Web\Routing\Response;
 use roady\classes\component\Web\Routing\Request;
 use roady\interfaces\component\Component;
 
@@ -153,7 +155,12 @@ class ComponentInfo
                 /**
                  * @var GlobalResponse $component
                  */
-                return self::globalResponseComponentInfo($component);
+                return self::responseComponentInfo($component);
+            case Response::class:
+                /**
+                 * @var Response $component
+                 */
+                return self::responseComponentInfo($component);
             default: return '';
         }
     }
@@ -214,7 +221,7 @@ class ComponentInfo
      * @return array<int, string>
      */
     public static function generateRequestInfoStrings(
-        GlobalResponse $registeredComponent, 
+        ResponseInterface $registeredComponent, 
         ComponentCrud $componentCrud
     ): array {
         $globalResponseRequestInfo = [];
@@ -242,23 +249,29 @@ class ComponentInfo
 
 
 
-    private static function globalResponseComponentInfo(GlobalResponse $component): string
+    private static function responseComponentInfo(
+        ResponseInterface $component
+    ): string
     {
         return sprintf(
-                    Sprints::globalResponseInfoSprint(),
+                    Sprints::responseInfoSprint(),
                     $component->getName(),
                     $component->getUniqueId(),
                     $component->getType(),
                     $component->getLocation(),
                     $component->getContainer(),
                     $component->getPosition(),
-                    sprintf(
-                        Sprints::respondsToSprint(),
-                        implode(
-                            PHP_EOL,
-                            self::generateRequestInfoStrings(
-                                $component,
-                                CoreComponents::ComponentCrud()
+                    (
+                        ($component->getType() === GlobalResponse::class)
+                        ? '<li>Responds To:</li><li>All Requests</li>'
+                        : sprintf(
+                            Sprints::respondsToSprint(),
+                            implode(
+                                PHP_EOL,
+                                self::generateRequestInfoStrings(
+                                    $component,
+                                    CoreComponents::ComponentCrud()
+                                )
                             )
                         )
                     ),
