@@ -150,6 +150,34 @@ class Sprints
         ';
     }
 
+    public static function requestInfoSprint(): string
+    {
+        return '
+            <div class="roady-generic-container">
+                <h3>%s</h3>
+                <ul class="roady-ul-list">
+                    <li>Unique Id:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Type:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Location:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Container:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Url:</li>
+                    <li>%s</li>
+                </ul>
+            </div>';
+    }
+
     public static function queryStringSprint(): string
     {
         return '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
@@ -163,6 +191,11 @@ class Sprints
             %s
             <!-- End REQUEST_LINK_SPRINT -->
         ';
+    }
+
+    public static function requestLinkSprint(): string
+    {
+        return '<a href="%s">%s</a>';
     }
 
 }

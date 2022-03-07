@@ -26,6 +26,11 @@ use roady\interfaces\component\Component;
  *     string $componentType, 
  *     string $commandHint
  * ): string
+ *
+ * public static function generateRequestInfoStrings(
+ *     ResponseInterface $registeredComponent, 
+ *     ComponentCrud $componentCrud
+ * ): string
  */
 class ComponentInfo 
 {
@@ -113,6 +118,9 @@ class ComponentInfo
         return $htmlOverviewOfAppsConfiguredComponents;
     }
 
+    /**
+     * @param class-string $componentType
+     */
     public static function noConfiguredComponentsMessage(
         string $componentType, 
     ): string
@@ -124,7 +132,7 @@ class ComponentInfo
         );
         return "
         <p class='roady-message'>
-            There are no $componentType's configured for the 
+            There are no " . self::getClassName($componentType) . "s configured for the 
             $appName app.
         </p>
         <p class=\"roady-note\">
@@ -161,6 +169,11 @@ class ComponentInfo
                  * @var Response $component
                  */
                 return self::responseComponentInfo($component);
+            case Request::class:
+                /**
+                 * @var Request $component
+                 */
+                return self::requestComponentInfo($component);
             default: return '';
         }
     }
@@ -291,6 +304,23 @@ class ComponentInfo
                     $component->getLocation(),
                     $component->getContainer(),
                 );
+    }
+
+    private static function requestComponentInfo(Request $component): string
+    {
+        return sprintf(
+            Sprints::requestInfoSprint(),
+            $component->getName(),
+            $component->getUniqueId(),
+            $component->getType(),
+            $component->getLocation(),
+            $component->getContainer(),
+            sprintf(
+                Sprints::requestLinkSprint(),
+                $component->getUrl(),
+                $component->getUrl(),
+            ),
+        );
     }
 
 }
