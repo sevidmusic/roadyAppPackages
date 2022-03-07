@@ -100,7 +100,7 @@ class Sprints
     }
 
 
-    public static function responseInfoSprint(): string
+    public static function responseInfoSprint(bool $global = false): string
     {
         return '
     <div class="roady-generic-container">
@@ -134,16 +134,16 @@ class Sprints
             <li>Assigned Components:</li>
             <li>
                 <a href="index.php?request=ResponseRequestInfo' . 
-                self::queryStringSprint() . '">Requests</a>
+                self::queryStringSprint($global) . '">Requests</a>
             </li>
             <li>
                 <a href="index.php?request=ResponseOutputComponentInfo' . 
-                self::queryStringSprint() . '">OutputComponents</a>
+                self::queryStringSprint($global) . '">OutputComponents</a>
             </li>
             <li>
                 <a href="index.php?' . 
                 'request=ResponseDynamicOutputComponentInfo' . 
-                self::queryStringSprint() . '">DynamicOutputComponents</a>
+                self::queryStringSprint($global) . '">DynamicOutputComponents</a>
             </li>
         </ul>
     </div>
@@ -178,9 +178,14 @@ class Sprints
             </div>';
     }
 
-    public static function queryStringSprint(): string
+    public static function queryStringSprint(bool $global): string
     {
-        return '&appName=%s&responseName=%s&responseUniqueId=%s&responseLocation=%s&responseContainer=%s&global';
+        return '&appName=%s' .
+            '&responseName=%s' .
+            '&responseUniqueId=%s' .
+            '&responseLocation=%s' .
+            '&responseContainer=%s' .
+            ($global ? '&global' : '');
     }
 
     public static function respondsToSprint(): string
