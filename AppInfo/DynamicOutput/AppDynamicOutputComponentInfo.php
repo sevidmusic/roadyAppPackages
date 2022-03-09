@@ -8,11 +8,7 @@ use roady\classes\component\DynamicOutputComponent;
 printf(
     Sprints::outputContainerSprint(),
     ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
-        (
-            CoreComponents::currentRequest()->getGet()['appName'] 
-            ?? 
-            'AppInfo'
-        ),
+        ComponentInfo::requestedAppName(),
         DynamicOutputComponent::class
     )
 );

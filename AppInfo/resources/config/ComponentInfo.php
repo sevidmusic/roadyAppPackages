@@ -7,100 +7,132 @@ use Apps\AppInfo\resources\config\Sprints;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\DynamicOutputComponent;
 use roady\classes\component\OutputComponent;
-use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 use roady\classes\component\Web\Routing\GlobalResponse;
-use roady\classes\component\Web\Routing\Response;
 use roady\classes\component\Web\Routing\Request;
+use roady\classes\component\Web\Routing\Response;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\component\Component;
+use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 
 /**
- * Provides a number of static methods that return html formatted 
- * overviews of an App's configured Components.
+ * The ComponentInfo class provides a number of static methods
+ * that return html formatted overviews of an App's configured
+ * Components.
  *
  * Methods:
+ *
  * public static function htmlOverviewOfAppsConfiguredComponents(
+ *     string $appName,
  *     string $componentType
  * ): string
  *
  * public static function noConfiguredComponentsMessage(
- *     string $componentType, 
- *     string $commandHint
+ *     string $componentType,
+ *     bool $responseComponentInfo = false
  * ): string
  *
- * public static function generateRequestInfoStrings(
- *     ResponseInterface $registeredComponent, 
- *     ComponentCrud $componentCrud
+ * public static function htmlOverviewOfResponsesConfiguredComponents(
+ *     string $componentType
  * ): string
  */
-class ComponentInfo 
+class ComponentInfo
 {
-
     /**
-     * Return an html formatted overview of the currently requested 
-     * App's configured Components. Only the Components whose type 
+     * Return an html formatted overview of the currently specified
+     * App's configured Components. Only the Components whose type
      * matches the specified type will be included in the overview.
      *
-     * If there aren't any Components of the specified type 
-     * configured by the requested App, then an empty string will 
-     * be returned.
-     *
      * @example:
-     *     ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
-     *         DynamicOutputComponent::class
-     *     );
      *
-     * @param class-string $componentType The type of Component to 
+     * use Apps\AppInfo\resources\config\Sprints;
+     * use Apps\AppInfo\resources\config\CoreComponents;
+     * use Apps\AppInfo\resources\config\ComponentInfo;
+     * use roady\classes\component\DynamicOutputComponent;
+     *
+     * ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
+     *     'AppInfo',
+     *     DynamicOutputComponent::class
+     * )
+     *
+     * @param string $appName The name of the App whose Components
+     *                        should be included in the overview.
+     *
+     * @param class-string $componentType The type of Component to
      *                                    include in the overview.
+     *
+     * @return string An html formatted overview of the specified
+     *                App's configured Components.
      */
     public static function htmlOverviewOfAppsConfiguredComponents(
         string $appName,
         string $componentType
-    ): string 
+    ): string
     {
-        $generatedHtmlOverviewOfAppsConfiguredComponents = 
-            self::generateHtmlOverviewOfAppsConfiguredComponents(
+        $generatedHtmlOverviewOfAppsConfiguredComponents =
+            self::arrayOfHtmlFormattedComponentInfo(
                 $appName,
                 $componentType
             );
         return (
-            empty($generatedHtmlOverviewOfAppsConfiguredComponents) 
+            empty($generatedHtmlOverviewOfAppsConfiguredComponents)
             ? ComponentInfo::noConfiguredComponentsMessage(
+                $appName,
                 $componentType
             )
-            : '<h2>' . self::getClassName($componentType) . 's configured by the ' . 
-            (
-                CoreComponents::currentRequest()->getGet()['appName'] 
-                ?? 
-                'roady'
-            ) . ' App</h2>' . 
+            :
+            '<h2>' . self::getClassName($componentType, true) .
+            'configured by the ' . $appName . ' App</h2>' .
             implode(
-                PHP_EOL, 
+                PHP_EOL,
                 $generatedHtmlOverviewOfAppsConfiguredComponents
             )
         );
     }
 
     /**
-     * @param class-string $class
-     * @return string The classes name, excluding the class's namespace.
+     * Return the short class name of the specified class,
+     * excluding the namespace.
+     *
+     * @param class-string $class The class whose name should be
+     *                            returned.
+     *
+     * @return string The classes name, excluding the class's
+     *                namespace.
      */
-    private static function getClassName(string $class): string
+    private static function getClassName(
+        string $class,
+        bool $plural = false
+    ): string
     {
         $reflection = new \ReflectionClass($class);
-        return $reflection->getShortName();
+        return $reflection->getShortName() . ($plural ? 's' : '');
     }
 
     /**
-     * @param class-string $componentType The type of Component to 
+     * Returns an array of html formatted strings that provide an
+     * overview of each of the specified App's configured Components
+     * whose type matches the specified $componentType.
+     *
+     * Note: The html formatted overviews of each Components info
+     *       are generated by the ComponentInfo::componentInfoHtml()
+     *       method.
+     *
+     * @param string $appName The name of the App the Component's
+     *                        were configured by.
+     *
+     * @param class-string $componentType The type of Component to
      *                                    include in the overview.
-     * @return array<int, string>
+     *
+     * @return array<int, string> An array of html formatted strings
+     *                            that provide an overview of each
+     *                            of the specified App's configured
+     *                            Components.
      */
-    private static function generateHtmlOverviewOfAppsConfiguredComponents(
+    private static function arrayOfHtmlFormattedComponentInfo(
         string $appName,
         string $componentType
-    ): array 
+    ): array
     {
         $htmlOverviewOfAppsConfiguredComponents = [];
         foreach (
@@ -124,34 +156,31 @@ class ComponentInfo
      * @param class-string $componentType
      */
     public static function noConfiguredComponentsMessage(
-        string $componentType, 
+        string $appOrResponseName,
+        string $componentType,
         bool $responseComponentInfo = false
     ): string
     {
-        $appName = (
-            CoreComponents::currentRequest()->getGet()['appName'] 
-            ?? 
-            'roady'
-        );
-        return "
-        <p class='roady-message'>
-            There are no " . self::getClassName($componentType) . "s configured for the " .
+        return '
+        <p class="roady-message">
+            There are no ' . self::getClassName($componentType, true)
+            . ' configured for the ' .
             (
-                $responseComponentInfo 
-                ? self::requestedResponse()->getName() . ' ' .
-                self::getClassName(self::requestedResponse()::class) 
-                : $appName . ' app'
-            ) . 
-            ".
-        </p>
-        <p class=\"roady-note\">
-            Hint: <a href=\"https://roady.tech/index.php?request=rig\">
+                $responseComponentInfo
+                ? $appOrResponseName . ' ' .
+                self::getClassName(self::requestedResponseType())
+                : $appOrResponseName . ' app'
+            ) .
+        '.</p>
+        <p class="roady-note">
+            Hint:
+            <a href="https://roady.tech/index.php?request=rig">
                 rig
             </a>
             can be used to configure various types of Components for
             an App.
         </a>
-        ";
+        ';
     }
 
     private static function componentInfoHtml(
@@ -198,14 +227,14 @@ class ComponentInfo
             $component->getContainer(),
             $component->getPosition(),
             (
-                $component->getState() 
+                $component->getState()
                 ? 'true'
                 : 'false'
             ),
             $component->getOutput()
         );
     }
-    
+
     private static function dynamicOutputComponentInfo(DynamicOutputComponent $component): string
     {
         return sprintf(
@@ -217,33 +246,26 @@ class ComponentInfo
             $component->getContainer(),
             $component->getPosition(),
             (
-                $component->getState() 
+                $component->getState()
                 ? 'true'
                 : 'false'
             ),
             $component->getDynamicFilePath(),
             (
-                (
-                    CoreComponents::currentRequest()
-                        ->getGet()['appName']  
-                    ?? 
-                    ''
-                )
-                ===
-                'AppInfo'
-                ? '<span class="roady-error-message">' . 
+                self::requestedAppName() === 'AppInfo'
+                ? '<span class="roady-error-message">' .
                 'The App Info App\'s DynamicOutput ' .
                 'cannot be previewed.</span>'
                 : $component->getOutput()
             )
         );
     }
-    
+
     /**
      * @return array<int, string>
      */
-    public static function generateRequestInfoStrings(
-        ResponseInterface $registeredComponent, 
+    private static function generateRequestInfoStrings(
+        ResponseInterface $registeredComponent,
         ComponentCrud $componentCrud
     ): array {
         $globalResponseRequestInfo = [];
@@ -299,17 +321,17 @@ class ComponentInfo
                     )
                 )
             ),
-            (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+            self::requestedAppName(),
             $component->getName(),
             $component->getUniqueId(),
             $component->getLocation(),
             $component->getContainer(),
-            (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+            self::requestedAppName(),
             $component->getName(),
             $component->getUniqueId(),
             $component->getLocation(),
             $component->getContainer(),
-            (CoreComponents::currentRequest()->getGet()['appName'] ?? 'roady'),
+            self::requestedAppName(),
             $component->getName(),
             $component->getUniqueId(),
             $component->getLocation(),
@@ -334,62 +356,90 @@ class ComponentInfo
         );
     }
 
+    public static function requestedAppName(): string
+    {
+        return CoreComponents::currentRequest()->getGet()['appName'];
+    }
+
+    public static function requestedResponseName(): string
+    {
+        return CoreComponents::currentRequest()->getGet()['responseName'];
+    }
+
+    /**
+     * @return class-string
+     */
+    public static function requestedResponseType(): string
+    {
+        return (
+            isset(CoreComponents::currentRequest()->getGet()['global'])
+            ? GlobalResponse::class
+            : Response::class
+        );
+    }
+
+    public static function requestedResponseLocation(): string
+    {
+        return (
+            CoreComponents::currentRequest()->getGet()['responseLocation']
+            ??
+            'unknown'
+        );
+    }
+
+    public static function requestedResponseContainer(): string
+    {
+        return (
+            CoreComponents::currentRequest()->getGet()['responseContainer']
+            ??
+            'unknown'
+        );
+    }
+
    /**
+    * @param string $responseName
+    * @param class-string $responseType
     * @return ResponseInterface The requested Response or GlobalResponse.
     *
     * Note: If the requested Response or GlobalResponse does not
-    * exist, then a new Response instance named UnknownResponse 
+    * exist, then a new Response instance named UnknownResponse
     * will be returned.
     */
-    private static function requestedResponse(): ResponseInterface
+    private static function getStoredResponseByNameAndType(
+        string $responseName,
+        string $responseType
+    ): ResponseInterface
     {
+        /** @var ResponseInterface $component */
         $component = CoreComponents::componentCrud()->readByNameAndType(
-            (
-                CoreComponents::currentRequest()->getGet()['responseName']
-                ?? 
-                'unknown'
-            ),
-            (
-                isset(CoreComponents::currentRequest()->getGet()['global'])
-                ? GlobalResponse::class
-                : Response::class
-            ),
-            (
-                CoreComponents::currentRequest()->getGet()['responseLocation']
-                ??
-                'unknown'
-            ),
-            (
-                CoreComponents::currentRequest()->getGet()['responseContainer']
-                ??
-                'unknown'
-            ),
+            $responseName,
+            self::requestedResponseType(),
+            self::requestedResponseLocation(),
+            self::requestedResponseContainer(),
         );
-        if(
-            $component->getType() === Response::class 
-            || 
-            $component->getType() === GlobalResponse::class
-        ) {
-            /**
-             * @var Response|GlobalResponse $component 
-             */
-            return $component;
-        }
-        return new Response(
-            new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'),
-            new Switchable()
-        );
+        return match($component->getType()) {
+            Response::class, GlobalResponse::class => $component,
+            default => self::newResponseInstance(),
+        };
+    }
+
+    private static function newResponseInstance(): Response
+    {
+        return new Response(new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'), new Switchable());
     }
 
     /**
      * @param class-string $componentType
      */
-    public static function htmlOverviewOfResponsesConfiguredComponents(string $componentType): string
+    public static function htmlOverviewOfResponsesConfiguredComponents(
+        string $responseName,
+        string $componentType
+    ): string
     {
         return match($componentType) {
-            OutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($componentType),
-            DynamicOutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($componentType),
-            Request::class => self::htmlOverviewOfResponsesConfiguredRequests($componentType),
+            OutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($responseName, $componentType),
+            DynamicOutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($responseName, $componentType),
+            Request::class => self::htmlOverviewOfResponsesConfiguredRequests($responseName, $componentType),
             default => '',
         };
     }
@@ -398,18 +448,20 @@ class ComponentInfo
      * @param class-string $componentType
      */
     private static function htmlOverviewOfResponsesConfiguredOutputComponents(
+        string $responseName,
         string $componentType
-    ): string 
+    ): string
     {
         $htmlOverview = [];
         foreach(
-            self::requestedResponse()->getOutputComponentStorageInfo() 
-            as 
-            $component
+            self::getStoredResponseByNameAndType(
+                $responseName,
+                self::requestedResponseType()
+            )->getOutputComponentStorageInfo() as $component
         ) {
             $storedComponent = CoreComponents::componentCrud()->read($component);
             if(
-                $storedComponent->getType() === $componentType 
+                $storedComponent->getType() === $componentType
             ) {
                 array_push(
                     $htmlOverview,
@@ -418,9 +470,13 @@ class ComponentInfo
             }
         }
         return (
-            empty($htmlOverview) 
+            empty($htmlOverview)
             ? self::noConfiguredComponentsMessage(
-                $componentType, 
+                self::getStoredResponseByNameAndType(
+                    $responseName,
+                    self::requestedResponseType()
+                )->getName(),
+                $componentType,
                 true
             )
             : implode(PHP_EOL, $htmlOverview)
@@ -430,14 +486,18 @@ class ComponentInfo
     /**
      * @param class-string $componentType
      */
-    private static function htmlOverviewOfResponsesConfiguredRequests(string $componentType): string
+    private static function htmlOverviewOfResponsesConfiguredRequests(
+        string $responseName,
+        string $componentType
+    ): string
     {
 
         $htmlOverview = [];
         foreach(
-            self::requestedResponse()->getRequestStorageInfo() 
-            as 
-            $component
+            self::getStoredResponseByNameAndType(
+                $responseName,
+                self::requestedResponseType()
+            )->getRequestStorageInfo() as $component
         ) {
             $storedComponent = CoreComponents::componentCrud()->read($component);
             if($storedComponent->getType() === Request::class) {
@@ -448,9 +508,13 @@ class ComponentInfo
             }
         }
         return (
-            empty($htmlOverview) 
+            empty($htmlOverview)
             ? self::noConfiguredComponentsMessage(
-                $componentType, 
+                self::getStoredResponseByNameAndType(
+                    $responseName,
+                    self::requestedResponseType()
+                )->getName(),
+                $componentType,
                 true
             )
             : implode(PHP_EOL, $htmlOverview)

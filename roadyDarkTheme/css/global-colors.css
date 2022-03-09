@@ -74,6 +74,7 @@
 
 /** Background Colors **/
 
+body,
 .roady-app-output-container {
     background-color: var(--dark-tone-base-color);
 }

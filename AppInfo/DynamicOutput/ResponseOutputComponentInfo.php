@@ -7,5 +7,8 @@ use roady\classes\component\OutputComponent;
 
 printf(
     Sprints::outputContainerSprint(),
-    ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(OutputComponent::class)
+    ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(
+        ComponentInfo::requestedResponseName(),
+        OutputComponent::class
+    )
 );

@@ -7,5 +7,8 @@ use roady\classes\component\DynamicOutputComponent;
 
 printf(
     Sprints::outputContainerSprint(),
-    ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(DynamicOutputComponent::class)
+    ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(
+        ComponentInfo::requestedResponseName(),
+        DynamicOutputComponent::class
+    )
 );

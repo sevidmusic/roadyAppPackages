@@ -79,10 +79,10 @@ $currentRequest = new Request(
 
 $parsedDomain = parse_url(
         $currentRequest->getUrl(), PHP_URL_SCHEME
-    ) . 
+    ) .
     '://' .
     parse_url($currentRequest->getUrl(), PHP_URL_HOST) .
-    ':' . parse_url($currentRequest->getUrl(), PHP_URL_PORT) . 
+    ':' . parse_url($currentRequest->getUrl(), PHP_URL_PORT) .
     '/';
 
 $domain = sprintf(
@@ -155,7 +155,7 @@ printf(
     empty($appInfo)
     ? '<p class="roady-error-message">Unable to determine which ' .
         'Apps are running on ' . $domain . '</p>' . PHP_EOL
-    : '<h2>The following Apps are running on ' . 
+    : '<h2>The following Apps are running on ' .
         $domain . ':</h2>' . PHP_EOL . implode(PHP_EOL, $appInfo)
     )
 );

@@ -71,8 +71,8 @@ class CoreComponents
     public static function appsAppComponentsFactory(string $appName): AppComponentsFactory
     {
         self::$appsAppComponentsFactory = (
-            self::$appsAppComponentsFactory 
-            ?? 
+            self::$appsAppComponentsFactory
+            ??
             self::appComponentsFactoryInstance($appName)
         );
         return self::$appsAppComponentsFactory;
@@ -83,7 +83,7 @@ class CoreComponents
     ): AppComponentsFactory
     {
         /** First attempt to read App's stored AppComponentsFactory. */
-        $appsStoredAppComponentsFactory =  
+        $appsStoredAppComponentsFactory =
             CoreComponents::componentCrud()->readByNameAndType(
                 $appName,
                 AppComponentsFactory::class,
@@ -93,8 +93,8 @@ class CoreComponents
                 Factory::CONTAINER
             );
         if(
-            $appsStoredAppComponentsFactory::class 
-            === 
+            $appsStoredAppComponentsFactory::class
+            ===
             AppComponentsFactory::class
         ) {
             /**
@@ -102,7 +102,7 @@ class CoreComponents
              */
             return $appsStoredAppComponentsFactory;
         }
-        /** 
+        /**
          * If the App does not have an AppComponentsFactory in storage,
          * return a new AppComponentsFactory instance.
          */

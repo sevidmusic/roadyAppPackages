@@ -8,11 +8,7 @@ use roady\classes\component\Web\Routing\GlobalResponse;
 printf(
     Sprints::outputContainerSprint(),
     ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
-        (
-            CoreComponents::currentRequest()->getGet()['appName'] 
-            ?? 
-            'AppInfo'
-        ),
+        ComponentInfo::requestedAppName(),
         GlobalResponse::class
     )
 );

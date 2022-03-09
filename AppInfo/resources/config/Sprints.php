@@ -13,7 +13,7 @@ class Sprints
 
     public static function onlineDocumentationRequestSprint(): string {
         return 'https://roady.tech/index.php?request=';
-    } 
+    }
 
     public static function outputContainerSprint(): string {
         return '<div class="roady-app-output-container">%s</div>';
@@ -133,16 +133,16 @@ class Sprints
         <ul class="roady-ul-list">
             <li>Assigned Components:</li>
             <li>
-                <a href="index.php?request=ResponseRequestInfo' . 
+                <a href="index.php?request=ResponseRequestInfo' .
                 self::queryStringSprint($global) . '">Requests</a>
             </li>
             <li>
-                <a href="index.php?request=ResponseOutputComponentInfo' . 
+                <a href="index.php?request=ResponseOutputComponentInfo' .
                 self::queryStringSprint($global) . '">OutputComponents</a>
             </li>
             <li>
-                <a href="index.php?' . 
-                'request=ResponseDynamicOutputComponentInfo' . 
+                <a href="index.php?' .
+                'request=ResponseDynamicOutputComponentInfo' .
                 self::queryStringSprint($global) . '">DynamicOutputComponents</a>
             </li>
         </ul>
