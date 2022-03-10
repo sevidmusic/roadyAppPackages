@@ -27,9 +27,10 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 class ComponentInfo
 {
     /**
-     * Return an html formatted overview of the currently specified
-     * App's configured Components. Only the Components whose type
-     * matches the specified type will be included in the overview.
+     * Return an html formatted overview of the specified App's
+     * configured Components. Only the Components whose type
+     * matches the specified type will be included in the
+     * overview.
      *
      * @example:
      *
@@ -78,7 +79,31 @@ class ComponentInfo
     }
 
     /**
-     * @param class-string $componentType
+     * Return an html formatted overview of the specified Response's
+     * configured Components. Only the Components whose type matches
+     * the specified type will be included in the overview.
+     *
+     * @example:
+     *
+     * use Apps\AppInfo\resources\config\Sprints;
+     * use Apps\AppInfo\resources\config\CoreComponents;
+     * use Apps\AppInfo\resources\config\ComponentInfo;
+     * use roady\classes\component\Request;
+     *
+     * ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(
+     *     'ResponseName',
+     *     Request::class
+     * )
+     *
+     * @param string $responseName The name of the Response whose
+     *                             Components should be included
+     *                             in the overview.
+     *
+     * @param class-string $componentType The type of Component to
+     *                                    include in the overview.
+     *
+     * @return string An html formatted overview of the specified
+     *                Response's configured Components.
      */
     public static function htmlOverviewOfResponsesConfiguredComponents(
         string $responseName,
@@ -137,18 +162,35 @@ class ComponentInfo
         ';
     }
 
+    /**
+     * Return the name of the requested App, i.e., the value
+     * of $_GET['appName'].
+     *
+     * @return string The requested App's name.
+     */
     public static function requestedAppName(): string
     {
         return CoreComponents::currentRequest()->getGet()['appName'];
     }
 
+    /**
+     * Return the name of the requested Response, i.e., the value
+     * of $_GET['responseName'].
+     *
+     * @return string The requested Response's name.
+     */
     public static function requestedResponseName(): string
     {
         return CoreComponents::currentRequest()->getGet()['responseName'];
     }
 
     /**
-     * @return class-string
+     * Return the requested Response's type.
+     *
+     * If $_GET['global'] is set, then GlobalResponse::class will
+     * be returned, otherwise Response::class will be returned.
+     *
+     * @return class-string The requested Response's type.
      */
     private static function requestedResponseType(): string
     {
@@ -159,14 +201,28 @@ class ComponentInfo
         );
     }
 
-    private static function requestedResponseLocation(): string
+    /**
+     * Return the name of the storage location where the App's
+     * Responses are expected to be located.
+     *
+     * @return string The name of the storage location where the
+     *                App's Response's are expected to be located.
+     */
+    private static function responseStorageLocation(): string
     {
         return App::deriveAppLocationFromRequest(
             CoreComponents::currentRequest()
         );
     }
 
-    private static function requestedResponseContainer(): string
+    /**
+     * Return the name of the storage container where the App's
+     * Responses are expected to be located.
+     *
+     * @return string The name of the storage container where the
+     *                App's Response's are expected to be located.
+     */
+    private static function responseStorageContainer(): string
     {
         return ResponseInterface::RESPONSE_CONTAINER;
     }
@@ -208,7 +264,8 @@ class ComponentInfo
      * @return array<int, string> An array of html formatted strings
      *                            that provide an overview of each
      *                            of the specified App's configured
-     *                            Components.
+     *                            Components whose type matches the
+     *                            specifed $componentType.
      */
     private static function arrayOfHtmlFormattedComponentInfo(
         string $appName,
@@ -233,6 +290,46 @@ class ComponentInfo
         return $htmlOverviewOfAppsConfiguredComponents;
     }
 
+    /**
+     * @return array<int, string>
+     */
+    private static function generateRequestInfoStrings(
+        ResponseInterface $registeredComponent,
+        ComponentCrud $componentCrud
+    ): array {
+        $globalResponseRequestInfo = [];
+        foreach(
+            $registeredComponent->getRequestStorageInfo()
+            as
+            $requestStorageInfo
+        )
+        {
+            /**
+             * @var Request $request
+             */
+            $request = $componentCrud->read($requestStorageInfo);
+            array_push(
+                $globalResponseRequestInfo,
+                sprintf(
+                    Sprints::listedRequestLinkSprint(),
+                    $request->getUrl(),
+                    $request->getUrl()
+                )
+            );
+        }
+        return $globalResponseRequestInfo;
+    }
+
+    /**
+     * Return a html formatted overview of the specified Component's
+     * info.
+     *
+     * @param Component $component The Component whose info should
+     *                             be included in the overview.
+     *
+     * @return string An html formatted overview of the specified
+     *                Component's info.
+     */
     private static function componentInfoHtml(
         Component $component
     ): string {
@@ -266,7 +363,18 @@ class ComponentInfo
         }
     }
 
-    private static function outputComponentInfo(OutputComponent $component): string
+    /**
+     * Return an html formatted overview of the specified
+     * OutputComponent's info.
+     *
+     * @param OutputComponent $component The OutputComponent.
+     *
+     * @return string An html formatted overview of the
+     *                specified OutputComponent's info.
+     */
+     private static function outputComponentInfo(
+         OutputComponent $component
+     ): string
     {
         return sprintf(
             Sprints::outputComponentInfoSprint(),
@@ -285,7 +393,18 @@ class ComponentInfo
         );
     }
 
-    private static function dynamicOutputComponentInfo(DynamicOutputComponent $component): string
+    /**
+     * Return an html formatted overview of the specified
+     * DynamicOutputComponent's info.
+     *
+     * @param DynamicOutputComponent $component The DynamicOutputComponent.
+     *
+     * @return string An html formatted overview of the
+     *                specified DynamicOutputComponent's info.
+     */
+    private static function dynamicOutputComponentInfo(
+        DynamicOutputComponent $component
+    ): string
     {
         return sprintf(
             Sprints::dynamicOutputComponentInfoSprint(),
@@ -312,52 +431,29 @@ class ComponentInfo
     }
 
     /**
-     * @return array<int, string>
+     * Return an html formatted overview of the specified
+     * Response's info.
+     *
+     * @param ResponseInterface $response The Response.
+     *
+     * @return string An html formatted overview of the
+     *                specified Response's info.
      */
-    private static function generateRequestInfoStrings(
-        ResponseInterface $registeredComponent,
-        ComponentCrud $componentCrud
-    ): array {
-        $globalResponseRequestInfo = [];
-        foreach(
-            $registeredComponent->getRequestStorageInfo()
-            as
-            $requestStorageInfo
-        )
-        {
-            /**
-             * @var Request $request
-             */
-            $request = $componentCrud->read($requestStorageInfo);
-            array_push(
-                $globalResponseRequestInfo,
-                sprintf(
-                    Sprints::listedRequestLinkSprint(),
-                    $request->getUrl(),
-                    $request->getUrl()
-                )
-            );
-        }
-        return $globalResponseRequestInfo;
-    }
-
-
-
     private static function responseComponentInfo(
-        ResponseInterface $component
+        ResponseInterface $response
     ): string
     {
         return sprintf(
             Sprints::responseInfoSprint(
-                ($component->getType() === GlobalResponse::class)
+                ($response->getType() === GlobalResponse::class)
             ),
-            $component->getName(),
-            $component->getUniqueId(),
-            $component->getType(),
-            $component->getLocation(),
-            $component->getContainer(),
-            $component->getPosition(),
-            match($component->getType()) {
+            $response->getName(),
+            $response->getUniqueId(),
+            $response->getType(),
+            $response->getLocation(),
+            $response->getContainer(),
+            $response->getPosition(),
+            match($response->getType()) {
                 GlobalResponse::class =>
                     '<li>Responds To:</li><li>All Requests</li>',
                 default => sprintf(
@@ -365,7 +461,7 @@ class ComponentInfo
                     implode(
                         PHP_EOL,
                         self::generateRequestInfoStrings(
-                            $component,
+                            $response,
                             CoreComponents::ComponentCrud()
                         )
                     )
@@ -374,16 +470,25 @@ class ComponentInfo
             /** @see Sprints::queryStringSprint() */
             /** Assigned Requests Link */
             self::requestedAppName(),
-            $component->getName(),
+            $response->getName(),
             /** Assigned OutputComponents Link */
             self::requestedAppName(),
-            $component->getName(),
+            $response->getName(),
             /** Assigned DynamicOutputComponents Link */
             self::requestedAppName(),
-            $component->getName(),
+            $response->getName(),
         );
     }
 
+    /**
+     * Return an html formatted overview of the specified
+     * Request's info.
+     *
+     * @param Request $component The Response.
+     *
+     * @return string An html formatted overview of the
+     *                specified Request's info.
+     */
     private static function requestComponentInfo(Request $component): string
     {
         return sprintf(
@@ -402,8 +507,14 @@ class ComponentInfo
     }
 
    /**
-    * @param string $responseName
-    * @param class-string $responseType
+    * Return the specified Response from storage.
+    * If the Response does not exist, then a new
+    * Response instance will be returned.
+    *
+    * @param string $responseName The name of the Response.
+    *
+    * @param class-string $responseType The Response's type.
+    *
     * @return ResponseInterface The requested Response or GlobalResponse.
     *
     * Note: If the requested Response or GlobalResponse does not
@@ -419,8 +530,8 @@ class ComponentInfo
         $component = CoreComponents::componentCrud()->readByNameAndType(
             $responseName,
             self::requestedResponseType(),
-            self::requestedResponseLocation(),
-            self::requestedResponseContainer(),
+            self::responseStorageLocation(),
+            self::responseStorageContainer(),
         );
         return match($component->getType()) {
             Response::class, GlobalResponse::class => $component,
@@ -428,12 +539,20 @@ class ComponentInfo
         };
     }
 
+    /**
+     * Return a new Response instance.
+     *
+     * @return Response A new instance of a Response.
+     */
     private static function newResponseInstance(): Response
     {
         return new Response(new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'), new Switchable());
     }
 
     /**
+     * Return an html formatted overview of the specified Response's
+     * assigned OutputComponents.
+     *
      * @param class-string $componentType
      */
     private static function htmlOverviewOfResponsesConfiguredOutputComponents(
