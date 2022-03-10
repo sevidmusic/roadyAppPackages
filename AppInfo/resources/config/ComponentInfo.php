@@ -10,6 +10,7 @@ use roady\classes\component\OutputComponent;
 use roady\classes\component\Web\Routing\GlobalResponse;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\component\Web\Routing\Response;
+use roady\classes\component\Web\App;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\component\Component;
@@ -160,20 +161,14 @@ class ComponentInfo
 
     private static function requestedResponseLocation(): string
     {
-        return (
-            CoreComponents::currentRequest()->getGet()['responseLocation']
-            ??
-            'unknown'
+        return App::deriveAppLocationFromRequest(
+            CoreComponents::currentRequest()
         );
     }
 
     private static function requestedResponseContainer(): string
     {
-        return (
-            CoreComponents::currentRequest()->getGet()['responseContainer']
-            ??
-            'unknown'
-        );
+        return ResponseInterface::RESPONSE_CONTAINER;
     }
 
     /**
@@ -380,18 +375,12 @@ class ComponentInfo
             /** Assigned Requests Link */
             self::requestedAppName(),
             $component->getName(),
-            $component->getLocation(),
-            $component->getContainer(),
             /** Assigned OutputComponents Link */
             self::requestedAppName(),
             $component->getName(),
-            $component->getLocation(),
-            $component->getContainer(),
             /** Assigned DynamicOutputComponents Link */
             self::requestedAppName(),
             $component->getName(),
-            $component->getLocation(),
-            $component->getContainer(),
         );
     }
 

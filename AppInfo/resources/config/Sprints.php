@@ -197,9 +197,6 @@ class Sprints
     {
         return '&appName=%s' .
             '&responseName=%s' .
-            /*            '&responseUniqueId=%s' . */
-            '&responseLocation=%s' .
-            '&responseContainer=%s' .
             ($global ? '&global' : '');
     }
 
