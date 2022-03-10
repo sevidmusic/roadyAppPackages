@@ -28,6 +28,24 @@ class CoreComponents
         return self::$currentRequest;
     }
 
+    public static function componentCrud(): ComponentCrud
+    {
+        self::$componentCrud = (
+            self::$componentCrud ?? self::componentCrudInstance()
+        );
+        return self::$componentCrud;
+    }
+
+    public static function appsAppComponentsFactory(string $appName): AppComponentsFactory
+    {
+        self::$appsAppComponentsFactory = (
+            self::$appsAppComponentsFactory
+            ??
+            self::appComponentsFactoryInstance($appName)
+        );
+        return self::$appsAppComponentsFactory;
+    }
+
     private static function requestInstance(): Request
     {
         return new Request(
@@ -38,14 +56,6 @@ class CoreComponents
             ),
             new Switchable()
         );
-    }
-
-    public static function componentCrud(): ComponentCrud
-    {
-        self::$componentCrud = (
-            self::$componentCrud ?? self::componentCrudInstance()
-        );
-        return self::$componentCrud;
     }
 
     private static function componentCrudInstance(): ComponentCrud
@@ -68,15 +78,6 @@ class CoreComponents
         );
     }
 
-    public static function appsAppComponentsFactory(string $appName): AppComponentsFactory
-    {
-        self::$appsAppComponentsFactory = (
-            self::$appsAppComponentsFactory
-            ??
-            self::appComponentsFactoryInstance($appName)
-        );
-        return self::$appsAppComponentsFactory;
-    }
 
     private static function appComponentsFactoryInstance(
         string $appName

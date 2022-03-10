@@ -11,12 +11,60 @@ use Apps\AppInfo\resources\config\Sprints;
 class Sprints
 {
 
-    public static function onlineDocumentationRequestSprint(): string {
+    private static function onlineDocumentationRequestSprint(): string {
         return 'https://roady.tech/index.php?request=';
     }
 
     public static function outputContainerSprint(): string {
         return '<div class="roady-app-output-container">%s</div>';
+    }
+
+    public static function respondsToSprint(): string
+    {
+        return '
+            <li>Responds to:</li>
+            <!-- Start REQUEST_LINK_SPRINT -->
+            %s
+            <!-- End REQUEST_LINK_SPRINT -->
+        ';
+    }
+
+    public static function requestLinkSprint(): string
+    {
+        return '<a href="%s">%s</a>';
+    }
+
+    public static function listedRequestLinkSprint(): string
+    {
+        return '<li><a href="%s">%s</a></li>';
+    }
+
+    public static function requestInfoSprint(): string
+    {
+        return '
+            <div class="roady-generic-container">
+                <h3>%s</h3>
+                <ul class="roady-ul-list">
+                    <li>Unique Id:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Type:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Location:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Container:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Url:</li>
+                    <li>%s</li>
+                </ul>
+            </div>';
     }
 
     public static function outputComponentInfoSprint(): string {
@@ -93,13 +141,6 @@ class Sprints
         </div>';
     }
 
-
-    public static function listedRequestLinkSprint(): string
-    {
-        return '<li><a href="%s">%s</a></li>';
-    }
-
-
     public static function responseInfoSprint(bool $global = false): string
     {
         return '
@@ -138,69 +179,28 @@ class Sprints
             </li>
             <li>
                 <a href="index.php?request=ResponseOutputComponentInfo' .
-                self::queryStringSprint($global) . '">OutputComponents</a>
+                self::queryStringSprint($global) .
+                '">OutputComponents</a>
             </li>
             <li>
                 <a href="index.php?' .
                 'request=ResponseDynamicOutputComponentInfo' .
-                self::queryStringSprint($global) . '">DynamicOutputComponents</a>
+                self::queryStringSprint($global) .
+                '">DynamicOutputComponents</a>
             </li>
         </ul>
     </div>
         ';
     }
 
-    public static function requestInfoSprint(): string
-    {
-        return '
-            <div class="roady-generic-container">
-                <h3>%s</h3>
-                <ul class="roady-ul-list">
-                    <li>Unique Id:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Type:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Location:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Container:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Url:</li>
-                    <li>%s</li>
-                </ul>
-            </div>';
-    }
-
-    public static function queryStringSprint(bool $global): string
+    private static function queryStringSprint(bool $global): string
     {
         return '&appName=%s' .
             '&responseName=%s' .
-            '&responseUniqueId=%s' .
+            /*            '&responseUniqueId=%s' . */
             '&responseLocation=%s' .
             '&responseContainer=%s' .
             ($global ? '&global' : '');
-    }
-
-    public static function respondsToSprint(): string
-    {
-        return '
-            <li>Responds to:</li>
-            <!-- Start REQUEST_LINK_SPRINT -->
-            %s
-            <!-- End REQUEST_LINK_SPRINT -->
-        ';
-    }
-
-    public static function requestLinkSprint(): string
-    {
-        return '<a href="%s">%s</a>';
     }
 
 }
