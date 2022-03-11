@@ -7,7 +7,7 @@ use roady\classes\component\Web\Routing\Request;
 
 printf(
     Sprints::outputContainerSprint(),
-    ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(
+    ComponentInfo::htmlOverviewOfResponsesAssignedComponents(
         ComponentInfo::requestedResponseName(),
         Request::class
     )

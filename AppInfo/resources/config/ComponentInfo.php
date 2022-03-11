@@ -17,9 +17,9 @@ use roady\interfaces\component\Component;
 use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 
 /**
- * The ComponentInfo class provides a number of static methods
- * that return html formatted overviews of an App's configured
- * Components.
+ * The ComponentInfo class provides static methods that return
+ * html formatted overviews of either an App's configured Components,
+ * or a Response or GlobalResponse's assigned Components.
  *
  * Methods:
  *
@@ -28,7 +28,7 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
  *     string $componentType
  * ): string
  *
- * public static function htmlOverviewOfResponsesConfiguredComponents(
+ * public static function htmlOverviewOfResponsesAssignedComponents(
  *     string $responseName,
  *     string $componentType
  * ): string
@@ -38,6 +38,11 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
  *     string $componentType,
  *     bool $responseComponentInfo = false
  * ): string
+ *
+ * public static function requestedAppName(): string
+ *
+ * public static function requestedResponseName(): string
+ *
  */
 class ComponentInfo
 {
@@ -100,7 +105,7 @@ class ComponentInfo
      * @return string An html formatted overview of the specified
      *                Response's configured Components.
      */
-    public static function htmlOverviewOfResponsesConfiguredComponents(
+    public static function htmlOverviewOfResponsesAssignedComponents(
         string $responseName,
         string $componentType
     ): string
@@ -211,6 +216,9 @@ class ComponentInfo
      *                                  or Response.
      *
      * @param class-string $componentType The type of Component.
+     *
+     * @param bool $response Set to true if header is for a Response
+     *                       overview.
      *
      * @return string A html header for configured Component
      *                overviews.
@@ -341,36 +349,6 @@ class ComponentInfo
     }
 
     /**
-     * @return array<int, string>
-     */
-    private static function generateRequestInfoStrings(
-        ResponseInterface $registeredComponent,
-        ComponentCrud $componentCrud
-    ): array {
-        $globalResponseRequestInfo = [];
-        foreach(
-            $registeredComponent->getRequestStorageInfo()
-            as
-            $requestStorageInfo
-        )
-        {
-            /**
-             * @var Request $request
-             */
-            $request = $componentCrud->read($requestStorageInfo);
-            array_push(
-                $globalResponseRequestInfo,
-                sprintf(
-                    Sprints::listedRequestLinkSprint(),
-                    $request->getUrl(),
-                    $request->getUrl()
-                )
-            );
-        }
-        return $globalResponseRequestInfo;
-    }
-
-    /**
      * Return a html formatted overview of the specified Component's
      * info.
      *
@@ -412,6 +390,7 @@ class ComponentInfo
             default: return '';
         }
     }
+
 
     /**
      * Return an html formatted overview of the specified
@@ -510,7 +489,7 @@ class ComponentInfo
                     Sprints::respondsToSprint(),
                     implode(
                         PHP_EOL,
-                        self::generateRequestInfoStrings(
+                        self::assignedRequestLinks(
                             $response,
                             CoreComponents::ComponentCrud()
                         )
@@ -528,6 +507,42 @@ class ComponentInfo
             self::requestedAppName(),
             $response->getName(),
         );
+    }
+
+    /**
+     * Returns an array of html formatted links for the specified
+     * Response's assigned Requests.
+     *
+     * @return array<int, string> An array of html formatted links
+     *                            for the specified Response's
+     *                            assigned Requests.
+     */
+    private static function assignedRequestLinks(
+        ResponseInterface $registeredComponent,
+        ComponentCrud $componentCrud
+    ): array
+    {
+        $globalResponseRequestInfo = [];
+        foreach(
+            $registeredComponent->getRequestStorageInfo()
+            as
+            $requestStorageInfo
+        )
+        {
+            /**
+             * @var Request $request
+             */
+            $request = $componentCrud->read($requestStorageInfo);
+            array_push(
+                $globalResponseRequestInfo,
+                sprintf(
+                    Sprints::listedRequestLinkSprint(),
+                    $request->getUrl(),
+                    $request->getUrl()
+                )
+            );
+        }
+        return $globalResponseRequestInfo;
     }
 
     /**
@@ -554,49 +569,6 @@ class ComponentInfo
                 $component->getUrl(),
             ),
         );
-    }
-
-   /**
-    * Return the specified Response from storage.
-    * If the Response does not exist, then a new
-    * Response instance will be returned.
-    *
-    * @param string $responseName The name of the Response.
-    *
-    * @param class-string $responseType The Response's type.
-    *
-    * @return ResponseInterface The requested Response or GlobalResponse.
-    *
-    * Note: If the requested Response or GlobalResponse does not
-    * exist, then a new Response instance named UnknownResponse
-    * will be returned.
-    */
-    private static function getStoredResponseByNameAndType(
-        string $responseName,
-        string $responseType
-    ): ResponseInterface
-    {
-        /** @var ResponseInterface $component */
-        $component = CoreComponents::componentCrud()->readByNameAndType(
-            $responseName,
-            self::requestedResponseType(),
-            self::responseStorageLocation(),
-            self::responseStorageContainer(),
-        );
-        return match($component->getType()) {
-            Response::class, GlobalResponse::class => $component,
-            default => self::newResponseInstance(),
-        };
-    }
-
-    /**
-     * Return a new Response instance.
-     *
-     * @return Response A new instance of a Response.
-     */
-    private static function newResponseInstance(): Response
-    {
-        return new Response(new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'), new Switchable());
     }
 
     /**
@@ -677,5 +649,48 @@ class ComponentInfo
             )
             : implode(PHP_EOL, $htmlOverview)
         );
+    }
+
+   /**
+    * Return the specified Response from storage.
+    * If the Response does not exist, then a new
+    * Response instance will be returned.
+    *
+    * @param string $responseName The name of the Response.
+    *
+    * @param class-string $responseType The Response's type.
+    *
+    * @return ResponseInterface The requested Response or GlobalResponse.
+    *
+    * Note: If the requested Response or GlobalResponse does not
+    * exist, then a new Response instance named UnknownResponse
+    * will be returned.
+    */
+    private static function getStoredResponseByNameAndType(
+        string $responseName,
+        string $responseType
+    ): ResponseInterface
+    {
+        /** @var ResponseInterface $component */
+        $component = CoreComponents::componentCrud()->readByNameAndType(
+            $responseName,
+            self::requestedResponseType(),
+            self::responseStorageLocation(),
+            self::responseStorageContainer(),
+        );
+        return match($component->getType()) {
+            Response::class, GlobalResponse::class => $component,
+            default => self::newResponseInstance(),
+        };
+    }
+
+    /**
+     * Return a new Response instance.
+     *
+     * @return Response A new instance of a Response.
+     */
+    private static function newResponseInstance(): Response
+    {
+        return new Response(new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'), new Switchable());
     }
 }
