@@ -23,6 +23,21 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
  *
  * Methods:
  *
+ * public static function htmlOverviewOfAppsConfiguredComponents(
+ *     string $appName,
+ *     string $componentType
+ * ): string
+ *
+ * public static function htmlOverviewOfResponsesConfiguredComponents(
+ *     string $responseName,
+ *     string $componentType
+ * ): string
+ *
+ * public static function noConfiguredComponentsMessage(
+ *     string $appOrResponseName,
+ *     string $componentType,
+ *     bool $responseComponentInfo = false
+ * ): string
  */
 class ComponentInfo
 {
@@ -31,18 +46,6 @@ class ComponentInfo
      * configured Components. Only the Components whose type
      * matches the specified type will be included in the
      * overview.
-     *
-     * @example:
-     *
-     * use Apps\AppInfo\resources\config\Sprints;
-     * use Apps\AppInfo\resources\config\CoreComponents;
-     * use Apps\AppInfo\resources\config\ComponentInfo;
-     * use roady\classes\component\DynamicOutputComponent;
-     *
-     * ComponentInfo::htmlOverviewOfAppsConfiguredComponents(
-     *     'AppInfo',
-     *     DynamicOutputComponent::class
-     * )
      *
      * @param string $appName The name of the App whose Components
      *                        should be included in the overview.
@@ -63,37 +66,29 @@ class ComponentInfo
                 $appName,
                 $componentType
             );
-        return match(empty($generatedHtmlOverviewOfAppsConfiguredComponents)) {
+        return match(
+            empty($generatedHtmlOverviewOfAppsConfiguredComponents)
+        ) {
             true => ComponentInfo::noConfiguredComponentsMessage(
                 $appName,
                 $componentType
             ),
             default =>
-                '<h2>' . self::getClassName($componentType, true) .
-                ' configured by the ' . $appName . ' App</h2>' .
+                self::configuredComponentsHeader(
+                    $appName,
+                    $componentType
+                ) .
                 implode(
                     PHP_EOL,
                     $generatedHtmlOverviewOfAppsConfiguredComponents
                 )
-            };
+        };
     }
 
     /**
      * Return an html formatted overview of the specified Response's
      * configured Components. Only the Components whose type matches
      * the specified type will be included in the overview.
-     *
-     * @example:
-     *
-     * use Apps\AppInfo\resources\config\Sprints;
-     * use Apps\AppInfo\resources\config\CoreComponents;
-     * use Apps\AppInfo\resources\config\ComponentInfo;
-     * use roady\classes\component\Request;
-     *
-     * ComponentInfo::htmlOverviewOfResponsesConfiguredComponents(
-     *     'ResponseName',
-     *     Request::class
-     * )
      *
      * @param string $responseName The name of the Response whose
      *                             Components should be included
@@ -110,10 +105,23 @@ class ComponentInfo
         string $componentType
     ): string
     {
-        return match($componentType) {
-            OutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($responseName, $componentType),
-            DynamicOutputComponent::class => self::htmlOverviewOfResponsesConfiguredOutputComponents($responseName, $componentType),
-            Request::class => self::htmlOverviewOfResponsesConfiguredRequests($responseName, $componentType),
+        return
+            self::configuredComponentsHeader(
+                $responseName,
+                $componentType,
+                true
+            ) .
+            match($componentType) {
+                OutputComponent::class, DynamicOutputComponent::class
+                    => self::htmlOverviewOfResponsesConfiguredOutputComponents(
+                        $responseName,
+                        $componentType
+                    ),
+                Request::class
+                    => self::htmlOverviewOfResponsesConfiguredRequests(
+                        $responseName,
+                        $componentType
+                    ),
             default => '',
         };
     }
@@ -121,13 +129,18 @@ class ComponentInfo
     /**
      * Return an html formatted error message to indicate that there
      * are no Components of the specified type configured by the
-     * specified App or assigned to the specified Response.
+     * specified App, or assigned to the specified Response.
      *
      * @param string $appOrResponseName The name of the App or
      *                                  Response.
      *
      * @param class-string $componentType The type of Component that
      *                                    was not found.
+     *
+     * @param bool $responseComponentInfo Set to true if error
+     *                                    was for a Response, set
+     *                                    to false if error was
+     *                                    for an App.
      *
      * @return string An error message indicating that there are
      *                no Components of the specified type configured
@@ -181,7 +194,42 @@ class ComponentInfo
      */
     public static function requestedResponseName(): string
     {
-        return CoreComponents::currentRequest()->getGet()['responseName'];
+        return CoreComponents::currentRequest()
+               ->getGet()['responseName'];
+    }
+
+    /**
+     * Returns an html header for the configured Component overviews,
+     * The html h2 header's content will follow the following format:
+     *
+     * <h2>
+     *     $componentType's configured by the
+     *     $appOrResponseName {App|Response|GlobalResponse}
+     * </h2>
+     *
+     * @param string $appOrResponseName The name of the App
+     *                                  or Response.
+     *
+     * @param class-string $componentType The type of Component.
+     *
+     * @return string A html header for configured Component
+     *                overviews.
+     */
+    private static function configuredComponentsHeader(
+        string $appOrResponseName,
+        string $componentType,
+        bool $response = false
+    ): string
+    {
+        return '<h2>' .
+            self::getClassName($componentType, true) .
+            ' configured by the ' . $appOrResponseName . ' ' .
+            (
+                $response
+                ? self::getClassName(self::requestedResponseType())
+                : 'App'
+            ) .
+        '</h2>';
     }
 
     /**
@@ -233,6 +281,8 @@ class ComponentInfo
      *
      * @param class-string $class The class whose name should be
      *                            returned.
+     *
+     * @param bool $plural Set to true to pluralize the class name.
      *
      * @return string The classes name, excluding the class's
      *                namespace.
