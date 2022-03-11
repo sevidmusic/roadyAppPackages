@@ -200,4 +200,22 @@ class Sprints
             ($global ? '&global' : '');
     }
 
+    public static function noConfiguredComponentsMessageSprint(): string
+    {
+        return '
+        <div class="roady-generic-container">
+            <p class="roady-message">
+                There are no %s configured for the %s.
+            </p>
+            <p class="roady-note">
+                Hint:
+                <a href="https://roady.tech/index.php?request=rig">
+                    rig
+                </a>
+                can be used to configure various types of Components for
+                an App.
+            </p>
+        </div>
+        ';
+    }
 }

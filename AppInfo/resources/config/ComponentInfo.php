@@ -7,10 +7,10 @@ use Apps\AppInfo\resources\config\Sprints;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\DynamicOutputComponent;
 use roady\classes\component\OutputComponent;
+use roady\classes\component\Web\App;
 use roady\classes\component\Web\Routing\GlobalResponse;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\component\Web\Routing\Response;
-use roady\classes\component\Web\App;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\component\Component;
@@ -92,7 +92,7 @@ class ComponentInfo
 
     /**
      * Return an html formatted overview of the specified Response's
-     * configured Components. Only the Components whose type matches
+     * assigned Components. Only the Components whose type matches
      * the specified type will be included in the overview.
      *
      * @param string $responseName The name of the Response whose
@@ -103,20 +103,14 @@ class ComponentInfo
      *                                    include in the overview.
      *
      * @return string An html formatted overview of the specified
-     *                Response's configured Components.
+     *                Response's assigned Components.
      */
     public static function htmlOverviewOfResponsesAssignedComponents(
         string $responseName,
         string $componentType
     ): string
     {
-        return
-            self::configuredComponentsHeader(
-                $responseName,
-                $componentType,
-                true
-            ) .
-            match($componentType) {
+        return match($componentType) {
                 OutputComponent::class, DynamicOutputComponent::class
                     => self::htmlOverviewOfResponsesConfiguredOutputComponents(
                         $responseName,
@@ -124,8 +118,7 @@ class ComponentInfo
                     ),
                 Request::class
                     => self::htmlOverviewOfResponsesConfiguredRequests(
-                        $responseName,
-                        $componentType
+                        $responseName
                     ),
             default => '',
         };
@@ -158,26 +151,16 @@ class ComponentInfo
         bool $responseComponentInfo = false
     ): string
     {
-        return '
-        <p class="roady-message">
-            There are no ' . self::getClassName($componentType, true)
-            . ' configured for the ' .
+        return sprintf(
+            Sprints::noConfiguredComponentsMessageSprint(),
+            self::getClassName($componentType, true),
             (
                 $responseComponentInfo
                 ? $appOrResponseName . ' ' .
                 self::getClassName(self::requestedResponseType())
                 : $appOrResponseName . ' app'
-            ) .
-        '.</p>
-        <p class="roady-note">
-            Hint:
-            <a href="https://roady.tech/index.php?request=rig">
-                rig
-            </a>
-            can be used to configure various types of Components for
-            an App.
-        </a>
-        ';
+            )
+        );
     }
 
     /**
@@ -361,7 +344,7 @@ class ComponentInfo
     private static function componentInfoHtml(
         Component $component
     ): string {
-        switch($component->getType() ) {
+        switch($component->getType()) {
             case OutputComponent::class:
                 /**
                  * @var OutputComponent $component
@@ -396,29 +379,29 @@ class ComponentInfo
      * Return an html formatted overview of the specified
      * OutputComponent's info.
      *
-     * @param OutputComponent $component The OutputComponent.
+     * @param OutputComponent $outputComponent The OutputComponent.
      *
      * @return string An html formatted overview of the
      *                specified OutputComponent's info.
      */
      private static function outputComponentInfo(
-         OutputComponent $component
+         OutputComponent $outputComponent
      ): string
     {
         return sprintf(
             Sprints::outputComponentInfoSprint(),
-            $component->getName(),
-            $component->getUniqueId(),
-            $component->getType(),
-            $component->getLocation(),
-            $component->getContainer(),
-            $component->getPosition(),
+            $outputComponent->getName(),
+            $outputComponent->getUniqueId(),
+            $outputComponent->getType(),
+            $outputComponent->getLocation(),
+            $outputComponent->getContainer(),
+            $outputComponent->getPosition(),
             (
-                $component->getState()
+                $outputComponent->getState()
                 ? 'true'
                 : 'false'
             ),
-            $component->getOutput()
+            $outputComponent->getOutput()
         );
     }
 
@@ -426,35 +409,35 @@ class ComponentInfo
      * Return an html formatted overview of the specified
      * DynamicOutputComponent's info.
      *
-     * @param DynamicOutputComponent $component The DynamicOutputComponent.
+     * @param DynamicOutputComponent $dynamicOutputComponent The DynamicOutputComponent.
      *
      * @return string An html formatted overview of the
      *                specified DynamicOutputComponent's info.
      */
     private static function dynamicOutputComponentInfo(
-        DynamicOutputComponent $component
+        DynamicOutputComponent $dynamicOutputComponent
     ): string
     {
         return sprintf(
             Sprints::dynamicOutputComponentInfoSprint(),
-            $component->getName(),
-            $component->getUniqueId(),
-            $component->getType(),
-            $component->getLocation(),
-            $component->getContainer(),
-            $component->getPosition(),
+            $dynamicOutputComponent->getName(),
+            $dynamicOutputComponent->getUniqueId(),
+            $dynamicOutputComponent->getType(),
+            $dynamicOutputComponent->getLocation(),
+            $dynamicOutputComponent->getContainer(),
+            $dynamicOutputComponent->getPosition(),
             (
-                $component->getState()
+                $dynamicOutputComponent->getState()
                 ? 'true'
                 : 'false'
             ),
-            $component->getDynamicFilePath(),
+            $dynamicOutputComponent->getDynamicFilePath(),
             (
                 self::requestedAppName() === 'AppInfo'
                 ? '<span class="roady-error-message">' .
                 'The App Info App\'s DynamicOutput ' .
                 'cannot be previewed.</span>'
-                : $component->getOutput()
+                : $dynamicOutputComponent->getOutput()
             )
         );
     }
@@ -513,18 +496,23 @@ class ComponentInfo
      * Returns an array of html formatted links for the specified
      * Response's assigned Requests.
      *
+     * @param ResponseInterface $response The Response the Requests
+     *                                    are assigned to.
+     *
+     * @param ComponentCrud $componentCrud A ComponentCrud instance.
+     *
      * @return array<int, string> An array of html formatted links
      *                            for the specified Response's
      *                            assigned Requests.
      */
     private static function assignedRequestLinks(
-        ResponseInterface $registeredComponent,
+        ResponseInterface $response,
         ComponentCrud $componentCrud
     ): array
     {
-        $globalResponseRequestInfo = [];
+        $responseRequestInfo = [];
         foreach(
-            $registeredComponent->getRequestStorageInfo()
+            $response->getRequestStorageInfo()
             as
             $requestStorageInfo
         )
@@ -534,7 +522,7 @@ class ComponentInfo
              */
             $request = $componentCrud->read($requestStorageInfo);
             array_push(
-                $globalResponseRequestInfo,
+                $responseRequestInfo,
                 sprintf(
                     Sprints::listedRequestLinkSprint(),
                     $request->getUrl(),
@@ -542,44 +530,53 @@ class ComponentInfo
                 )
             );
         }
-        return $globalResponseRequestInfo;
+        return $responseRequestInfo;
     }
 
     /**
      * Return an html formatted overview of the specified
      * Request's info.
      *
-     * @param Request $component The Response.
+     * @param Request $request The Request.
      *
      * @return string An html formatted overview of the
      *                specified Request's info.
      */
-    private static function requestComponentInfo(Request $component): string
+    private static function requestComponentInfo(Request $request): string
     {
         return sprintf(
             Sprints::requestInfoSprint(),
-            $component->getName(),
-            $component->getUniqueId(),
-            $component->getType(),
-            $component->getLocation(),
-            $component->getContainer(),
+            $request->getName(),
+            $request->getUniqueId(),
+            $request->getType(),
+            $request->getLocation(),
+            $request->getContainer(),
             sprintf(
                 Sprints::requestLinkSprint(),
-                $component->getUrl(),
-                $component->getUrl(),
+                $request->getUrl(),
+                $request->getUrl(),
             ),
         );
     }
 
     /**
      * Return an html formatted overview of the specified Response's
-     * assigned OutputComponents.
+     * assigned OutputComponents or DynamicOutputComponents.
      *
-     * @param class-string $componentType
+     * @param string $responseName The name of the Response the
+     *                             Component's are assigned to.
+     *
+     * @param class-string $outputComponentType The type of
+     *                                          OutputComponent to
+     *                                          include.
+     *
+     * @return string Return an html formatted overview of the
+     *                specified Response's assigned OutputComponents
+     *                or DynamicOutputComponents to include.
      */
     private static function htmlOverviewOfResponsesConfiguredOutputComponents(
         string $responseName,
-        string $componentType
+        string $outputComponentType
     ): string
     {
         $htmlOverview = [];
@@ -589,9 +586,15 @@ class ComponentInfo
                 self::requestedResponseType()
             )->getOutputComponentStorageInfo() as $component
         ) {
-            $storedComponent = CoreComponents::componentCrud()->read($component);
+            $storedComponent = CoreComponents::componentCrud()->read(
+                $component
+            );
             if(
-                $storedComponent->getType() === $componentType
+                $storedComponent->getType() === $outputComponentType
+                &&
+                self::isAnOutputComponentImplementation(
+                    $storedComponent
+                )
             ) {
                 array_push(
                     $htmlOverview,
@@ -606,19 +609,53 @@ class ComponentInfo
                     $responseName,
                     self::requestedResponseType()
                 )->getName(),
-                $componentType,
+                $outputComponentType,
                 true
             )
-            : implode(PHP_EOL, $htmlOverview)
+            : self::configuredComponentsHeader(
+                $responseName,
+                $outputComponentType,
+                true
+            ) .
+            implode(PHP_EOL, $htmlOverview)
         );
     }
 
     /**
-     * @param class-string $componentType
+     * Returns true if the specified $component is a
+     * OutputComponent or a DynamicOutputComponent, otherwise
+     * return false.
+     *
+     * @param Component $component The Component to test.
+     *
+     * @return bool True if the $component is a OutputComponent,
+     *              or a DynamicOutputComponent, false otherwise.
+     *
+     */
+    private static function isAnOutputComponentImplementation(
+        Component $component
+    ) : bool
+    {
+        return (
+            $component->getType() === OutputComponent::class
+            ||
+            $component->getType() === DynamicOutputComponent::class
+        );
+    }
+
+    /**
+     * Return an html formatted overview of the specified Response's
+     * assigned Requests.
+     *
+     * @param string $responseName The name of the Response the
+     *                             Component's are assigned to.
+     *
+     * @return string An html formatted overview of the specified
+     *                Response's assigned Requests.
+     *
      */
     private static function htmlOverviewOfResponsesConfiguredRequests(
-        string $responseName,
-        string $componentType
+        string $responseName
     ): string
     {
 
@@ -629,7 +666,9 @@ class ComponentInfo
                 self::requestedResponseType()
             )->getRequestStorageInfo() as $component
         ) {
-            $storedComponent = CoreComponents::componentCrud()->read($component);
+            $storedComponent = CoreComponents::componentCrud()->read(
+                $component
+            );
             if($storedComponent->getType() === Request::class) {
                 array_push(
                     $htmlOverview,
@@ -644,10 +683,14 @@ class ComponentInfo
                     $responseName,
                     self::requestedResponseType()
                 )->getName(),
-                $componentType,
+                Request::class,
                 true
             )
-            : implode(PHP_EOL, $htmlOverview)
+            : self::configuredComponentsHeader(
+                $responseName,
+                Request::class,
+                true
+            ) . implode(PHP_EOL, $htmlOverview)
         );
     }
 
