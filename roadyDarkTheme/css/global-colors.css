@@ -134,6 +134,7 @@ body,
     color: var(--light-tone-base-color);
 }
 
+body,
 .roady-app-output-container {
     color: var(--gray-tone-base-color);
 }
@@ -149,8 +150,8 @@ body,
 .roady-app-output-container a,
 .roady-navigation-bar a,
 .roady-navigation-bar a:link,
-.roady-navigation-list a, 
-.roady-navigation-list a:link, 
+.roady-navigation-list a,
+.roady-navigation-list a:link,
 .roady-navigation-menu a,
 .roady-navigation-menu a:link {
     color: var(--bright-tone-base-color);
@@ -158,14 +159,14 @@ body,
 
 .roady-app-output-container a:hover,
 .roady-navigation-bar a:hover,
-.roady-navigation-list a:hover, 
+.roady-navigation-list a:hover,
 .roady-navigation-menu a:hover {
     color: var(--bright-tone-complimentery-color);
 }
 
 .roady-app-output-container a:active,
 .roady-navigation-bar a:active,
-.roady-navigation-list a:active, 
+.roady-navigation-list a:active,
 .roady-navigation-menu a:active {
     color: var(--bright-tone-monochromatic-color);
 }

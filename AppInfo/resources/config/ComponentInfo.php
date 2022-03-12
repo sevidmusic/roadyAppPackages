@@ -14,12 +14,13 @@ use roady\classes\component\Web\Routing\Response;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\component\Component;
+use roady\interfaces\component\SwitchableComponent;
 use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 
 /**
  * The ComponentInfo class provides static methods that return
  * html formatted overviews of either an App's configured Components,
- * or a Response or GlobalResponse's assigned Components.
+ * or a Response's assigned Components.
  *
  * Methods:
  *
@@ -111,15 +112,15 @@ class ComponentInfo
     ): string
     {
         return match($componentType) {
-                OutputComponent::class, DynamicOutputComponent::class
-                    => self::htmlOverviewOfResponsesConfiguredOutputComponents(
-                        $responseName,
-                        $componentType
-                    ),
-                Request::class
-                    => self::htmlOverviewOfResponsesConfiguredRequests(
-                        $responseName
-                    ),
+            OutputComponent::class, DynamicOutputComponent::class
+                => self::htmlOverviewOfResponsesConfiguredOutputComponents(
+                    $responseName,
+                    $componentType
+                ),
+            Request::class
+                => self::htmlOverviewOfResponsesConfiguredRequests(
+                    $responseName
+                ),
             default => '',
         };
     }
@@ -154,18 +155,23 @@ class ComponentInfo
         return sprintf(
             Sprints::noConfiguredComponentsMessageSprint(),
             self::getClassName($componentType, true),
-            (
-                $responseComponentInfo
-                ? $appOrResponseName . ' ' .
-                self::getClassName(self::requestedResponseType())
-                : $appOrResponseName . ' app'
-            )
+            match($responseComponentInfo) {
+                true => 'assigned to',
+                default => 'configured for'
+            },
+            match($responseComponentInfo) {
+                true =>
+                    $appOrResponseName . ' ' .
+                    self::getClassName(self::requestedResponseType()),
+                default => $appOrResponseName . ' app'
+            }
         );
     }
 
     /**
-     * Return the name of the requested App, i.e., the value
-     * of $_GET['appName'].
+     * Return the name of the requested App.
+     *
+     * This will be the value assigned to $_GET['appName'].
      *
      * @return string The requested App's name.
      */
@@ -175,8 +181,9 @@ class ComponentInfo
     }
 
     /**
-     * Return the name of the requested Response, i.e., the value
-     * of $_GET['responseName'].
+     * Return the name of the requested Response.
+     *
+     * This will be the value assigned to $_GET['responseName'].
      *
      * @return string The requested Response's name.
      */
@@ -187,8 +194,11 @@ class ComponentInfo
     }
 
     /**
-     * Returns an html header for the configured Component overviews,
-     * The html h2 header's content will follow the following format:
+     * Returns an html header for an App's configured Component
+     * overview, or a Response's assigned Component overview.
+     *
+     * The html header's content will conform to the following
+     * format:
      *
      * <h2>
      *     $componentType's configured by the
@@ -196,30 +206,55 @@ class ComponentInfo
      * </h2>
      *
      * @param string $appOrResponseName The name of the App
-     *                                  or Response.
+     *                                  the Components were
+     *                                  configured by, or the
+     *                                  name of the Response
+     *                                  the Components are
+     *                                  assigned to.
      *
      * @param class-string $componentType The type of Component.
      *
-     * @param bool $response Set to true if header is for a Response
-     *                       overview.
+     * @param bool $forResponsesAssignedComponentOverview Set to true
+     *                                                    if html
+     *                                                    header is
+     *                                                    for a
+     *                                                    Response's
+     *                                                    assigned
+     *                                                    Components
+     *                                                    overview.
+     *                                                    Set to
+     *                                                    false if
+     *                                                    header is
+     *                                                    for an
+     *                                                    App's
+     *                                                    configured
+     *                                                    Components
+     *                                                    overview.
      *
-     * @return string A html header for configured Component
-     *                overviews.
+     * @return string Returns an html header for a configured
+     *                Component overview.
+     *
      */
     private static function configuredComponentsHeader(
         string $appOrResponseName,
         string $componentType,
-        bool $response = false
+        bool   $forResponsesAssignedComponentOverview = false
     ): string
     {
         return '<h2>' .
             self::getClassName($componentType, true) .
-            ' configured by the ' . $appOrResponseName . ' ' .
-            (
-                $response
-                ? self::getClassName(self::requestedResponseType())
-                : 'App'
-            ) .
+            match($forResponsesAssignedComponentOverview) {
+                true => ' assigned to',
+                default => ' configured by',
+            } .
+            ' the ' . $appOrResponseName . ' ' .
+            match($forResponsesAssignedComponentOverview) {
+                true =>
+                    self::getClassName(
+                        self::requestedResponseType()
+                    ),
+                default => 'App'
+            } .
         '</h2>';
     }
 
@@ -233,18 +268,21 @@ class ComponentInfo
      */
     private static function requestedResponseType(): string
     {
-        return (
-            isset(CoreComponents::currentRequest()->getGet()['global'])
-            ? GlobalResponse::class
-            : Response::class
-        );
+        return match(
+            isset(
+                CoreComponents::currentRequest()->getGet()['global']
+            )
+        ) {
+            true => GlobalResponse::class,
+            default => Response::class
+        };
     }
 
     /**
-     * Return the name of the storage location where the App's
+     * Return the name of the storage location where an App's
      * Responses are expected to be located.
      *
-     * @return string The name of the storage location where the
+     * @return string The name of the storage location where an
      *                App's Response's are expected to be located.
      */
     private static function responseStorageLocation(): string
@@ -255,11 +293,11 @@ class ComponentInfo
     }
 
     /**
-     * Return the name of the storage container where the App's
-     * Responses are expected to be located.
+     * Return the name of the storage container where an App's
+     * Responses are expected to be stored.
      *
-     * @return string The name of the storage container where the
-     *                App's Response's are expected to be located.
+     * @return string The name of the storage container where an
+     *                App's Response's are expected to be stored.
      */
     private static function responseStorageContainer(): string
     {
@@ -275,7 +313,7 @@ class ComponentInfo
      *
      * @param bool $plural Set to true to pluralize the class name.
      *
-     * @return string The classes name, excluding the class's
+     * @return string The class's name, excluding the class's
      *                namespace.
      */
     private static function getClassName(
@@ -292,9 +330,9 @@ class ComponentInfo
      * overview of each of the specified App's configured Components
      * whose type matches the specified $componentType.
      *
-     * Note: The html formatted overviews of each Components info
-     *       are generated by the ComponentInfo::componentInfoHtml()
-     *       method.
+     * @note: The html formatted overviews of each Component's info
+     *        are generated by the ComponentInfo::componentInfoHtml()
+     *        method.
      *
      * @param string $appName The name of the App the Component's
      *                        were configured by.
@@ -306,7 +344,7 @@ class ComponentInfo
      *                            that provide an overview of each
      *                            of the specified App's configured
      *                            Components whose type matches the
-     *                            specifed $componentType.
+     *                            specified $componentType.
      */
     private static function arrayOfHtmlFormattedComponentInfo(
         string $appName,
@@ -396,11 +434,7 @@ class ComponentInfo
             $outputComponent->getLocation(),
             $outputComponent->getContainer(),
             $outputComponent->getPosition(),
-            (
-                $outputComponent->getState()
-                ? 'true'
-                : 'false'
-            ),
+            self::switchableComponentState($outputComponent),
             $outputComponent->getOutput()
         );
     }
@@ -409,7 +443,8 @@ class ComponentInfo
      * Return an html formatted overview of the specified
      * DynamicOutputComponent's info.
      *
-     * @param DynamicOutputComponent $dynamicOutputComponent The DynamicOutputComponent.
+     * @param DynamicOutputComponent $dynamicOutputComponent
+     *                                   The DynamicOutputComponent.
      *
      * @return string An html formatted overview of the
      *                specified DynamicOutputComponent's info.
@@ -426,11 +461,7 @@ class ComponentInfo
             $dynamicOutputComponent->getLocation(),
             $dynamicOutputComponent->getContainer(),
             $dynamicOutputComponent->getPosition(),
-            (
-                $dynamicOutputComponent->getState()
-                ? 'true'
-                : 'false'
-            ),
+            self::switchableComponentState($dynamicOutputComponent),
             $dynamicOutputComponent->getDynamicFilePath(),
             (
                 self::requestedAppName() === 'AppInfo'
@@ -542,7 +573,9 @@ class ComponentInfo
      * @return string An html formatted overview of the
      *                specified Request's info.
      */
-    private static function requestComponentInfo(Request $request): string
+    private static function requestComponentInfo(
+        Request $request
+    ): string
     {
         return sprintf(
             Sprints::requestInfoSprint(),
@@ -572,7 +605,7 @@ class ComponentInfo
      *
      * @return string Return an html formatted overview of the
      *                specified Response's assigned OutputComponents
-     *                or DynamicOutputComponents to include.
+     *                or DynamicOutputComponents.
      */
     private static function htmlOverviewOfResponsesConfiguredOutputComponents(
         string $responseName,
@@ -602,23 +635,23 @@ class ComponentInfo
                 );
             }
         }
-        return (
-            empty($htmlOverview)
-            ? self::noConfiguredComponentsMessage(
-                self::getStoredResponseByNameAndType(
+        return match(empty($htmlOverview)) {
+            true =>
+                self::noConfiguredComponentsMessage(
+                    self::getStoredResponseByNameAndType(
+                        $responseName,
+                        self::requestedResponseType()
+                    )->getName(),
+                    $outputComponentType,
+                    true
+                ),
+            default =>
+                self::configuredComponentsHeader(
                     $responseName,
-                    self::requestedResponseType()
-                )->getName(),
-                $outputComponentType,
-                true
-            )
-            : self::configuredComponentsHeader(
-                $responseName,
-                $outputComponentType,
-                true
-            ) .
-            implode(PHP_EOL, $htmlOverview)
-        );
+                    $outputComponentType,
+                    true
+                ) . implode(PHP_EOL, $htmlOverview)
+        };
     }
 
     /**
@@ -676,22 +709,21 @@ class ComponentInfo
                 );
             }
         }
-        return (
-            empty($htmlOverview)
-            ? self::noConfiguredComponentsMessage(
+        return match(empty($htmlOverview)) {
+            true => self::noConfiguredComponentsMessage(
                 self::getStoredResponseByNameAndType(
                     $responseName,
                     self::requestedResponseType()
                 )->getName(),
                 Request::class,
                 true
-            )
-            : self::configuredComponentsHeader(
+            ),
+            default => self::configuredComponentsHeader(
                 $responseName,
                 Request::class,
                 true
             ) . implode(PHP_EOL, $htmlOverview)
-        );
+        };
     }
 
    /**
@@ -734,6 +766,32 @@ class ComponentInfo
      */
     private static function newResponseInstance(): Response
     {
-        return new Response(new Storable('UnknownResponse', 'UnknownResponses', 'UnknownResponses'), new Switchable());
+        return new Response(
+            new Storable(
+                'UnknownResponse',
+                'UnknownResponses',
+                'UnknownResponses'
+            ),
+            new Switchable()
+        );
+    }
+
+    /**
+     * Return the string form of the specified SwitchableComponent's
+     * state.
+     *
+     * @param SwitchableComponent $switchableComponent The SwitchableComponent.
+     *
+     * @return string The string form of the specified
+     *                SwitchableComponent's state.
+     */
+    private static function switchableComponentState(
+        SwitchableComponent $switchableComponent
+    ): string
+    {
+        return match($switchableComponent->getState()) {
+            true => 'true',
+            default => 'false'
+        };
     }
 }

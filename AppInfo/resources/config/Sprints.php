@@ -205,7 +205,7 @@ class Sprints
         return '
         <div class="roady-generic-container">
             <p class="roady-message">
-                There are no %s configured for the %s.
+                There are no %s %s the %s.
             </p>
             <p class="roady-note">
                 Hint:
