@@ -207,8 +207,9 @@ class CoreComponents
 
    /**
     * Return the specified Response from storage.
-    * If the Response does not exist, then a new
-    * Response instance will be returned.
+    *
+    * If the Response does not exist, then a new Response instance
+    * will be returned.
     *
     * @param string $responseName The name of the Response.
     *
