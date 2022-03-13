@@ -8,14 +8,39 @@ use roady\classes\component\DynamicOutputComponent;
 use Apps\AppInfo\resources\config\CoreComponents;
 use Apps\AppInfo\resources\config\Sprints;
 
+/**
+ * The Sprints class provides a number of methods that return
+ * appropriate sprints for the html for the various AppInfo
+ * overviews.
+ *
+ * Methods:
+ *
+ * public static function outputContainerSprint(): string
+ * public static function respondsToSprint(): string
+ * public static function requestLinkSprint(): string
+ * public static function listedRequestLinkSprint(): string
+ * public static function requestInfoSprint(): string
+ * public static function outputComponentInfoSprint(): string
+ * public static function dynamicOutputComponentInfoSprint(): string {
+ * public static function responseInfoSprint(
+ *     bool $global = false
+ * ): string
+ * public static function noConfiguredComponentsMessageSprint(): string
+ *
+ */
 class Sprints
 {
 
-    private static function onlineDocumentationRequestSprint(): string {
-        return 'https://roady.tech/index.php?request=';
-    }
-
-    public static function outputContainerSprint(): string {
+    /**
+     * Return a sprint for a div that is assigned the css class:
+     *
+     *     roady-app-output-container
+     *
+     * @return string A sprint for a div that is assigned the
+     *                css class roady-app-output-container.
+     */
+    public static function outputContainerSprint(): string
+    {
         return '<div class="roady-app-output-container">%s</div>';
     }
 
@@ -193,13 +218,6 @@ class Sprints
         ';
     }
 
-    private static function queryStringSprint(bool $global): string
-    {
-        return '&appName=%s' .
-            '&responseName=%s' .
-            ($global ? '&global' : '');
-    }
-
     public static function noConfiguredComponentsMessageSprint(): string
     {
         return '
@@ -217,5 +235,23 @@ class Sprints
             </p>
         </div>
         ';
+    }
+
+    private static function queryStringSprint(bool $global): string
+    {
+        return '&appName=%s' .
+            '&responseName=%s' .
+            ($global ? '&global' : '');
+    }
+
+    /**
+     * Return the url to be used as a prefix for a link to the
+     * online documentation on https://roady.tech.
+     *
+     * @return string The url to be used as a prefix for a link to
+     *                the online documentation on https://roady.tech.
+     */
+    private static function onlineDocumentationRequestUrlPrefix(): string {
+        return 'https://roady.tech/index.php?request=';
     }
 }
