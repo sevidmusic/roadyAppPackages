@@ -266,7 +266,7 @@ class ComponentInfo
      *
      * @return class-string The requested Response's type.
      */
-    private static function requestedResponseType(): string
+    public static function requestedResponseType(): string
     {
         return match(
             isset(
@@ -285,7 +285,7 @@ class ComponentInfo
      * @return string The name of the storage location where an
      *                App's Response's are expected to be located.
      */
-    private static function responseStorageLocation(): string
+    public static function responseStorageLocation(): string
     {
         return App::deriveAppLocationFromRequest(
             CoreComponents::currentRequest()
@@ -299,7 +299,7 @@ class ComponentInfo
      * @return string The name of the storage container where an
      *                App's Response's are expected to be stored.
      */
-    private static function responseStorageContainer(): string
+    public static function responseStorageContainer(): string
     {
         return ResponseInterface::RESPONSE_CONTAINER;
     }
@@ -612,7 +612,7 @@ class ComponentInfo
     {
         $htmlOverview = [];
         foreach(
-            self::getStoredResponseByNameAndType(
+            CoreComponents::getStoredResponseByNameAndType(
                 $responseName,
                 self::requestedResponseType()
             )->getOutputComponentStorageInfo() as $component
@@ -636,7 +636,7 @@ class ComponentInfo
         return match(empty($htmlOverview)) {
             true =>
                 self::noConfiguredComponentsMessage(
-                    self::getStoredResponseByNameAndType(
+                    CoreComponents::getStoredResponseByNameAndType(
                         $responseName,
                         self::requestedResponseType()
                     )->getName(),
@@ -691,7 +691,7 @@ class ComponentInfo
 
         $htmlOverview = [];
         foreach(
-            self::getStoredResponseByNameAndType(
+            CoreComponents::getStoredResponseByNameAndType(
                 $responseName,
                 self::requestedResponseType()
             )->getRequestStorageInfo() as $component
@@ -708,7 +708,7 @@ class ComponentInfo
         }
         return match(empty($htmlOverview)) {
             true => self::noConfiguredComponentsMessage(
-                self::getStoredResponseByNameAndType(
+                CoreComponents::getStoredResponseByNameAndType(
                     $responseName,
                     self::requestedResponseType()
                 )->getName(),
@@ -721,60 +721,6 @@ class ComponentInfo
                 true
             ) . implode(PHP_EOL, $htmlOverview)
         };
-    }
-
-   /**
-    * @todo Consider moving into CoreComponents class.
-    *
-    * Return the specified Response from storage.
-    * If the Response does not exist, then a new
-    * Response instance will be returned.
-    *
-    * @param string $responseName The name of the Response.
-    *
-    * @param class-string $responseType The Response's type.
-    *
-    * @return ResponseInterface The requested Response or GlobalResponse.
-    *
-    * Note: If the requested Response or GlobalResponse does not
-    * exist, then a new Response instance named UnknownResponse
-    * will be returned.
-    */
-    private static function getStoredResponseByNameAndType(
-        string $responseName,
-        string $responseType
-    ): ResponseInterface
-    {
-        /** @var ResponseInterface $component */
-        $component = CoreComponents::componentCrud()->readByNameAndType(
-            $responseName,
-            self::requestedResponseType(),
-            self::responseStorageLocation(),
-            self::responseStorageContainer(),
-        );
-        return match($component->getType()) {
-            Response::class, GlobalResponse::class => $component,
-            default => self::newResponseInstance(),
-        };
-    }
-
-    /**
-     * @todo Consider moving in CoreComponents class.
-     *
-     * Return a new Response instance.
-     *
-     * @return Response A new instance of a Response.
-     */
-    private static function newResponseInstance(): Response
-    {
-        return new Response(
-            new Storable(
-                'UnknownResponse',
-                'UnknownResponses',
-                'UnknownResponses'
-            ),
-            new Switchable()
-        );
     }
 
     /**

@@ -9,9 +9,13 @@ use roady\classes\component\Driver\Storage\StorageDriver;
 use roady\classes\component\Factory\App\AppComponentsFactory;
 use roady\classes\component\Web\App;
 use roady\classes\component\Web\Routing\Request;
+use roady\classes\component\Web\Routing\Response;
+use roady\classes\component\Web\Routing\GlobalResponse;
+use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\component\Factory\Factory;
+use Apps\AppInfo\resources\config\ComponentInfo;
 
 /**
  * The CoreComponents class provides static methods that will either
@@ -199,5 +203,55 @@ class CoreComponents
                     )
                 ),
         };
+    }
+
+   /**
+    * Return the specified Response from storage.
+    * If the Response does not exist, then a new
+    * Response instance will be returned.
+    *
+    * @param string $responseName The name of the Response.
+    *
+    * @param class-string $responseType The Response's type.
+    *
+    * @return ResponseInterface The requested Response or GlobalResponse.
+    *
+    * Note: If the requested Response or GlobalResponse does not
+    * exist, then a new Response instance named UnknownResponse
+    * will be returned.
+    */
+    public static function getStoredResponseByNameAndType(
+        string $responseName,
+        string $responseType
+    ): ResponseInterface
+    {
+        /** @var ResponseInterface $component */
+        $component = self::componentCrud()->readByNameAndType(
+            $responseName,
+            $responseType,
+            ComponentInfo::responseStorageLocation(),
+            ComponentInfo::responseStorageContainer(),
+        );
+        return match($component->getType()) {
+            Response::class, GlobalResponse::class => $component,
+            default => self::newResponseInstance(),
+        };
+    }
+
+    /**
+     * Return a new Response instance.
+     *
+     * @return Response A new instance of a Response.
+     */
+    private static function newResponseInstance(): Response
+    {
+        return new Response(
+            new Storable(
+                'UnknownResponse',
+                'UnknownResponses',
+                'UnknownResponses'
+            ),
+            new Switchable()
+        );
     }
 }
