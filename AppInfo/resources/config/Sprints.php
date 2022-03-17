@@ -10,21 +10,29 @@ use Apps\AppInfo\resources\config\Sprints;
 
 /**
  * The Sprints class provides a number of methods that return
- * appropriate sprints for the html for the various AppInfo
- * overviews.
+ * appropriate sprints for the html formatted overviews provided
+ * by the AppInfo App.
  *
  * Methods:
  *
  * public static function outputContainerSprint(): string
+ *
  * public static function respondsToSprint(): string
+ *
  * public static function requestLinkSprint(): string
+ *
  * public static function listedRequestLinkSprint(): string
+ *
  * public static function requestInfoSprint(): string
+ *
  * public static function outputComponentInfoSprint(): string
+ *
  * public static function dynamicOutputComponentInfoSprint(): string {
+ *
  * public static function responseInfoSprint(
  *     bool $global = false
  * ): string
+ *
  * public static function noConfiguredComponentsMessageSprint(): string
  *
  */
@@ -36,6 +44,14 @@ class Sprints
      *
      *     roady-app-output-container
      *
+     * @example
+     *
+     * printf(
+     *     Sprints::outputContainerSprint(),
+     *     '<p>Content to be wrapped in a div that is assigned the' .
+     *     'css class:</p><p>roady-app-output-container</p>'
+     *  );
+     *
      * @return string A sprint for a div that is assigned the
      *                css class roady-app-output-container.
      */
@@ -44,26 +60,102 @@ class Sprints
         return '<div class="roady-app-output-container">%s</div>';
     }
 
+    /**
+     * Returns a sprint for the html that will surround a list of
+     * links that correspond to the Requests assigned to a Response.
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::responseInfoSprint(),
+     *     '<ul>
+     *          <li>
+     *              <a href="http://localhost:8080">
+     *                  http://localhost:8080
+     *              </a>
+     *          </li>
+     *          <li>
+     *              <a href="http://localhost:8080?request=RequestName">
+     *                  http://localhost:8080?request=RequestName
+     *              </a>
+     *          </li>
+     *      </ul>'
+     *  );
+     *
+     *  @return string A sprint for the html that will surround a
+     *                 list of links that correspond to the Requests
+     *                 assigned to a Response.
+     */
     public static function respondsToSprint(): string
     {
         return '
             <li>Responds to:</li>
-            <!-- Start REQUEST_LINK_SPRINT -->
             %s
-            <!-- End REQUEST_LINK_SPRINT -->
         ';
     }
 
+    /**
+     * Returns a srpint for an html link.
+     *
+     * @example
+     *
+     * printf(
+     *     self::requestLinkSprint(),
+     *     'https://url-to-assign-to-href-attribute',
+     *     'Link Text'
+     * );
+     *
+     * @return string A sprint for an html link.
+     */
     public static function requestLinkSprint(): string
     {
         return '<a href="%s">%s</a>';
     }
 
+    /**
+     * Returns a srpint for an html link that is an item in an html
+     * list, i.e. a sprint for an html link that is wrapped in
+     * a li tag.
+     *
+     * @example
+     *
+     * printf(
+     *     self::requestLinkSprint(),
+     *     'https://url-to-assign-to-href-attribute',
+     *     'Link Text'
+     * );
+     *
+     * @return string A sprint for an html link that is an item
+     *                in an html list.
+     */
     public static function listedRequestLinkSprint(): string
     {
         return '<li><a href="%s">%s</a></li>';
     }
 
+    /**
+     * Return a sprint for the html that structures an overview
+     * of a single Request.
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::requestInfoSprint(),
+     *     $request->getName(),
+     *     $request->getUniqueId(),
+     *     $request->getType(),
+     *     $request->getLocation(),
+     *     $request->getContainer(),
+     *     sprintf(
+     *         Sprints::requestLinkSprint(),
+     *         $request->getUrl(),
+     *         $request->getUrl(),
+     *     ),
+     * );
+     *
+     * A sprint for the html that structures an overview
+     * of a single Request.
+     */
     public static function requestInfoSprint(): string
     {
         return '
