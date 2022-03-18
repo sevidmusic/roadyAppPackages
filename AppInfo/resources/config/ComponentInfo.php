@@ -24,26 +24,6 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
  *
  * Methods:
  *
- * public static function htmlOverviewOfAppsConfiguredComponents(
- *     string $appName,
- *     string $componentType
- * ): string
- *
- * public static function htmlOverviewOfResponsesAssignedComponents(
- *     string $responseName,
- *     string $componentType
- * ): string
- *
- * public static function noConfiguredComponentsMessage(
- *     string $appOrResponseName,
- *     string $componentType,
- *     bool $responseComponentInfo = false
- * ): string
- *
- * public static function requestedAppName(): string
- *
- * public static function requestedResponseName(): string
- *
  */
 class ComponentInfo
 {
@@ -75,10 +55,11 @@ class ComponentInfo
         return match(
             empty($generatedHtmlOverviewOfAppsConfiguredComponents)
         ) {
-            true => ComponentInfo::noConfiguredComponentsMessage(
-                $appName,
-                $componentType
-            ),
+            true =>
+                ComponentInfo::noConfiguredComponentsMessage(
+                    $appName,
+                    $componentType
+                ),
             default =>
                 self::configuredComponentsHeader(
                     $appName,
@@ -87,7 +68,7 @@ class ComponentInfo
                 implode(
                     PHP_EOL,
                     $generatedHtmlOverviewOfAppsConfiguredComponents
-                )
+                ),
         };
     }
 
@@ -96,9 +77,13 @@ class ComponentInfo
      * assigned Components. Only the Components whose type matches
      * the specified type will be included in the overview.
      *
+     *
+     * @param string $appName The name of the App the Response
+     *                        was configured by.
+     *
      * @param string $responseName The name of the Response whose
-     *                             Components should be included
-     *                             in the overview.
+     *                             assigned Components should be
+     *                             included in the overview.
      *
      * @param class-string $componentType The type of Component to
      *                                    include in the overview.
@@ -113,25 +98,27 @@ class ComponentInfo
     ): string
     {
         return match($componentType) {
-            OutputComponent::class, DynamicOutputComponent::class
-                => self::htmlOverviewOfResponsesConfiguredOutputComponents(
+            OutputComponent::class,
+            DynamicOutputComponent::class =>
+                self::htmlOverviewOfResponsesAssignedOutputComponents(
                     $appName,
                     $responseName,
                     $componentType
                 ),
-            Request::class
-                => self::htmlOverviewOfResponsesConfiguredRequests(
+            Request::class =>
+                self::htmlOverviewOfResponsesAssignedRequests(
                     $appName,
                     $responseName
                 ),
-            default => '',
+            default =>
+                    '',
         };
     }
 
     /**
-     * Return an html formatted error message to indicate that there
-     * are no Components of the specified type configured by the
-     * specified App, or assigned to the specified Response.
+     * Return an html formatted error message that indicates that
+     * there are no Components of the specified type configured by
+     * the specified App, or assigned to the specified Response.
      *
      * @param string $appOrResponseName The name of the App or
      *                                  Response.
@@ -159,14 +146,19 @@ class ComponentInfo
             Sprints::noConfiguredComponentsMessageSprint(),
             self::getClassName($componentType, true),
             match($responseComponentInfo) {
-                true => 'assigned to',
-                default => 'configured for'
+                true =>
+                    'assigned to',
+                default =>
+                    'configured for',
             },
             match($responseComponentInfo) {
                 true =>
                     $appOrResponseName . ' ' .
-                    self::getClassName(self::requestedResponseType()),
-                default => $appOrResponseName . ' app'
+                    self::getClassName(
+                        self::requestedResponseType()
+                    ),
+                default =>
+                    $appOrResponseName . ' app',
             }
         );
     }
@@ -233,10 +225,12 @@ class ComponentInfo
      *                                                    configured
      *                                                    Components
      *                                                    overview.
+     *                                                    Defaults to
+     *                                                    false.
      *
-     * @return string Returns an html header for a configured
+     * @return string An html header for an App's configured
+     *                Component overview, or a Response's assigned
      *                Component overview.
-     *
      */
     private static function configuredComponentsHeader(
         string $appOrResponseName,
@@ -247,8 +241,10 @@ class ComponentInfo
         return '<h2>' .
             self::getClassName($componentType, true) .
             match($forResponsesAssignedComponentOverview) {
-                true => ' assigned to',
-                default => ' configured by',
+                true =>
+                    ' assigned to',
+                default =>
+                    ' configured by',
             } .
             ' the ' . $appOrResponseName . ' ' .
             match($forResponsesAssignedComponentOverview) {
@@ -256,7 +252,8 @@ class ComponentInfo
                     self::getClassName(
                         self::requestedResponseType()
                     ),
-                default => 'App'
+                default =>
+                    'App'
             } .
         '</h2>';
     }
@@ -375,6 +372,9 @@ class ComponentInfo
      * Return a html formatted overview of the specified Component's
      * info.
      *
+     * @param string $appName The name of the App the Component
+     *                        was configured by.
+     *
      * @param Component $component The Component whose info should
      *                             be included in the overview.
      *
@@ -415,7 +415,6 @@ class ComponentInfo
         }
     }
 
-
     /**
      * Return an html formatted overview of the specified
      * OutputComponent's info.
@@ -445,6 +444,10 @@ class ComponentInfo
     /**
      * Return an html formatted overview of the specified
      * DynamicOutputComponent's info.
+     *
+     * @param string $appName The name of the App the
+     *                        DynamicOutputComponent was
+     *                        configured by.
      *
      * @param DynamicOutputComponent $dynamicOutputComponent
      *                                   The DynamicOutputComponent.
@@ -481,7 +484,13 @@ class ComponentInfo
      * Return an html formatted overview of the specified
      * Response's info.
      *
+     * @param string $appName The name of the App the Response was
+     *                        configured by.
+     *
      * @param ResponseInterface $response The Response.
+     *                                    May be an instance of any
+     *                                    implementation of the
+     *                                    ResponseInterface.
      *
      * @return string An html formatted overview of the
      *                specified Response's info.
@@ -506,13 +515,13 @@ class ComponentInfo
                 default =>
                     implode(
                         PHP_EOL,
-                        self::assignedRequestLinks(
+                        self::responsesAssignedRequestLinks(
                             $response,
                             CoreComponents::ComponentCrud()
                         )
                     ),
             },
-            self::foo(
+            self::listOfResponsesAssignedComponentLinks(
                 $appName,
                 $response->getName(),
                 $global
@@ -520,42 +529,75 @@ class ComponentInfo
         );
     }
 
-    public static function foo(
+    /**
+     * Return a list of links to overviews of the Components
+     * assigned to the specified Response.
+     *
+     * @param string $appName The name of the App the Response
+     *                        was configured by.
+     *
+     * @param string $responseName The name of the Response.
+     *
+     * @param bool $global Set to true if the Response is a
+     *                     GlobalResponse. Defaults to false.
+     *
+     * @return string A list of links to overviews of the Components
+     *                assigned to the specified Response.
+     */
+    public static function listOfResponsesAssignedComponentLinks(
         string $appName,
         string $responseName,
         bool $global
     ): string
     {
-        return '
-            <li>
-                <a href="index.php?request=ResponseRequestInfo' .
+        return
+            sprintf(
+                Sprints::listedRequestLinkSprint(),
+                'index.php?request=ResponseRequestInfo' .
                 self::responseInfoQueryString(
                     $appName,
                     $responseName,
                     $global
-                ) . '">Requests</a>
-            </li>
-            <li>
-                <a href="index.php?request=ResponseOutputComponentInfo' .
+                ),
+                'Requests',
+            ) .
+            sprintf(
+                Sprints::listedRequestLinkSprint(),
+                'index.php?request=ResponseOutputComponentInfo' .
                 self::responseInfoQueryString(
                     $appName,
                     $responseName,
                     $global
-                ) . '">OutputComponents</a>
-            </li>
-            <li>
-                <a href="index.php?request=ResponseDynamicOutputComponentInfo' .
+                ),
+                'OutputComponents',
+            ) .
+            sprintf(
+                Sprints::listedRequestLinkSprint(),
+                'index.php?request=ResponseDynamicOutputComponentInfo' .
                 self::responseInfoQueryString(
                     $appName,
                     $responseName,
                     $global
-                ) . '">DynamicOutputComponents</a>
-            </li>';
+                ),
+                'DynamicOutputComponents',
+            )
+        ;
     }
 
     /**
-     * Return a sprint for the url query string used to determine
-     * which App, and Response are being queried.
+     * Return a url query string indicating which App, and
+     * Response are being queried.
+     *
+     * @param string $appName The name of the App the Response
+     *                        was configured by.
+     *
+     * @param string $responseName The name of the Response.
+     *
+     * @param bool $global Set to true if the Response is a
+     *                     GlobalResponse. Defaults to false.
+     *
+     * @return string A url query string indicating which App,
+     *                and Response are being queried.
      */
     private static function responseInfoQueryString(
         string $appName,
@@ -567,6 +609,7 @@ class ComponentInfo
             '&responseName=' . $responseName .
             ($global ? '&global' : '');
     }
+
     /**
      * Returns an array of html formatted links for the specified
      * Response's assigned Requests.
@@ -580,7 +623,7 @@ class ComponentInfo
      *                            for the specified Response's
      *                            assigned Requests.
      */
-    private static function assignedRequestLinks(
+    private static function responsesAssignedRequestLinks(
         ResponseInterface $response,
         ComponentCrud $componentCrud
     ): array
@@ -653,7 +696,7 @@ class ComponentInfo
      *                specified Response's assigned OutputComponents
      *                or DynamicOutputComponents.
      */
-    private static function htmlOverviewOfResponsesConfiguredOutputComponents(
+    private static function htmlOverviewOfResponsesAssignedOutputComponents(
         string $appName,
         string $responseName,
         string $outputComponentType
@@ -733,7 +776,7 @@ class ComponentInfo
      *                Response's assigned Requests.
      *
      */
-    private static function htmlOverviewOfResponsesConfiguredRequests(
+    private static function htmlOverviewOfResponsesAssignedRequests(
         string $appName,
         string $responseName
     ): string
@@ -777,7 +820,8 @@ class ComponentInfo
      * Return the string form of the specified SwitchableComponent's
      * state.
      *
-     * @param SwitchableComponent $switchableComponent The SwitchableComponent.
+     * @param SwitchableComponent $switchableComponent
+     *                                The SwitchableComponent.
      *
      * @return string The string form of the specified
      *                SwitchableComponent's state.

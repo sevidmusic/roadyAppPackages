@@ -176,7 +176,7 @@ class Sprints
      * );
      *
      * @return string A sprint for the html that structures an
-     *                overview of a single outputComponent.
+     *                overview of a single OutputComponent.
      */
     public static function outputComponentInfoSprint(): string {
         return '
@@ -222,7 +222,7 @@ class Sprints
      *
      * printf(
      *     Sprints::outputContainerSprint(),
-     *     '<p>Content to place within the div</p>'
+     *     '<p>Content to place within the div.</p>'
      * );
      *
      *
@@ -299,6 +299,27 @@ class Sprints
         return '<a href="%s">%s</a>';
     }
 
+    /**
+     * Return a sprint for the html that structures an overview
+     * of a single Response.
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::responseInfoSprint(),
+     *     'ResponseName',
+     *     'UniqueId',
+     *     'Type',
+     *     'Location',
+     *     'Container',
+     *     'Position',
+     *     'RespondsTo',
+     *     'AssignedComponents'
+     * );
+     *
+     * @return string A sprint for the html that structures an
+     *                overview of a single Response.
+     */
     public static function responseInfoSprint(bool $global = false): string
     {
         return '
@@ -336,15 +357,5 @@ class Sprints
         ';
     }
 
-    /**
-     * Return the url to be used as a prefix for a link to the
-     * online documentation on https://roady.tech.
-     *
-     * @return string The url to be used as a prefix for a link to
-     *                the online documentation on https://roady.tech.
-     */
-    private static function onlineDocumentationRequestUrlPrefix(): string {
-        return 'https://roady.tech/index.php?request=';
-    }
 }
 
