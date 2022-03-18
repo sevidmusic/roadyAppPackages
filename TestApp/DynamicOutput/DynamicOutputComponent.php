@@ -1,0 +1,1 @@
+<h1>Configured Dynamic Output</h1><p>Some text, lorem ipsum, <a href="https://roady.tech">roady.tech</a>.</p>
