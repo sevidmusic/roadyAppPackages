@@ -21,9 +21,6 @@ use roady\interfaces\component\Web\Routing\Response as ResponseInterface;
  * The ComponentInfo class provides static methods that return
  * html formatted overviews of either an App's configured Components,
  * or a Response's assigned Components.
- *
- * Methods:
- *
  */
 class ComponentInfo
 {

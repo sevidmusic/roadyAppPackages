@@ -19,14 +19,9 @@ use Apps\AppInfo\resources\config\ComponentInfo;
 
 /**
  * The CoreComponents class provides static methods that will either
- * return a new Component instance of a specific type, or a specific
+ * return a new Component instance of a specific type, a locally
+ * cached instance of a specific type of Component, or a specific
  * Component from storage.
- *
- * Methods:
- *
- * public static function currentRequest(): Request
- * public static function componentCrud(): ComponentCrud
- * public static function appsAppComponentsFactory(string $appName): AppComponentsFactory
 */
 class CoreComponents
 {
@@ -36,9 +31,12 @@ class CoreComponents
     private static AppComponentsFactory|null $appsAppComponentsFactory = null;
 
     /**
-     * Return a new Request instance for the current request.
+     * Return a Request instance for the current request.
      *
-     * @return Request A new Request instance for the current
+     * Note: This method may return a locally cached instance
+     * of a Request.
+     *
+     * @return Request A Request instance for the current
      *                 request.
      */
     public static function currentRequest(): Request
@@ -50,10 +48,13 @@ class CoreComponents
     }
 
     /**
-     * Return a new ComponentCrud instance that can be used to
+     * Return a ComponentCrud instance that can be used to
      * read stored Components from storage.
      *
-     * @return ComponentCrud A new ComponentCrud instance.
+     * Note: This method may return a locally cached instance
+     * of a ComponentCrud.
+     *
+     * @return ComponentCrud A ComponentCrud instance.
      */
     public static function componentCrud(): ComponentCrud
     {
@@ -67,6 +68,9 @@ class CoreComponents
      * Return the specified App's AppComponentsFactory from storage,
      * or a new AppComponentsFactory instance if the specified App's
      * AppComponentsFactory does not exist in storage.
+     *
+     * Note: This method may return a locally cached instance
+     * of a AppComponentsFactory.
      *
      * @return AppComponentsFactory The specified App's
      *                              stored AppComponentsFactory,
@@ -172,8 +176,8 @@ class CoreComponents
         *
         * The following var doc is defined to prevent phpstan from
         * complaining that the return type is not correct, it is,
-        * the match() expression won't allow anything but a
-        * AppComponentsFactory instance to be returned.
+        * the match() expression won't allow anything but an
+        * instance of an AppComponentsFactory to be returned.
         *
         * @var AppComponentsFactory $appsStoredAppComponentsFactory
         *
@@ -183,7 +187,8 @@ class CoreComponents
             ===
             AppComponentsFactory::class
         ) {
-            true => $appsStoredAppComponentsFactory,
+            true =>
+                $appsStoredAppComponentsFactory,
             default =>
                 new AppComponentsFactory(
                     new PrimaryFactory(

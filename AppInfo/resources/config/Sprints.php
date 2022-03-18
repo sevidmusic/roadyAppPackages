@@ -12,27 +12,6 @@ use Apps\AppInfo\resources\config\Sprints;
  * The Sprints class provides a number of methods that return
  * appropriate sprints for the html formatted overviews provided
  * by the AppInfo App.
- *
- * Methods:
- *
- * public static function dynamicOutputComponentInfoSprint(): string {
- *
- * public static function listedRequestLinkSprint(): string
- *
- * public static function noConfiguredComponentsMessageSprint(): string
- *
- * public static function outputComponentInfoSprint(): string
- *
- * public static function outputContainerSprint(): string
- *
- * public static function requestInfoSprint(): string
- *
- * public static function requestLinkSprint(): string
- *
- * public static function responseInfoSprint(
- *     bool $global = false
- * ): string
- *
  */
 class Sprints
 {
