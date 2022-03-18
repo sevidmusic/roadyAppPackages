@@ -107,6 +107,7 @@ class ComponentInfo
      *                Response's assigned Components.
      */
     public static function htmlOverviewOfResponsesAssignedComponents(
+        string $appName,
         string $responseName,
         string $componentType
     ): string
@@ -114,11 +115,13 @@ class ComponentInfo
         return match($componentType) {
             OutputComponent::class, DynamicOutputComponent::class
                 => self::htmlOverviewOfResponsesConfiguredOutputComponents(
+                    $appName,
                     $responseName,
                     $componentType
                 ),
             Request::class
                 => self::htmlOverviewOfResponsesConfiguredRequests(
+                    $appName,
                     $responseName
                 ),
             default => '',
@@ -358,7 +361,10 @@ class ComponentInfo
             if($registeredComponent::class === $componentType) {
                 array_push(
                     $htmlOverviewOfAppsConfiguredComponents,
-                    self::componentInfoHtml($registeredComponent)
+                    self::componentInfoHtml(
+                        $appName,
+                        $registeredComponent
+                    )
                 );
             }
         }
@@ -376,6 +382,7 @@ class ComponentInfo
      *                Component's info.
      */
     private static function componentInfoHtml(
+        string $appName,
         Component $component
     ): string {
         switch($component->getType()) {
@@ -388,17 +395,17 @@ class ComponentInfo
                 /**
                  * @var DynamicOutputComponent $component
                  */
-                return self::dynamicOutputComponentInfo($component);
+                return self::dynamicOutputComponentInfo($appName, $component);
             case GlobalResponse::class:
                 /**
                  * @var GlobalResponse $component
                  */
-                return self::responseComponentInfo($component);
+                return self::responseComponentInfo($appName, $component);
             case Response::class:
                 /**
                  * @var Response $component
                  */
-                return self::responseComponentInfo($component);
+                return self::responseComponentInfo($appName, $component);
             case Request::class:
                 /**
                  * @var Request $component
@@ -446,6 +453,7 @@ class ComponentInfo
      *                specified DynamicOutputComponent's info.
      */
     private static function dynamicOutputComponentInfo(
+        string $appName,
         DynamicOutputComponent $dynamicOutputComponent
     ): string
     {
@@ -460,7 +468,7 @@ class ComponentInfo
             self::switchableComponentState($dynamicOutputComponent),
             $dynamicOutputComponent->getDynamicFilePath(),
             (
-                self::requestedAppName() === 'AppInfo'
+                $appName === 'AppInfo'
                 ? '<span class="roady-error-message">' .
                 'The App Info App\'s DynamicOutput ' .
                 'cannot be previewed.</span>'
@@ -479,13 +487,13 @@ class ComponentInfo
      *                specified Response's info.
      */
     private static function responseComponentInfo(
+        string $appName,
         ResponseInterface $response
     ): string
     {
+        $global = ($response->getType() === GlobalResponse::class);
         return sprintf(
-            Sprints::responseInfoSprint(
-                ($response->getType() === GlobalResponse::class)
-            ),
+            Sprints::responseInfoSprint($global),
             $response->getName(),
             $response->getUniqueId(),
             $response->getType(),
@@ -494,31 +502,71 @@ class ComponentInfo
             $response->getPosition(),
             match($response->getType()) {
                 GlobalResponse::class =>
-                    '<li>Responds To:</li><li>All Requests</li>',
-                default => sprintf(
-                    Sprints::respondsToSprint(),
+                    '<li>All Requests</li>',
+                default =>
                     implode(
                         PHP_EOL,
                         self::assignedRequestLinks(
                             $response,
                             CoreComponents::ComponentCrud()
                         )
-                    )
-                ),
+                    ),
             },
-            /** @see Sprints::queryStringSprint() */
-            /** Assigned Requests Link */
-            self::requestedAppName(),
-            $response->getName(),
-            /** Assigned OutputComponents Link */
-            self::requestedAppName(),
-            $response->getName(),
-            /** Assigned DynamicOutputComponents Link */
-            self::requestedAppName(),
-            $response->getName(),
+            self::foo(
+                $appName,
+                $response->getName(),
+                $global
+            )
         );
     }
 
+    public static function foo(
+        string $appName,
+        string $responseName,
+        bool $global
+    ): string
+    {
+        return '
+            <li>
+                <a href="index.php?request=ResponseRequestInfo' .
+                self::responseInfoQueryString(
+                    $appName,
+                    $responseName,
+                    $global
+                ) . '">Requests</a>
+            </li>
+            <li>
+                <a href="index.php?request=ResponseOutputComponentInfo' .
+                self::responseInfoQueryString(
+                    $appName,
+                    $responseName,
+                    $global
+                ) . '">OutputComponents</a>
+            </li>
+            <li>
+                <a href="index.php?request=ResponseDynamicOutputComponentInfo' .
+                self::responseInfoQueryString(
+                    $appName,
+                    $responseName,
+                    $global
+                ) . '">DynamicOutputComponents</a>
+            </li>';
+    }
+
+    /**
+     * Return a sprint for the url query string used to determine
+     * which App, and Response are being queried.
+     */
+    private static function responseInfoQueryString(
+        string $appName,
+        string $responseName,
+        bool $global
+    ): string
+    {
+        return '&appName=' . $appName .
+            '&responseName=' . $responseName .
+            ($global ? '&global' : '');
+    }
     /**
      * Returns an array of html formatted links for the specified
      * Response's assigned Requests.
@@ -606,6 +654,7 @@ class ComponentInfo
      *                or DynamicOutputComponents.
      */
     private static function htmlOverviewOfResponsesConfiguredOutputComponents(
+        string $appName,
         string $responseName,
         string $outputComponentType
     ): string
@@ -629,7 +678,7 @@ class ComponentInfo
             ) {
                 array_push(
                     $htmlOverview,
-                    self::componentInfoHtml($storedComponent)
+                    self::componentInfoHtml($appName, $storedComponent)
                 );
             }
         }
@@ -685,6 +734,7 @@ class ComponentInfo
      *
      */
     private static function htmlOverviewOfResponsesConfiguredRequests(
+        string $appName,
         string $responseName
     ): string
     {
@@ -702,7 +752,7 @@ class ComponentInfo
             if($storedComponent->getType() === Request::class) {
                 array_push(
                     $htmlOverview,
-                    self::componentInfoHtml($storedComponent)
+                    self::componentInfoHtml($appName, $storedComponent)
                 );
             }
         }

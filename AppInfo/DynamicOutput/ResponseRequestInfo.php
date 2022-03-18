@@ -8,6 +8,7 @@ use roady\classes\component\Web\Routing\Request;
 printf(
     Sprints::outputContainerSprint(),
     ComponentInfo::htmlOverviewOfResponsesAssignedComponents(
+        ComponentInfo::requestedAppName(),
         ComponentInfo::requestedResponseName(),
         Request::class
     )

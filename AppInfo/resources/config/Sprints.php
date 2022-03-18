@@ -15,210 +15,50 @@ use Apps\AppInfo\resources\config\Sprints;
  *
  * Methods:
  *
- * public static function outputContainerSprint(): string
- *
- * public static function respondsToSprint(): string
- *
- * public static function requestLinkSprint(): string
+ * public static function dynamicOutputComponentInfoSprint(): string {
  *
  * public static function listedRequestLinkSprint(): string
  *
- * public static function requestInfoSprint(): string
+ * public static function noConfiguredComponentsMessageSprint(): string
  *
  * public static function outputComponentInfoSprint(): string
  *
- * public static function dynamicOutputComponentInfoSprint(): string {
+ * public static function outputContainerSprint(): string
+ *
+ * public static function requestInfoSprint(): string
+ *
+ * public static function requestLinkSprint(): string
  *
  * public static function responseInfoSprint(
  *     bool $global = false
  * ): string
- *
- * public static function noConfiguredComponentsMessageSprint(): string
  *
  */
 class Sprints
 {
 
     /**
-     * Return a sprint for a div that is assigned the css class:
-     *
-     *     roady-app-output-container
-     *
-     * @example
-     *
-     * printf(
-     *     Sprints::outputContainerSprint(),
-     *     '<p>Content to be wrapped in a div that is assigned the' .
-     *     'css class:</p><p>roady-app-output-container</p>'
-     *  );
-     *
-     * @return string A sprint for a div that is assigned the
-     *                css class roady-app-output-container.
-     */
-    public static function outputContainerSprint(): string
-    {
-        return '<div class="roady-app-output-container">%s</div>';
-    }
-
-    /**
-     * Returns a sprint for the html that will surround a list of
-     * links that correspond to the Requests assigned to a Response.
-     *
-     * @example
-     *
-     * printf(
-     *     Sprints::responseInfoSprint(),
-     *     '<ul>
-     *          <li>
-     *              <a href="http://localhost:8080">
-     *                  http://localhost:8080
-     *              </a>
-     *          </li>
-     *          <li>
-     *              <a href="http://localhost:8080?request=RequestName">
-     *                  http://localhost:8080?request=RequestName
-     *              </a>
-     *          </li>
-     *      </ul>'
-     *  );
-     *
-     *  @return string A sprint for the html that will surround a
-     *                 list of links that correspond to the Requests
-     *                 assigned to a Response.
-     */
-    public static function respondsToSprint(): string
-    {
-        return '
-            <li>Responds to:</li>
-            %s
-        ';
-    }
-
-    /**
-     * Returns a srpint for an html link.
-     *
-     * @example
-     *
-     * printf(
-     *     self::requestLinkSprint(),
-     *     'https://url-to-assign-to-href-attribute',
-     *     'Link Text'
-     * );
-     *
-     * @return string A sprint for an html link.
-     */
-    public static function requestLinkSprint(): string
-    {
-        return '<a href="%s">%s</a>';
-    }
-
-    /**
-     * Returns a srpint for an html link that is an item in an html
-     * list, i.e. a sprint for an html link that is wrapped in
-     * a li tag.
-     *
-     * @example
-     *
-     * printf(
-     *     self::requestLinkSprint(),
-     *     'https://url-to-assign-to-href-attribute',
-     *     'Link Text'
-     * );
-     *
-     * @return string A sprint for an html link that is an item
-     *                in an html list.
-     */
-    public static function listedRequestLinkSprint(): string
-    {
-        return '<li><a href="%s">%s</a></li>';
-    }
-
-    /**
      * Return a sprint for the html that structures an overview
-     * of a single Request.
+     * of a single DynamicOutputComponent.
      *
      * @example
      *
      * printf(
-     *     Sprints::requestInfoSprint(),
-     *     $request->getName(),
-     *     $request->getUniqueId(),
-     *     $request->getType(),
-     *     $request->getLocation(),
-     *     $request->getContainer(),
-     *     sprintf(
-     *         Sprints::requestLinkSprint(),
-     *         $request->getUrl(),
-     *         $request->getUrl(),
-     *     ),
+     *     Sprints::dynamicOutputComponentInfoSprint(),
+     *     'DynamicOutputComponentName',
+     *     'UniqueId',
+     *     'Type',
+     *     'Location',
+     *     'Container',
+     *     'Position',
+     *     'State',
+     *     '/Dynamic/Output/File/Path',
+     *     'Output'
      * );
      *
-     * A sprint for the html that structures an overview
-     * of a single Request.
+     * @return string A sprint for the html that structures an
+     *                overview of a single DynamicOutputComponent.
      */
-    public static function requestInfoSprint(): string
-    {
-        return '
-            <div class="roady-generic-container">
-                <h3>%s</h3>
-                <ul class="roady-ul-list">
-                    <li>Unique Id:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Type:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Location:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Container:</li>
-                    <li>%s</li>
-                </ul>
-                <ul class="roady-ul-list">
-                    <li>Url:</li>
-                    <li>%s</li>
-                </ul>
-            </div>';
-    }
-
-    public static function outputComponentInfoSprint(): string {
-        return '
-        <div class="roady-generic-container">
-            <h3>%s</h3>
-            <ul class="roady-ul-list">
-                <li>Unique Id:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>Type:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>Location:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>Container:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>Position:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>State:</li>
-                <li> %s</li>
-            </ul>
-            <ul class="roady-ul-list">
-                <li>Output:</li>
-                <li>%s</li>
-            </ul>
-        </div>';
-    }
-
     public static function dynamicOutputComponentInfoSprint(): string {
         return '
         <div class="roady-generic-container">
@@ -258,6 +98,207 @@ class Sprints
         </div>';
     }
 
+    /**
+     * Returns a sprint for an html link that is an item in an html
+     * list, i.e. a sprint for an html link that is wrapped in
+     * a <li> tag.
+     *
+     * @example
+     *
+     * printf(
+     *     self::requestLinkSprint(),
+     *     'https://url-to-assign-to-href-attribute',
+     *     'Link Text'
+     * );
+     *
+     * @return string A sprint for an html link that is an item
+     *                in an html list.
+     */
+    public static function listedRequestLinkSprint(): string
+    {
+        return '<li><a href="%s">%s</a></li>';
+    }
+
+    /**
+     * Return a sprint for an error message used to indicate
+     * that an App has no configured Components, or that a
+     * Response is not assigned any Components.
+     *
+     * @example
+     *
+     * printf(
+     *     Springs::noConfiguredComponentsMessageSprint(),
+     *     'ComponentType',
+     *     'configured by|assigned to',
+     *     'AppName|ResponseName',
+     * );
+     *
+     * @returns string A sprint for the error message used to
+     *                 indicate that an App has no configured
+     *                 Components, or that a Response is not
+     *                 assigned any Components.
+     */
+    public static function noConfiguredComponentsMessageSprint(): string
+    {
+        return '
+        <div class="roady-generic-container">
+            <p class="roady-message">
+                There are no %s %s the %s.
+            </p>
+            <p class="roady-note">
+                Hint:
+                <a href="https://roady.tech/index.php?request=rig">
+                    rig
+                </a>
+                can be used to configure various types of Components for
+                an App.
+            </p>
+        </div>
+        ';
+    }
+
+    /**
+     * Return a sprint for the html that structures an overview
+     * of a single OutputComponent.
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::outputComponentInfoSprint(),
+     *     'OutputComponentName',
+     *     'UniqueId',
+     *     'Type',
+     *     'Location',
+     *     'Container',
+     *     'Position',
+     *     'State',
+     *     'Output'
+     * );
+     *
+     * @return string A sprint for the html that structures an
+     *                overview of a single outputComponent.
+     */
+    public static function outputComponentInfoSprint(): string {
+        return '
+        <div class="roady-generic-container">
+            <h3>%s</h3>
+            <ul class="roady-ul-list">
+                <li>Unique Id:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Type:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Location:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Container:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Position:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>State:</li>
+                <li> %s</li>
+            </ul>
+            <ul class="roady-ul-list">
+                <li>Output:</li>
+                <li>%s</li>
+            </ul>
+        </div>';
+    }
+
+    /**
+     * Return a sprint for a div that is assigned the css class:
+     *
+     *     roady-app-output-container
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::outputContainerSprint(),
+     *     '<p>Content to place within the div</p>'
+     * );
+     *
+     *
+     * @return string A sprint for a div that is assigned the
+     *                css class roady-app-output-container.
+     */
+    public static function outputContainerSprint(): string
+    {
+        return '<div class="roady-app-output-container">%s</div>';
+    }
+
+    /**
+     * Return a sprint for the html that structures an overview
+     * of a single Request.
+     *
+     * @example
+     *
+     * printf(
+     *     Sprints::requestInfoSprint(),
+     *     'RequestName',
+     *     'UniqueId',
+     *     'Type',
+     *     'Location',
+     *     'Container',
+     *     'Url',
+     * );
+     *
+     * @return string A sprint for the html that structures an
+     *                overview of a single Request.
+     */
+    public static function requestInfoSprint(): string
+    {
+        return '
+            <div class="roady-generic-container">
+                <h3>%s</h3>
+                <ul class="roady-ul-list">
+                    <li>Unique Id:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Type:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Location:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Container:</li>
+                    <li>%s</li>
+                </ul>
+                <ul class="roady-ul-list">
+                    <li>Url:</li>
+                    <li>%s</li>
+                </ul>
+            </div>';
+    }
+
+    /**
+     * Returns a sprint for an html link.
+     *
+     * @example
+     *
+     * printf(
+     *     self::requestLinkSprint(),
+     *     'https://url-to-assign-to-href-attribute',
+     *     'Link Text'
+     * );
+     *
+     * @return string A sprint for an html link.
+     */
+    public static function requestLinkSprint(): string
+    {
+        return '<a href="%s">%s</a>';
+    }
+
     public static function responseInfoSprint(bool $global = false): string
     {
         return '
@@ -284,56 +325,15 @@ class Sprints
             <li>%s</li>
         </ul>
         <ul class="roady-ul-list">
-            <!-- start RESPONDS_TO_SPRINT -->
+            <li>Responds To:</li>
             %s
-            <!-- end RESPONDS_TO_SPRINT -->
         </ul>
         <ul class="roady-ul-list">
             <li>Assigned Components:</li>
-            <li>
-                <a href="index.php?request=ResponseRequestInfo' .
-                self::queryStringSprint($global) . '">Requests</a>
-            </li>
-            <li>
-                <a href="index.php?request=ResponseOutputComponentInfo' .
-                self::queryStringSprint($global) .
-                '">OutputComponents</a>
-            </li>
-            <li>
-                <a href="index.php?' .
-                'request=ResponseDynamicOutputComponentInfo' .
-                self::queryStringSprint($global) .
-                '">DynamicOutputComponents</a>
-            </li>
+            %s
         </ul>
     </div>
         ';
-    }
-
-    public static function noConfiguredComponentsMessageSprint(): string
-    {
-        return '
-        <div class="roady-generic-container">
-            <p class="roady-message">
-                There are no %s %s the %s.
-            </p>
-            <p class="roady-note">
-                Hint:
-                <a href="https://roady.tech/index.php?request=rig">
-                    rig
-                </a>
-                can be used to configure various types of Components for
-                an App.
-            </p>
-        </div>
-        ';
-    }
-
-    private static function queryStringSprint(bool $global): string
-    {
-        return '&appName=%s' .
-            '&responseName=%s' .
-            ($global ? '&global' : '');
     }
 
     /**
@@ -347,3 +347,4 @@ class Sprints
         return 'https://roady.tech/index.php?request=';
     }
 }
+
