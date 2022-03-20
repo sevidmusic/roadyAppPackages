@@ -86,7 +86,7 @@ body,
 .roady-navigation-list,
 .roady-navigation-bar,
 .roady-form select,
-.roady-app-output-container-grid,
+.roady-3-column-grid,
 .roady-app-output-container h1,
 .roady-app-output-container h2,
 .roady-app-output-container h3,
@@ -111,7 +111,7 @@ body,
 .roady-message,
 .roady-generic-container,
 .roady-form,
-.roady-app-output-container-grid-item {
+.roady-3-column-grid-item {
     background-color: var(--medium-tone-monochromatic-color);
 }
 
