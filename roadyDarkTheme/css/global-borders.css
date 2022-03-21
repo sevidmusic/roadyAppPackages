@@ -25,6 +25,6 @@
 }
 
 .roady-color-preview {
-    border: 1vw solid;
+    border: calc(1vw / 8) solid;
 }
 

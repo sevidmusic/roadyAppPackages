@@ -8,27 +8,27 @@
     /** white **/
     --white: #dedede;
     /** dark */
-    --dark-tone-analagous-color-1: #05050A;
-    --dark-tone-analagous-color-2: #05090A;
-    --dark-tone-base-color: #05070a;
-    --dark-tone-complimentery-color: #0A0805;
-    --dark-tone-monochromatic-color: #161F2C;
-    --dark-tone-tetradic-color-1: #0A050A;
-    --dark-tone-tetradic-color-2: #0A0805;
-    --dark-tone-tetradic-color-3: #050A06;
-    --dark-tone-triadic-color-1: #0A0507;
-    --dark-tone-triadic-color-2: #070A05;
+    --dark-tone-base-color: #0b0f16;
+    --dark-tone-complimentery-color: #16120B;
+    --dark-tone-monochromatic-color: #1C2638;
+    --dark-tone-analagous-color-1: #0D0B16;
+    --dark-tone-analagous-color-2: #0B1416;
+    --dark-tone-triadic-color-1: #160B0F;
+    --dark-tone-triadic-color-2: #0F160B;
+    --dark-tone-tetradic-color-1: #160B14;
+    --dark-tone-tetradic-color-2: #16120B;
+    --dark-tone-tetradic-color-3: #0B160C;
     /** gray */
-    --gray-tone-analagous-color-1: #E5E4ED;
-    --gray-tone-analagous-color-2: #E4EDED;
-    --gray-tone-base-color: #9fc0e8;
-    --gray-tone-complimentery-color: #EDE9E4;
-    --gray-tone-monochromatic-color: #C5CED9;
-    --gray-tone-tetradic-color-1: #EDE4ED;
-    --gray-tone-tetradic-color-2: #EDE9E4;
-    --gray-tone-tetradic-color-3: #E4EDE5;
-    --gray-tone-triadic-color-1: #EDE4E8;
-    --gray-tone-triadic-color-2: #E8EDE4;
+    --gray-tone-base-color: #202025;
+    --gray-tone-complimentery-color: #252520;
+    --gray-tone-monochromatic-color: #383840;
+    --gray-tone-analagous-color-1: #232025;
+    --gray-tone-analagous-color-2: #202325;
+    --gray-tone-triadic-color-1: #252020;
+    --gray-tone-triadic-color-2: #202520;
+    --gray-tone-tetradic-color-1: #252023;
+    --gray-tone-tetradic-color-2: #252520;
+    --gray-tone-tetradic-color-3: #202523;
     /** light */
     --light-tone-analagous-color-1: #AB7CEC;
     --light-tone-analagous-color-2: #7CBDEC;
@@ -47,27 +47,33 @@
 /* Headers */
 
 .roady-app-output-container h1 {
-    color: var(--gray-tone-complimentery-color);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 3) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 1) var(--white);
 }
 
 .roady-app-output-container h2 {
-    color: var(--gray-tone-tetradic-color-2);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 4) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 2) var(--white);
 }
 
 .roady-app-output-container h3 {
-    color: var(--gray-tone-tetradic-color-3);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 5) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 3) var(--white);
 }
 
 .roady-app-output-container h4 {
-    color: var(--gray-tone-triadic-color-2);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 5) var(--white);
 }
 
 .roady-app-output-container h5 {
-    color: var(--gray-tone-analagous-color-2);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 7) var(--white);
 }
 
 .roady-app-output-container h6 {
-    color: var(--gray-tone-analagous-color-1);
+    color: var(--black);
+    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 9) var(--white);
 }
 
 /* Containers */
@@ -184,23 +190,23 @@
 /** Lists */
 
 .roady-ol-list li:nth-of-type(even) {
-    background-color: var(--dark-tone-monochromatic-color);
-    color: var(--white);
+    background-color: var(--white);
+    color: var(--black);
 }
 
 .roady-ol-list li:nth-of-type(odd) {
     background-color: var(--gray-tone-monochromatic-color);
-    color: var(--black);
+    color: var(--white);
 }
 
 .roady-ul-list li:nth-of-type(even) {
     background-color: var(--gray-tone-monochromatic-color);
-    color: var(--black);
+    color: var(--white);
 }
 
 .roady-ul-list li:nth-of-type(odd) {
-    background-color: var(--dark-tone-monochromatic-color);
-    color: var(--white);
+    background-color: var(--white);
+    color: var(--black);
 }
 
 /** Messages */

@@ -29,29 +29,29 @@
     </div>
     <h2>Gray Tones As Background Color</h2>
     <div class="roady-3-column-grid">
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-base-color roady-text-color-black">roady-gray-tone-base-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-complimentery-color roady-text-color-black">roady-gray-tone-complimentery-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-monochromatic-color roady-text-color-black">roady-gray-tone-monochromatic-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-analagous-color-1 roady-text-color-black">roady-gray-tone-analagous-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-analagous-color-2 roady-text-color-black">roady-gray-tone-analagous-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-triadic-color-1 roady-text-color-black">roady-gray-tone-triadic-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-triadic-color-2 roady-text-color-black">roady-gray-tone-triadic-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-1 roady-text-color-black">roady-gray-tone-tetradic-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-2 roady-text-color-black">roady-gray-tone-tetradic-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-3 roady-text-color-black">roady-gray-tone-tetradic-color-3</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-base-color roady-text-color-white">roady-gray-tone-base-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-complimentery-color roady-text-color-white">roady-gray-tone-complimentery-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-monochromatic-color roady-text-color-white">roady-gray-tone-monochromatic-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-analagous-color-1 roady-text-color-white">roady-gray-tone-analagous-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-analagous-color-2 roady-text-color-white">roady-gray-tone-analagous-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-triadic-color-1 roady-text-color-white">roady-gray-tone-triadic-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-triadic-color-2 roady-text-color-white">roady-gray-tone-triadic-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-1 roady-text-color-white">roady-gray-tone-tetradic-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-2 roady-text-color-white">roady-gray-tone-tetradic-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-background-color-gray-tone-tetradic-color-3 roady-text-color-white">roady-gray-tone-tetradic-color-3</div>
     </div>
     <h2>Gray Tones As Text Color</h2>
     <div class="roady-3-column-grid">
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-base-color">roady-gray-tone-base-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-complimentery-color">roady-gray-tone-complimentery-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-monochromatic-color">roady-gray-tone-monochromatic-color</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-analagous-color-1">roady-gray-tone-analagous-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-analagous-color-2">roady-gray-tone-analagous-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-triadic-color-1">roady-gray-tone-triadic-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-triadic-color-2">roady-gray-tone-triadic-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-1">roady-gray-tone-tetradic-color-1</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-2">roady-gray-tone-tetradic-color-2</div>
-        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-3">roady-gray-tone-tetradic-color-3</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-base-color roady-background-color-white">roady-gray-tone-base-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-complimentery-color roady-background-color-white">roady-gray-tone-complimentery-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-monochromatic-color roady-background-color-white">roady-gray-tone-monochromatic-color</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-analagous-color-1 roady-background-color-white">roady-gray-tone-analagous-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-analagous-color-2 roady-background-color-white">roady-gray-tone-analagous-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-triadic-color-1 roady-background-color-white">roady-gray-tone-triadic-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-triadic-color-2 roady-background-color-white">roady-gray-tone-triadic-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-1 roady-background-color-white">roady-gray-tone-tetradic-color-1</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-2 roady-background-color-white">roady-gray-tone-tetradic-color-2</div>
+        <div class="roady-color-preview roady-3-column-grid-item roady-text-color-gray-tone-tetradic-color-3 roady-background-color-white">roady-gray-tone-tetradic-color-3</div>
     </div>
     <h2>Light Tones As Background Color</h2>
     <div class="roady-3-column-grid">
