@@ -50,6 +50,7 @@ body { color: var(--white); background-color: var(--black); }
 /** Elements */
 
 .roady-3-column-grid {
+    background-color: var(--dark-tone-complimentery-color);
 }
 
 .roady-3-column-grid-item {
@@ -178,9 +179,13 @@ body { color: var(--white); background-color: var(--black); }
 }
 
 .roady-ol-list li:nth-of-type(even) {
+    background-color: var(--dark-tone-monochromatic-color);
+    color: var(--white);
 }
 
 .roady-ol-list li:nth-of-type(odd) {
+    background-color: var(--gray-tone-monochromatic-color);
+    color: var(--black);
 }
 
 .roady-success-message {
