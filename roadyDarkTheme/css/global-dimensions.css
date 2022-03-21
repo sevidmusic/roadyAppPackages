@@ -14,3 +14,10 @@
     width: 100%;
 }
 
+
+.roady-form textarea {
+    max-width: 100%;
+    min-width: 100%;
+    height: 17vh;
+    min-height: 4.2vh;
+}
