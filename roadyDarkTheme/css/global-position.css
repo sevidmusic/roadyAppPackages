@@ -1,0 +1,10 @@
+/**
+ * This stylesheet defines styles related to position, such as: top,
+ * bottom, left, right, z-index, and postion.
+ */
+
+.roady-sticky-navigation-menu {
+    position: sticky;
+    z-index: 10000;
+    top: 0;
+}

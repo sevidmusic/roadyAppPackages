@@ -8,7 +8,9 @@
 }
 
 .roady-form input[type=text],
+.roady-form input[type=submit],
 .roady-form textarea,
 .roady-form select {
     width: 100%;
 }
+

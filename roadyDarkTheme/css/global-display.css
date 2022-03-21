@@ -1,0 +1,20 @@
+/**
+ * This stylesheet defines display and opacity.
+ */
+
+.roady-navigation-bar li {
+    display: inline;
+}
+
+
+.roady-form-input-label {
+    display: block;
+}
+
+.roady-form select {
+    display: block;
+}
+
+.roady-sticky-navigation-menu {
+    opacity: 0.95;
+}

@@ -1,21 +1,5 @@
 /**
  * This stylesheet defines margins and padding.
- *
- * Only margins and padding should be defined in this stylesheet.
- *
- * Available Classes:
- *
- * roady-app-output-container
- * roady-3-column-grid
- * roady-3-column-grid-item
- * roady-inline-code
- * roady-multi-line-code
- * roady-multi-line-code-container
- * roady-navigation-bar
- * roady-navigation-list
- * roady-navigation-menu
- * roady-ol-list
- * roady-ul-list
  */
 
 :root {
@@ -132,3 +116,4 @@
         0.5vw
     );
 }
+

@@ -1,0 +1,14 @@
+/**
+ * This stylesheet is for list styles.
+ */
+
+.roady-ul-list,
+.roady-navigation-bar,
+.roady-navigation-list {
+    list-style-type: none;
+}
+
+.roady-ol-list {
+    list-style-position: inside;
+}
+
