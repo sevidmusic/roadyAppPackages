@@ -8,7 +8,7 @@
     --font-family-code: 'Source Code Pro', monospace;
     --font-family-default: 'fira sans', sans-serif;
     --font-family-headers: 'Bebas Neue', monospace;
-    --font-size-default: clamp(19px, 1.5rem, 2vw);
+    --font-size-default: clamp(22px, 1.9rem, 2vw);
     --font-size-code: 0.87em;
     --font-size-messages: 0.82em;
 }
@@ -23,7 +23,7 @@
 .roady-app-output-container h3,
 .roady-app-output-container h4,
 .roady-app-output-container h5,
-.roady-app-output-container h5 {
+.roady-app-output-container h6 {
     font-family: var(--font-family-headers);
 }
 

@@ -112,12 +112,12 @@
         <li>Ordered List item</li>
         <li>Ordered List item</li>
     </ol>
-    <h1>A h1 header</h1>
-    <h2>A h2 header</h2>
-    <h3>A h3 header</h3>
-    <h4>A h4 header</h4>
-    <h5>A h5 header</h5>
-    <h6>A h6 header</h6>
+    <h1>An h1 header</h1>
+    <h2>An h2 header</h2>
+    <h3>An h3 header</h3>
+    <h4>An h4 header</h4>
+    <h5>An h5 header</h5>
+    <h6>An h6 header</h6>
     <p>A paragraph, lorem ipsum, Puella in piscinam cecidit.</p>
     <p>A paragraph with a <a href="#">Link</a> in it</p>
     <pre>

@@ -1,5 +1,6 @@
 /**
  * This stylesheet defines colors and background-colors.
+ * text-shadow may also be defined in this stylesheet.
  */
 
 :root {
@@ -42,38 +43,39 @@
     --light-tone-triadic-color-2: #85EC7C;
 }
 
-/** body { color: var(--white); background-color: var(--black); } */
+body {
+    color: var(--white);
+    background-color: var(--black);
+}
 
 /* Headers */
 
 .roady-app-output-container h1 {
-    color: var(--black);
-    text-shadow: 0 0 calc(1vw / 3) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 1) var(--white);
+    color: var(--dark-tone-monochromatic-color);
+    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
 }
 
 .roady-app-output-container h2 {
     color: var(--black);
-    text-shadow: 0 0 calc(1vw / 4) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 2) var(--white);
+    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
 }
 
 .roady-app-output-container h3 {
-    color: var(--black);
-    text-shadow: 0 0 calc(1vw / 5) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 3) var(--white);
+    color: var(--gray-tone-base-color);
+    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
 }
 
 .roady-app-output-container h4 {
-    color: var(--black);
-    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 5) var(--white);
+    color: var(--gray-tone-base-color);
+    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
 }
 
 .roady-app-output-container h5 {
-    color: var(--black);
-    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 7) var(--white);
+    color: var(--white);
 }
 
 .roady-app-output-container h6 {
-    color: var(--black);
-    text-shadow: 0 0 calc(1vw / 6) var(--light-tone-analagous-color-2), 0 0 calc(1vw / 9) var(--white);
+    color: var(--white);
 }
 
 /* Containers */
@@ -102,7 +104,8 @@
 .roady-form select {
 }
 
-.roady-form {
+.roady-form > * {
+    color: var(--white);
 }
 
 .roady-form-container {
@@ -161,7 +164,7 @@
 .roady-navigation-menu a:link,
 .roady-sticky-navigation-menu a,
 .roady-sticky-navigation-menu a:link {
-    color: var(--gray-tone-base-color);
+    color: var(--light-tone-base-color);
 }
 
 .roady-app-output-container a:hover,
@@ -169,7 +172,7 @@
 .roady-navigation-list a:hover,
 .roady-navigation-menu a:hover,
 .roady-sticky-navigation-menu a:hover {
-    color: var(--gray-tone-complimentery-color);
+    color: var(--light-tone-complimentery-color);
 }
 
 .roady-app-output-container a:active,
