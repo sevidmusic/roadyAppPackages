@@ -1,21 +1,5 @@
 /**
  * This stylesheet defines margins and padding.
- *
- * Only margins and padding should be defined in this stylesheet.
- *
- * Available Classes:
- *
- * roady-app-output-container
- * roady-app-output-container-grid
- * roady-app-output-container-grid-item
- * roady-inline-code
- * roady-multi-line-code
- * roady-multi-line-code-container
- * roady-navigation-bar
- * roady-navigation-list
- * roady-navigation-menu
- * roady-ol-list
- * roady-ul-list
  */
 
 :root {
@@ -26,8 +10,8 @@
     padding: var(--base-margin-and-padding-value);
 }
 
-.roady-app-output-container-grid,
-.roady-app-output-container-grid-item,
+.roady-3-column-grid,
+.roady-3-column-grid-item,
 .roady-navigation-bar,
 .roady-navigation-list,
 .roady-navigation-menu {
@@ -40,7 +24,7 @@
     );
 }
 
-.roady-app-output-container-grid {
+.roady-3-column-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: var(--base-margin-and-padding-value);
@@ -70,6 +54,20 @@
             var(--base-margin-and-padding-value) / 6
         ),
         1vw
+    );
+}
+
+.roady-app-output-container a:hover,
+.roady-navigation-bar a:hover,
+.roady-navigation-list a:hover,
+.roady-navigation-menu a:hover,
+.roady-sticky-navigation-menu a:hover {
+    padding: 0 clamp(
+        0.159rem,
+        calc(
+            var(--base-margin-and-padding-value) / 7
+        ),
+        .7vw
     );
 }
 
@@ -115,6 +113,11 @@
     padding: 3vw;
 }
 
+.roady-ul-list,
+.roady-ol-list {
+    padding-left: 0;
+}
+
 .roady-form-input-label,
 .roady-ol-list li,
 .roady-ul-list li,
@@ -132,3 +135,4 @@
         0.5vw
     );
 }
+

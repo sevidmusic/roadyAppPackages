@@ -61,11 +61,11 @@ class ComponentInfo
                 self::configuredComponentsHeader(
                     $appName,
                     $componentType
-                ) .
+                ) . '<div class="roady-3-column-grid">' .
                 implode(
                     PHP_EOL,
                     $generatedHtmlOverviewOfAppsConfiguredComponents
-                ),
+                ) . '</div>',
         };
     }
 
@@ -192,10 +192,10 @@ class ComponentInfo
      * The html header's content will conform to the following
      * format:
      *
-     * <h2>
+     * <h1>
      *     $componentType's configured by the
      *     $appOrResponseName {App|Response|GlobalResponse}
-     * </h2>
+     * </h1>
      *
      * @param string $appOrResponseName The name of the App
      *                                  the Components were
@@ -235,7 +235,7 @@ class ComponentInfo
         bool   $forResponsesAssignedComponentOverview = false
     ): string
     {
-        return '<h2>' .
+        return '<h1>' .
             self::getClassName($componentType, true) .
             match($forResponsesAssignedComponentOverview) {
                 true =>
@@ -252,7 +252,7 @@ class ComponentInfo
                 default =>
                     'App'
             } .
-        '</h2>';
+        '</h1>';
     }
 
     /**

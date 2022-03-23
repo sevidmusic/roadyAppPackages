@@ -2,13 +2,22 @@
  * This stylesheet defines heights and widths.
  */
 
-.roady-app-output-container-grid img {
+.roady-3-column-grid img {
     height: auto;
     width: 100%;
 }
 
 .roady-form input[type=text],
+.roady-form input[type=submit],
 .roady-form textarea,
 .roady-form select {
     width: 100%;
+}
+
+
+.roady-form textarea {
+    max-width: 100%;
+    min-width: 100%;
+    height: 17vh;
+    min-height: 4.2vh;
 }

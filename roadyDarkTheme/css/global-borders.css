@@ -1,0 +1,36 @@
+/**
+ * This stylesheet defines border styles.
+ *
+ */
+
+.roady-app-output-container a:hover,
+.roady-navigation-bar a:hover,
+.roady-navigation-list a:hover,
+.roady-navigation-menu a:hover {
+    border-left: calc(1rem / 8) solid;
+    border-right: calc(1rem / 8) solid;
+}
+
+.roady-message,
+.roady-error-message,
+.roady-note,
+.roady-success-message,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
+    border-radius: calc(calc(1vw / 3) / 3);
+}
+
+.roady-color-preview {
+    border: calc(1vw / 8) solid;
+}
+
+.roady-app-output-container h1 {
+}
+
+
+.roady-generic-container {
+    border: calc(1vw / 8) solid;
+}

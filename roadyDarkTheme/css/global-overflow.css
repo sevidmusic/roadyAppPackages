@@ -1,0 +1,18 @@
+/**
+ * This stylesheet defines overflow styles.
+ */
+
+.roady-ul-list li,
+.roady-multi-line-code-container {
+    overflow: auto;
+}
+
+.roady-app-output-container h1,
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
+.roady-app-output-container h6 {
+    overflow: auto;
+}
+

@@ -15,7 +15,7 @@ const OUTPUT_CONTAINER_SPRINT = '
 const REQUEST_LINK_SPRINT = "<a href=\"%s\">%s</a>";
 const APP_INFO_SPRINT = '
     <!-- App name -->
-    <div class="roady-generic-container">
+    <div class="roady-3-column-grid-item roady-generic-container">
         <h3>%s</h3>
         <ul class="roady-ul-list">
             <li>Unique Id:</li>
@@ -155,8 +155,9 @@ printf(
     empty($appInfo)
     ? '<p class="roady-error-message">Unable to determine which ' .
         'Apps are running on ' . $domain . '</p>' . PHP_EOL
-    : '<h2>The following Apps are running on ' .
-        $domain . ':</h2>' . PHP_EOL . implode(PHP_EOL, $appInfo)
+    : '<h1>The following Apps are running on ' .
+      $domain . ':</h1>' . '<div class="roady-3-column-grid">' .
+      PHP_EOL . implode(PHP_EOL, $appInfo) . '</div>'
     )
 );
 
