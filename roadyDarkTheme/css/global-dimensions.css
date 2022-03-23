@@ -8,6 +8,8 @@
 }
 
 .roady-form input[type=text],
+.roady-form input[type=url],
+.roady-form input[type=range],
 .roady-form input[type=submit],
 .roady-form textarea,
 .roady-form select {

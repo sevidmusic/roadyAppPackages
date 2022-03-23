@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -25,7 +25,7 @@ $defaultMedia = function(): Media {
     );
 };
 
-/** 
+/**
  * Encode a Media object as a string.
  *
  * @return string
@@ -34,7 +34,7 @@ $encodeMedia = function(MediaInterface $media): string {
     return urlencode(base64_encode(serialize($media)));
 };
 
-/** 
+/**
  * Decode a string encoded with the $encodeMedia function.
  *
  * @return string
@@ -46,16 +46,16 @@ $decodeMedia = function(string $encodedString) use ($defaultMedia): MediaInterfa
         )
     );
     $implements = (
-        is_object($decodedMedia) 
+        is_object($decodedMedia)
         ? class_implements($decodedMedia)
         : new StdClass()
     );
     return (
         !in_array(
-            MediaInterface::class, 
+            MediaInterface::class,
             (is_array($implements) ? $implements : [])
         )
-        ? $defaultMedia() 
+        ? $defaultMedia()
         /** @var MediaInterface $decodedMedia */
         : $decodedMedia
     );
@@ -66,12 +66,12 @@ $mediaIsUnavailableMessage = function(MediaInterface $media): string {
         <div class="roady-media-player-system-message-container">
         <p>The requested media is not available at the moment.</p>
         <ul>
-            <li>Media Name: ' . 
-                $media->getName() . 
+            <li>Media Name: ' .
+                $media->getName() .
             '</li>' .
-            '<li>Media Url: 
-                <a href="' . $media->mediaUrl() . '">' . 
-                    $media->mediaUrl() . 
+            '<li>Media Url:
+                <a href="' . $media->mediaUrl() . '">' .
+                    $media->mediaUrl() .
                 '</a>
             </li>
         </ul>
@@ -81,36 +81,36 @@ $mediaIsUnavailableMessage = function(MediaInterface $media): string {
 
 
 $imageView = function(Image $image): string {
-    return '<img src="' . 
-    $image->mediaUrl() . 
+    return '<img src="' .
+    $image->mediaUrl() .
     '">';
 };
 
 $videoView = function(Video $video): string {
-    return 
+    return
         '<video controls>' .
-        '<source src="' . $video->mediaUrl() . 
-        '" type="' . $video->mimeContentType() . 
-        '">' . $video->getName() . 
+        '<source src="' . $video->mediaUrl() .
+        '" type="' . $video->mimeContentType() .
+        '">' . $video->getName() .
         ' is not available at the moment.</video>';
 };
 
 $audioView = function(Audio $audio): string {
-    return 
+    return
         '<audio controls>' .
-        '<source src="' . 
-        $audio->mediaUrl() . 
-        '" type="' . 
-        $audio->mimeContentType() . 
-        '">' . 
-        $audio->getName() . 
+        '<source src="' .
+        $audio->mediaUrl() .
+        '" type="' .
+        $audio->mimeContentType() .
+        '">' .
+        $audio->getName() .
         ' is not available at the moment.</audio>';
 };
 
 $getRequestedMedia = function(Request $currentRequest) use ($defaultMedia, $encodeMedia, $decodeMedia): MediaInterface {
     return $decodeMedia(
-        $currentRequest->getGet()['requestedMedia'] 
-        ?? 
+        $currentRequest->getGet()['requestedMedia']
+        ??
         $encodeMedia($defaultMedia())
     );
 };
@@ -121,18 +121,18 @@ $getRequestedMedia = function(Request $currentRequest) use ($defaultMedia, $enco
  * @return string
  */
 $getOutput = function(
-    MediaCrud $mediaCrud, 
+    MediaCrud $mediaCrud,
     Request $currentRequest
 ) use (
-    $mediaIsUnavailableMessage, 
-    $imageView, 
-    $videoView, 
+    $mediaIsUnavailableMessage,
+    $imageView,
+    $videoView,
     $audioView,
     $getRequestedMedia
 ): string {
     $requestedMedia = $mediaCrud->readMedia(
         $getRequestedMedia($currentRequest)
-    ); 
+    );
     if ($requestedMedia->mediaIsAccessible()) {
         switch($requestedMedia->getType()) {
         case Audio::class:
@@ -145,19 +145,19 @@ $getOutput = function(
             /** @var Image $requestedMedia */
             return $imageView($requestedMedia);
         }
-    } 
+    }
     return $mediaIsUnavailableMessage($requestedMedia);
 };
 
-/** 
+/**
  * Generate a select form element for the $availableMedia.
- * 
+ *
  * @param array <int, Media> $availableMedia
  *
  * @return string The html for the select form.
  */
 $generateMediaSelection = function(
-    array $availableMedia, 
+    array $availableMedia,
     string $selectionType = 'select'
 ) use ($encodeMedia): string {
     if(empty($availableMedia)) {
@@ -168,25 +168,25 @@ $generateMediaSelection = function(
     case 'links':
             $selectorHtml .= '<ul name="requestedMedia">';
             foreach($availableMedia as $media) {
-                $selectorHtml .= 
+                $selectorHtml .=
                     '<li>' .
-                    '<a href="index.php?request=ViewMedia&requestedMedia=' .  
-                    $encodeMedia($media) . 
-                    '">' . 
-                    $media->getName() . 
-                    '</a>' . 
+                    '<a href="index.php?request=ViewMedia&requestedMedia=' .
+                    $encodeMedia($media) .
+                    '">' .
+                    $media->getName() .
+                    '</a>' .
                     '</li>';
             }
             $selectorHtml .= '</ul>';
         break;
         default:
-            $selectorHtml .= '<select name="requestedMedia">';
+            $selectorHtml .= '<select class="roady-form-input" name="requestedMedia">';
             foreach($availableMedia as $media) {
-                $selectorHtml .= 
-                    '<option value="' .  
-                    $encodeMedia($media) . 
-                    '">' . 
-                    $media->getName() . 
+                $selectorHtml .=
+                    '<option value="' .
+                    $encodeMedia($media) .
+                    '">' .
+                    $media->getName() .
                     '</option>';
             }
             $selectorHtml .= '</select>';
@@ -197,10 +197,10 @@ $generateMediaSelection = function(
 
 $currentRequest = new Request(
     new Storable(
-        'CurrentRequest', 
-        'Requests', 
+        'CurrentRequest',
+        'Requests',
         'Index'
-    ), 
+    ),
     new Switchable()
 );
 
@@ -233,7 +233,7 @@ $selectMediaForm = $generateMediaSelection(
         ($storedVideos ?? []),
     ),
     selectionType: 'select'
-); 
+);
 
 $mediaLinks = $generateMediaSelection(
     availableMedia: array_merge(
@@ -243,5 +243,5 @@ $mediaLinks = $generateMediaSelection(
         ($storedVideos ?? []),
     ),
     selectionType: 'links'
-); 
+);
 

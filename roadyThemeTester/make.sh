@@ -16,10 +16,10 @@ rig --new-request --for-app 'roadyThemeTester' --name 'StylePreview1' --relative
 
 rig --new-dynamic-output-component --for-app 'roadyThemeTester' --name 'StylePreview' --container 'roadyThemeTesterDynamicOutput' --position '0' 
 
-rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --requests 'StylePreview1' 
+rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --requests 'StylePreview' 
 
 rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --requests 'StylePreview0' 
 
-rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --requests 'StylePreview' 
+rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --requests 'StylePreview1' 
 
 rig --assign-to-response --for-app 'roadyThemeTester' --response 'StylePreview' --dynamic-output-components 'StylePreview' 

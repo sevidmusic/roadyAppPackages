@@ -16,10 +16,10 @@ rig --new-request --for-app 'sevidmusicPages' --name 'Homepage1' --relative-url 
 
 rig --new-dynamic-output-component --for-app 'sevidmusicPages' --name 'Homepage' --container 'sevidmusicPagesDynamicOutput' --position '1' 
 
-rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --requests 'Homepage' 
+rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --requests 'Homepage1' 
 
 rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --requests 'Homepage0' 
 
-rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --requests 'Homepage1' 
+rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --requests 'Homepage' 
 
 rig --assign-to-response --for-app 'sevidmusicPages' --response 'Homepage' --dynamic-output-components 'Homepage' 
