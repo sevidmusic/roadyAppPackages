@@ -139,22 +139,22 @@ Text within a &lt;pre&gt; tag.
     </code></pre>
     <div class="roady-3-column-grid">
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
         <div class="roady-3-column-grid-item">
-            <img src="roadyLogo.png">
+            <img src="roadyLogo.png" alt="roadyLogo.png">
         </div>
     </div>
     <div class="roady-3-column-grid">
@@ -185,29 +185,31 @@ Text within a &lt;pre&gt; tag.
             </a>
         </div>
     </div>
-    <div class="roady-form-container">
-        <form class="roady-form">
-            <label class="roady-form-input-label" for="text">Text:</label>
-            <input class="roady-form-input" type="text" name="text" />
+    <h2 class="roady-centered-text">A Form</h2>
+    <form class="roady-form">
+        <label class="roady-form-input-label" for="text">Text:</label>
+        <input id="text" class="roady-form-input" type="text" name="text" />
 
-            <label class="roady-form-input-label" for="text">Textarea:</label>
-            <textarea class="roady-form-input" name="text"></textarea>
+        <label class="roady-form-input-label" for="textarea">Textarea:</label>
+        <textarea id="textarea" class="roady-form-input" name="textarea"></textarea>
 
-            <label class="roady-form-input-label" for="radio">Radio:</label>
-            <input class="roady-form-input" type="radio" name="radio" value="radio" />
-            <label class="roady-form-input-label" for="checkbox">Checkbox:</label>
-            <input class="roady-form-input" type="checkbox" name="checkbox" value="checkbox" />
-            <label class="roady-form-input-label" for="select">Select:</label>
-            <select class="roady-form-input" name="select">
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-            </select>
-            <input class="roady-form-input" type="submit" name="submit" value="Submit" />
-            <input class="roady-form-input" type="hidden" name="request" value="StylePreview" />
-        </form>
-    </div>
-    <!-- End roady-form-container -->
+        <label class="roady-form-input-label" for="radio">Radio:</label>
+        <input id="radio" class="roady-form-input" type="radio" name="radio" value="radio" />
+
+        <label class="roady-form-input-label" for="checkbox">Checkbox:</label>
+        <input id="checkbox" class="roady-form-input" type="checkbox" name="checkbox" value="checkbox" />
+
+        <label class="roady-form-input-label" for="select">Select:</label>
+        <select id="select" class="roady-form-input" name="select">
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+        </select>
+
+        <input class="roady-form-input" type="submit" name="submit" value="Submit" />
+
+        <input class="roady-form-input" type="hidden" name="request" value="StylePreview" />
+    </form>
     <p class="roady-note">
         A note.
     <p>

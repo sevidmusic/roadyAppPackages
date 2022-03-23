@@ -57,6 +57,20 @@
     );
 }
 
+.roady-app-output-container a:hover,
+.roady-navigation-bar a:hover,
+.roady-navigation-list a:hover,
+.roady-navigation-menu a:hover,
+.roady-sticky-navigation-menu a:hover {
+    padding: 0 clamp(
+        0.159rem,
+        calc(
+            var(--base-margin-and-padding-value) / 7
+        ),
+        .7vw
+    );
+}
+
 /** Forms and Form Elements **/
 
 .roady-form > * {
@@ -97,6 +111,11 @@
 
 .roady-form {
     padding: 3vw;
+}
+
+.roady-ul-list,
+.roady-ol-list {
+    padding-left: 0;
 }
 
 .roady-form-input-label,

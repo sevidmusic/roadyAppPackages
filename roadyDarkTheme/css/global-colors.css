@@ -90,15 +90,15 @@ body {
 
 /* Forms */
 
+.roady-form {
+    background-color: var(--dark-tone-monochromatic-color);
+    color: var(--white);
+}
+
 .roady-form select {
 }
 
 .roady-form > * {
-    color: var(--white);
-}
-
-.roady-form-container {
-    background-color: var(--dark-tone-monochromatic-color);
     color: var(--white);
 }
 
@@ -157,7 +157,7 @@ body {
 .roady-navigation-menu a:link,
 .roady-sticky-navigation-menu a,
 .roady-sticky-navigation-menu a:link {
-    color: var(--light-tone-base-color);
+    color: var(--light-tone-analagous-color-2);
 }
 
 .roady-app-output-container a:hover,
@@ -166,6 +166,7 @@ body {
 .roady-navigation-menu a:hover,
 .roady-sticky-navigation-menu a:hover {
     color: var(--light-tone-complimentery-color);
+    border-color: var(--light-tone-analagous-color-2);
 }
 
 .roady-app-output-container a:active,
@@ -176,19 +177,12 @@ body {
     color: var(--light-tone-tetradic-color-3);
 }
 
-.roady-app-output-container a:hover,
-.roady-navigation-bar a:hover,
-.roady-navigation-list a:hover,
-.roady-navigation-menu a:hover {
-    border-color: var(--light-tone-analagous-color-2);
-}
-
 /** Lists */
 
 .roady-ol-list li:nth-of-type(even),
 .roady-ul-list li:nth-of-type(even) {
-    background-color: var(--light-tone-analagous-color-2);
-    color: var(--black);
+    background-color: var(--gray-tone-triadic-color-1);
+    color: var(--light-tone-triadic-color-1);
 }
 
 .roady-ol-list li:nth-of-type(odd),
