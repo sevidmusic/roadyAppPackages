@@ -51,32 +51,21 @@ body {
 /* Headers */
 
 .roady-app-output-container h1 {
-    color: var(--dark-tone-monochromatic-color);
-    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
+    color: var(--dark-tone-base-color);
+    text-shadow: 0 0 5px var(--white);
 }
 
-.roady-app-output-container h2 {
-    color: var(--black);
-    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
-}
 
-.roady-app-output-container h3 {
-    color: var(--gray-tone-base-color);
-    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
-}
-
-.roady-app-output-container h4 {
-    color: var(--gray-tone-base-color);
-    text-shadow: 0 0 3px var(--light-tone-analagous-color-2), 0 0 calc(1vw / 4) var(--white);
-}
-
-.roady-app-output-container h5 {
-    color: var(--white);
-}
-
+.roady-app-output-container h2,
+.roady-app-output-container h3,
+.roady-app-output-container h4,
+.roady-app-output-container h5,
 .roady-app-output-container h6 {
-    color: var(--white);
+    color: var(--dark-tone-analagous-color-1);
+    text-shadow: 0 0 3px var(--white);
+    background-color: var(--dark-tone-monochromatic-color);
 }
+
 
 /* Containers */
 
@@ -87,13 +76,13 @@ body {
 
 .roady-generic-container {
     color: var(--gray-tone-triadic-color-1);
+    border-color: var(--white);
     background-color: var(--dark-tone-base-color);
 }
 
 /** Grid */
 
 .roady-3-column-grid {
-    background-color: var(--dark-tone-complimentery-color);
 }
 
 .roady-3-column-grid-item {
@@ -120,6 +109,10 @@ body {
 .roady-form-input-label {
 }
 
+.roady-form input[type=text],
+.roady-form textarea {
+    color: var(--light-tone-complimentery-color);
+}
 
 /** Code Previews */
 
@@ -192,24 +185,16 @@ body {
 
 /** Lists */
 
-.roady-ol-list li:nth-of-type(even) {
-    background-color: var(--white);
-    color: var(--black);
-}
-
-.roady-ol-list li:nth-of-type(odd) {
-    background-color: var(--gray-tone-monochromatic-color);
-    color: var(--white);
-}
-
+.roady-ol-list li:nth-of-type(even),
 .roady-ul-list li:nth-of-type(even) {
-    background-color: var(--gray-tone-monochromatic-color);
-    color: var(--white);
+    background-color: var(--light-tone-analagous-color-2);
+    color: var(--black);
 }
 
+.roady-ol-list li:nth-of-type(odd),
 .roady-ul-list li:nth-of-type(odd) {
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--gray-tone-monochromatic-color);
+    color: var(--white);
 }
 
 /** Messages */

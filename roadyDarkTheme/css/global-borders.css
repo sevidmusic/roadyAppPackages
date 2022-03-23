@@ -15,8 +15,7 @@
 .roady-error-message,
 .roady-note,
 .roady-success-message,
-.roady-app-output-container h1,
-.roady-app-output-container h1,
+.roady-app-output-container h2,
 .roady-app-output-container h3,
 .roady-app-output-container h4,
 .roady-app-output-container h5,
@@ -28,3 +27,10 @@
     border: calc(1vw / 8) solid;
 }
 
+.roady-app-output-container h1 {
+}
+
+
+.roady-generic-container {
+    border: calc(1vw / 8) solid;
+}

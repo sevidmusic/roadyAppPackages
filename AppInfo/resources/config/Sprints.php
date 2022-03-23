@@ -40,7 +40,7 @@ class Sprints
      */
     public static function dynamicOutputComponentInfoSprint(): string {
         return '
-        <div class="roady-generic-container">
+        <div class="roady-3-column-grid-item roady-generic-container">
             <h3>%s</h3>
             <ul class="roady-ul-list">
                 <li>Unique Id:</li>
@@ -120,7 +120,7 @@ class Sprints
     public static function noConfiguredComponentsMessageSprint(): string
     {
         return '
-        <div class="roady-generic-container">
+        <div class="roady-3-column-grid-item roady-generic-container">
             <p class="roady-message">
                 There are no %s %s the %s.
             </p>
@@ -159,7 +159,7 @@ class Sprints
      */
     public static function outputComponentInfoSprint(): string {
         return '
-        <div class="roady-generic-container">
+        <div class="roady-3-column-grid-item roady-generic-container">
             <h3>%s</h3>
             <ul class="roady-ul-list">
                 <li>Unique Id:</li>
@@ -235,7 +235,7 @@ class Sprints
     public static function requestInfoSprint(): string
     {
         return '
-            <div class="roady-generic-container">
+            <div class="roady-3-column-grid-item roady-generic-container">
                 <h3>%s</h3>
                 <ul class="roady-ul-list">
                     <li>Unique Id:</li>
@@ -302,7 +302,7 @@ class Sprints
     public static function responseInfoSprint(bool $global = false): string
     {
         return '
-    <div class="roady-generic-container">
+    <div class="roady-3-column-grid-item roady-generic-container">
         <h3>%s</h3>
         <ul class="roady-ul-list">
             <li>Unique Id:</li>
