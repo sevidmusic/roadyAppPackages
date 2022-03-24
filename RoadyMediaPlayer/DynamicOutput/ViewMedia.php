@@ -11,8 +11,8 @@
     use roady\classes\primary\Positionable;
     use roady\classes\primary\Storable;
     use roady\classes\primary\Switchable;
-    // This include will be replaces by a class
-    require_once('/home/darling/dev/php/roady/Apps/RoadyMediaPlayer/resources/includes/actions/SelectMedia.php');
+
+    use Apps\RoadyMediaPlayer\resources\includes\actions\SelectMedia;
 
     $currentRequest = new Request(
         new Storable(
@@ -40,10 +40,8 @@
         )
     );
 
-    echo '<div class="roady-media-player-media-display">' . (
-        isset($getOutput) && is_callable($getOutput)
-        ? $getOutput($mediaCrud, $currentRequest)
-        : ''
-    ) . '</div>';
+    echo '<div class="roady-media-player-media-display">' .
+        SelectMedia::getOutput($mediaCrud, $currentRequest) .
+        '</div>';
     ?>
 </div>
