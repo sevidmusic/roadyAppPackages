@@ -10,9 +10,9 @@ rig --new-response --for-app 'RoadyMediaPlayer' --name 'AddMedia' --position '1'
 
 rig --new-global-response --for-app 'RoadyMediaPlayer' --name 'DevMenu' --position '0'
 
-rig --new-response --for-app 'RoadyMediaPlayer' --name 'SelectMedia' --position '0'
+rig --new-global-response --for-app 'RoadyMediaPlayer' --name 'SelectMedia' --position '3'
 
-rig --new-response --for-app 'RoadyMediaPlayer' --name 'ViewMedia' --position '1'
+rig --new-response --for-app 'RoadyMediaPlayer' --name 'ViewMedia' --position '2'
 
 rig --new-request --for-app 'RoadyMediaPlayer' --name 'AddMedia' --relative-url 'index.php?request=AddMedia' --container 'RoadyMediaPlayerRequests'
 
@@ -35,8 +35,6 @@ rig --assign-to-response --for-app 'RoadyMediaPlayer' --response 'AddMedia' --re
 rig --assign-to-response --for-app 'RoadyMediaPlayer' --response 'AddMedia' --dynamic-output-components 'AddMedia' 
 
 rig --assign-to-response --for-app 'RoadyMediaPlayer' --response 'DevMenu' --dynamic-output-components 'DevMenu' 
-
-rig --assign-to-response --for-app 'RoadyMediaPlayer' --response 'SelectMedia' --requests 'SelectMedia' 
 
 rig --assign-to-response --for-app 'RoadyMediaPlayer' --response 'SelectMedia' --dynamic-output-components 'SelectMedia' 
 
