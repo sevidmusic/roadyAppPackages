@@ -4,11 +4,10 @@
     use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
     use roady\classes\component\Web\Routing\Request;
     use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
+    use Apps\RoadyMediaPlayer\resources\includes\actions\AddMedia;
     use roady\classes\primary\Storable;
     use roady\classes\primary\Switchable;
 
-    // This include will be replaces by a class
-    require_once('/home/darling/dev/php/roady/Apps/RoadyMediaPlayer/resources/includes/actions/AddMedia.php');
 
     $currentRequest = new Request(
         new Storable(
@@ -36,12 +35,10 @@
         )
     );
 
-    if(isset($addMedia) && is_callable($addMedia)) {
-        if(!$addMedia($currentRequest, $mediaCrud)) {
-            echo '<p>Use the form below to Add Media</p>';
-        } else {
-            echo '<p class="roady-success-message">Media Added</p>';
-        }
+    if(!AddMedia::addMedia($currentRequest, $mediaCrud)) {
+        echo '<p>Use the form below to Add Media</p>';
+    } else {
+        echo '<p class="roady-success-message">Media Added</p>';
     }
     ?>
 

@@ -10,7 +10,7 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\interfaces\primary\Positionable;
 
-class Media extends SwitchableComponent implements MediaInterface 
+class Media extends SwitchableComponent implements MediaInterface
 {
 
     /**
@@ -18,8 +18,8 @@ class Media extends SwitchableComponent implements MediaInterface
      *
      * @param string $name The name to assign to the Media.
      *
-     * @param Positionable $positionable A Positionable instance 
-     *                                   that will manage 
+     * @param Positionable $positionable A Positionable instance
+     *                                   that will manage
      *                                   the media's position.
      *
      * @param string $mediaUrl The Media's url.
@@ -31,7 +31,7 @@ class Media extends SwitchableComponent implements MediaInterface
     public function __construct(
         string $name,
         private Positionable $positionable,
-        private string $mediaUrl, 
+        private string $mediaUrl,
         private array $metaData,
     )
     {
@@ -50,10 +50,10 @@ class Media extends SwitchableComponent implements MediaInterface
     {
         return new Request(
             new Storable(
-                'CurrentRequest', 
-                'Requests', 
+                'CurrentRequest',
+                'Requests',
                 'Media'
-            ), 
+            ),
             new Switchable()
         );
     }
@@ -64,18 +64,18 @@ class Media extends SwitchableComponent implements MediaInterface
         return strval(
             preg_replace(
                 "#[^a-zA-Z0-9]+#",
-                '', 
+                '',
                 strval(
                     (
-                        parse_url(self::currentRequest()->getUrl(),  PHP_URL_HOST) 
-                        ?? 
+                        parse_url(self::currentRequest()->getUrl(),  PHP_URL_HOST)
+                        ??
                         'localhost'
                     )
                 )
             ) . strval(
                 (
-                    parse_url(self::currentRequest()->getUrl(),  PHP_URL_PORT) 
-                    ?? 
+                    parse_url(self::currentRequest()->getUrl(),  PHP_URL_PORT)
+                    ??
                     '8080'
                 )
             ) . self::MEDIA_LOCATION
@@ -105,7 +105,7 @@ class Media extends SwitchableComponent implements MediaInterface
         return $this->metaData;
     }
 
-    public function mediaUrl(): string 
+    public function mediaUrl(): string
     {
         return $this->mediaUrl;
     }
@@ -115,12 +115,12 @@ class Media extends SwitchableComponent implements MediaInterface
         $couldNotDetermineMime = 'COULD_NOT_DETERMINE_MIME_TYPE';
         try {
             $headers = get_headers(
-                $this->mediaUrl(), 
+                $this->mediaUrl(),
                 associative: true
             );
             return (
-                is_array($headers) 
-                ? ($headers['Content-Type'] ?? $couldNotDetermineMime) 
+                is_array($headers)
+                ? ($headers['Content-Type'] ?? $couldNotDetermineMime)
                 : $couldNotDetermineMime
             );
         } catch (Exception $e) {
@@ -132,20 +132,20 @@ class Media extends SwitchableComponent implements MediaInterface
         return $couldNotDetermineMime;
     }
 
-    public function mediaIsAccessible(): bool 
+    public function mediaIsAccessible(): bool
     {
         try {
             $headers = get_headers(
-                $this->mediaUrl(), 
+                $this->mediaUrl(),
                 associative: true
             );
             $responseCode = (
-                is_array($headers) 
-                ? ($headers[0] ?? 'COULD_NOT_DETERMINE_RESPONSE_CODE') 
+                is_array($headers)
+                ? ($headers[0] ?? 'COULD_NOT_DETERMINE_RESPONSE_CODE')
                 : 'FAILED_TO_GET_HEADER'
             );
             if($responseCode === 'HTTP/1.1 200 OK') {
-                return true; 
+                return true;
             }
         } catch (Exception $e) {
             $this->log(
@@ -160,12 +160,12 @@ class Media extends SwitchableComponent implements MediaInterface
         return false;
     }
 
-    public function increasePosition(): bool 
+    public function increasePosition(): bool
     {
         return $this->positionable->increasePosition();
-        
+
     }
-    public function decreasePosition(): bool 
+    public function decreasePosition(): bool
     {
         return $this->positionable->decreasePosition();
     }

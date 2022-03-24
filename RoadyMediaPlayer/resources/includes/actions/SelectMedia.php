@@ -1,9 +1,5 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 use Apps\RoadyMediaPlayer\resources\classes\component\crud\MediaCrud;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Audio;
 use Apps\RoadyMediaPlayer\resources\classes\component\media\Image;
