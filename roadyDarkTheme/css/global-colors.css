@@ -110,6 +110,7 @@ body {
 }
 
 .roady-form input[type=text],
+.roady-form input[type=url],
 .roady-form textarea {
     color: var(--light-tone-complimentery-color);
 }

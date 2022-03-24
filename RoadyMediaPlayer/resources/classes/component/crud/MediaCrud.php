@@ -14,23 +14,23 @@ use roady\classes\primary\Positionable;
 class MediaCrud extends ComponentCrud implements MediaCrudInterface
 {
 
-    public function createMedia(MediaInterface $media): bool 
+    public function createMedia(MediaInterface $media): bool
     {
         return parent::create($media);
-    }    
+    }
 
-    public function readMedia(Storable $storable): MediaInterface 
+    public function readMedia(Storable $storable): MediaInterface
     {
-        $storedCompnent = parent::read($storable);
-        $storedCompnentImplements = class_implements($storedCompnent);
-        if($this->isAMediaImplementation($storedCompnent)) {
-            /** @var MediaInterface $storedCompnent */
-            return $storedCompnent;
+        $storedComponent = parent::read($storable);
+        $storedComponentImplements = class_implements($storedComponent);
+        if($this->isAMediaImplementation($storedComponent)) {
+            /** @var MediaInterface $storedComponent */
+            return $storedComponent;
         }
         return new Media(
             $storable->getName(),
             new Positionable(),
-            'http://localhost:8080/page/not/found/rand' . rand(1000, 1000),
+            'MEDIA_DOES_NOT_EXIST_IN_STORAGE',
             [
                 'Error' => 'MEDIA_DOES_NOT_EXIST_IN_STORAGE',
                 'MediaName' => $storable->getName(),
@@ -41,7 +41,7 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
         );
     }
 
-    public function updateMedia(MediaInterface $originalMedia, MediaInterface $newMedia): bool 
+    public function updateMedia(MediaInterface $originalMedia, MediaInterface $newMedia): bool
     {
         return parent::update($originalMedia, $newMedia);
     }
@@ -59,7 +59,7 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
     public function readAllMedia(string|object $mediaType): array
     {
         $typeName = explode(
-            '\\', 
+            '\\',
             (is_string($mediaType) ? $mediaType : $mediaType::class)
         );
         $mediaContainer = array_pop($typeName);
@@ -77,7 +77,7 @@ class MediaCrud extends ComponentCrud implements MediaCrudInterface
         return $media;
     }
 
-    public function deleteMedia(MediaInterface $media): bool 
+    public function deleteMedia(MediaInterface $media): bool
     {
         return parent::delete($media);
     }

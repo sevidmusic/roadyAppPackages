@@ -4,17 +4,17 @@ namespace Apps\RoadyMediaPlayer\resources\classes\component\media;
 
 use Exception;
 
-class Image extends Media 
+class Image extends Media
 {
 
     /**
      * Returns single dimensional, numerically indexed array of
      * supported Mime Types.
      *
-     * @return array<int, string> An array of Mime types supported 
+     * @return array<int, string> An array of Mime types supported
      *                            by the Image class.
      */
-    private function supportedImageMimeTypes(): array 
+    private function supportedImageMimeTypes(): array
     {
         return [
             'image/png',
@@ -39,7 +39,7 @@ class Image extends Media
         try {
             $contentType = $this->mimeContentType();
             if(in_array($contentType, $this->supportedImageMimeTypes())) {
-                return parent::mediaIsAccessible(); 
+                return parent::mediaIsAccessible();
             }
         } catch (Exception $e) {
             $this->log(
@@ -51,7 +51,7 @@ class Image extends Media
             'The requested media is not a supported Image type, media url: %s',
             $this->mediaUrl()
         );
-        return false; 
+        return false;
     }
 
 }
