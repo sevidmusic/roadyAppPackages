@@ -34,3 +34,11 @@
 .roady-generic-container {
     border: calc(1vw / 8) solid;
 }
+
+.roady-app-output-container audio {
+    border-top: 1.3vw solid;
+    border-left: 2.5vw solid;
+    border-right: 2.5vw solid;
+    border-bottom: .7vw solid;
+    border-radius: 9vw 9vw calc(calc(1vw / 3) / 3) calc(calc(1vw /3) /3);
+}

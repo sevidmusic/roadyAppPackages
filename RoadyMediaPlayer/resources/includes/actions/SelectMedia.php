@@ -99,7 +99,8 @@ class SelectMedia
 
     public static function audioView(Audio $audio): string {
         return
-            '<audio controls>' .
+            '<h2>' . $audio->getName() . '</h2>' .
+            '<audio controls autoplay>' .
             '<source src="' .
             $audio->mediaUrl() .
             '" type="' .

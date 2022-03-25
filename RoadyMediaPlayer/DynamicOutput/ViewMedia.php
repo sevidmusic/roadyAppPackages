@@ -40,8 +40,7 @@
         )
     );
 
-    echo '<div class="roady-media-player-media-display">' .
-        SelectMedia::getOutput($mediaCrud, $currentRequest) .
-        '</div>';
+    echo SelectMedia::getOutput($mediaCrud, $currentRequest);
+
     ?>
 </div>
