@@ -23,3 +23,8 @@
     height: 17vh;
     min-height: 4.2vh;
 }
+
+.roady-app-output-container audio {
+    width: 100%;
+}
+

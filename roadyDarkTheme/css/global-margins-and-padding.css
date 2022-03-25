@@ -3,11 +3,11 @@
  */
 
 :root {
-    --base-margin-and-padding-value: 3vw;
+    --base-margin-and-padding-value: 2vw;
 }
 
 .roady-app-output-container {
-    padding: var(--base-margin-and-padding-value);
+    padding: calc(var(--base-margin-and-padding-value) / 5);
 }
 
 .roady-3-column-grid,
@@ -136,3 +136,6 @@
     );
 }
 
+.roady-app-output-container audio {
+    padding: var(--base-margin-and-padding-value);
+}

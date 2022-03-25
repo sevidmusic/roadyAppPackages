@@ -58,7 +58,7 @@
 
     ?>
 
-    <h3>Select Media</h3>
+    <h3>Select A Track To Listen To</h3>
     <!-- Begin Select Media Form -->
     <form class="roady-form" action="index.php">
     <?php echo ($selectMediaForm ?? ''); ?>
@@ -66,5 +66,5 @@
     <input class="roady-form-input" type="submit" value="Select Media">
     </form>
     <!-- End Select Media Form -->
-    <?php echo ($mediaLinks ?? ''); ?>
+    <!-- <?php echo ($mediaLinks ?? ''); ?> -->
 </div>

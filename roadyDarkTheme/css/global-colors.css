@@ -55,7 +55,6 @@ body {
     text-shadow: 0 0 5px var(--white);
 }
 
-
 .roady-app-output-container h2,
 .roady-app-output-container h3,
 .roady-app-output-container h4,
@@ -212,6 +211,14 @@ body {
 .roady-error-message {
     color: var(--dark-tone-base-color);
     background-color: var(--light-tone-triadic-color-1);
+}
+
+/** Media */
+
+.roady-app-output-container audio {
+    border-color: var(--dark-tone-monochromatic-color) var(--light-tone-analagous-color-2) var(--black) var(--light-tone-analagous-color-2);
+    background: rgb(11,15,22);
+    background: linear-gradient(180deg, rgba(11,15,22,1) 0%, rgba(22,18,11,1) 12%, rgba(32,32,37,1) 35%, rgba(124,189,236,1) 52%, rgba(80,119,153,1) 63%, rgba(32,32,37,1) 70%, rgba(28,38,56,1) 100%);
 }
 
 /** Color Previews */
