@@ -1,6 +1,6 @@
 <?php
 
-namespace Apps\TextAdventureUploader\resources\classes\utility;
+namespace Apps\TextAdventureImporter\resources\classes\utility;
 
 class TextAdventureUploader {
 
