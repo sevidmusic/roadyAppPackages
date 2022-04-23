@@ -1,9 +1,23 @@
 <?php
+
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Storable;
+use roady\classes\primary\Switchable;
+
 /* start dev */
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 /* end dev */
+
+$currentRequest = new Request(
+    new Storable('CurrentRequest',
+        'Requests',
+        'Index'
+    ),
+    new Switchable()
+);
+var_dump($currentRequest->getPost());
 
 $target_dir = "Apps/TextAdventureImporter/resources/uploads/";
 $target_file =
@@ -16,7 +30,7 @@ $uploadedFileType = strtolower(
 $fileToUpload = ($_FILES["fileToUpload"]["tmp_name"] ?? 'notvalid');
 
 // Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
+if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File') {
     // Make sure a file was selected
     if(empty($_FILES["fileToUpload"]["name"])) {
         echo "
@@ -56,17 +70,19 @@ if(isset($_POST["submit"])) {
     if (
         $uploadIsPossible !== false
         &&
-        boolval(($_POST['replaceExistingGame'] ?? false)) !== true
+        boolval(($currentRequest->getPost()['replaceExistingGame'] ?? false)) !== true
         &&
         file_exists($target_file)
     ) {
         echo "
             <p class=\"roady-error-message\">
                 A Twine file with the same name was already uploaded.
-                Please upload a Twine file with a unique name!
+                Please upload a Twine file with a unique name, or
+                check the
+                <span>Replace Existing App</span> check box below.
             </p>
         ";
-      $uploadIsPossible = false;
+        $uploadIsPossible = false;
     }
 
     // Check if $uploadIsPossible is set to 0 by an error
@@ -125,6 +141,14 @@ if(isset($_POST["submit"])) {
         id="replaceExistingGame"
         class="roady-form-input"
         type="checkbox"
+        <?php
+        echo match(
+            ($currentRequest->getPost()['replaceExistingGame'] ?? '')
+        ) {
+            'true' => 'checked',
+            default => '',
+        };
+        ?>
         name="replaceExistingGame"
         value="true"
     >
@@ -132,11 +156,7 @@ if(isset($_POST["submit"])) {
         type="submit"
         class="roady-form-input"
         value="Import Twine File"
-        name="submit"
+        name="ImportTwineFile"
     >
 </form>
-
-<?php
-
-var_dump($_POST);
 
