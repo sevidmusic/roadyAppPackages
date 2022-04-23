@@ -11,7 +11,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testUploadsDirectoryPathReturnsExpectedPathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
-        error_log(
+        $expectedPath = (
             str_replace(
                 str_replace(
                     '\\',
@@ -27,6 +27,11 @@ class TextAdventureUploaderTest extends TestCase
                 'uploads',
                 __DIR__
             )
+        );
+        error_log($expectedPath);
+        $this->assertEquals(
+            $expectedPath,
+            $textAdventureUploader->uploadsDirectroyPath()
         );
     }
 }
