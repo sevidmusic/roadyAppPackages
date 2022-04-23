@@ -32,7 +32,7 @@ class TextAdventureUploader {
             isset($_FILES["fileToUpload"]["name"])
         ) {
             true =>
-                $this->pathToUploadsDirectory() .
+                $this->pathToUploadsDirectory() . DIRECTORY_SEPARATOR .
                 basename($_FILES["fileToUpload"]["name"]),
             default => 'NO_FILE_SELECTED',
         };

@@ -42,5 +42,15 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->pathToUploadFileTo()
         );
     }
+
+    public function testPathToUploadFileToReturnsNameOfFileSelectedForUploadPrefixedByPathToUploadsDirectory(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $_FILES["fileToUpload"]["name"] = 'Foo.html';
+        $this->assertEquals(
+            $textAdventureUploader->pathToUploadsDirectory() . DIRECTORY_SEPARATOR . $_FILES["fileToUpload"]["name"],
+            $textAdventureUploader->pathToUploadFileTo()
+        );
+    }
 }
 
