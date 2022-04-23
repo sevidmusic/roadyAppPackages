@@ -4,12 +4,6 @@ use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
-/* start dev */
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-/* end dev */
-
 $currentRequest = new Request(
     new Storable('CurrentRequest',
         'Requests',
@@ -17,7 +11,6 @@ $currentRequest = new Request(
     ),
     new Switchable()
 );
-var_dump($currentRequest->getPost());
 
 $target_dir = "Apps/TextAdventureImporter/resources/uploads/";
 $target_file =
@@ -29,9 +22,7 @@ $uploadedFileType = strtolower(
 );
 $fileToUpload = ($_FILES["fileToUpload"]["tmp_name"] ?? 'notvalid');
 
-// Check if image file is a actual image or fake image
 if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File') {
-    // Make sure a file was selected
     if(empty($_FILES["fileToUpload"]["name"])) {
         echo "
             <p class=\"roady-error-message\">
@@ -41,7 +32,6 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         ";
       $uploadIsPossible = false;
     }
-    // Only allow Twine html files
     if($uploadIsPossible !== false && $uploadedFileType != "html") {
         echo "
             <p class=\"roady-error-message\">
@@ -51,8 +41,6 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         ";
       $uploadIsPossible = false;
     }
-
-    // Check file size
     if (
         $uploadIsPossible !== false
         &&
@@ -65,8 +53,6 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         ";
       $uploadIsPossible = false;
     }
-
-    // Check if file already exists
     if (
         $uploadIsPossible !== false
         &&
@@ -84,8 +70,6 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         ";
         $uploadIsPossible = false;
     }
-
-    // Check if $uploadIsPossible is set to 0 by an error
     if ($uploadIsPossible) {
         if(!is_dir($target_dir)) {
             mkdir($target_dir);
