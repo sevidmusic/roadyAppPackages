@@ -8,7 +8,7 @@ use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 class TextAdventureUploaderTest extends TestCase
 {
 
-    public function testUploadsDirectoryPathReturnsExpectedPathToUploadsDirectory(): void
+    public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
         $expectedPath = (
@@ -28,10 +28,21 @@ class TextAdventureUploaderTest extends TestCase
                 __DIR__
             )
         );
-        error_log($expectedPath);
         $this->assertEquals(
             $expectedPath,
-            $textAdventureUploader->uploadsDirectroyPath()
+            $textAdventureUploader->pathToUploadsDirectory()
+        );
+    }
+
+    public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $expectedPath = 'NO_FILE_SELECTED';
+        $uploadDestination = $textAdventureUploader->pathToUploadsDirectory() .
+            basename(($_FILES["fileToUpload"]["name"] ?? $expectedPath));
+        $this->assertEquals(
+            $expectedPath,
+            $textAdventureUploader->pathToUploadFileTo()
         );
     }
 }

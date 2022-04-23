@@ -5,7 +5,7 @@ namespace Apps\TextAdventureImporter\resources\classes\utility;
 class TextAdventureUploader {
 
 
-    public function uploadsDirectroyPath(): string
+    public function pathToUploadsDirectory(): string
     {
         return (
             str_replace(
@@ -26,4 +26,11 @@ class TextAdventureUploader {
         );
     }
 
+    public function pathToUploadFileTo(): string
+    {
+        return $this->pathToUploadsDirectory() .
+            basename(
+                ($_FILES["fileToUpload"]["name"] ?? 'NO_FILE_SELECTED')
+            );
+    }
 }
