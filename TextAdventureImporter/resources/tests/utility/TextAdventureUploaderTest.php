@@ -37,11 +37,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
-        $expectedPath = 'NO_FILE_SELECTED';
-        $uploadDestination = $textAdventureUploader->pathToUploadsDirectory() .
-            basename(($_FILES["fileToUpload"]["name"] ?? $expectedPath));
         $this->assertEquals(
-            $expectedPath,
+            'NO_FILE_SELECTED',
             $textAdventureUploader->pathToUploadFileTo()
         );
     }

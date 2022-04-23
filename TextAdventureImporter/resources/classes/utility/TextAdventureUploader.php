@@ -28,9 +28,13 @@ class TextAdventureUploader {
 
     public function pathToUploadFileTo(): string
     {
-        return $this->pathToUploadsDirectory() .
-            basename(
-                ($_FILES["fileToUpload"]["name"] ?? 'NO_FILE_SELECTED')
-            );
+        return match(
+            isset($_FILES["fileToUpload"]["name"])
+        ) {
+            true =>
+                $this->pathToUploadsDirectory() .
+                basename($_FILES["fileToUpload"]["name"]),
+            default => 'NO_FILE_SELECTED',
+        };
     }
 }
