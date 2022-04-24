@@ -15,21 +15,26 @@ $currentRequest = new Request(
 
 $textAdventureUploader = new TextAdventureUploader();
 
-$target_dir = $textAdventureUploader->pathToUploadsDirectory();
-$target_file = $textAdventureUploader->pathToUploadFileTo();
 $uploadIsPossible = true;
 $uploadedFileType = strtolower(
-    pathinfo($target_file,PATHINFO_EXTENSION)
+    pathinfo(
+        $textAdventureUploader->pathToUploadFileTo(),
+        PATHINFO_EXTENSION
+    )
 );
-$fileToUpload = $textAdventureUploader->nameOfFileToUpload();
 var_dump(
     [
-        'target_dir' => $target_dir,
-        'target_file' => $target_file,
-        'fileToUpload' => $fileToUpload,
+        'target_dir' =>
+            $textAdventureUploader->pathToUploadsDirectory(),
+        'target_file' =>
+            $textAdventureUploader->pathToUploadFileTo(),
     ]
 );
-if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File') {
+if(
+    ($currentRequest->getPost()["ImportTwineFile"] ?? '')
+    ===
+    'Import Twine File'
+) {
     if(empty($_FILES["fileToUpload"]["name"])) {
         echo "
             <p class=\"roady-error-message\">
@@ -39,7 +44,13 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         ";
       $uploadIsPossible = false;
     }
-    if($uploadIsPossible !== false && $uploadedFileType != "html") {
+    if(
+        $uploadIsPossible
+        !==
+        false
+        &&
+        $uploadedFileType != "html"
+    ) {
         echo "
             <p class=\"roady-error-message\">
                 Only Twine html files can be uploaded!
@@ -63,28 +74,45 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
     if (
         $uploadIsPossible !== false
         &&
-        boolval(($currentRequest->getPost()['replaceExistingGame'] ?? false)) !== true
+        boolval(
+            (
+                $currentRequest->getPost()['replaceExistingGame']
+                ??
+                false
+            )
+        ) !== true
         &&
-        file_exists($target_file)
+        file_exists($textAdventureUploader->pathToUploadFileTo())
     ) {
         echo "
-            <p class=\"roady-error-message\">
-                A Twine file with the same name was already uploaded.
-                Please upload a Twine file with a unique name, or
-                check the
-                <span>Replace Existing App</span> check box below.
-            </p>
+            <div class=\"roady-error-message\">
+                <p>
+                    A Twine file with the same name was already
+                    uploaded.
+                </p>
+                <p>
+                    Please upload a Twine file with a unique name,
+                    or check the <span>Replace Existing App</span>
+                    check box below.
+                </p>
+            </div>
         ";
         $uploadIsPossible = false;
     }
     if ($uploadIsPossible) {
-        if(!is_dir($target_dir)) {
-            mkdir($target_dir);
+        if(
+            !is_dir(
+                $textAdventureUploader->pathToUploadsDirectory()
+            )
+        ) {
+            mkdir(
+                $textAdventureUploader->pathToUploadsDirectory()
+            );
         }
         echo match(
             move_uploaded_file(
                 $_FILES["fileToUpload"]["tmp_name"],
-                $target_file
+                $textAdventureUploader->pathToUploadFileTo()
             )
         ) {
             true => "
@@ -134,7 +162,11 @@ if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File'
         type="checkbox"
         <?php
         echo match(
-            ($currentRequest->getPost()['replaceExistingGame'] ?? '')
+            (
+                $currentRequest->getPost()['replaceExistingGame']
+                ??
+                ''
+            )
         ) {
             'true' => 'checked',
             default => '',
