@@ -2,6 +2,10 @@
 
 namespace Apps\TextAdventureImporter\resources\classes\utility;
 
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Storable;
+use roady\classes\primary\Switchable;
+
 class TextAdventureUploader {
 
     public const NO_FILE_SELECTED = 'NO_FILE_SELECTED';
@@ -68,6 +72,18 @@ class TextAdventureUploader {
                 PATHINFO_EXTENSION
             )
         ) === 'html';
+    }
+
+    public function currentRequest(): Request
+    {
+        return new Request(
+            new Storable(
+                'CurrentRequest',
+                'TextAdventureImporterRequests',
+                'UploadRequests'
+            ),
+            new Switchable()
+        );
     }
 }
 

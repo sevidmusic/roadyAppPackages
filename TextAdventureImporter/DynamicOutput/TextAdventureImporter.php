@@ -6,7 +6,8 @@ use roady\classes\primary\Switchable;
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 
 $currentRequest = new Request(
-    new Storable('CurrentRequest',
+    new Storable(
+        'CurrentRequest',
         'Requests',
         'Index'
     ),
@@ -14,22 +15,8 @@ $currentRequest = new Request(
 );
 
 $textAdventureUploader = new TextAdventureUploader();
-
 $uploadIsPossible = true;
-$uploadedFileType = strtolower(
-    pathinfo(
-        $textAdventureUploader->pathToUploadFileTo(),
-        PATHINFO_EXTENSION
-    )
-);
-var_dump(
-    [
-        'target_dir' =>
-            $textAdventureUploader->pathToUploadsDirectory(),
-        'target_file' =>
-            $textAdventureUploader->pathToUploadFileTo(),
-    ]
-);
+
 if(
     ($currentRequest->getPost()["ImportTwineFile"] ?? '')
     ===

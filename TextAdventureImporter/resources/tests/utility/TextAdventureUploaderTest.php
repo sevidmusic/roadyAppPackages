@@ -2,8 +2,11 @@
 
 namespace Apps\TextAdventureImporter\resources\tests\utility;
 
-use PHPUnit\Framework\TestCase;
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
+use PHPUnit\Framework\TestCase;
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Storable;
+use roady\classes\primary\Switchable;
 
 /**
  * Defines tests for the TextAdventureUploader.
@@ -130,9 +133,36 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertFalse(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
-            '->fileToUploadIsAnHtmlFile() must return false if file '.
+            '->' . __FUNCTION__ .
+            '() must return false if file '.
             'to upload does not have the extension `html`.'
         );
+    }
+
+    public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheCurrentRequestsUrl(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $currentRequest = new Request(
+            new Storable(
+                'CurrentRequest',
+                'Requests',
+                'Index'
+            ),
+            new Switchable()
+        );
+        $this->assertEquals(
+            $currentRequest->getUrl(),
+            $textAdventureUploader->currentRequest()->getUrl(),
+            TextAdventureUploader::class .
+            '->' .
+            __FUNCTION__ .
+            '() must return a ' .
+            Request::class .
+            ' instance whose url matches the url for the current' .
+            'request.'
+
+        );
+
     }
 }
 
