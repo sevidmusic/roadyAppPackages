@@ -1,8 +1,19 @@
 <?php
 
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
+use roady\classes\component\Web\Routing\Request;
+use roady\classes\primary\Storable;
+use roady\classes\primary\Switchable;
 
-$textAdventureUploader = new TextAdventureUploader();
+$currentRequest = new Request(
+    new Storable(
+        'CurrentRequest',
+        'TextAdventureImporterRequests',
+        'UploadRequests'
+    ),
+    new Switchable()
+);
+$textAdventureUploader = new TextAdventureUploader($currentRequest);
 $uploadIsPossible = true;
 $aFileWasNotSelectedMessage = '
     <p class="roady-error-message">
@@ -27,17 +38,20 @@ if(
         $textAdventureUploader->currentRequest()
                               ->getPost()["ImportTwineFile"] ?? ''
     )
-    ===
-    'Import Twine File'
+    === 'Import Twine File'
 ) {
-    if(empty($_FILES["fileToUpload"]["name"])) {
+    if(
+        $textAdventureUploader->nameOfFileToUpload()
+        ===
+        TextAdventureUploader::NO_FILE_SELECTED
+    ) {
         echo $aFileWasNotSelectedMessage;
         $uploadIsPossible = false;
     }
     if(
         $uploadIsPossible !== false
         &&
-        $textAdventureUploader->fileToUploadIsAnHtmlFile() === false
+        !$textAdventureUploader->fileToUploadIsAnHtmlFile()
     ) {
         echo $invalidFileTypeMessage;
         $uploadIsPossible = false;

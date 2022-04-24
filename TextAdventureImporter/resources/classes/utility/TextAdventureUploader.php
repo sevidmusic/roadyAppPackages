@@ -25,6 +25,10 @@ class TextAdventureUploader {
 
     public const FILENAME_INDEX = 'name';
 
+    public function __construct(
+        private Request $currentRequest
+    ) {}
+
     public function pathToUploadsDirectory(): string
     {
         return (
@@ -68,7 +72,7 @@ class TextAdventureUploader {
     {
         return strtolower(
             pathinfo(
-                $this->pathToUploadFileTo(),
+                $this->nameOfFileToUpload(),
                 PATHINFO_EXTENSION
             )
         ) === 'html';
@@ -76,14 +80,7 @@ class TextAdventureUploader {
 
     public function currentRequest(): Request
     {
-        return new Request(
-            new Storable(
-                'CurrentRequest',
-                'TextAdventureImporterRequests',
-                'UploadRequests'
-            ),
-            new Switchable()
-        );
+        return $this->currentRequest;
     }
 }
 

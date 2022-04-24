@@ -29,7 +29,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testNameOfFileToUploadRetunrsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->nameOfFileToUpload()
@@ -48,7 +50,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testNameOfFileToUploadRetunrsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
                [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
         $this->assertEquals(
@@ -59,7 +63,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
                [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
         $this->assertEquals(
@@ -70,7 +76,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->pathToUploadFileTo()
@@ -79,7 +87,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $expectedPath = (
             str_replace(
                 str_replace(
@@ -129,7 +139,9 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testFileToUploadIsAnHtmlFileReturnsFalseIfFileSelcetedForUploadDoesNotHaveTheExtension_html(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
         $this->assertFalse(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
@@ -139,16 +151,26 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    public function testFileToUploadIsAnHtmlFileReturnsTrueIfFileSelcetedForUploadHasTheExtension_html(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest()
+        );
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILENAME_INDEX] = 'foo.html';
+        $this->assertTrue(
+            $textAdventureUploader->fileToUploadIsAnHtmlFile(),
+            TextAdventureUploader::class .
+            '->' . __FUNCTION__ .
+            '() must return true if file '.
+            'to upload has the extension `html`.'
+        );
+    }
+
     public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheCurrentRequestsUrl(): void
     {
-        $textAdventureUploader = new TextAdventureUploader();
-        $currentRequest = new Request(
-            new Storable(
-                'CurrentRequest',
-                'Requests',
-                'Index'
-            ),
-            new Switchable()
+        $currentRequest = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest
         );
         $this->assertEquals(
             $currentRequest->getUrl(),
@@ -162,7 +184,60 @@ class TextAdventureUploaderTest extends TestCase
             'request.'
 
         );
+    }
 
+    public function testCurrentRequestReturnsARequestInstanceWhosePostDataMatchesTheCurrentRequestsPostData(): void
+    {
+        $currentRequest = $this->mockCurrentRequest();
+        $currentRequest->import(['post' => ['post data']]);
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest
+        );
+        $this->assertEquals(
+            $currentRequest->getPost(),
+            $textAdventureUploader->currentRequest()->getPost(),
+            TextAdventureUploader::class .
+            '->' .
+            __FUNCTION__ .
+            '() must return a ' .
+            Request::class .
+            ' instance whose $_POST data matches the url for the ' .
+            'current request.'
+
+        );
+    }
+
+    public function testCurrentRequestReturnsARequestInstanceWhoseGetDataMatchesTheCurrentRequestsGetData(): void
+    {
+        $currentRequest = $this->mockCurrentRequest();
+        $currentRequest->import(['get' => ['get data']]);
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest
+        );
+        $this->assertEquals(
+            $currentRequest->getPost(),
+            $textAdventureUploader->currentRequest()->getPost(),
+            TextAdventureUploader::class .
+            '->' .
+            __FUNCTION__ .
+            '() must return a ' .
+            Request::class .
+            ' instance whose $_POST data matches the url for the ' .
+            'current request.'
+
+        );
+    }
+
+    private function mockCurrentRequest(): Request
+    {
+        return new Request(
+            new Storable(
+                'CurrentRequest',
+                'Requests',
+                'Index'
+            ),
+            new Switchable()
+        );
     }
 }
 
