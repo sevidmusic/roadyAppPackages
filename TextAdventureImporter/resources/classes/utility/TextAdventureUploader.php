@@ -4,23 +4,33 @@ namespace Apps\TextAdventureImporter\resources\classes\utility;
 
 class TextAdventureUploader {
 
+    public const NO_FILE_SELECTED = 'NO_FILE_SELECTED';
+
+    private const RELATIVE_PATH_TO_UPLOADS_DIRECTORY =
+        'Apps' .
+        DIRECTORY_SEPARATOR .
+        'TextAdventureImporter' .
+        DIRECTORY_SEPARATOR .
+        'resources' .
+        DIRECTORY_SEPARATOR .
+        'uploads';
+
+    private const CLASS_SEPARATOR = '\\';
+
+    public const FILE_TO_UPLOAD_INDEX = 'fileToUpload';
+
+    public const FILENAME_INDEX = 'name';
 
     public function pathToUploadsDirectory(): string
     {
         return (
             str_replace(
                 str_replace(
-                    '\\',
+                    self::CLASS_SEPARATOR,
                     DIRECTORY_SEPARATOR,
                     __NAMESPACE__
                 ),
-                'Apps' .
-                DIRECTORY_SEPARATOR .
-                'TextAdventureImporter' .
-                DIRECTORY_SEPARATOR .
-                'resources' .
-                DIRECTORY_SEPARATOR .
-                'uploads',
+                self::RELATIVE_PATH_TO_UPLOADS_DIRECTORY,
                 __DIR__
             )
         );
@@ -29,17 +39,25 @@ class TextAdventureUploader {
     public function pathToUploadFileTo(): string
     {
         return match(
-            isset($_FILES["fileToUpload"]["name"])
+            $this->nameOfFileToUpload() !== self::NO_FILE_SELECTED
         ) {
             true =>
-                $this->pathToUploadsDirectory() . DIRECTORY_SEPARATOR .
-                basename($_FILES["fileToUpload"]["name"]),
-            default => 'NO_FILE_SELECTED',
+                $this->pathToUploadsDirectory() .
+                DIRECTORY_SEPARATOR .
+                basename($this->nameOfFileToUpload()),
+            default => $this->nameOfFileToUpload(),
         };
     }
 
     public function nameOfFileToUpload(): string
     {
-        return ($_FILES["fileToUpload"]["name"] ?? 'NO_FILE_SELECTED');
+        return match(
+            !empty($_FILES[self::FILE_TO_UPLOAD_INDEX][self::FILENAME_INDEX] ?? '')
+        )
+        {
+            true => $_FILES[self::FILE_TO_UPLOAD_INDEX][self::FILENAME_INDEX],
+            default => self::NO_FILE_SELECTED
+        };
     }
 }
+

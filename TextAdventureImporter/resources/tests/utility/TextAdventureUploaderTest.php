@@ -24,11 +24,21 @@ class TextAdventureUploaderTest extends TestCase
         unset($_FILES["fileToUpload"]["name"]);
     }
 
-    public function testNameOfFileToUploadRetunrsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+    public function testNameOfFileToUploadRetunrsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
         $this->assertEquals(
-            'NO_FILE_SELECTED',
+             TextAdventureUploader::NO_FILE_SELECTED,
+            $textAdventureUploader->nameOfFileToUpload()
+        );
+        /**
+         * Also test for case where $_FILES['fileToUpload']['name']
+         * is empty
+         */
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+               [TextAdventureUploader::FILENAME_INDEX] = '';
+        $this->assertEquals(
+             TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->nameOfFileToUpload()
         );
     }
@@ -36,7 +46,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testNameOfFileToUploadRetunrsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
-        $_FILES["fileToUpload"]["name"] = 'Foo.html';
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+               [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
         $this->assertEquals(
             $_FILES["fileToUpload"]["name"],
             $textAdventureUploader->nameOfFileToUpload()
@@ -46,7 +57,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader();
-        $_FILES["fileToUpload"]["name"] = 'Foo.html';
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+               [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
         $this->assertEquals(
             $textAdventureUploader->pathToUploadsDirectory() . DIRECTORY_SEPARATOR . $textAdventureUploader->nameOfFileToUpload(),
             $textAdventureUploader->pathToUploadFileTo()
@@ -57,7 +69,7 @@ class TextAdventureUploaderTest extends TestCase
     {
         $textAdventureUploader = new TextAdventureUploader();
         $this->assertEquals(
-            'NO_FILE_SELECTED',
+             TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->pathToUploadFileTo()
         );
     }
@@ -85,6 +97,30 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertEquals(
             $expectedPath,
             $textAdventureUploader->pathToUploadsDirectory()
+        );
+    }
+
+    public function testFILE_TO_UPLOAD_INDEXConstantIsAssignedTheString_fileToUpload(): void
+    {
+        $this->assertEquals(
+            'fileToUpload',
+            TextAdventureUploader::FILE_TO_UPLOAD_INDEX
+        );
+    }
+
+    public function testFILENAME_INDEXConstantIsAssignedTheString_fileToUpload(): void
+    {
+        $this->assertEquals(
+            'name',
+            TextAdventureUploader::FILENAME_INDEX
+        );
+    }
+
+    public function testNO_FILE_SELECTEDConstantIsAssignedTheString_fileToUpload(): void
+    {
+        $this->assertEquals(
+            'NO_FILE_SELECTED',
+            TextAdventureUploader::NO_FILE_SELECTED
         );
     }
 }

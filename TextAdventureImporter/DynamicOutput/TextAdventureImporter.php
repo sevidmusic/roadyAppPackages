@@ -3,6 +3,7 @@
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
+use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 
 $currentRequest = new Request(
     new Storable('CurrentRequest',
@@ -12,16 +13,22 @@ $currentRequest = new Request(
     new Switchable()
 );
 
-$target_dir = "Apps/TextAdventureImporter/resources/uploads/";
-$target_file =
-    $target_dir .
-    basename(($_FILES["fileToUpload"]["name"] ?? 'noname'));
+$textAdventureUploader = new TextAdventureUploader();
+
+$target_dir = $textAdventureUploader->pathToUploadsDirectory();
+$target_file = $textAdventureUploader->pathToUploadFileTo();
 $uploadIsPossible = true;
 $uploadedFileType = strtolower(
     pathinfo($target_file,PATHINFO_EXTENSION)
 );
-$fileToUpload = ($_FILES["fileToUpload"]["tmp_name"] ?? 'notvalid');
-
+$fileToUpload = $textAdventureUploader->nameOfFileToUpload();
+var_dump(
+    [
+        'target_dir' => $target_dir,
+        'target_file' => $target_file,
+        'fileToUpload' => $fileToUpload,
+    ]
+);
 if(($currentRequest->getPost()["ImportTwineFile"] ?? '') === 'Import Twine File') {
     if(empty($_FILES["fileToUpload"]["name"])) {
         echo "
