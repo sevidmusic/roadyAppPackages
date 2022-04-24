@@ -1,69 +1,61 @@
 <?php
 
-use roady\classes\component\Web\Routing\Request;
-use roady\classes\primary\Storable;
-use roady\classes\primary\Switchable;
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
-
-$currentRequest = new Request(
-    new Storable(
-        'CurrentRequest',
-        'Requests',
-        'Index'
-    ),
-    new Switchable()
-);
 
 $textAdventureUploader = new TextAdventureUploader();
 $uploadIsPossible = true;
+$aFileWasNotSelectedMessage = '
+    <p class="roady-error-message">
+        A Twine html file was not selected.
+        Please select a Twine html file to upload!
+    </p>
+';
+$invalidFileTypeMessage = '
+    <p class="roady-error-message">
+        Only Twine html files can be uploaded!
+        Please select a Twine html file to upload
+    </p>
+';
+$fileIsToLargeMessage = '
+    <p class="roady-error-message">
+        The file is too large!
+    </p>
+';
 
 if(
-    ($currentRequest->getPost()["ImportTwineFile"] ?? '')
+    (
+        $textAdventureUploader->currentRequest()
+                              ->getPost()["ImportTwineFile"] ?? ''
+    )
     ===
     'Import Twine File'
 ) {
     if(empty($_FILES["fileToUpload"]["name"])) {
-        echo "
-            <p class=\"roady-error-message\">
-                A Twine html file was not selected.
-                Please select a Twine html file to upload!
-            </p>
-        ";
-      $uploadIsPossible = false;
+        echo $aFileWasNotSelectedMessage;
+        $uploadIsPossible = false;
     }
     if(
-        $uploadIsPossible
-        !==
-        false
+        $uploadIsPossible !== false
         &&
         $textAdventureUploader->fileToUploadIsAnHtmlFile() === false
     ) {
-        echo "
-            <p class=\"roady-error-message\">
-                Only Twine html files can be uploaded!
-                Please select a Twine html file to upload
-            </p>
-        ";
-      $uploadIsPossible = false;
+        echo $invalidFileTypeMessage;
+        $uploadIsPossible = false;
     }
     if (
         $uploadIsPossible !== false
         &&
         ($_FILES["fileToUpload"]["size"] ?? 5000000) > 5000000
     ) {
-        echo "
-            <p class=\"roady-error-message\">
-                The file is too large!
-            </p>
-        ";
-      $uploadIsPossible = false;
+        echo $fileIsToLargeMessage;
+        $uploadIsPossible = false;
     }
     if (
         $uploadIsPossible !== false
         &&
         boolval(
             (
-                $currentRequest->getPost()['replaceExistingGame']
+                $textAdventureUploader->currentRequest()->getPost()['replaceExistingGame']
                 ??
                 false
             )
@@ -150,7 +142,7 @@ if(
         <?php
         echo match(
             (
-                $currentRequest->getPost()['replaceExistingGame']
+                $textAdventureUploader->currentRequest()->getPost()['replaceExistingGame']
                 ??
                 ''
             )
