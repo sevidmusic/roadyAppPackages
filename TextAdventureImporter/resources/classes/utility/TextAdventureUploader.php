@@ -37,4 +37,9 @@ class TextAdventureUploader {
             default => 'NO_FILE_SELECTED',
         };
     }
+
+    public function nameOfFileToUpload(): string
+    {
+        return ($_FILES["fileToUpload"]["name"] ?? 'NO_FILE_SELECTED');
+    }
 }

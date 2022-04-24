@@ -5,8 +5,62 @@ namespace Apps\TextAdventureImporter\resources\tests\utility;
 use PHPUnit\Framework\TestCase;
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 
+/**
+ * Defines tests for the TextAdventureUploader.
+ *
+ * Methods:
+ * public function tearDown(): void
+ * public function testNameOfFileToUploadRetunrsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+ * public function testPathToUploadFileToReturnsNameOfFileSelectedForUploadPrefixedByPathToUploadsDirectory(): void
+ * public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+ * public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
+ *
+ */
 class TextAdventureUploaderTest extends TestCase
 {
+
+    public function tearDown(): void
+    {
+        unset($_FILES["fileToUpload"]["name"]);
+    }
+
+    public function testNameOfFileToUploadRetunrsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $this->assertEquals(
+            'NO_FILE_SELECTED',
+            $textAdventureUploader->nameOfFileToUpload()
+        );
+    }
+
+    public function testNameOfFileToUploadRetunrsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $_FILES["fileToUpload"]["name"] = 'Foo.html';
+        $this->assertEquals(
+            $_FILES["fileToUpload"]["name"],
+            $textAdventureUploader->nameOfFileToUpload()
+        );
+    }
+
+    public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $_FILES["fileToUpload"]["name"] = 'Foo.html';
+        $this->assertEquals(
+            $textAdventureUploader->pathToUploadsDirectory() . DIRECTORY_SEPARATOR . $textAdventureUploader->nameOfFileToUpload(),
+            $textAdventureUploader->pathToUploadFileTo()
+        );
+    }
+
+    public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $this->assertEquals(
+            'NO_FILE_SELECTED',
+            $textAdventureUploader->pathToUploadFileTo()
+        );
+    }
 
     public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
     {
@@ -33,43 +87,5 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->pathToUploadsDirectory()
         );
     }
-
-    public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
-    {
-        $textAdventureUploader = new TextAdventureUploader();
-        $this->assertEquals(
-            'NO_FILE_SELECTED',
-            $textAdventureUploader->pathToUploadFileTo()
-        );
-    }
-
-    public function testPathToUploadFileToReturnsNameOfFileSelectedForUploadPrefixedByPathToUploadsDirectory(): void
-    {
-        $textAdventureUploader = new TextAdventureUploader();
-        $_FILES["fileToUpload"]["name"] = 'Foo.html';
-        $this->assertEquals(
-            $textAdventureUploader->pathToUploadsDirectory() . DIRECTORY_SEPARATOR . $_FILES["fileToUpload"]["name"],
-            $textAdventureUploader->pathToUploadFileTo()
-        );
-    }
 }
 
-
-/*
- *
- * @todo Implement the following tests:
- *
-
- public function testUploadedFileTypeRetunrsPATHINFO_EXTENSIONForFileSelectedForUpload(): void
- {
- }
-
-public function testPathToFileUploadReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
-{
-}
-
-public function testPathToFileUploadReturnsThePathToTheUploadedFileIfAFileHasBeenSelectedForUpload(): void
-{
-}
-
- */
