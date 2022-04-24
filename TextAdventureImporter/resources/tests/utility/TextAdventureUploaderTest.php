@@ -54,3 +54,22 @@ class TextAdventureUploaderTest extends TestCase
     }
 }
 
+
+/*
+ *
+ * @todo Implement the following tests:
+ *
+
+ public function testUploadedFileTypeRetunrsPATHINFO_EXTENSIONForFileSelectedForUpload(): void
+ {
+ }
+
+public function testPathToFileUploadReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+{
+}
+
+public function testPathToFileUploadReturnsThePathToTheUploadedFileIfAFileHasBeenSelectedForUpload(): void
+{
+}
+
+ */
