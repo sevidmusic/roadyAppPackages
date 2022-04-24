@@ -123,5 +123,16 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::NO_FILE_SELECTED
         );
     }
+
+    public function testFileToUploadIsAnHtmlFileReturnsFalseIfFileSelcetedForUploadDoesNotHaveTheExtension_html(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader();
+        $this->assertFalse(
+            $textAdventureUploader->fileToUploadIsAnHtmlFile(),
+            TextAdventureUploader::class .
+            '->fileToUploadIsAnHtmlFile() must return false if file '.
+            'to upload does not have the extension `html`.'
+        );
+    }
 }
 

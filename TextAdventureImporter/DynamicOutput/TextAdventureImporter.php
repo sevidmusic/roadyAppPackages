@@ -49,7 +49,7 @@ if(
         !==
         false
         &&
-        $uploadedFileType != "html"
+        $textAdventureUploader->fileToUploadIsAnHtmlFile() === false
     ) {
         echo "
             <p class=\"roady-error-message\">

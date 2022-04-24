@@ -59,5 +59,15 @@ class TextAdventureUploader {
             default => self::NO_FILE_SELECTED
         };
     }
+
+    public function fileToUploadIsAnHtmlFile(): bool
+    {
+        return strtolower(
+            pathinfo(
+                $this->pathToUploadFileTo(),
+                PATHINFO_EXTENSION
+            )
+        ) === 'html';
+    }
 }
 
