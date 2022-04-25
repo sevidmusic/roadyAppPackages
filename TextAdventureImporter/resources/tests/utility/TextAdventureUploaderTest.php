@@ -239,5 +239,30 @@ class TextAdventureUploaderTest extends TestCase
             new Switchable()
         );
     }
+
+    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsFalseIfSizeOfFileToUploadDoesNotExceedAllowedFileSizeOf_5000000_bytes(): void
+    {
+        $_FILES["fileToUpload"]["size"] = 4999999;
+        $currentRequest = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest
+        );
+        $this->assertFalse(
+            $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
+            ''
+        );
+    }
+    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSizeOf_5000000_bytes(): void
+    {
+        $_FILES["fileToUpload"]["size"] = 5000001;
+        $currentRequest = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest
+        );
+        $this->assertTrue(
+            $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
+            ''
+        );
+    }
 }
 

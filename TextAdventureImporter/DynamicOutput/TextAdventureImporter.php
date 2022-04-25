@@ -33,6 +33,20 @@ $fileIsToLargeMessage = '
     </p>
 ';
 
+$theSpecifiedTwineFileWasAlreadyImportedMessage = "
+    <div class=\"roady-error-message\">
+        <p>
+            A Twine file with the same name was already
+            uploaded.
+        </p>
+        <p>
+            Please upload a Twine file with a unique name,
+            or check the <span>Replace Existing App</span>
+            check box below.
+        </p>
+    </div>
+";
+
 if(
     (
         $textAdventureUploader->currentRequest()
@@ -59,7 +73,7 @@ if(
     if (
         $uploadIsPossible !== false
         &&
-        ($_FILES["fileToUpload"]["size"] ?? 5000000) > 5000000
+        $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
     ) {
         echo $fileIsToLargeMessage;
         $uploadIsPossible = false;
@@ -69,7 +83,9 @@ if(
         &&
         boolval(
             (
-                $textAdventureUploader->currentRequest()->getPost()['replaceExistingGame']
+                $textAdventureUploader->currentRequest()
+                                      ->getPost()
+                                      ['replaceExistingGame']
                 ??
                 false
             )
@@ -77,19 +93,7 @@ if(
         &&
         file_exists($textAdventureUploader->pathToUploadFileTo())
     ) {
-        echo "
-            <div class=\"roady-error-message\">
-                <p>
-                    A Twine file with the same name was already
-                    uploaded.
-                </p>
-                <p>
-                    Please upload a Twine file with a unique name,
-                    or check the <span>Replace Existing App</span>
-                    check box below.
-                </p>
-            </div>
-        ";
+        echo $theSpecifiedTwineFileWasAlreadyImportedMessage;
         $uploadIsPossible = false;
     }
     if ($uploadIsPossible) {

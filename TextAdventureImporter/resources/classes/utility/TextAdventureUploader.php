@@ -82,5 +82,14 @@ class TextAdventureUploader {
     {
         return $this->currentRequest;
     }
+
+
+    public function fileToUploadSizeExceedsAllowedFileSize(): bool
+    {
+        return (
+            $_FILES["fileToUpload"]["size"] ?? 5000000
+        ) > 5000000;
+
+    }
 }
 
