@@ -7,5 +7,6 @@
         <a href="http://localhost:8080/index.php?request=StylePreview">
             roadyDarkTheme Style Preview
         </a>
+        <a href="?request=TextAdventureImporter">Text Adventure Uploader</a>
     </nav>
 </div>
