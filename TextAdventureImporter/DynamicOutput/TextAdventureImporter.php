@@ -4,15 +4,46 @@ use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
+use roady\classes\component\Crud\ComponentCrud;
+use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 
+$componentCrud = new ComponentCrud(
+    new Storable(
+        'ComponentCrud',
+        'TextAdventureImporter',
+        'ComponentCruds'
+    ),
+    new Switchable(),
+    new JsonStorageDriver(
+        new Storable(
+            'JsonStorageDriver',
+            'TextAdventureImporter',
+            'StorageDrivers'
+        ),
+        new Switchable()
+    )
+);
 $currentRequest = new Request(
     new Storable(
-        'CurrentRequest',
-        'TextAdventureImporterRequests',
+        'LastRequest',
+        'TextAdventureImporter',
         'UploadRequests'
     ),
     new Switchable()
 );
+
+try {
+    $lastRequest = $componentCrud->readByNameAndType(
+        $currentRequest->getName(),
+        $currentRequest->getType(),
+        $currentRequest->getLocation(),
+        $currentRequest->getContainer()
+    );
+    $componentCrud->update($lastRequest, $currentRequest);
+} catch (\RuntimeException $errorMessage) {
+    $componentCrud->create($currentRequest);
+}
+
 $textAdventureUploader = new TextAdventureUploader($currentRequest);
 $uploadIsPossible = true;
 $aFileWasNotSelectedMessage = '
@@ -47,13 +78,37 @@ $theSpecifiedTwineFileWasAlreadyImportedMessage = "
     </div>
 ";
 
-if(
-    (
-        $textAdventureUploader->currentRequest()
-                              ->getPost()["ImportTwineFile"] ?? ''
+$lastRequestId = (
+    isset($lastRequest)
+    ? $lastRequest->getUniqueId()
+    : ''
+);
+
+$postRequestId = (
+    isset(
+        $currentRequest->getPost()['lastRequestId'])
+        ? $currentRequest->getPost()['lastRequestId']
+        : strval(rand(1000, 70000)
     )
-    === 'Import Twine File'
+);
+
+if(
+    $lastRequestId
+    ===
+    $postRequestId
 ) {
+    $vars = [
+        'currentRequstId' => $currentRequest->getUniqueId(),
+        'lastRequest' => $lastRequestId,
+        'postRequestId' => $postRequestId,
+    ];
+
+    echo '<ul class="roady-ul-list">';
+    foreach($vars as $varKey => $varValue) {
+        echo '<li>' . $varKey . '</li>';
+        echo '<li>' . strval($varValue) . '</li>';
+    }
+    echo '</ul>';
     if(
         $textAdventureUploader->nameOfFileToUpload()
         ===
@@ -173,10 +228,15 @@ if(
         value="true"
     >
     <input
-        type="submit"
+        type="hidden"
+        name="lastRequestId"
+        value="<?php echo $currentRequest->getUniqueId(); ?>"
+    >
+    <input
         class="roady-form-input"
-        value="Import Twine File"
+        type="submit"
         name="ImportTwineFile"
+        value="Import Twine File"
     >
 </form>
 
