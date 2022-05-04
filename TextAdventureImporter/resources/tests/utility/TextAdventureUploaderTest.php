@@ -4,6 +4,8 @@ namespace Apps\TextAdventureImporter\resources\tests\utility;
 
 use Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader;
 use PHPUnit\Framework\TestCase;
+use roady\classes\component\Crud\ComponentCrud;
+use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
@@ -30,7 +32,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testNameOfFileToUploadRetunrsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
@@ -51,7 +54,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testNameOfFileToUploadRetunrsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
                [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
@@ -64,7 +68,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
                [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
@@ -77,7 +82,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
@@ -88,7 +94,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $expectedPath = (
             str_replace(
@@ -140,7 +147,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testFileToUploadIsAnHtmlFileReturnsFalseIfFileSelcetedForUploadDoesNotHaveTheExtension_html(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $this->assertFalse(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
@@ -154,7 +162,8 @@ class TextAdventureUploaderTest extends TestCase
     public function testFileToUploadIsAnHtmlFileReturnsTrueIfFileSelcetedForUploadHasTheExtension_html(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest()
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
         );
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILENAME_INDEX] = 'foo.html';
         $this->assertTrue(
@@ -170,7 +179,8 @@ class TextAdventureUploaderTest extends TestCase
     {
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest
+            $currentRequest,
+            $this->mockComponentCrud()
         );
         $this->assertEquals(
             $currentRequest->getUrl(),
@@ -191,7 +201,8 @@ class TextAdventureUploaderTest extends TestCase
         $currentRequest = $this->mockCurrentRequest();
         $currentRequest->import(['post' => ['post data']]);
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest
+            $currentRequest,
+            $this->mockComponentCrud()
         );
         $this->assertEquals(
             $currentRequest->getPost(),
@@ -212,7 +223,8 @@ class TextAdventureUploaderTest extends TestCase
         $currentRequest = $this->mockCurrentRequest();
         $currentRequest->import(['get' => ['get data']]);
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest
+            $currentRequest,
+            $this->mockComponentCrud()
         );
         $this->assertEquals(
             $currentRequest->getPost(),
@@ -245,24 +257,71 @@ class TextAdventureUploaderTest extends TestCase
         $_FILES["fileToUpload"]["size"] = 4999999;
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest
+            $currentRequest,
+            $this->mockComponentCrud()
         );
         $this->assertFalse(
             $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
             ''
         );
     }
+
     public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSizeOf_5000000_bytes(): void
     {
         $_FILES["fileToUpload"]["size"] = 5000001;
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest
+            $currentRequest,
+            $this->mockComponentCrud()
         );
         $this->assertTrue(
             $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
             ''
         );
     }
+
+    public function mockComponentCrud(): ComponentCrud
+    {
+        return new ComponentCrud(
+            new Storable(
+                'TextAdventureUploaderTestComponentCrud',
+                'TextAdventureImporter',
+                'ComponentCruds'
+            ),
+            new Switchable(),
+            new JsonStorageDriver(
+                new Storable(
+                    'TextAdventureUploaderTestJsonStorageDriver',
+                    'TextAdventureImporter',
+                    'Drivers'
+                ),
+                new Switchable()
+            )
+        );
+    }
+
+    public function testComponentCrudReturnsAssignedComponentCrud(): void
+    {
+        $specifiedComponentCrud = $this->mockComponentCrud();
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $specifiedComponentCrud
+        );
+        $this->assertEquals(
+            $specifiedComponentCrud,
+            $textAdventureUploader->componentCrud()
+        );
+    }
+    /**
+        *
+    public function testSpecifiedRequestIsStoredOnInstantiation(): void
+    {
+        $currentRequest = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $currentRequest,
+            $this->mockComponentCrud()
+        );
+    }
+     */
 }
 

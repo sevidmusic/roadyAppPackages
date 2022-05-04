@@ -3,6 +3,8 @@
 namespace Apps\TextAdventureImporter\resources\classes\utility;
 
 use roady\classes\component\Web\Routing\Request;
+use roady\classes\component\Crud\ComponentCrud;
+use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
@@ -26,7 +28,8 @@ class TextAdventureUploader {
     public const FILENAME_INDEX = 'name';
 
     public function __construct(
-        private Request $currentRequest
+        private Request $currentRequest,
+        private ComponentCrud $componentCrud
     ) {}
 
     public function pathToUploadsDirectory(): string
@@ -90,6 +93,12 @@ class TextAdventureUploader {
             $_FILES["fileToUpload"]["size"] ?? 5000000
         ) > 5000000;
 
+    }
+
+
+    public function componentCrud(): ComponentCrud
+    {
+        return $this->componentCrud;
     }
 }
 

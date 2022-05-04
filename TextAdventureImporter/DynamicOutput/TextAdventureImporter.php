@@ -32,19 +32,9 @@ $currentRequest = new Request(
     new Switchable()
 );
 
-try {
-    $lastRequest = $componentCrud->readByNameAndType(
-        $currentRequest->getName(),
-        $currentRequest->getType(),
-        $currentRequest->getLocation(),
-        $currentRequest->getContainer()
-    );
-    $componentCrud->update($lastRequest, $currentRequest);
-} catch (\RuntimeException $errorMessage) {
-    $componentCrud->create($currentRequest);
-}
-
-$textAdventureUploader = new TextAdventureUploader($currentRequest);
+$textAdventureUploader = new TextAdventureUploader(
+    $currentRequest, $componentCrud
+);
 $uploadIsPossible = true;
 $aFileWasNotSelectedMessage = '
     <p class="roady-error-message">
@@ -78,17 +68,26 @@ $theSpecifiedTwineFileWasAlreadyImportedMessage = "
     </div>
 ";
 
+try {
+    $lastRequest = $componentCrud->readByNameAndType(
+        $currentRequest->getName(),
+        $currentRequest->getType(),
+        $currentRequest->getLocation(),
+        $currentRequest->getContainer()
+    );
+    $componentCrud->update($lastRequest, $currentRequest);
+} catch (\RuntimeException $errorMessage) {
+    $componentCrud->create($currentRequest);
+}
 $lastRequestId = (
     isset($lastRequest)
     ? $lastRequest->getUniqueId()
     : ''
 );
-
 $postRequestId = (
-    isset(
-        $currentRequest->getPost()['lastRequestId'])
-        ? $currentRequest->getPost()['lastRequestId']
-        : strval(rand(1000, 70000)
+    isset($currentRequest->getPost()['lastRequestId'])
+    ? $currentRequest->getPost()['lastRequestId']
+    : strval(rand(1000, 70000)
     )
 );
 
