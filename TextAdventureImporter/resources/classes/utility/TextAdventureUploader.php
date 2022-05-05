@@ -27,11 +27,14 @@ class TextAdventureUploader {
 
     public const FILENAME_INDEX = 'name';
 
+    private Request $previousRequest;
+
     public function __construct(
         private Request $currentRequest,
         private ComponentCrud $componentCrud
     ) {
         try {
+            /** @var Request $previousRequest */
             $previousRequest = $componentCrud->readByNameAndType(
                 $currentRequest->getName(),
                 $currentRequest->getType(),
@@ -39,9 +42,16 @@ class TextAdventureUploader {
                 $currentRequest->getContainer()
             );
             $componentCrud->update($previousRequest, $currentRequest);
+            $this->previousRequest = $previousRequest;
         } catch (\RuntimeException $errorMessage) {
             $componentCrud->create($currentRequest);
+            $this->previousRequest = $currentRequest;
         }
+    }
+
+    public function previousRequest(): Request
+    {
+        return $this->previousRequest;
     }
 
     public function pathToUploadsDirectory(): string

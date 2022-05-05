@@ -23,6 +23,7 @@ $componentCrud = new ComponentCrud(
         new Switchable()
     )
 );
+
 $currentRequest = new Request(
     new Storable(
         'LastRequest',

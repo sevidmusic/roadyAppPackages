@@ -27,6 +27,16 @@ class TextAdventureUploaderTest extends TestCase
     public function tearDown(): void
     {
         unset($_FILES["fileToUpload"]["name"]);
+        foreach(
+            $this->mockComponentCrud()
+                 ->readAll(
+                     $this->mockCurrentRequest()->getLocation(),
+                     $this->mockCurrentRequest()->getContainer()
+                 ) as $testComponent
+        ) {
+            $this->mockComponentCrud()->delete($testComponent);
+        }
+
     }
 
     public function testNameOfFileToUploadRetunrsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
@@ -349,10 +359,10 @@ class TextAdventureUploaderTest extends TestCase
             Request::class . ' must be used to update the stored ' .
             Request::class . ' on instantiation of a new ' .
             TextAdventureUploader::class . '.';
-        $currentRequest = $this->mockCurrentRequest();
+        $previousRequest = $this->mockCurrentRequest();
         $newRequest = $this->mockCurrentRequest();
         $firstTextAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $previousRequest,
             $this->mockComponentCrud()
         );
         $secondTextAdventureUploader = new TextAdventureUploader(
@@ -360,12 +370,13 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockComponentCrud()
         );
         $this->assertNotEquals(
-            $currentRequest,
+            $previousRequest,
             $this->mockComponentCrud()->read(
-                $currentRequest
+                $previousRequest
             ),
             $failureMessagePrefix .
-            'The original ' . Request::class . ' was not updated.'
+            'The original ' . Request::class . ' was not updated, ' .
+            'it still exists in storage.'
         );
         $this->assertEquals(
             $newRequest,
@@ -375,7 +386,45 @@ class TextAdventureUploaderTest extends TestCase
             $failureMessagePrefix .
             'The specified' . Request::class . ' was not stored.'
         );
+    }
 
+
+    public function testPreviousRequestReturnsPreviouslyStoredRequest(): void
+    {
+        $previousRequest = $this->mockCurrentRequest();
+        $firstTextAdventureUploader = new TextAdventureUploader(
+            $previousRequest,
+            $this->mockComponentCrud()
+        );
+        $secondTextAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        $this->assertEquals(
+            $previousRequest,
+            $secondTextAdventureUploader->previousRequest(),
+            TextAdventureUploader::class .
+            '->previousRequest() must return the ' .
+            'previous ' . Request::class . ' that was updated ' .
+            'on last instantiation of a ' .
+            TextAdventureUploader::class
+        );
+    }
+
+    public function testPreviousRequestReturnsSpecifiedRequestIfARequestWasNotPreviouslyStored(): void
+    {
+        $newRequest = $this->mockCurrentRequest();
+        $firstTextAdventureUploader = new TextAdventureUploader(
+            $newRequest,
+            $this->mockComponentCrud()
+        );
+        $this->assertEquals(
+            $newRequest,
+            $firstTextAdventureUploader->previousRequest(),
+            TextAdventureUploader::class .
+            '->previousRequest() must return the ' .
+            'specified ' . Request::class . ' if a ' .
+            Request::class . ' was not previously stored.'
+        );
     }
 }
-
