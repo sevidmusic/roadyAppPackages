@@ -30,7 +30,19 @@ class TextAdventureUploader {
     public function __construct(
         private Request $currentRequest,
         private ComponentCrud $componentCrud
-    ) {}
+    ) {
+        try {
+            $previousRequest = $componentCrud->readByNameAndType(
+                $currentRequest->getName(),
+                $currentRequest->getType(),
+                $currentRequest->getLocation(),
+                $currentRequest->getContainer()
+            );
+            $componentCrud->update($previousRequest, $currentRequest);
+        } catch (\RuntimeException $errorMessage) {
+            $componentCrud->create($currentRequest);
+        }
+    }
 
     public function pathToUploadsDirectory(): string
     {

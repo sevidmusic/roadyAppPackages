@@ -128,19 +128,23 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFILENAME_INDEXConstantIsAssignedTheString_fileToUpload(): void
+    public function testFILENAME_INDEXConstantIsAssignedTheString_name(): void
     {
         $this->assertEquals(
             'name',
-            TextAdventureUploader::FILENAME_INDEX
+            TextAdventureUploader::FILENAME_INDEX,
+            'TextAdventureUploader::FILENAME_INDEX constant must ' .
+            'be assigned the string `name`.'
         );
     }
 
-    public function testNO_FILE_SELECTEDConstantIsAssignedTheString_fileToUpload(): void
+    public function testNO_FILE_SELECTEDConstantIsAssignedTheString_NO_FILE_SELECTED(): void
     {
         $this->assertEquals(
             'NO_FILE_SELECTED',
-            TextAdventureUploader::NO_FILE_SELECTED
+            TextAdventureUploader::NO_FILE_SELECTED,
+            'TextAdventureUploader::NO_FILE_SELECTED constant must ' .
+            'be assigned the string `NO_FILE_SELECTED`.'
         );
     }
 
@@ -153,8 +157,7 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertFalse(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
-            '->' . __FUNCTION__ .
-            '() must return false if file '.
+            '->fileToUploadIsAnHtmlFile() must return false if file '.
             'to upload does not have the extension `html`.'
         );
     }
@@ -169,13 +172,12 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertTrue(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
-            '->' . __FUNCTION__ .
-            '() must return true if file '.
-            'to upload has the extension `html`.'
+            '->fileToUploadIsAnHtmlFile() must return true if' .
+            'file to upload does have the extension `html`.'
         );
     }
 
-    public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheCurrentRequestsUrl(): void
+    public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheRequestSpecifiedOnInstantiation(): void
     {
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
@@ -186,9 +188,7 @@ class TextAdventureUploaderTest extends TestCase
             $currentRequest->getUrl(),
             $textAdventureUploader->currentRequest()->getUrl(),
             TextAdventureUploader::class .
-            '->' .
-            __FUNCTION__ .
-            '() must return a ' .
+            '->currentRequest() must return a ' .
             Request::class .
             ' instance whose url matches the url for the current' .
             'request.'
@@ -262,7 +262,10 @@ class TextAdventureUploaderTest extends TestCase
         );
         $this->assertFalse(
             $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
-            ''
+            TextAdventureUploader::class .
+            '->fileToUploadSizeExceedsAllowedFileSize() must ' .
+            'return false if size of file to upload does not ' .
+            'exceed the maximum allowed file size of 5000000 bytes.'
         );
     }
 
@@ -276,7 +279,10 @@ class TextAdventureUploaderTest extends TestCase
         );
         $this->assertTrue(
             $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
-            ''
+            TextAdventureUploader::class .
+            '->fileToUploadSizeExceedsAllowedFileSize() must ' .
+            'return true if size of file to upload exceeds ' .
+            'the maximum allowed file size of 5000000 bytes.'
         );
     }
 
@@ -309,11 +315,14 @@ class TextAdventureUploaderTest extends TestCase
         );
         $this->assertEquals(
             $specifiedComponentCrud,
-            $textAdventureUploader->componentCrud()
+            $textAdventureUploader->componentCrud(),
+            'The ' . TextAdventureUploader::class .
+            '->componentCrud() method must return the ' .
+            ComponentCrud::class . ' instance that was assigned on ' .
+            ' instantiation of a new ' . TextAdventureUploader::class
         );
     }
-    /**
-        *
+
     public function testSpecifiedRequestIsStoredOnInstantiation(): void
     {
         $currentRequest = $this->mockCurrentRequest();
@@ -321,7 +330,52 @@ class TextAdventureUploaderTest extends TestCase
             $currentRequest,
             $this->mockComponentCrud()
         );
+        $this->assertEquals(
+            $currentRequest,
+            $this->mockComponentCrud()->read(
+                $currentRequest
+            ),
+            'The specified ' . Request::class . ' must be stored on ' .
+            'instantiation of a new ' . TextAdventureUploader::class
+        );
     }
-     */
+
+    public function testSpecifiedRequestReplacesExistingStoredRequestWhoseNameTypeLocationAndContainerMatchSpecifiedRequestOnInstantiation(): void
+    {
+        $failureMessagePrefix =
+            'If a stored ' . Request::class . ' exists whose ' .
+            'name, type, location, and container match the ' .
+            'specified ' . Request::class . ', then the specified ' .
+            Request::class . ' must be used to update the stored ' .
+            Request::class . ' on instantiation of a new ' .
+            TextAdventureUploader::class . '.';
+        $currentRequest = $this->mockCurrentRequest();
+        $newRequest = $this->mockCurrentRequest();
+        $firstTextAdventureUploader = new TextAdventureUploader(
+            $currentRequest,
+            $this->mockComponentCrud()
+        );
+        $secondTextAdventureUploader = new TextAdventureUploader(
+            $newRequest,
+            $this->mockComponentCrud()
+        );
+        $this->assertNotEquals(
+            $currentRequest,
+            $this->mockComponentCrud()->read(
+                $currentRequest
+            ),
+            $failureMessagePrefix .
+            'The original ' . Request::class . ' was not updated.'
+        );
+        $this->assertEquals(
+            $newRequest,
+            $this->mockComponentCrud()->read(
+                $newRequest
+            ),
+            $failureMessagePrefix .
+            'The specified' . Request::class . ' was not stored.'
+        );
+
+    }
 }
 

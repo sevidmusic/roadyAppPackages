@@ -32,6 +32,16 @@ $currentRequest = new Request(
     new Switchable()
 );
 
+try {
+    $lastRequest = $componentCrud->readByNameAndType(
+        $currentRequest->getName(),
+        $currentRequest->getType(),
+        $currentRequest->getLocation(),
+        $currentRequest->getContainer()
+    );
+} catch (\RuntimeException $errorMessage) {
+    $lastRequest = $currentRequest;
+}
 $textAdventureUploader = new TextAdventureUploader(
     $currentRequest, $componentCrud
 );
@@ -68,22 +78,6 @@ $theSpecifiedTwineFileWasAlreadyImportedMessage = "
     </div>
 ";
 
-try {
-    $lastRequest = $componentCrud->readByNameAndType(
-        $currentRequest->getName(),
-        $currentRequest->getType(),
-        $currentRequest->getLocation(),
-        $currentRequest->getContainer()
-    );
-    $componentCrud->update($lastRequest, $currentRequest);
-} catch (\RuntimeException $errorMessage) {
-    $componentCrud->create($currentRequest);
-}
-$lastRequestId = (
-    isset($lastRequest)
-    ? $lastRequest->getUniqueId()
-    : ''
-);
 $postRequestId = (
     isset($currentRequest->getPost()['lastRequestId'])
     ? $currentRequest->getPost()['lastRequestId']
@@ -92,13 +86,13 @@ $postRequestId = (
 );
 
 if(
-    $lastRequestId
+    $lastRequest->getUniqueId()
     ===
     $postRequestId
 ) {
     $vars = [
         'currentRequstId' => $currentRequest->getUniqueId(),
-        'lastRequest' => $lastRequestId,
+        'lastRequest' => $lastRequest->getUniqueId(),
         'postRequestId' => $postRequestId,
     ];
 
