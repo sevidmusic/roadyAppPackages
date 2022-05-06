@@ -7,46 +7,6 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 
-$componentCrud = new ComponentCrud(
-    new Storable(
-        'ComponentCrud',
-        'TextAdventureImporter',
-        'ComponentCruds'
-    ),
-    new Switchable(),
-    new JsonStorageDriver(
-        new Storable(
-            'JsonStorageDriver',
-            'TextAdventureImporter',
-            'StorageDrivers'
-        ),
-        new Switchable()
-    )
-);
-
-$currentRequest = new Request(
-    new Storable(
-        'LastRequest',
-        'TextAdventureImporter',
-        'UploadRequests'
-    ),
-    new Switchable()
-);
-
-try {
-    $lastRequest = $componentCrud->readByNameAndType(
-        $currentRequest->getName(),
-        $currentRequest->getType(),
-        $currentRequest->getLocation(),
-        $currentRequest->getContainer()
-    );
-} catch (\RuntimeException $errorMessage) {
-    $lastRequest = $currentRequest;
-}
-$textAdventureUploader = new TextAdventureUploader(
-    $currentRequest, $componentCrud
-);
-$uploadIsPossible = true;
 $aFileWasNotSelectedMessage = '
     <p class="roady-error-message">
         A Twine html file was not selected.
@@ -79,21 +39,55 @@ $theSpecifiedTwineFileWasAlreadyImportedMessage = "
     </div>
 ";
 
+$textAdventureUploader = new TextAdventureUploader(
+    new Request(
+        new Storable(
+            'LastRequest',
+            'TextAdventureImporter',
+            'UploadRequests'
+        ),
+        new Switchable()
+    ),
+    new ComponentCrud(
+        new Storable(
+            'ComponentCrud',
+            'TextAdventureImporter',
+            'ComponentCruds'
+        ),
+        new Switchable(),
+        new JsonStorageDriver(
+            new Storable(
+                'JsonStorageDriver',
+                'TextAdventureImporter',
+                'StorageDrivers'
+            ),
+            new Switchable()
+        )
+    )
+);
+
+$uploadIsPossible = true;
 $postRequestId = (
-    isset($currentRequest->getPost()['lastRequestId'])
-    ? $currentRequest->getPost()['lastRequestId']
+    isset(
+        $textAdventureUploader->currentRequest()
+                              ->getPost()['postRequestId']
+    )
+    ? $textAdventureUploader->currentRequest()
+                            ->getPost()['postRequestId']
     : strval(rand(1000, 70000)
     )
 );
 
 if(
-    $lastRequest->getUniqueId()
+    $textAdventureUploader->previousRequest()->getUniqueId()
     ===
     $postRequestId
 ) {
     $vars = [
-        'currentRequstId' => $currentRequest->getUniqueId(),
-        'lastRequest' => $lastRequest->getUniqueId(),
+        'currentRequstId' =>
+        $textAdventureUploader->currentRequest()->getUniqueId(),
+        'lastRequest' =>
+        $textAdventureUploader->previousRequest()->getUniqueId(),
         'postRequestId' => $postRequestId,
     ];
 
@@ -209,7 +203,8 @@ if(
         <?php
         echo match(
             (
-                $textAdventureUploader->currentRequest()->getPost()['replaceExistingGame']
+                $textAdventureUploader->currentRequest()
+                                      ->getPost()['replaceExistingGame']
                 ??
                 ''
             )
@@ -223,8 +218,8 @@ if(
     >
     <input
         type="hidden"
-        name="lastRequestId"
-        value="<?php echo $currentRequest->getUniqueId(); ?>"
+        name="postRequestId"
+        value="<?php echo $textAdventureUploader->currentRequest()->getUniqueId(); ?>"
     >
     <input
         class="roady-form-input"
