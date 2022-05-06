@@ -468,7 +468,46 @@ class TextAdventureUploaderTest extends TestCase
             Request::class . '\'s $_POST data if it is defined.'
         );
     }
+
+    public function testReplaceExistingGameReturnsFalseIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsNotSetToTheString_true(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertFalse(
+            $textAdventureUploader->replaceExistingGame(),
+            TextAdventureUploader::class .
+            '->replaceExistingGame() must return false ' .
+            'if the replaceExistingGame value set in the specified ' .
+            Request::class . '\'s $_POST data is not assigned the ' .
+            'string `true`.'
+        );
+    }
+
+    public function testReplaceExistingGameReturnsTrueIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsSetToTheString_true(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $request->import(
+            [
+                'post' => [
+                    'replaceExistingGame' => 'true'
+                ]
+            ]
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertTrue(
+            $textAdventureUploader->replaceExistingGame(),
+            TextAdventureUploader::class .
+            '->replaceExistingGame() must return true ' .
+            'if the replaceExistingGame value set in the specified ' .
+            Request::class . '\'s $_POST data is assigned the ' .
+            'string `true`.'
+        );
+    }
 }
-/**
- *
- */
+

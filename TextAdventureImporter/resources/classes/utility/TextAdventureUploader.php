@@ -127,5 +127,19 @@ class TextAdventureUploader {
     {
         return ($this->currentRequest()->getPost()['postRequestId'] ?? '');
     }
+
+    public function replaceExistingGame(): bool
+    {
+        return (
+            (
+                $this->currentRequest()
+                     ->getPost()['replaceExistingGame']
+                ??
+                ''
+            )
+            ===
+            'true'
+        );
+    }
 }
 
