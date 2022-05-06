@@ -114,15 +114,7 @@ if(
     if (
         $uploadIsPossible !== false
         &&
-        boolval(
-            (
-                $textAdventureUploader->currentRequest()
-                                      ->getPost()
-                                      ['replaceExistingGame']
-                ??
-                false
-            )
-        ) !== true
+        $textAdventureUploader->replaceExistingGame() !== true
         &&
         file_exists($textAdventureUploader->pathToUploadFileTo())
     ) {
