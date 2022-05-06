@@ -67,28 +67,18 @@ $textAdventureUploader = new TextAdventureUploader(
 );
 
 $uploadIsPossible = true;
-$postRequestId = (
-    isset(
-        $textAdventureUploader->currentRequest()
-                              ->getPost()['postRequestId']
-    )
-    ? $textAdventureUploader->currentRequest()
-                            ->getPost()['postRequestId']
-    : strval(rand(1000, 70000)
-    )
-);
 
 if(
     $textAdventureUploader->previousRequest()->getUniqueId()
     ===
-    $postRequestId
+    $textAdventureUploader->postRequestId()
 ) {
     $vars = [
         'currentRequstId' =>
         $textAdventureUploader->currentRequest()->getUniqueId(),
         'lastRequest' =>
         $textAdventureUploader->previousRequest()->getUniqueId(),
-        'postRequestId' => $postRequestId,
+        'postRequestId' => $textAdventureUploader->postRequestId(),
     ];
 
     echo '<ul class="roady-ul-list">';

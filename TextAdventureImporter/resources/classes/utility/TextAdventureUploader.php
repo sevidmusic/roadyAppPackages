@@ -122,5 +122,10 @@ class TextAdventureUploader {
     {
         return $this->componentCrud;
     }
+
+    public function postRequestId(): string
+    {
+        return ($this->currentRequest()->getPost()['postRequestId'] ?? '');
+    }
 }
 

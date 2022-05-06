@@ -427,4 +427,48 @@ class TextAdventureUploaderTest extends TestCase
             Request::class . ' was not previously stored.'
         );
     }
+
+
+    public function testPostRequestIdReturnsAnEmptyStringIfNotSetInCurrentRequestsPOSTData(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEmpty(
+            $textAdventureUploader->postRequestId(),
+            TextAdventureUploader::class .
+            '->postRequestId() must return an empty ' .
+            'string if the specified ' . Request::class .
+            '\'s $_POST data does not contain a postRequestId.'
+        );
+    }
+
+    public function testPostRequestIdReturnsThePostRequestIdSetInTheCurrentRequestsPOSTData(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $request->import(
+            [
+                'post' => [
+                    'postRequestId' => $request->getUniqueId()
+                ]
+            ]
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEquals(
+            $request->getUniqueId(),
+            $textAdventureUploader->postRequestId(),
+            TextAdventureUploader::class .
+            '->postRequestId() must return the value of the ' .
+            'postRequestId set in the specified ' .
+            Request::class . '\'s $_POST data if it is defined.'
+        );
+    }
 }
+/**
+ *
+ */
