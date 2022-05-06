@@ -141,5 +141,11 @@ class TextAdventureUploader {
             'true'
         );
     }
+
+    public function fileToUploadsActualName(): string
+    {
+        return ($_FILES["fileToUpload"]["name"] ?? '');
+    }
+
 }
 

@@ -133,7 +133,8 @@ if(
         }
         echo match(
             move_uploaded_file(
-                $_FILES["fileToUpload"]["tmp_name"],
+                $_FILES["fileToUpload"]["tmp_name"],// @todo $textAdventureUploader->fileToUploadsTemporaryName()
+
                 $textAdventureUploader->pathToUploadFileTo()
             )
         ) {
@@ -141,7 +142,7 @@ if(
                 <p class=\"roady-success-message\">
                     The file ".
                     htmlspecialchars(
-                        basename($_FILES["fileToUpload"]["name"])
+                        basename($textAdventureUploader->fileToUploadsActualName())
                     ) .
                     " has been uploaded.
                 </p>",
@@ -183,15 +184,8 @@ if(
         class="roady-form-input"
         type="checkbox"
         <?php
-        echo match(
-            (
-                $textAdventureUploader->currentRequest()
-                                      ->getPost()['replaceExistingGame']
-                ??
-                ''
-            )
-        ) {
-            'true' => 'checked',
+        echo match($textAdventureUploader->replaceExistingGame()) {
+            true => 'checked',
             default => '',
         };
         ?>
@@ -201,7 +195,10 @@ if(
     <input
         type="hidden"
         name="postRequestId"
-        value="<?php echo $textAdventureUploader->currentRequest()->getUniqueId(); ?>"
+        value="<?php
+        echo $textAdventureUploader->currentRequest()
+                                   ->getUniqueId();
+        ?>"
     >
     <input
         class="roady-form-input"

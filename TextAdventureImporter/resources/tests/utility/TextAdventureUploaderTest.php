@@ -509,5 +509,39 @@ class TextAdventureUploaderTest extends TestCase
             'string `true`.'
         );
     }
+
+    public function testFileToUploadsActualNameReturnsAnEmptyStringIf_fileToUpload_name_IsNotSetIn_FILES(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEmpty(
+            $textAdventureUploader->fileToUploadsActualName(),
+            TextAdventureUploader::class .
+            '->fileToUploadsActualName() must return an ' .
+            'empty string if $_FILES["fileToUpload"]["name"] is ' .
+            'not set'
+        );
+    }
+
+    public function testFileToUploadsActualNameReturnsValueAssignedTo_fileToUpload_name_IsSetIn_FILES(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $_FILES["fileToUpload"]["name"] = $request->getUniqueId();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEquals(
+            $request->getUniqueId(),
+            $textAdventureUploader->fileToUploadsActualName(),
+            TextAdventureUploader::class .
+            '->fileToUploadsActualName() must return an ' .
+            'empty string if $_FILES["fileToUpload"]["name"] is ' .
+            'not set'
+        );
+    }
 }
 
