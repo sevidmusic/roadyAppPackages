@@ -26,7 +26,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function tearDown(): void
     {
-        unset($_FILES["fileToUpload"]["name"]);
+        unset($_FILES["fileToUpload"]);
         foreach(
             $this->mockComponentCrud()
                  ->readAll(
@@ -510,40 +510,6 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFileToUploadsActualNameReturnsAnEmptyStringIf_fileToUpload_name_IsNotSetIn_FILES(): void
-    {
-        $request = $this->mockCurrentRequest();
-        $textAdventureUploader = new TextAdventureUploader(
-            $request,
-            $this->mockComponentCrud()
-        );
-        $this->assertEmpty(
-            $textAdventureUploader->fileToUploadsActualName(),
-            TextAdventureUploader::class .
-            '->fileToUploadsActualName() must return an ' .
-            'empty string if $_FILES["fileToUpload"]["name"] is ' .
-            'not set.'
-        );
-    }
-
-    public function testFileToUploadsActualNameReturnsValueAssignedTo_fileToUpload_name_IfItIsSetIn_FILES(): void
-    {
-        $request = $this->mockCurrentRequest();
-        $_FILES["fileToUpload"]["name"] = $request->getUniqueId();
-        $textAdventureUploader = new TextAdventureUploader(
-            $request,
-            $this->mockComponentCrud()
-        );
-        $this->assertEquals(
-            $request->getUniqueId(),
-            $textAdventureUploader->fileToUploadsActualName(),
-            TextAdventureUploader::class .
-            '->fileToUploadsActualName() must return an ' .
-            'empty string if $_FILES["fileToUpload"]["name"] is ' .
-            'not set.'
-        );
-    }
-
     public function testFileToUploadsTemporaryNameReturnsAnEmptyStringIf_fileToUpload__tmp_name_IsNotSetIn_FILES(): void
     {
         $request = $this->mockCurrentRequest();
@@ -593,18 +559,23 @@ class TextAdventureUploaderTest extends TestCase
         );
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
-}
 
-/**
-
-    public function testUploadIsPossibleReturnsFalseIfAFileWithTheSameNameAsTheFileToUploadWasAlreadyUploaded(): void
+    public function testUploadIsPossibleReturnsFalseIfAFileWithWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload(): void
     {
         $request = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
+        $this->assertEquals(
+            $textAdventureUploader->nameOfFileToUpload(),
+            $textAdventureUploader->nameOfFileToUpload()
+        );
     }
+}
+
+/**
+
     $textAdventureUploader->replaceExistingGame() !== true
     &&
     file_exists($textAdventureUploader->pathToUploadFileTo())

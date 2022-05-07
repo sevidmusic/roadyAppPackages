@@ -70,7 +70,7 @@ $fileUploadedSuccessfullyMessage = "
     <p class=\"roady-success-message\">
         The file ".
         htmlspecialchars(
-            basename($textAdventureUploader->fileToUploadsActualName())
+            basename($textAdventureUploader->nameOfFileToUpload())
         ) .
     " has been uploaded.
     </p>";

@@ -114,7 +114,7 @@ class TextAdventureUploader {
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
         return (
-            $_FILES["fileToUpload"]["size"] ?? 5000000
+            $_FILES[self::FILE_TO_UPLOAD_INDEX]["size"] ?? 5000000
         ) > 5000000;
 
     }
@@ -144,14 +144,9 @@ class TextAdventureUploader {
         );
     }
 
-    public function fileToUploadsActualName(): string
-    {
-        return ($_FILES["fileToUpload"]["name"] ?? '');
-    }
-
     public function fileToUploadsTemporaryName(): string
     {
-        return ($_FILES["fileToUpload"]["tmp_name"] ?? '');
+        return ($_FILES[self::FILE_TO_UPLOAD_INDEX]["tmp_name"] ?? '');
     }
 
     public function upload(): bool
