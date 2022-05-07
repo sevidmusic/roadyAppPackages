@@ -119,7 +119,6 @@ class TextAdventureUploader {
 
     }
 
-
     public function componentCrud(): ComponentCrud
     {
         return $this->componentCrud;
@@ -127,7 +126,11 @@ class TextAdventureUploader {
 
     public function postRequestId(): string
     {
-        return ($this->currentRequest()->getPost()['postRequestId'] ?? '');
+        return (
+            $this->currentRequest()->getPost()['postRequestId']
+            ??
+            self::NO_FILE_SELECTED
+        );
     }
 
     public function replaceExistingGame(): bool
@@ -146,7 +149,7 @@ class TextAdventureUploader {
 
     public function fileToUploadsTemporaryName(): string
     {
-        return ($_FILES[self::FILE_TO_UPLOAD_INDEX]["tmp_name"] ?? '');
+        return ($_FILES[self::FILE_TO_UPLOAD_INDEX]["tmp_name"] ?? self::NO_FILE_SELECTED);
     }
 
     public function upload(): bool

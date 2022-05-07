@@ -429,18 +429,20 @@ class TextAdventureUploaderTest extends TestCase
     }
 
 
-    public function testPostRequestIdReturnsAnEmptyStringIfNotSetInCurrentRequestsPOSTData(): void
+    public function testPostRequestIdReturnsTheString_NO_FILE_SELECTED_IfPostRequestIdIsNotSetInCurrentRequestsPOSTData(): void
     {
         $request = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
-        $this->assertEmpty(
+        $this->assertEquals(
+            TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->postRequestId(),
             TextAdventureUploader::class .
-            '->postRequestId() must return an empty ' .
-            'string if the specified ' . Request::class .
+            '->postRequestId() must return the ' .
+            'string `NO_FILE_SELECTED` if the specified ' .
+            Request::class .
             '\'s $_POST data does not contain a postRequestId.'
         );
     }
@@ -510,19 +512,20 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFileToUploadsTemporaryNameReturnsAnEmptyStringIf_fileToUpload__tmp_name_IsNotSetIn_FILES(): void
+    public function testFileToUploadsTemporaryNameReturnsTheString_NO_FILE_SELECTED_If_fileToUpload__tmp_name_IsNotSetIn_FILES(): void
     {
         $request = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
-        $this->assertEmpty(
+        $this->assertEquals(
+            TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->fileToUploadsTemporaryName(),
             TextAdventureUploader::class .
-            '->fileToUploadsTemporaryName() must return an ' .
-            'empty string if $_FILES["fileToUpload"]["tmp_name"] ' .
-            'is not set.'
+            '->fileToUploadsTemporaryName() must return the ' .
+            'string `NO_FILE_SELECTED` if ' .
+            '`$_FILES["fileToUpload"]["tmp_name"]` is not set.'
         );
     }
 
