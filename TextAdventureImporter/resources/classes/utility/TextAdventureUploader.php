@@ -159,5 +159,33 @@ class TextAdventureUploader {
         }
         return false;
     }
+
+
+    private function safeToReplaceExistingGame(): bool
+    {
+        return match(
+            file_exists($this->pathToUploadFileTo())
+        ) {
+            /**
+             * true: There is an existing game, so return
+             * replaceExistingGame(), whose value
+             * will reflect whether or not the Request
+             * indicated the existing game should
+             * be replaced.
+             */
+            true => $this->replaceExistingGame(),
+            /**
+             * default: There is not an existing game, so a
+             * replacement would not occur, i.e., it is safe
+             * to proceed with upload.
+             */
+            default => true,
+        };
+    }
+
+    public function uploadIsPossible(): bool
+    {
+        return $this->safeToReplaceExistingGame();
+    }
 }
 

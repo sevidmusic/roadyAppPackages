@@ -563,17 +563,39 @@ class TextAdventureUploaderTest extends TestCase
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 
-    public function testUploadIsPossibleReturnsFalseIfAFileWithWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload(): void
+    public function testUploadIsPossibleReturnsFalseIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsFalse(): void
     {
         $request = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
-        $this->assertEquals(
-            $textAdventureUploader->nameOfFileToUpload(),
-            $textAdventureUploader->nameOfFileToUpload()
+        $pathToTestFile =
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            $request->getUniqueId();
+        if(!is_dir($textAdventureUploader->pathToUploadsDirectory())) {
+            mkdir($textAdventureUploader->pathToUploadsDirectory());
+        }
+        file_put_contents(
+            $pathToTestFile,
+            $request->getName()
         );
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $request->getUniqueId();
+        $this->assertFalse(
+            $textAdventureUploader->uploadIsPossible(),
+            TextAdventureUploader::class .
+            '->uploadIsPossible() must return `false` if ' .
+            'a file was already uploaded whose name matches ' .
+            'the name of the file to upload, and the `' .
+            TextAdventureUploader::class .
+            '->replaceExistingGame()` method reuturns false.'
+        );
+        unlink($pathToTestFile);
+        rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 }
 

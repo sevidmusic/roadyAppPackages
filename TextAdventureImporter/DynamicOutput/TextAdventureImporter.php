@@ -158,22 +158,23 @@ if(
 >
     <label
         class="roady-form-input-label"
-        for="fileToUpload"
+        for="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
     >
         Select A Twine Html File To Upload:
     </label>
     <input
-        id="fileToUpload"
+        id="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
         class="roady-form-input"
         type="file"
-        name="fileToUpload"
+        name="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
     >
     <label
         class="roady-form-input-label"
-        for="fileToUpload"
+        for="replaceExistingGame"
     >
         Replace Existing Game:
     </label>
+    <-- @todo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX -->
     <input
         id="replaceExistingGame"
         class="roady-form-input"
@@ -187,6 +188,7 @@ if(
         name="replaceExistingGame"
         value="true"
     >
+    <-- @todo $textAdventureUploader::POST_REQUEST_ID_INDEX -->
     <input
         type="hidden"
         name="postRequestId"
