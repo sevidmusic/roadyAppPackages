@@ -153,5 +153,13 @@ class TextAdventureUploader {
     {
         return ($_FILES["fileToUpload"]["tmp_name"] ?? '');
     }
+
+    public function upload(): bool
+    {
+        if(!is_dir($this->pathToUploadsDirectory())) {
+            mkdir($this->pathToUploadsDirectory());
+        }
+        return false;
+    }
 }
 

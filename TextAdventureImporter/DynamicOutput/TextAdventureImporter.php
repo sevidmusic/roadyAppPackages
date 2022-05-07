@@ -136,15 +136,7 @@ if(
         $uploadIsPossible = false;
     }
     if ($uploadIsPossible) {
-        if(
-            !is_dir(
-                $textAdventureUploader->pathToUploadsDirectory()
-            )
-        ) {
-            mkdir(
-                $textAdventureUploader->pathToUploadsDirectory()
-            );
-        }
+        $textAdventureUploader->upload();
         echo match(
             move_uploaded_file(
                 $textAdventureUploader->fileToUploadsTemporaryName(),

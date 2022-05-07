@@ -578,14 +578,35 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    /**
-     *
-    public function testUploadIsPossibleReturnsFalseIf(): void
+    public function testUploadCreatesUploadsDirectoryIfItDoesNotExist(): void
     {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        $textAdventureUploader->upload();
+        $this->assertTrue(
+            is_dir($textAdventureUploader->pathToUploadsDirectory()),
+            'The ' . TextAdventureUploader::class . '->upload() ' .
+            'method must create the uploads directory if it does ' .
+            'not exist'
+        );
+        rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
-        $textAdventureUploader->replaceExistingGame() !== true
-        &&
-        file_exists($textAdventureUploader->pathToUploadFileTo())
-     */
 }
+
+/**
+
+    public function testUploadIsPossibleReturnsFalseIfAFileWithTheSameNameAsTheFileToUploadWasAlreadyUploaded(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+    }
+    $textAdventureUploader->replaceExistingGame() !== true
+    &&
+    file_exists($textAdventureUploader->pathToUploadFileTo())
+ */
 
