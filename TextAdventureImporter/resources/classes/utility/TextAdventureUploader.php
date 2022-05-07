@@ -95,6 +95,8 @@ class TextAdventureUploader {
 
     public function fileToUploadIsAnHtmlFile(): bool
     {
+        // @todo Refactor to more securely verify file is an html file
+        // @see https://www.php.net/manual/en/features.file-upload.php
         return strtolower(
             pathinfo(
                 $this->nameOfFileToUpload(),
@@ -147,5 +149,9 @@ class TextAdventureUploader {
         return ($_FILES["fileToUpload"]["name"] ?? '');
     }
 
+    public function fileToUploadsTemporaryName(): string
+    {
+        return ($_FILES["fileToUpload"]["tmp_name"] ?? '');
+    }
 }
 

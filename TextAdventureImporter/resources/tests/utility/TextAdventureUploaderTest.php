@@ -522,11 +522,11 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadsActualName() must return an ' .
             'empty string if $_FILES["fileToUpload"]["name"] is ' .
-            'not set'
+            'not set.'
         );
     }
 
-    public function testFileToUploadsActualNameReturnsValueAssignedTo_fileToUpload_name_IsSetIn_FILES(): void
+    public function testFileToUploadsActualNameReturnsValueAssignedTo_fileToUpload_name_IfItIsSetIn_FILES(): void
     {
         $request = $this->mockCurrentRequest();
         $_FILES["fileToUpload"]["name"] = $request->getUniqueId();
@@ -540,8 +540,52 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadsActualName() must return an ' .
             'empty string if $_FILES["fileToUpload"]["name"] is ' .
-            'not set'
+            'not set.'
         );
     }
+
+    public function testFileToUploadsTemporaryNameReturnsAnEmptyStringIf_fileToUpload__tmp_name_IsNotSetIn_FILES(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEmpty(
+            $textAdventureUploader->fileToUploadsTemporaryName(),
+            TextAdventureUploader::class .
+            '->fileToUploadsTemporaryName() must return an ' .
+            'empty string if $_FILES["fileToUpload"]["tmp_name"] ' .
+            'is not set.'
+        );
+    }
+
+    public function testFileToUploadsTemporaryNameReturnsValueAssignedTo_fileToUpload__tmp_name_IfItIsSetIn_FILES(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $_FILES["fileToUpload"]["tmp_name"] = $request->getUniqueId();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertEquals(
+            $request->getUniqueId(),
+            $textAdventureUploader->fileToUploadsTemporaryName(),
+            TextAdventureUploader::class .
+            '->fileToUploadsTemporaryName() must return an ' .
+            'empty string if $_FILES["fileToUpload"]["name"] is ' .
+            'not set.'
+        );
+    }
+
+    /**
+     *
+    public function testUploadIsPossibleReturnsFalseIf(): void
+    {
+    }
+        $textAdventureUploader->replaceExistingGame() !== true
+        &&
+        file_exists($textAdventureUploader->pathToUploadFileTo())
+     */
 }
 

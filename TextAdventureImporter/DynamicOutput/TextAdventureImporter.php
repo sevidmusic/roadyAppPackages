@@ -66,6 +66,20 @@ $textAdventureUploader = new TextAdventureUploader(
     )
 );
 
+$fileUploadedSuccessfullyMessage = "
+    <p class=\"roady-success-message\">
+        The file ".
+        htmlspecialchars(
+            basename($textAdventureUploader->fileToUploadsActualName())
+        ) .
+    " has been uploaded.
+    </p>";
+
+$failedToUploadFileMessage = "
+    <p class=\"roady-error-message\">
+        Sorry, there was an error uploading your file.
+    </p>";
+
 $uploadIsPossible = true;
 
 if(
@@ -133,23 +147,12 @@ if(
         }
         echo match(
             move_uploaded_file(
-                $_FILES["fileToUpload"]["tmp_name"],// @todo $textAdventureUploader->fileToUploadsTemporaryName()
-
+                $textAdventureUploader->fileToUploadsTemporaryName(),
                 $textAdventureUploader->pathToUploadFileTo()
             )
         ) {
-            true => "
-                <p class=\"roady-success-message\">
-                    The file ".
-                    htmlspecialchars(
-                        basename($textAdventureUploader->fileToUploadsActualName())
-                    ) .
-                    " has been uploaded.
-                </p>",
-            default => "
-                <p class=\"roady-error-message\">
-                    Sorry, there was an error uploading your file.
-                </p>",
+            true => $fileUploadedSuccessfullyMessage,
+            default => $failedToUploadFileMessage,
         };
     }
 }
