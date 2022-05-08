@@ -211,6 +211,8 @@ class TextAdventureUploader {
     public function uploadIsPossible(): bool
     {
         return
+            $this->fileToUploadIsAnHtmlFile()
+            &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
             &&
             $this->safeToReplaceExistingGame();
