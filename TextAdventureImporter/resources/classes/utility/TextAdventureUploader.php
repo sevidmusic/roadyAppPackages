@@ -208,7 +208,10 @@ class TextAdventureUploader {
 
     public function uploadIsPossible(): bool
     {
-        return $this->safeToReplaceExistingGame();
+        return
+            !$this->fileToUploadSizeExceedsAllowedFileSize()
+            &&
+            $this->safeToReplaceExistingGame();
     }
 }
 

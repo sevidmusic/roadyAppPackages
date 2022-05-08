@@ -114,6 +114,17 @@ body {
     color: var(--light-tone-complimentery-color);
 }
 
+.roady-form input[type=file] {
+    color: var(--light-tone-analagous-color-2);
+    background: var(--dark-tone-monochromatic-color);
+    border-color: var(--dark-tone-complimentery-color);
+    /** @todo move to appropriate stylesheet */
+    width: 100%;
+    border: 0.3333333rem dotted;
+    border-radius: 5%;
+    padding: 1rem 42%;
+}
+
 /** Code Previews */
 
 .roady-inline-code {

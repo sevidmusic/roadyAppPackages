@@ -119,24 +119,10 @@ if(
         $uploadIsPossible = false;
     }
     if (
-        $uploadIsPossible !== false
+        $uploadIsPossible
         &&
-        $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+        $textAdventureUploader->uploadIsPossible()
     ) {
-        echo $fileIsToLargeMessage;
-        $uploadIsPossible = false;
-    }
-    if (
-        $uploadIsPossible !== false
-        &&
-        $textAdventureUploader->replaceExistingGame() !== true
-        &&
-        file_exists($textAdventureUploader->pathToUploadFileTo())
-    ) {
-        echo $theSpecifiedTwineFileWasAlreadyImportedMessage;
-        $uploadIsPossible = false;
-    }
-    if ($uploadIsPossible) {
         $textAdventureUploader->upload();
         echo match(
             move_uploaded_file(

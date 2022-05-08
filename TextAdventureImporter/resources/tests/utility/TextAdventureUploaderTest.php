@@ -684,5 +684,33 @@ class TextAdventureUploaderTest extends TestCase
         unlink($pathToTestFile);
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
+
+    public function testUploadIsPossibleReturnsFalseIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
+    {
+        $_FILES["fileToUpload"]["size"] = 5000001;
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if ' .
+                TextAdventureUploader::class .
+                '->fileToUploadSizeExceedsAllowedFileSize() ' .
+                'returns true'
+            );
+        }
+    }
 }
+/**
+    *
+        $uploadIsPossible !== false
+        &&
+        $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+ */
 
