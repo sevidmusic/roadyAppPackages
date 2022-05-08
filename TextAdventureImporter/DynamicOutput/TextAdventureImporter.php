@@ -110,14 +110,6 @@ if(
         echo $aFileWasNotSelectedMessage;
         $uploadIsPossible = false;
     }
-    if(
-        $uploadIsPossible !== false
-        &&
-        !$textAdventureUploader->fileToUploadIsAnHtmlFile()
-    ) {
-        echo $invalidFileTypeMessage;
-        $uploadIsPossible = false;
-    }
     if (
         $uploadIsPossible
         &&
