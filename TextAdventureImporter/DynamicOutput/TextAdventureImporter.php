@@ -10,15 +10,16 @@ use rig\classes\command\ConfigureAppOutput;
 use rig\classes\ui\CommandLineUI;
 
 $configureAppOutput = new ConfigureAppOutput();
-$textAdventureUploader = new TextAdventureUploader(
-    new Request(
-        new Storable(
-            'LastRequest',
-            'TextAdventureImporter',
-            'UploadRequests'
-        ),
-        new Switchable()
+$currentRequest = new Request(
+    new Storable(
+        'LastRequest',
+        'TextAdventureImporter',
+        'UploadRequests'
     ),
+    new Switchable()
+);
+$textAdventureUploader = new TextAdventureUploader(
+    $currentRequest,
     new ComponentCrud(
         new Storable(
             'ComponentCrud',
@@ -101,8 +102,39 @@ if(
                 echo '</code>';
                 echo '</pre>';
                 echo '</div>';
+                $pathToAppsComponentsPhp = strval(
+                    str_replace(
+                        'TextAdventureImporter' .
+                        DIRECTORY_SEPARATOR .
+                        'DynamicOutput',
+                        $componentName .
+                        DIRECTORY_SEPARATOR .
+                        'Components.php',
+                        strval(realpath(__DIR__))
+                    )
+                );
+                $host = parse_url(
+                    $currentRequest->getUrl(),
+                    PHP_URL_HOST
+                );
+                $port =  parse_url(
+                    $currentRequest->getUrl(),
+                    PHP_URL_PORT
+                );
+                $rootUrl = 'https://' . $host . $port;
+                var_dump($rootUrl);
+                try {
+                    exec(
+                        PHP_BINARY .
+                        ' ' .
+                        escapeshellarg($pathToAppsComponentsPhp) .
+                        " '" . $rootUrl . "'"
+                    );
+                } catch (\RuntimeException $error) {
+                    echo '<p class="roady-error-message">Failed to build new App</p>';
+                }
             } catch (\RuntimeException $error) {
-                echo '<p class="roady-error-message">An error occurred, ConfiguredOutput failed</p>';
+                echo '<p class="roady-error-message">An error occurred, ConfigureAppOutput failed</p>';
                 echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
             }
         }
