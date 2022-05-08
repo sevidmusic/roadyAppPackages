@@ -15,7 +15,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function tearDown(): void
     {
-        unset($_FILES["fileToUpload"]);
+        unset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]);
         foreach(
             $this->mockComponentCrud()
                  ->readAll(
@@ -64,7 +64,9 @@ class TextAdventureUploaderTest extends TestCase
             [TextAdventureUploader::FILENAME_INDEX]
             = 'TwineFile.html';
         $this->assertEquals(
-            $_FILES["fileToUpload"]["name"],
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX],
             $textAdventureUploader->nameOfFileToUpload()
         );
     }
@@ -129,6 +131,14 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    public function testFILE_TO_UPLOAD_SIZE_INDEXConstantIsAssignedTheString_size(): void
+    {
+        $this->assertEquals(
+            'size',
+            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX
+        );
+    }
+
     public function testFILE_TO_UPLOAD_INDEXConstantIsAssignedTheString_fileToUpload(): void
     {
         $this->assertEquals(
@@ -168,8 +178,8 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertEquals(
             'tmp_name',
             TextAdventureUploader::TEMPORARY_FILENAME_INDEX,
-            'TextAdventureUploader::TEMPORARY_FILENAME_INDEX constant must ' .
-            'be assigned the string `tmp_name`.'
+            'TextAdventureUploader::TEMPORARY_FILENAME_INDEX ' .
+            'constant must be assigned the string `tmp_name`.'
         );
     }
 
@@ -291,7 +301,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testFileToUploadSizeExceedsAllowedFileSizeReturnsFalseIfSizeOfFileToUploadDoesNotExceedAllowedFileSizeOf_5000000_bytes(): void
     {
-        $_FILES["fileToUpload"]["size"] = 4999999;
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] = 4999999;
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $currentRequest,
@@ -308,7 +318,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSizeOf_5000000_bytes(): void
     {
-        $_FILES["fileToUpload"]["size"] = 5000001;
+        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] = 5000001;
         $currentRequest = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $currentRequest,
@@ -483,7 +493,8 @@ class TextAdventureUploaderTest extends TestCase
         $request->import(
             [
                 'post' => [
-                    TextAdventureUploader::POST_REQUEST_ID_INDEX => $request->getUniqueId()
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
                 ]
             ]
         );
@@ -557,8 +568,11 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadsTemporaryName() must return the ' .
             'string `NO_FILE_SELECTED` if ' .
-            '`$_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::TEMPORARY_FILENAME_INDEX]` ' .
-            'is not set.'
+            '`$_FILES[' .
+            TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+            '][' .
+            TextAdventureUploader::TEMPORARY_FILENAME_INDEX .
+            ']` is not set.'
         );
     }
 
@@ -578,8 +592,12 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->fileToUploadsTemporaryName(),
             TextAdventureUploader::class .
             '->fileToUploadsTemporaryName() must return an ' .
-            'empty string if $_FILES["fileToUpload"]["name"] is ' .
-            'not set.'
+            'empty string if ' .
+            '$_FILES[' .
+            TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+            '][' .
+            TextAdventureUploader::FILENAME_INDEX .
+            '] is not set.'
         );
     }
 
@@ -687,7 +705,10 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testUploadIsPossibleReturnsFalseIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
     {
-        $_FILES["fileToUpload"]["size"] = 5000001;
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
+            = 5000001;
         $textAdventureUploader = new TextAdventureUploader(
             $this->mockCurrentRequest(),
             $this->mockComponentCrud()
@@ -706,11 +727,19 @@ class TextAdventureUploaderTest extends TestCase
             );
         }
     }
+
+    /**
+        *
+    public function testUploadIsPossibleReturnsFalseIfFileToUploadIsAnHtmlFileReturnsFalse(): void
+    {
+
+    }
+     */
 }
 /**
     *
         $uploadIsPossible !== false
         &&
-        $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+        !$textAdventureUploader->fileToUploadIsAnHtmlFile()
  */
 

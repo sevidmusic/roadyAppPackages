@@ -25,6 +25,8 @@ class TextAdventureUploader {
 
     public const FILE_TO_UPLOAD_INDEX = 'fileToUpload';
 
+    public const FILE_TO_UPLOAD_SIZE_INDEX = 'size';
+
     public const POST_REQUEST_ID_INDEX = 'postRequestId';
 
     public const REPLACE_EXISTING_GAME_INDEX = 'replaceExistingGame';
@@ -132,7 +134,7 @@ class TextAdventureUploader {
     {
         // @todo Refactor to more accurately check file size
         return (
-            $_FILES[self::FILE_TO_UPLOAD_INDEX]["size"] ?? 5000000
+            $_FILES[self::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] ?? 5000000
         ) > 5000000;
 
     }
