@@ -83,10 +83,7 @@ if(
                             '--name',
                             'ConfiguredOutput',
                             '--output',
-                            'Test Output',
-                            '--relative-urls',
-                            '/',
-                            'index.php'
+                            strval(file_get_contents($textAdventureUploader->pathToUploadFileTo())),
                         ]
                     )
                 );
