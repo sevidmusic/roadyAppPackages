@@ -7,38 +7,6 @@ use roady\classes\primary\Switchable;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
 
-$aFileWasNotSelectedMessage = '
-    <p class="roady-error-message">
-        A Twine html file was not selected.
-        Please select a Twine html file to upload!
-    </p>
-';
-$invalidFileTypeMessage = '
-    <p class="roady-error-message">
-        Only Twine html files can be uploaded!
-        Please select a Twine html file to upload
-    </p>
-';
-$fileIsToLargeMessage = '
-    <p class="roady-error-message">
-        The file is too large!
-    </p>
-';
-
-$theSpecifiedTwineFileWasAlreadyImportedMessage = "
-    <div class=\"roady-error-message\">
-        <p>
-            A Twine file with the same name was already
-            uploaded.
-        </p>
-        <p>
-            Please upload a Twine file with a unique name,
-            or check the <span>Replace Existing App</span>
-            check box below.
-        </p>
-    </div>
-";
-
 $textAdventureUploader = new TextAdventureUploader(
     new Request(
         new Storable(
@@ -79,40 +47,12 @@ $failedToUploadFileMessage = "
     <p class=\"roady-error-message\">
         Sorry, there was an error uploading your file.
     </p>";
-
-$uploadIsPossible = true;
-
 if(
     $textAdventureUploader->previousRequest()->getUniqueId()
     ===
     $textAdventureUploader->postRequestId()
 ) {
-    $vars = [
-        'currentRequstId' =>
-        $textAdventureUploader->currentRequest()->getUniqueId(),
-        'lastRequest' =>
-        $textAdventureUploader->previousRequest()->getUniqueId(),
-        $textAdventureUploader::POST_REQUEST_ID_INDEX
-        => $textAdventureUploader->postRequestId(),
-    ];
-
-    echo '<ul class="roady-ul-list">';
-    foreach($vars as $varKey => $varValue) {
-        echo '<li>' . $varKey . '</li>';
-        echo '<li>' . strval($varValue) . '</li>';
-    }
-    echo '</ul>';
-    if(
-        $textAdventureUploader->nameOfFileToUpload()
-        ===
-        TextAdventureUploader::NO_FILE_SELECTED
-    ) {
-        echo $aFileWasNotSelectedMessage;
-        $uploadIsPossible = false;
-    }
     if (
-        $uploadIsPossible
-        &&
         $textAdventureUploader->uploadIsPossible()
     ) {
         $textAdventureUploader->upload();

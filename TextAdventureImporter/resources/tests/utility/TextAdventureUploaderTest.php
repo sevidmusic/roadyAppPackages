@@ -759,5 +759,99 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
+    public function testUploadIsPossibleReturnsFalseIfNameOfFileToUploadReturnsTheString_NO_FILE_SELECTED(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->nameOfFileToUpload()
+            ===
+            TextAdventureUploader::NO_FILE_SELECTED
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must return false ' .
+                'if ' . TextAdventureUploader::class .
+                '->nameOfFileToUpload() returns the string' .
+                TextAdventureUploader::NO_FILE_SELECTED
+            );
+        }
+    }
+
+    public function testUploadIsPossibleReturnsFalseIfPreviousRequestIdDoesNotMatchPostRequestId(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->previousRequest()->getUniqueId()
+            !==
+            $textAdventureUploader->postRequestId()
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must return false ' .
+                'if the id returned by ' .
+                TextAdventureUploader::class .
+                '->postRequestId() does not match the ' .
+                'the previous ' . Request::class . '\'s ' .
+                'unique id.'
+            );
+        }
+    }
 }
+
+/**
+ *
+$aFileWasNotSelectedMessage = '
+    <p class="roady-error-message">
+        A Twine html file was not selected.
+        Please select a Twine html file to upload!
+    </p>
+';
+$invalidFileTypeMessage = '
+    <p class="roady-error-message">
+        Only Twine html files can be uploaded!
+        Please select a Twine html file to upload
+    </p>
+';
+$fileIsToLargeMessage = '
+    <p class="roady-error-message">
+        The file is too large!
+    </p>
+';
+
+$theSpecifiedTwineFileWasAlreadyImportedMessage = "
+    <div class=\"roady-error-message\">
+        <p>
+            A Twine file with the same name was already
+            uploaded.
+        </p>
+        <p>
+            Please upload a Twine file with a unique name,
+            or check the <span>Replace Existing App</span>
+            check box below.
+        </p>
+    </div>
+";
+
+$fileUploadedSuccessfullyMessage = "
+    <p class=\"roady-success-message\">
+        The file ".
+        htmlspecialchars(
+            basename($textAdventureUploader->nameOfFileToUpload())
+        ) .
+    " has been uploaded.
+    </p>";
+
+$failedToUploadFileMessage = "
+    <p class=\"roady-error-message\">
+        Sorry, there was an error uploading your file.
+    </p>";
+ */
 
