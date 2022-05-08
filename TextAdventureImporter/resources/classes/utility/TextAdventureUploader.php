@@ -25,7 +25,13 @@ class TextAdventureUploader {
 
     public const FILE_TO_UPLOAD_INDEX = 'fileToUpload';
 
+    public const POST_REQUEST_ID_INDEX = 'postRequestId';
+
+    public const REPLACE_EXISTING_GAME_INDEX = 'replaceExistingGame';
+
     public const FILENAME_INDEX = 'name';
+
+    public const TEMPORARY_FILENAME_INDEX = 'tmp_name';
 
     private Request $previousRequest;
 
@@ -85,10 +91,21 @@ class TextAdventureUploader {
     public function nameOfFileToUpload(): string
     {
         return match(
-            !empty($_FILES[self::FILE_TO_UPLOAD_INDEX][self::FILENAME_INDEX] ?? '')
+            !empty(
+                (
+                    $_FILES
+                    [self::FILE_TO_UPLOAD_INDEX]
+                    [self::FILENAME_INDEX]
+                    ??
+                    ''
+                )
+            )
         )
         {
-            true => $_FILES[self::FILE_TO_UPLOAD_INDEX][self::FILENAME_INDEX],
+            true =>
+                $_FILES
+                [self::FILE_TO_UPLOAD_INDEX]
+                [self::FILENAME_INDEX],
             default => self::NO_FILE_SELECTED
         };
     }
@@ -113,6 +130,7 @@ class TextAdventureUploader {
 
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
+        // @todo Refactor to more accurately check file size
         return (
             $_FILES[self::FILE_TO_UPLOAD_INDEX]["size"] ?? 5000000
         ) > 5000000;
@@ -127,7 +145,8 @@ class TextAdventureUploader {
     public function postRequestId(): string
     {
         return (
-            $this->currentRequest()->getPost()['postRequestId']
+            $this->currentRequest()
+                 ->getPost()[self::POST_REQUEST_ID_INDEX]
             ??
             self::NO_FILE_SELECTED
         );
@@ -138,7 +157,7 @@ class TextAdventureUploader {
         return (
             (
                 $this->currentRequest()
-                     ->getPost()['replaceExistingGame']
+                     ->getPost()[self::REPLACE_EXISTING_GAME_INDEX]
                 ??
                 ''
             )
@@ -149,7 +168,11 @@ class TextAdventureUploader {
 
     public function fileToUploadsTemporaryName(): string
     {
-        return ($_FILES[self::FILE_TO_UPLOAD_INDEX]["tmp_name"] ?? self::NO_FILE_SELECTED);
+        return (
+            $_FILES[self::FILE_TO_UPLOAD_INDEX]["tmp_name"]
+            ??
+            self::NO_FILE_SELECTED
+        );
     }
 
     public function upload(): bool

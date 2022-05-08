@@ -92,7 +92,8 @@ if(
         $textAdventureUploader->currentRequest()->getUniqueId(),
         'lastRequest' =>
         $textAdventureUploader->previousRequest()->getUniqueId(),
-        'postRequestId' => $textAdventureUploader->postRequestId(),
+        $textAdventureUploader::POST_REQUEST_ID_INDEX
+        => $textAdventureUploader->postRequestId(),
     ];
 
     echo '<ul class="roady-ul-list">';
@@ -158,25 +159,35 @@ if(
 >
     <label
         class="roady-form-input-label"
-        for="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
+        for="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
     >
         Select A Twine Html File To Upload:
     </label>
     <input
-        id="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
+        id="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
         class="roady-form-input"
         type="file"
-        name="<?php echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX; ?>"
+        name="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
     >
     <label
         class="roady-form-input-label"
-        for="replaceExistingGame"
+        for="<?php
+                echo
+                $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+            ?>"
     >
         Replace Existing Game:
     </label>
-    <-- @todo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX -->
     <input
-        id="replaceExistingGame"
+        id="<?php
+            echo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+        ?>"
         class="roady-form-input"
         type="checkbox"
         <?php
@@ -185,13 +196,16 @@ if(
             default => '',
         };
         ?>
-        name="replaceExistingGame"
+        name="<?php
+            echo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+        ?>"
         value="true"
     >
-    <-- @todo $textAdventureUploader::POST_REQUEST_ID_INDEX -->
     <input
         type="hidden"
-        name="postRequestId"
+        name="<?php
+            echo $textAdventureUploader::POST_REQUEST_ID_INDEX;
+        ?>"
         value="<?php
         echo $textAdventureUploader->currentRequest()
                                    ->getUniqueId();

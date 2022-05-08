@@ -10,17 +10,6 @@ use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
-/**
- * Defines tests for the TextAdventureUploader.
- *
- * Methods:
- * public function tearDown(): void
- * public function testNameOfFileToUploadRetunrsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
- * public function testPathToUploadFileToReturnsNameOfFileSelectedForUploadPrefixedByPathToUploadsDirectory(): void
- * public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
- * public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
- *
- */
 class TextAdventureUploaderTest extends TestCase
 {
 
@@ -50,8 +39,11 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->nameOfFileToUpload()
         );
         /**
-         * Also test for case where $_FILES['fileToUpload']['name']
-         * is empty
+         * Also test for case where
+         * $_FILES
+         *     [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+         *     [TextAdventureUploader::FILENAME_INDEX]
+         * is empty.
          */
         $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
                [TextAdventureUploader::FILENAME_INDEX] = '';
@@ -67,8 +59,10 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockCurrentRequest(),
             $this->mockComponentCrud()
         );
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-               [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = 'TwineFile.html';
         $this->assertEquals(
             $_FILES["fileToUpload"]["name"],
             $textAdventureUploader->nameOfFileToUpload()
@@ -77,14 +71,19 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
+        $request = $this->mockCurrentRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-               [TextAdventureUploader::FILENAME_INDEX] = 'TwineFile.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $request->getUniqueId() . '.html';
         $this->assertEquals(
-            $textAdventureUploader->pathToUploadsDirectory() . DIRECTORY_SEPARATOR . $textAdventureUploader->nameOfFileToUpload(),
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            $textAdventureUploader->nameOfFileToUpload(),
             $textAdventureUploader->pathToUploadFileTo()
         );
     }
@@ -138,6 +137,22 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    public function testPOST_REQUEST_ID_INDEXConstantIsAssignedTheString_postRequestId(): void
+    {
+        $this->assertEquals(
+            TextAdventureUploader::POST_REQUEST_ID_INDEX,
+            TextAdventureUploader::POST_REQUEST_ID_INDEX
+        );
+    }
+
+    public function testREPLACE_EXISTING_GAMEConstantIsAssignedTheString_replaceExistingGame(): void
+    {
+        $this->assertEquals(
+            TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX,
+            TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+        );
+    }
+
     public function testFILENAME_INDEXConstantIsAssignedTheString_name(): void
     {
         $this->assertEquals(
@@ -145,6 +160,16 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::FILENAME_INDEX,
             'TextAdventureUploader::FILENAME_INDEX constant must ' .
             'be assigned the string `name`.'
+        );
+    }
+
+    public function tesTEMPORARY_FILENAME_INDEXConstantIsAssignedTheString__tmp_name(): void
+    {
+        $this->assertEquals(
+            'tmp_name',
+            TextAdventureUploader::TEMPORARY_FILENAME_INDEX,
+            'TextAdventureUploader::TEMPORARY_FILENAME_INDEX constant must ' .
+            'be assigned the string `tmp_name`.'
         );
     }
 
@@ -178,7 +203,9 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockCurrentRequest(),
             $this->mockComponentCrud()
         );
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILENAME_INDEX] = 'foo.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX] = 'foo.html';
         $this->assertTrue(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
@@ -345,8 +372,11 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockComponentCrud()->read(
                 $currentRequest
             ),
-            'The specified ' . Request::class . ' must be stored on ' .
-            'instantiation of a new ' . TextAdventureUploader::class
+            'The specified ' .
+            Request::class .
+            ' must be stored on ' .
+            'instantiation of a new ' .
+            TextAdventureUploader::class
         );
     }
 
@@ -453,7 +483,7 @@ class TextAdventureUploaderTest extends TestCase
         $request->import(
             [
                 'post' => [
-                    'postRequestId' => $request->getUniqueId()
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX => $request->getUniqueId()
                 ]
             ]
         );
@@ -466,7 +496,8 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->postRequestId(),
             TextAdventureUploader::class .
             '->postRequestId() must return the value of the ' .
-            'postRequestId set in the specified ' .
+            TextAdventureUploader::POST_REQUEST_ID_INDEX . ' ' .
+            'set in the specified ' .
             Request::class . '\'s $_POST data if it is defined.'
         );
     }
@@ -494,7 +525,8 @@ class TextAdventureUploaderTest extends TestCase
         $request->import(
             [
                 'post' => [
-                    'replaceExistingGame' => 'true'
+                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+                    => 'true'
                 ]
             ]
         );
@@ -525,14 +557,18 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadsTemporaryName() must return the ' .
             'string `NO_FILE_SELECTED` if ' .
-            '`$_FILES["fileToUpload"]["tmp_name"]` is not set.'
+            '`$_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::TEMPORARY_FILENAME_INDEX]` ' .
+            'is not set.'
         );
     }
 
     public function testFileToUploadsTemporaryNameReturnsValueAssignedTo_fileToUpload__tmp_name_IfItIsSetIn_FILES(): void
     {
         $request = $this->mockCurrentRequest();
-        $_FILES["fileToUpload"]["tmp_name"] = $request->getUniqueId();
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::TEMPORARY_FILENAME_INDEX]
+            = $request->getUniqueId();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -574,7 +610,9 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
             $request->getUniqueId();
-        if(!is_dir($textAdventureUploader->pathToUploadsDirectory())) {
+        if(
+            !is_dir($textAdventureUploader->pathToUploadsDirectory())
+        ) {
             mkdir($textAdventureUploader->pathToUploadsDirectory());
         }
         file_put_contents(
@@ -585,24 +623,66 @@ class TextAdventureUploaderTest extends TestCase
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
             [TextAdventureUploader::FILENAME_INDEX]
             = $request->getUniqueId();
-        $this->assertFalse(
-            $textAdventureUploader->uploadIsPossible(),
-            TextAdventureUploader::class .
-            '->uploadIsPossible() must return `false` if ' .
-            'a file was already uploaded whose name matches ' .
-            'the name of the file to upload, and the `' .
-            TextAdventureUploader::class .
-            '->replaceExistingGame()` method reuturns false.'
+        if(!$textAdventureUploader->replaceExistingGame()) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must return `false` if ' .
+                'a file was already uploaded whose name matches ' .
+                'the name of the file to upload, and the `' .
+                TextAdventureUploader::class .
+                '->replaceExistingGame()` method returns false.'
+            );
+        }
+        unlink($pathToTestFile);
+        rmdir($textAdventureUploader->pathToUploadsDirectory());
+    }
+
+    public function testUploadIsPossibleReturnsTrueIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsTrue(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+                    => 'true'
+                ]
+            ]
         );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $pathToTestFile =
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            $request->getUniqueId();
+        if(
+            !is_dir($textAdventureUploader->pathToUploadsDirectory())
+        ) {
+            mkdir($textAdventureUploader->pathToUploadsDirectory());
+        }
+        file_put_contents(
+            $pathToTestFile,
+            $request->getName()
+        );
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $request->getUniqueId();
+        if($textAdventureUploader->replaceExistingGame()) {
+            $this->assertTrue(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must return `true` if ' .
+                'a file was already uploaded whose name matches ' .
+                'the name of the file to upload, and the `' .
+                TextAdventureUploader::class .
+                '->replaceExistingGame()` method returns true.'
+            );
+        }
         unlink($pathToTestFile);
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 }
-
-/**
-
-    $textAdventureUploader->replaceExistingGame() !== true
-    &&
-    file_exists($textAdventureUploader->pathToUploadFileTo())
- */
 
