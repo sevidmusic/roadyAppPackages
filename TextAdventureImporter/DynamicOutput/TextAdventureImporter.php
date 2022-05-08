@@ -71,6 +71,13 @@ if(
         };
         if($uploadWasSuccessful) {
             try {
+                $componentName = strval(
+                    preg_replace(
+                        "/[^A-Za-z0-9 ]/",
+                        '',
+                        str_replace('.html', '', $textAdventureUploader->nameOfFileToUpload())
+                    )
+                );
                 echo '<div class="roady-generic-container">';
                 echo '<pre class="roady-multi-line-code-container">';
                 echo '<code class="roady-multi-line-code">';
@@ -79,11 +86,15 @@ if(
                     $configureAppOutput->prepareArguments(
                         [
                             '--for-app',
-                            'TryConfiguringAppOutputFromWithinAnApp' . strval(rand(10000, 42000000)),
+                            $componentName,
                             '--name',
-                            'ConfiguredOutput',
+                            $componentName,
                             '--output',
-                            strval(file_get_contents($textAdventureUploader->pathToUploadFileTo())),
+                            strval(
+                                file_get_contents(
+                                    $textAdventureUploader->pathToUploadFileTo()
+                                )
+                            ),
                         ]
                     )
                 );
