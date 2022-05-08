@@ -6,7 +6,10 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
+use rig\classes\command\ConfigureAppOutput;
+use rig\classes\ui\CommandLineUI;
 
+$configureAppOutput = new ConfigureAppOutput();
 $textAdventureUploader = new TextAdventureUploader(
     new Request(
         new Storable(
@@ -56,19 +59,54 @@ if(
         $textAdventureUploader->uploadIsPossible()
     ) {
         $textAdventureUploader->upload();
+        $uploadWasSuccessful = move_uploaded_file(
+            $textAdventureUploader->fileToUploadsTemporaryName(),
+            $textAdventureUploader->pathToUploadFileTo()
+        );
         echo match(
-            move_uploaded_file(
-                $textAdventureUploader->fileToUploadsTemporaryName(),
-                $textAdventureUploader->pathToUploadFileTo()
-            )
+           $uploadWasSuccessful
         ) {
             true => $fileUploadedSuccessfullyMessage,
             default => $failedToUploadFileMessage,
         };
+        if($uploadWasSuccessful) {
+            try {
+                echo '<div class="roady-generic-container">';
+                echo '<pre class="roady-multi-line-code-container">';
+                echo '<code class="roady-multi-line-code">';
+                $configureAppOutput->run(
+                    new CommandLineUI(),
+                    $configureAppOutput->prepareArguments(
+                        [
+                            '--for-app',
+                            'TryConfiguringAppOutputFromWithinAnApp' . strval(rand(10000, 42000000)),
+                            '--name',
+                            'ConfiguredOutput',
+                            '--output',
+                            'Test Output',
+                            '--relative-urls',
+                            '/',
+                            'index.php'
+                        ]
+                    )
+                );
+                echo '</code>';
+                echo '</pre>';
+                echo '</div>';
+            } catch (\RuntimeException $error) {
+                echo '<p class="roady-error-message">An error occurred, ConfiguredOutput failed</p>';
+                echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
+            }
+        }
     }
 }
 ?>
 
+<?php
+
+
+
+?>
 <form
     class="roady-form"
     action="index.php?request=TextAdventureImporter"
