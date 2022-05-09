@@ -114,6 +114,17 @@ body {
     color: var(--light-tone-complimentery-color);
 }
 
+.roady-form input[type=file] {
+    color: var(--light-tone-analagous-color-2);
+    background: var(--dark-tone-monochromatic-color);
+    border-color: var(--dark-tone-complimentery-color);
+    /** @todo move to appropriate stylesheet */
+    width: 100%;
+    border: 0.3333333rem dotted;
+    border-radius: 5%;
+    padding: 1rem 42%;
+}
+
 /** Code Previews */
 
 .roady-inline-code {
@@ -181,14 +192,14 @@ body {
 
 .roady-ol-list li:nth-of-type(even),
 .roady-ul-list li:nth-of-type(even) {
-    background-color: var(--gray-tone-triadic-color-1);
-    color: var(--light-tone-triadic-color-1);
+    background-color: var(--dark-tone-monochromatic-color);
+    color: var(--white);
 }
 
 .roady-ol-list li:nth-of-type(odd),
 .roady-ul-list li:nth-of-type(odd) {
-    background-color: var(--gray-tone-monochromatic-color);
-    color: var(--white);
+    background-color: var(--dark-tone-analagous-color-1);
+    color: var(--light-tone-triadic-color-2);
 }
 
 /** Messages */

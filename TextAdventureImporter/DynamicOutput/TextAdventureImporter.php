@@ -6,23 +6,10 @@ use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 use roady\classes\component\Crud\ComponentCrud;
 use roady\classes\component\Driver\Storage\FileSystem\JsonStorageDriver;
+use rig\classes\command\ConfigureAppOutput;
+use rig\classes\ui\CommandLineUI;
 
-$componentCrud = new ComponentCrud(
-    new Storable(
-        'ComponentCrud',
-        'TextAdventureImporter',
-        'ComponentCruds'
-    ),
-    new Switchable(),
-    new JsonStorageDriver(
-        new Storable(
-            'JsonStorageDriver',
-            'TextAdventureImporter',
-            'StorageDrivers'
-        ),
-        new Switchable()
-    )
-);
+$configureAppOutput = new ConfigureAppOutput();
 $currentRequest = new Request(
     new Storable(
         'LastRequest',
@@ -31,159 +18,135 @@ $currentRequest = new Request(
     ),
     new Switchable()
 );
-
-try {
-    $lastRequest = $componentCrud->readByNameAndType(
-        $currentRequest->getName(),
-        $currentRequest->getType(),
-        $currentRequest->getLocation(),
-        $currentRequest->getContainer()
-    );
-    $componentCrud->update($lastRequest, $currentRequest);
-} catch (\RuntimeException $errorMessage) {
-    $componentCrud->create($currentRequest);
-}
-
-$textAdventureUploader = new TextAdventureUploader($currentRequest);
-$uploadIsPossible = true;
-$aFileWasNotSelectedMessage = '
-    <p class="roady-error-message">
-        A Twine html file was not selected.
-        Please select a Twine html file to upload!
-    </p>
-';
-$invalidFileTypeMessage = '
-    <p class="roady-error-message">
-        Only Twine html files can be uploaded!
-        Please select a Twine html file to upload
-    </p>
-';
-$fileIsToLargeMessage = '
-    <p class="roady-error-message">
-        The file is too large!
-    </p>
-';
-
-$theSpecifiedTwineFileWasAlreadyImportedMessage = "
-    <div class=\"roady-error-message\">
-        <p>
-            A Twine file with the same name was already
-            uploaded.
-        </p>
-        <p>
-            Please upload a Twine file with a unique name,
-            or check the <span>Replace Existing App</span>
-            check box below.
-        </p>
-    </div>
-";
-
-$lastRequestId = (
-    isset($lastRequest)
-    ? $lastRequest->getUniqueId()
-    : ''
-);
-
-$postRequestId = (
-    isset(
-        $currentRequest->getPost()['lastRequestId'])
-        ? $currentRequest->getPost()['lastRequestId']
-        : strval(rand(1000, 70000)
+$textAdventureUploader = new TextAdventureUploader(
+    $currentRequest,
+    new ComponentCrud(
+        new Storable(
+            'ComponentCrud',
+            'TextAdventureImporter',
+            'ComponentCruds'
+        ),
+        new Switchable(),
+        new JsonStorageDriver(
+            new Storable(
+                'JsonStorageDriver',
+                'TextAdventureImporter',
+                'StorageDrivers'
+            ),
+            new Switchable()
+        )
     )
 );
 
-if(
-    $lastRequestId
-    ===
-    $postRequestId
-) {
-    $vars = [
-        'currentRequstId' => $currentRequest->getUniqueId(),
-        'lastRequest' => $lastRequestId,
-        'postRequestId' => $postRequestId,
-    ];
+$fileUploadedSuccessfullyMessage = "
+    <p class=\"roady-success-message\">
+        The file ".
+        htmlspecialchars(
+            basename($textAdventureUploader->nameOfFileToUpload())
+        ) .
+    " has been uploaded.
+    </p>";
 
-    echo '<ul class="roady-ul-list">';
-    foreach($vars as $varKey => $varValue) {
-        echo '<li>' . $varKey . '</li>';
-        echo '<li>' . strval($varValue) . '</li>';
-    }
-    echo '</ul>';
-    if(
-        $textAdventureUploader->nameOfFileToUpload()
-        ===
-        TextAdventureUploader::NO_FILE_SELECTED
-    ) {
-        echo $aFileWasNotSelectedMessage;
-        $uploadIsPossible = false;
-    }
-    if(
-        $uploadIsPossible !== false
-        &&
-        !$textAdventureUploader->fileToUploadIsAnHtmlFile()
-    ) {
-        echo $invalidFileTypeMessage;
-        $uploadIsPossible = false;
-    }
+$failedToUploadFileMessage = "
+    <p class=\"roady-error-message\">
+        Sorry, there was an error uploading your file.
+    </p>";
+if(
+    $textAdventureUploader->previousRequest()->getUniqueId()
+    ===
+    $textAdventureUploader->postRequestId()
+) {
     if (
-        $uploadIsPossible !== false
-        &&
-        $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+        $textAdventureUploader->uploadIsPossible()
     ) {
-        echo $fileIsToLargeMessage;
-        $uploadIsPossible = false;
-    }
-    if (
-        $uploadIsPossible !== false
-        &&
-        boolval(
-            (
-                $textAdventureUploader->currentRequest()
-                                      ->getPost()
-                                      ['replaceExistingGame']
-                ??
-                false
-            )
-        ) !== true
-        &&
-        file_exists($textAdventureUploader->pathToUploadFileTo())
-    ) {
-        echo $theSpecifiedTwineFileWasAlreadyImportedMessage;
-        $uploadIsPossible = false;
-    }
-    if ($uploadIsPossible) {
-        if(
-            !is_dir(
-                $textAdventureUploader->pathToUploadsDirectory()
-            )
-        ) {
-            mkdir(
-                $textAdventureUploader->pathToUploadsDirectory()
-            );
-        }
+        $textAdventureUploader->upload();
+        $uploadWasSuccessful = move_uploaded_file(
+            $textAdventureUploader->fileToUploadsTemporaryName(),
+            $textAdventureUploader->pathToUploadFileTo()
+        );
         echo match(
-            move_uploaded_file(
-                $_FILES["fileToUpload"]["tmp_name"],
-                $textAdventureUploader->pathToUploadFileTo()
-            )
+           $uploadWasSuccessful
         ) {
-            true => "
-                <p class=\"roady-success-message\">
-                    The file ".
-                    htmlspecialchars(
-                        basename($_FILES["fileToUpload"]["name"])
-                    ) .
-                    " has been uploaded.
-                </p>",
-            default => "
-                <p class=\"roady-error-message\">
-                    Sorry, there was an error uploading your file.
-                </p>",
+            true => $fileUploadedSuccessfullyMessage,
+            default => $failedToUploadFileMessage,
         };
+        if($uploadWasSuccessful) {
+            try {
+                $componentName = strval(
+                    preg_replace(
+                        "/[^A-Za-z0-9 ]/",
+                        '',
+                        str_replace('.html', '', $textAdventureUploader->nameOfFileToUpload())
+                    )
+                );
+                echo '<div class="roady-generic-container">';
+                echo '<pre class="roady-multi-line-code-container">';
+                echo '<code class="roady-multi-line-code">';
+                $configureAppOutput->run(
+                    new CommandLineUI(),
+                    $configureAppOutput->prepareArguments(
+                        [
+                            '--for-app',
+                            $componentName,
+                            '--name',
+                            $componentName,
+                            '--output',
+                            strval(
+                                file_get_contents(
+                                    $textAdventureUploader->pathToUploadFileTo()
+                                )
+                            ),
+                        ]
+                    )
+                );
+                echo '</code>';
+                echo '</pre>';
+                echo '</div>';
+                $pathToAppsComponentsPhp = strval(
+                    str_replace(
+                        'TextAdventureImporter' .
+                        DIRECTORY_SEPARATOR .
+                        'DynamicOutput',
+                        $componentName .
+                        DIRECTORY_SEPARATOR .
+                        'Components.php',
+                        strval(realpath(__DIR__))
+                    )
+                );
+                $host = parse_url(
+                    $currentRequest->getUrl(),
+                    PHP_URL_HOST
+                );
+                $port =  parse_url(
+                    $currentRequest->getUrl(),
+                    PHP_URL_PORT
+                );
+                $rootUrl = 'https://' . $host . $port;
+                var_dump($rootUrl);
+                try {
+                    exec(
+                        PHP_BINARY .
+                        ' ' .
+                        escapeshellarg($pathToAppsComponentsPhp) .
+                        " '" . $rootUrl . "'"
+                    );
+                } catch (\RuntimeException $error) {
+                    echo '<p class="roady-error-message">Failed to build new App</p>';
+                }
+            } catch (\RuntimeException $error) {
+                echo '<p class="roady-error-message">An error occurred, ConfigureAppOutput failed</p>';
+                echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
+            }
+        }
     }
 }
 ?>
 
+<?php
+
+
+
+?>
 <form
     class="roady-form"
     action="index.php?request=TextAdventureImporter"
@@ -192,45 +155,57 @@ if(
 >
     <label
         class="roady-form-input-label"
-        for="fileToUpload"
+        for="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
     >
         Select A Twine Html File To Upload:
     </label>
     <input
-        id="fileToUpload"
+        id="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
         class="roady-form-input"
         type="file"
-        name="fileToUpload"
+        name="<?php
+            echo $textAdventureUploader::FILE_TO_UPLOAD_INDEX;
+        ?>"
     >
     <label
         class="roady-form-input-label"
-        for="fileToUpload"
+        for="<?php
+                echo
+                $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+            ?>"
     >
         Replace Existing Game:
     </label>
     <input
-        id="replaceExistingGame"
+        id="<?php
+            echo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+        ?>"
         class="roady-form-input"
         type="checkbox"
         <?php
-        echo match(
-            (
-                $textAdventureUploader->currentRequest()->getPost()['replaceExistingGame']
-                ??
-                ''
-            )
-        ) {
-            'true' => 'checked',
+        echo match($textAdventureUploader->replaceExistingGame()) {
+            true => 'checked',
             default => '',
         };
         ?>
-        name="replaceExistingGame"
+        name="<?php
+            echo $textAdventureUploader::REPLACE_EXISTING_GAME_INDEX;
+        ?>"
         value="true"
     >
     <input
         type="hidden"
-        name="lastRequestId"
-        value="<?php echo $currentRequest->getUniqueId(); ?>"
+        name="<?php
+            echo $textAdventureUploader::POST_REQUEST_ID_INDEX;
+        ?>"
+        value="<?php
+        echo $textAdventureUploader->currentRequest()
+                                   ->getUniqueId();
+        ?>"
     >
     <input
         class="roady-form-input"
