@@ -18,6 +18,21 @@ $currentRequest = new Request(
     ),
     new Switchable()
 );
+$scheme = parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_SCHEME
+);
+$host = parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_HOST
+);
+$port =  parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_PORT
+);
+$rootUrl =
+    $scheme . '://' . $host .
+    (empty($port) ? '' : ':' . $port);
 $textAdventureUploader = new TextAdventureUploader(
     $currentRequest,
     new ComponentCrud(
@@ -51,102 +66,95 @@ $failedToUploadFileMessage = "
     <p class=\"roady-error-message\">
         Sorry, there was an error uploading your file.
     </p>";
-if(
-    $textAdventureUploader->previousRequest()->getUniqueId()
-    ===
-    $textAdventureUploader->postRequestId()
+
+if (
+    $textAdventureUploader->uploadIsPossible()
 ) {
-    if (
-        $textAdventureUploader->uploadIsPossible()
+    $textAdventureUploader->upload();
+    $uploadWasSuccessful = move_uploaded_file(
+        $textAdventureUploader->fileToUploadsTemporaryName(),
+        $textAdventureUploader->pathToUploadFileTo()
+    );
+    echo match(
+       $uploadWasSuccessful
     ) {
-        $textAdventureUploader->upload();
-        $uploadWasSuccessful = move_uploaded_file(
-            $textAdventureUploader->fileToUploadsTemporaryName(),
-            $textAdventureUploader->pathToUploadFileTo()
-        );
-        echo match(
-           $uploadWasSuccessful
-        ) {
-            true => $fileUploadedSuccessfullyMessage,
-            default => $failedToUploadFileMessage,
-        };
-        if($uploadWasSuccessful) {
+        true => $fileUploadedSuccessfullyMessage,
+        default => $failedToUploadFileMessage,
+    };
+    if($uploadWasSuccessful) {
+        try {
+            $componentName = strval(
+                preg_replace(
+                    "/[^A-Za-z0-9 ]/",
+                    '',
+                    str_replace('.html', '', $textAdventureUploader->nameOfFileToUpload())
+                )
+            );
+            echo '<div class="roady-generic-container">';
+            echo '<pre class="roady-multi-line-code-container">';
+            echo '<code class="roady-multi-line-code">';
+            $configureAppOutput->run(
+                new CommandLineUI(),
+                $configureAppOutput->prepareArguments(
+                    [
+                        '--for-app',
+                        $componentName,
+                        '--name',
+                        $componentName,
+                        '--output',
+                        strval(
+                            file_get_contents(
+                                $textAdventureUploader->pathToUploadFileTo()
+                            )
+                        ),
+                    ]
+                )
+            );
+            echo '</code>';
+            echo '</pre>';
+            echo '</div>';
+            $pathToAppsComponentsPhp = strval(
+                str_replace(
+                    'TextAdventureImporter' .
+                    DIRECTORY_SEPARATOR .
+                    'DynamicOutput',
+                    $componentName .
+                    DIRECTORY_SEPARATOR .
+                    'Components.php',
+                    strval(realpath(__DIR__))
+                )
+            );
             try {
-                $componentName = strval(
-                    preg_replace(
-                        "/[^A-Za-z0-9 ]/",
-                        '',
-                        str_replace('.html', '', $textAdventureUploader->nameOfFileToUpload())
-                    )
+                exec(
+                    PHP_BINARY .
+                    ' ' .
+                    escapeshellarg($pathToAppsComponentsPhp) .
+                    " '" . $rootUrl . "'"
                 );
-                echo '<div class="roady-generic-container">';
-                echo '<pre class="roady-multi-line-code-container">';
-                echo '<code class="roady-multi-line-code">';
-                $configureAppOutput->run(
-                    new CommandLineUI(),
-                    $configureAppOutput->prepareArguments(
-                        [
-                            '--for-app',
-                            $componentName,
-                            '--name',
-                            $componentName,
-                            '--output',
-                            strval(
-                                file_get_contents(
-                                    $textAdventureUploader->pathToUploadFileTo()
-                                )
-                            ),
-                        ]
-                    )
-                );
-                echo '</code>';
-                echo '</pre>';
-                echo '</div>';
-                $pathToAppsComponentsPhp = strval(
+                $appUrl = $rootUrl  .
+                    '?request=' .
                     str_replace(
-                        'TextAdventureImporter' .
-                        DIRECTORY_SEPARATOR .
-                        'DynamicOutput',
-                        $componentName .
-                        DIRECTORY_SEPARATOR .
-                        'Components.php',
-                        strval(realpath(__DIR__))
-                    )
-                );
-                $host = parse_url(
-                    $currentRequest->getUrl(),
-                    PHP_URL_HOST
-                );
-                $port =  parse_url(
-                    $currentRequest->getUrl(),
-                    PHP_URL_PORT
-                );
-                $rootUrl = 'https://' . $host . $port;
-                var_dump($rootUrl);
-                try {
-                    exec(
-                        PHP_BINARY .
-                        ' ' .
-                        escapeshellarg($pathToAppsComponentsPhp) .
-                        " '" . $rootUrl . "'"
+                        '.html',
+                        '',
+                        $textAdventureUploader->nameOfFileToUpload()
                     );
-                } catch (\RuntimeException $error) {
-                    echo '<p class="roady-error-message">Failed to build new App</p>';
-                }
+                echo '<p class="roady-success-message">The ' .
+                    $textAdventureUploader->nameOfFileToUpload() .
+                    ' file was uploaded successfully, and has been ' .
+                    'converted into a roady App which can be ' .
+                    'accessed at the following url: ' .
+                    '<a href="' . $appUrl . '">' . $appUrl . '</a></p>';
             } catch (\RuntimeException $error) {
-                echo '<p class="roady-error-message">An error occurred, ConfigureAppOutput failed</p>';
-                echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
+                echo '<p class="roady-error-message">Failed to build new App</p>';
             }
+        } catch (\RuntimeException $error) {
+            echo '<p class="roady-error-message">An error occurred, ConfigureAppOutput failed</p>';
+            echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
         }
     }
 }
 ?>
 
-<?php
-
-
-
-?>
 <form
     class="roady-form"
     action="index.php?request=TextAdventureImporter"

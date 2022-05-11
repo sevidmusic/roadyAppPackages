@@ -185,7 +185,6 @@ class TextAdventureUploader {
         return false;
     }
 
-
     private function safeToReplaceExistingGame(): bool
     {
         return match(
@@ -208,12 +207,23 @@ class TextAdventureUploader {
         };
     }
 
+    public function aFileWasSelectedForUpload(): bool
+    {
+        return $this->nameOfFileToUpload() !== self::NO_FILE_SELECTED;
+    }
+
     public function uploadIsPossible(): bool
     {
         return
             $this->fileToUploadIsAnHtmlFile()
             &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
+            &&
+            (
+                $this->previousRequest()->getUniqueId()
+                ===
+                $this->postRequestId()
+            )
             &&
             $this->safeToReplaceExistingGame();
     }

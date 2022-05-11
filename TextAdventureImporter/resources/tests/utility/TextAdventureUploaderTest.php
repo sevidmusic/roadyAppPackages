@@ -71,6 +71,11 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    /**
+     * @todo Consider instead using sha1_file() to generate
+     * a hash of the file to use as the uploaded files
+     * name. It would be safer than using a predictable name.
+     */
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $request = $this->mockCurrentRequest();
@@ -671,7 +676,9 @@ class TextAdventureUploaderTest extends TestCase
             [
                 'post' => [
                     TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true'
+                    => 'true',
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
                 ]
             ]
         );
@@ -803,6 +810,100 @@ class TextAdventureUploaderTest extends TestCase
                 'unique id.'
             );
         }
+    }
+
+    public function testUploadIsPossibleReturnsFalseIfPostRequestIdDoesNotMatchPreviousRequestId(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $testFileName;
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+                    => 'true',
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
+                ]
+            ]
+        );
+        /**
+         * Instantiate initial instance to set previous
+         * Request.
+         */
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        /**
+         * Instantiate a second instance to invalidate
+         * previous Request.
+         */
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->previousRequest()->getUniqueId()
+            !==
+            $textAdventureUploader->postRequestId()
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible()' .
+                'must return false if the ' .
+                'previous Request\'s id does not' .
+                'match the postRequestId set in $_POST'
+            );
+        }
+    }
+
+    public function testAFileWasSelectedReturnsFalseIfAFileWasNotSeletedForUpload(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertFalse(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `false` if ' .
+            'a file was not selected for upload.'
+        );
+    }
+
+    public function testAFileWasSelectedReturnsTrueIfAFileWasSeletedForUpload(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $testFileName;
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
+                ]
+            ]
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertTrue(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `true` if ' .
+            'a file was selected for upload.'
+        );
     }
 }
 
