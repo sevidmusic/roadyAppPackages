@@ -215,6 +215,8 @@ class TextAdventureUploader {
     public function uploadIsPossible(): bool
     {
         return
+            $this->aFileWasSelectedForUpload()
+            &&
             $this->fileToUploadIsAnHtmlFile()
             &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
