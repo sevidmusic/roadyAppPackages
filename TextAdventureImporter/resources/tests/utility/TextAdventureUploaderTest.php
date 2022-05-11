@@ -905,6 +905,67 @@ class TextAdventureUploaderTest extends TestCase
             'a file was selected for upload.'
         );
     }
+
+    public function testUploadIsPossibleReturnsFalseIfAFileWasSelectedReturnsFalse(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(!$textAdventureUploader->aFileWasSelectedForUpload()) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->aFileWasSelectedForUpload() must return `false`' .
+                'if a file was not selected for upload.'
+            );
+        }
+    }
+
+    public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $testFileName;
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
+                ]
+            ]
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->aFileWasSelectedForUpload()
+            &&
+            $textAdventureUploader->fileToUploadIsAnHtmlFile()
+            &&
+            !$textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+            &&
+            (
+                $textAdventureUploader->previousRequest()->getUniqueId()
+                ===
+                $textAdventureUploader->postRequestId()
+            )
+        ) {
+            $this->assertTrue(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must return `true` if ' .
+                'a file was selected for upload, the selected ' .
+                'file is an html file, file does not exceed the ' .
+                'maximum allowed file size, and the postRequestId ' .
+                'matches the previous ' . Request::class . '\'s id.'
+            );
+        }
+    }
 }
 
 /**
