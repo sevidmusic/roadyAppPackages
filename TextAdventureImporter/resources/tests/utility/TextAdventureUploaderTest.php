@@ -671,7 +671,9 @@ class TextAdventureUploaderTest extends TestCase
             [
                 'post' => [
                     TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true'
+                    => 'true',
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
                 ]
             ]
         );
@@ -801,6 +803,56 @@ class TextAdventureUploaderTest extends TestCase
                 '->postRequestId() does not match the ' .
                 'the previous ' . Request::class . '\'s ' .
                 'unique id.'
+            );
+        }
+    }
+
+    public function testUploadIsPossibleReturnsFalseIfPostRequestIdDoesNotMatchPreviousRequestId(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $testFileName;
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+                    => 'true',
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
+                ]
+            ]
+        );
+        /**
+         * Instantiate initial instance to set previous
+         * Request.
+         */
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        /**
+         * Instantiate a second instance to invalidate
+         * previous Request.
+         */
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        if(
+            $textAdventureUploader->previousRequest()->getUniqueId()
+            !==
+            $textAdventureUploader->postRequestId()
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible()' .
+                'must return false if the ' .
+                'previous Request\'s id does not' .
+                'match the postRequestId set in $_POST'
             );
         }
     }

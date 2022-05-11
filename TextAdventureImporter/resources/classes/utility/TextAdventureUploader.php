@@ -215,6 +215,12 @@ class TextAdventureUploader {
             &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
             &&
+            (
+                $this->previousRequest()->getUniqueId()
+                ===
+                $this->postRequestId()
+            )
+            &&
             $this->safeToReplaceExistingGame();
     }
 }
