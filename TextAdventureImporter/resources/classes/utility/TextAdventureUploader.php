@@ -185,7 +185,6 @@ class TextAdventureUploader {
         return false;
     }
 
-
     private function safeToReplaceExistingGame(): bool
     {
         return match(
@@ -206,6 +205,11 @@ class TextAdventureUploader {
              */
             default => true,
         };
+    }
+
+    public function aFileWasSelectedForUpload(): bool
+    {
+        return $this->nameOfFileToUpload() !== self::NO_FILE_SELECTED;
     }
 
     public function uploadIsPossible(): bool

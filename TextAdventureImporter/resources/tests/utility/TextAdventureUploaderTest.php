@@ -71,6 +71,11 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    /**
+     * @todo Consider instead using sha1_file() to generate
+     * a hash of the file to use as the uploaded files
+     * name. It would be safer than using a predictable name.
+     */
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $request = $this->mockCurrentRequest();
@@ -855,6 +860,50 @@ class TextAdventureUploaderTest extends TestCase
                 'match the postRequestId set in $_POST'
             );
         }
+    }
+
+    public function testAFileWasSelectedReturnsFalseIfAFileWasNotSeletedForUpload(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertFalse(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `false` if ' .
+            'a file was not selected for upload.'
+        );
+    }
+
+    public function testAFileWasSelectedReturnsTrueIfAFileWasSeletedForUpload(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = $testFileName;
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => $request->getUniqueId()
+                ]
+            ]
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertTrue(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `true` if ' .
+            'a file was selected for upload.'
+        );
     }
 }
 

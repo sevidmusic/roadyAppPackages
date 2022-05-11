@@ -18,6 +18,21 @@ $currentRequest = new Request(
     ),
     new Switchable()
 );
+$scheme = parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_SCHEME
+);
+$host = parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_HOST
+);
+$port =  parse_url(
+    $currentRequest->getUrl(),
+    PHP_URL_PORT
+);
+$rootUrl =
+    $scheme . '://' . $host .
+    (empty($port) ? '' : ':' . $port);
 $textAdventureUploader = new TextAdventureUploader(
     $currentRequest,
     new ComponentCrud(
@@ -109,22 +124,6 @@ if (
                     strval(realpath(__DIR__))
                 )
             );
-            $scheme = parse_url(
-                $currentRequest->getUrl(),
-                PHP_URL_SCHEME
-            );
-            $host = parse_url(
-                $currentRequest->getUrl(),
-                PHP_URL_HOST
-            );
-            $port =  parse_url(
-                $currentRequest->getUrl(),
-                PHP_URL_PORT
-            );
-            $rootUrl =
-                $scheme . '://' . $host .
-                (empty($port) ? '' : ':' . $port);
-            var_dump($rootUrl);
             try {
                 exec(
                     PHP_BINARY .
@@ -132,6 +131,19 @@ if (
                     escapeshellarg($pathToAppsComponentsPhp) .
                     " '" . $rootUrl . "'"
                 );
+                $appUrl = $rootUrl  .
+                    '?request=' .
+                    str_replace(
+                        '.html',
+                        '',
+                        $textAdventureUploader->nameOfFileToUpload()
+                    );
+                echo '<p class="roady-success-message">The ' .
+                    $textAdventureUploader->nameOfFileToUpload() .
+                    ' file was uploaded successfully, and has been ' .
+                    'converted into a roady App which can be ' .
+                    'accessed at the following url: ' .
+                    '<a href="' . $appUrl . '">' . $appUrl . '</a></p>';
             } catch (\RuntimeException $error) {
                 echo '<p class="roady-error-message">Failed to build new App</p>';
             }
