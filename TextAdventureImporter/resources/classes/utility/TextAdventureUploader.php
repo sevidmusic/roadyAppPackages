@@ -35,7 +35,16 @@ class TextAdventureUploader {
 
     public const TEMPORARY_FILENAME_INDEX = 'tmp_name';
 
+    public const A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE =
+        'A Twine html file was not selected. Please select a Twine ' .
+        'html file to upload!';
+
     private Request $previousRequest;
+
+    /**
+     * @var array<int, string> $errorMessages
+     */
+    private array $errorMessages = [];
 
     public function __construct(
         private Request $currentRequest,
@@ -207,9 +216,24 @@ class TextAdventureUploader {
         };
     }
 
+    /**
+     * @return array<int, string>
+     */
+    public function errorMessages(): array
+    {
+        return $this->errorMessages;
+    }
+
     public function aFileWasSelectedForUpload(): bool
     {
-        return $this->nameOfFileToUpload() !== self::NO_FILE_SELECTED;
+        if($this->nameOfFileToUpload() === self::NO_FILE_SELECTED) {
+            array_push(
+                $this->errorMessages,
+                self::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
+            );
+            return false;
+        }
+        return true;
     }
 
     public function uploadIsPossible(): bool

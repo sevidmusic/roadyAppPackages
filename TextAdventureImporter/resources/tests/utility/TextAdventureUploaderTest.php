@@ -865,7 +865,6 @@ class TextAdventureUploaderTest extends TestCase
     public function testAFileWasSelectedReturnsFalseIfAFileWasNotSeletedForUpload(): void
     {
         $request = $this->mockCurrentRequest();
-        $testFileName = $request->getUniqueId() . '.html';
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -966,14 +965,48 @@ class TextAdventureUploaderTest extends TestCase
             );
         }
     }
+
+    public function test_A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        $expectedErrorMessage = 'A Twine html file was not ' .
+           'selected. Please select a Twine html file to upload!';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
+        );
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingAFileWasNotSelectedForUploadIfAFileWasSelectedForUploadReturnsFalse(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        $textAdventureUploader->aFileWasSelectedForUpload();
+        $this->assertTrue(
+            in_array(
+                TextAdventureUploader::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
+                $textAdventureUploader->errorMessages(),
+            ),
+            TextAdventureUploader::class .
+            '->errorMessages() must return an array that ' .
+            'includes an error message that indicates a ' .
+            'file was not selected for upload if ' .
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() returns `false`'
+        );
+    }
 }
 
 /**
  *
 $aFileWasNotSelectedMessage = '
     <p class="roady-error-message">
-        A Twine html file was not selected.
-        Please select a Twine html file to upload!
+
     </p>
 ';
 $invalidFileTypeMessage = '

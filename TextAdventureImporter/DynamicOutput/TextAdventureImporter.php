@@ -153,6 +153,12 @@ if (
         }
     }
 }
+
+if($textAdventureUploader->postRequestId() === $textAdventureUploader->previousRequest()->getUniqueId()) {
+    foreach($textAdventureUploader->errorMessages() as $errorMessage) {
+        echo '<p class="roady-error-message">' . $errorMessage . '</p>';
+    }
+}
 ?>
 
 <form
