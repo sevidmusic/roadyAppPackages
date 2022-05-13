@@ -18,21 +18,6 @@ $currentRequest = new Request(
     ),
     new Switchable()
 );
-$scheme = parse_url(
-    $currentRequest->getUrl(),
-    PHP_URL_SCHEME
-);
-$host = parse_url(
-    $currentRequest->getUrl(),
-    PHP_URL_HOST
-);
-$port =  parse_url(
-    $currentRequest->getUrl(),
-    PHP_URL_PORT
-);
-$rootUrl =
-    $scheme . '://' . $host .
-    (empty($port) ? '' : ':' . $port);
 $textAdventureUploader = new TextAdventureUploader(
     $currentRequest,
     new ComponentCrud(
@@ -129,9 +114,9 @@ if (
                     PHP_BINARY .
                     ' ' .
                     escapeshellarg($pathToAppsComponentsPhp) .
-                    " '" . $rootUrl . "'"
+                    " '" . $textAdventureUploader->rootUrl() . "'"
                 );
-                $appUrl = $rootUrl  .
+                $appUrl = $textAdventureUploader->rootUrl()  .
                     '?request=' .
                     str_replace(
                         '.html',
@@ -151,6 +136,12 @@ if (
             echo '<p class="roady-error-message">An error occurred, ConfigureAppOutput failed</p>';
             echo '<p class="roady-error-message">Error: ' . $error->getMessage() . '</p>';
         }
+    }
+}
+
+if($textAdventureUploader->postRequestId() === $textAdventureUploader->previousRequest()->getUniqueId()) {
+    foreach($textAdventureUploader->errorMessages() as $errorMessage) {
+        echo '<p class="roady-error-message">' . $errorMessage . '</p>';
     }
 }
 ?>
