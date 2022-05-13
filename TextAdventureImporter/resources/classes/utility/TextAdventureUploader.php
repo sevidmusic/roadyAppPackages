@@ -253,5 +253,44 @@ class TextAdventureUploader {
             &&
             $this->safeToReplaceExistingGame();
     }
+
+    public function rootUrl(): string
+    {
+        return
+            $this->rootUrlScheme() .
+            $this->rootUrlHost() .
+            $this->rootUrlPort();
+    }
+
+    private function rootUrlHost(): string
+    {
+        return strval(
+            parse_url(
+                $this->currentRequest()->getUrl(),
+                PHP_URL_HOST
+            )
+        );
+    }
+
+    private function rootUrlScheme(): string
+    {
+        return strval(
+            parse_url(
+                $this->currentRequest()->getUrl(),
+                PHP_URL_SCHEME
+            )
+        ) . '://';
+    }
+
+    private function rootUrlPort(): string
+    {
+        $port =  strval(
+            parse_url(
+                $this->currentRequest()->getUrl(),
+                PHP_URL_PORT
+            )
+        );
+        return (empty($port) ? '' : ':' . $port);
+    }
 }
 

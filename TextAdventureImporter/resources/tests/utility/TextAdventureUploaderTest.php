@@ -1000,15 +1000,31 @@ class TextAdventureUploaderTest extends TestCase
             '->aFileWasSelectedForUpload() returns `false`'
         );
     }
+
+    public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
+    {
+        $request = $this->mockCurrentRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $scheme = parse_url(
+            $request->getUrl(),
+            PHP_URL_SCHEME
+        );
+        $host = parse_url($request->getUrl(), PHP_URL_HOST);
+        $port =  parse_url($request->getUrl(), PHP_URL_PORT);
+        $expectedRootUrl = $scheme . '://' . $host .
+            (empty($port) ? '' : ':' . $port);
+        $this->assertEquals(
+            $expectedRootUrl,
+            $textAdventureUploader->rootUrl(),
+        );
+    }
 }
 
 /**
  *
-$aFileWasNotSelectedMessage = '
-    <p class="roady-error-message">
-
-    </p>
-';
 $invalidFileTypeMessage = '
     <p class="roady-error-message">
         Only Twine html files can be uploaded!
