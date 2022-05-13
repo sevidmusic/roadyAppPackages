@@ -1001,6 +1001,41 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    public function test_SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        $expectedErrorMessage = 'The selected file is not a valid ' .
+           ' html file. Only html files may be uploaded.';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
+        );
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFileIsNotAnHtmlFileIfFileToUploadIsAnHtmlFileReturnsFalse(): void
+    {
+        $textAdventureUploader = new TextAdventureUploader(
+            $this->mockCurrentRequest(),
+            $this->mockComponentCrud()
+        );
+        $textAdventureUploader->fileToUploadIsAnHtmlFile();
+        $this->assertTrue(
+            in_array(
+                TextAdventureUploader::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE,
+                $textAdventureUploader->errorMessages(),
+            ),
+            TextAdventureUploader::class .
+            '->errorMessages() must return an array that ' .
+            'includes an error message that indicates a ' .
+            'the selected file is not an html file if ' .
+            TextAdventureUploader::class .
+            '->fileToUploadIsAnHtmlFile() returns `false`'
+        );
+    }
+
     public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
     {
         $request = $this->mockCurrentRequest();

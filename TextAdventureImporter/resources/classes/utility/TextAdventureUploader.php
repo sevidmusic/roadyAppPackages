@@ -39,6 +39,10 @@ class TextAdventureUploader {
         'A Twine html file was not selected. Please select a Twine ' .
         'html file to upload!';
 
+    public const SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE =
+        'The selected file is not a valid ' .
+        ' html file. Only html files may be uploaded.';
+
     private Request $previousRequest;
 
     /**
@@ -125,12 +129,20 @@ class TextAdventureUploader {
     {
         // @todo Refactor to more securely verify file is an html file
         // @see https://www.php.net/manual/en/features.file-upload.php
-        return strtolower(
+        $fileToUploadIsAnHtmlFile = strtolower(
             pathinfo(
                 $this->nameOfFileToUpload(),
                 PATHINFO_EXTENSION
             )
         ) === 'html';
+        if($fileToUploadIsAnHtmlFile) {
+            return true;
+        }
+        array_push(
+            $this->errorMessages,
+            self::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE,
+        );
+        return false;
     }
 
     public function currentRequest(): Request
