@@ -43,6 +43,10 @@ class TextAdventureUploader {
         'The selected file is not a valid ' .
         ' html file. Only html files may be uploaded.';
 
+    public const FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE =
+        'The selected file is too large! Please choose a file ' .
+        'that is less than 5 megabytes.';
+
     private Request $previousRequest;
 
     /**
@@ -154,9 +158,14 @@ class TextAdventureUploader {
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
         // @todo Refactor to more accurately check file size
+        $maximumAllowedFileSizeInBytes = 5000000;
         return (
-            $_FILES[self::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] ?? 5000000
-        ) > 5000000;
+            $_FILES
+            [self::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
+            ??
+            $maximumAllowedFileSizeInBytes
+        ) > $maximumAllowedFileSizeInBytes;
 
     }
 

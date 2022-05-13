@@ -1036,6 +1036,19 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
+    public function test_FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        $expectedErrorMessage = 'The selected file is too large! ' .
+            'Please choose a file that is less than 5 megabytes.';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
+        );
+    }
     public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
     {
         $request = $this->mockCurrentRequest();
@@ -1060,15 +1073,8 @@ class TextAdventureUploaderTest extends TestCase
 
 /**
  *
-$invalidFileTypeMessage = '
-    <p class="roady-error-message">
-        Only Twine html files can be uploaded!
-        Please select a Twine html file to upload
-    </p>
-';
 $fileIsToLargeMessage = '
     <p class="roady-error-message">
-        The file is too large!
     </p>
 ';
 
