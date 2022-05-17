@@ -35,6 +35,8 @@ class TextAdventureUploader {
 
     public const TEMPORARY_FILENAME_INDEX = 'tmp_name';
 
+    public const MAXIMUM_ALLOWED_FILE_SIZE = 1000000;
+
     public const A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE =
         'A Twine html file was not selected. Please select a Twine ' .
         'html file to upload!';
@@ -158,14 +160,13 @@ class TextAdventureUploader {
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
         // @todo Refactor to more accurately check file size
-        $maximumAllowedFileSizeInBytes = 5000000;
         return (
             $_FILES
             [self::FILE_TO_UPLOAD_INDEX]
             [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
             ??
-            $maximumAllowedFileSizeInBytes
-        ) > $maximumAllowedFileSizeInBytes;
+            self::MAXIMUM_ALLOWED_FILE_SIZE
+        ) > self::MAXIMUM_ALLOWED_FILE_SIZE;
 
     }
 
