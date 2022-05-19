@@ -47,7 +47,7 @@ class TextAdventureUploader {
 
     public const FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE =
         'The selected file is too large! Please choose a file ' .
-        'that is less than 5 megabytes.';
+        'that is less than 1 megabytes.';
 
     private Request $previousRequest;
 
