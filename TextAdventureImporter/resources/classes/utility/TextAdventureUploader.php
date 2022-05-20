@@ -160,13 +160,22 @@ class TextAdventureUploader {
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
         // @todo Refactor to more accurately check file size
-        return (
-            $_FILES
-            [self::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
-            ??
-            self::MAXIMUM_ALLOWED_FILE_SIZE
-        ) > self::MAXIMUM_ALLOWED_FILE_SIZE;
+        if (
+            (
+                $_FILES
+                [self::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
+                ??
+                self::MAXIMUM_ALLOWED_FILE_SIZE
+            ) > self::MAXIMUM_ALLOWED_FILE_SIZE
+        ) {
+            array_push(
+                $this->errorMessages,
+                self::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+            );
+            return true;
+        }
+        return false;
 
     }
 

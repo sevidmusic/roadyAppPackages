@@ -1125,9 +1125,18 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFileIsNotAnHtmlFileIfFileToUploadIsAnHtmlFileReturnsFalse(): void
     {
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockRequest(),
+            $request,
             $this->mockComponentCrud()
+        );
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: false,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
         );
         if(!$textAdventureUploader->fileToUploadIsAnHtmlFile()) {
             $this->assertTrue(
@@ -1165,6 +1174,39 @@ class TextAdventureUploaderTest extends TestCase
             $expectedErrorMessage
         );
     }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFilesSizeExceedsTheMaximumAllowedFileSizeIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
+    {
+        $request = $this->mockRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: false,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+        );
+        if($textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates a ' .
+                'the selected file\'s size eceeds the ' .
+                'maximum allowed files size if ' .
+                TextAdventureUploader::class .
+                '->fileToUploadIsAnHtmlFile() returns `false`'
+            );
+        }
+    }
+
     public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
     {
         $request = $this->mockRequest();
