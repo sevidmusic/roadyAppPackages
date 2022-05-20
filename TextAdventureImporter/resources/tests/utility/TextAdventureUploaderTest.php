@@ -634,9 +634,18 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testReplaceExistingGameReturnsFalseIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsNotSetToTheString_true(): void
+    public function testReplaceExistingGameReturnsFalseIf_POST_REPLACE_EXISTING_GAME_INDEX_IsNotSetToTheString_true(): void
     {
+        // TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
         $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -651,16 +660,16 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testReplaceExistingGameReturnsTrueIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsSetToTheString_true(): void
+    public function testReplaceExistingGameReturnsTrueIf_POST_REPLACE_EXISTING_GAME_INDEX_IsSetToTheString_true(): void
     {
         $request = $this->mockRequest();
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true'
-                ]
-            ]
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: true,
+            setPostRequestId: true,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -1237,6 +1246,23 @@ class TextAdventureUploaderTest extends TestCase
             '::MAXIMUM_ALLOWED_FILE_SIZE must be assigned the ' .
             'integer ' .
             self::MAXIMUM_ALLOWED_FILE_SIZE
+        );
+    }
+
+    public function test_FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        // FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE
+        $expectedErrorMessage = 'A file already exists whose name ' .
+            'matches the name of the specified file\'s name. ' .
+            'Please select a file with a different name, or check ' .
+            'the  "Replace Existing" box.';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
         );
     }
 }

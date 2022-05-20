@@ -49,6 +49,12 @@ class TextAdventureUploader {
         'The selected file is too large! Please choose a file ' .
         'that is less than 1 megabytes.';
 
+    public const FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE =
+        'A file already exists whose name ' .
+        'matches the name of the specified file\'s name. ' .
+        'Please select a file with a different name, or check ' .
+        'the  "Replace Existing" box.';
+
     private Request $previousRequest;
 
     /**
