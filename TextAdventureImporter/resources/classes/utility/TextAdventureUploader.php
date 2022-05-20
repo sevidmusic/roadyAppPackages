@@ -51,7 +51,7 @@ class TextAdventureUploader {
 
     public const FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE =
         'A file already exists whose name ' .
-        'matches the name of the specified file\'s name. ' .
+        'matches the name of the specified file. ' .
         'Please select a file with a different name, or check ' .
         'the  "Replace Existing" box.';
 
@@ -202,7 +202,7 @@ class TextAdventureUploader {
 
     public function replaceExistingGame(): bool
     {
-        return (
+        if (
             (
                 $this->currentRequest()
                      ->getPost()[self::REPLACE_EXISTING_GAME_INDEX]
@@ -211,7 +211,14 @@ class TextAdventureUploader {
             )
             ===
             'true'
+        ) {
+            return true;
+        }
+        array_push(
+            $this->errorMessages,
+            self::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
         );
+        return false;
     }
 
     public function fileToUploadsTemporaryName(): string

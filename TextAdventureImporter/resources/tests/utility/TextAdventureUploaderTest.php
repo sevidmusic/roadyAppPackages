@@ -775,10 +775,12 @@ class TextAdventureUploaderTest extends TestCase
         ) {
             mkdir($textAdventureUploader->pathToUploadsDirectory());
         }
-        file_put_contents(
-            $pathToTestFile,
-            $request->getName() . PHP_EOL . $request->getUniqueId()
-        );
+        if(!file_exists($pathToTestFile)) {
+            file_put_contents(
+                $pathToTestFile,
+                $request->getName() . PHP_EOL . $request->getUniqueId()
+            );
+        }
         if(!$textAdventureUploader->replaceExistingGame()) {
             $this->assertFalse(
                 $textAdventureUploader->uploadIsPossible(),
@@ -1253,7 +1255,7 @@ class TextAdventureUploaderTest extends TestCase
     {
         // FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE
         $expectedErrorMessage = 'A file already exists whose name ' .
-            'matches the name of the specified file\'s name. ' .
+            'matches the name of the specified file. ' .
             'Please select a file with a different name, or check ' .
             'the  "Replace Existing" box.';
         $this->assertEquals(
@@ -1264,6 +1266,57 @@ class TextAdventureUploaderTest extends TestCase
             'must be assigned the string: ' .
             $expectedErrorMessage
         );
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingThatAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload_IfAFileAlreadyExistsWhoseNameMatchesTheNameOfTheFileSelectedToUploadAndReplaceExistingGameReturnsFalse(): void
+    {
+        $request = $this->mockRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $pathToTestFile =
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            $testFileName;
+        if(
+            !is_dir($textAdventureUploader->pathToUploadsDirectory())
+        ) {
+            mkdir($textAdventureUploader->pathToUploadsDirectory());
+        }
+        if(!file_exists($pathToTestFile)) {
+            file_put_contents(
+                $pathToTestFile,
+                $request->getName() . PHP_EOL . $request->getUniqueId()
+            );
+        }
+        if(!$textAdventureUploader->replaceExistingGame()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates ' .
+                'the selected file was already uploaded ' .
+                'if a file already exists whose name matches ' .
+                'the name of the file selected for upload and ' .
+                TextAdventureUploader::class .
+                '->replaceExistingGame() returns `false`'
+            );
+        }
+        unlink($pathToTestFile);
+        rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 }
 
