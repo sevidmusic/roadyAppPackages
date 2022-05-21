@@ -283,6 +283,8 @@ class TextAdventureUploader {
     public function uploadIsPossible(): bool
     {
         return
+            isset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+            &&
             $this->aFileWasSelectedForUpload()
             &&
             $this->fileToUploadIsAnHtmlFile()

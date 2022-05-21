@@ -55,6 +55,17 @@ $failedToUploadFileMessage = "
 if (
     $textAdventureUploader->uploadIsPossible()
 ) {
+
+// DEV
+    // @todo TextAdventureUploader->uploadIsPossible() must
+    // also perform the following checks
+if(
+    is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+) {
+    throw new RuntimeException('Bad Upload Request');
+}
+
+// END DEV
     $textAdventureUploader->upload();
     $uploadWasSuccessful = move_uploaded_file(
         $textAdventureUploader->fileToUploadsTemporaryName(),

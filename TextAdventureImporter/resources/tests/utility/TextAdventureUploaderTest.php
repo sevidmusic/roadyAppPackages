@@ -31,6 +31,11 @@ class TextAdventureUploaderTest extends TestCase
 
     }
 
+    /**
+     * For an overview of PHP's upload error message values:
+     *
+     * @see https://www.php.net/manual/en/features.file-upload.errors.php
+     */
     private function mockUploadRequest(
         Request $request,
         bool $fileWasSelected,
@@ -38,6 +43,8 @@ class TextAdventureUploaderTest extends TestCase
         bool $fileIsAnHtmlFile,
         bool $setReplaceExistingGame,
         bool $setPostRequestId,
+        bool $setFilesErrors,
+        int $filesErrorsValue,
     ): void
     {
         $request->import(
@@ -54,6 +61,11 @@ class TextAdventureUploaderTest extends TestCase
                 ]
             ]
         );
+        if($fileWasSelected && $setFilesErrors) {
+            $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                ['error'] = $filesErrorsValue;
+        }
         $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
             [TextAdventureUploader::FILENAME_INDEX]
@@ -112,6 +124,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: false,
             setReplaceExistingGame: false,
             setPostRequestId: false,
+            setFilesErrors: false,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
@@ -129,6 +143,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -157,6 +173,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -291,6 +309,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: false,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -314,6 +334,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -412,6 +434,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -438,6 +462,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -645,6 +671,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -670,6 +698,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: true,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -716,6 +746,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -761,6 +793,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -807,6 +841,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: true,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -850,6 +886,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -880,6 +918,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: false,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -956,6 +996,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: true,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         /**
          * Instantiate initial instance to set previous
@@ -1014,6 +1056,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -1043,7 +1087,7 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId(): void
+    public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId_And__FILES_ERRORS_IsSet(): void
     {
         $request = $this->mockRequest();
         $testFileName = $request->getUniqueId() . '.html';
@@ -1054,6 +1098,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -1148,6 +1194,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: false,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         if(!$textAdventureUploader->fileToUploadIsAnHtmlFile()) {
             $this->assertTrue(
@@ -1200,6 +1248,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         if($textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()) {
             $this->assertTrue(
@@ -1279,6 +1329,8 @@ class TextAdventureUploaderTest extends TestCase
             fileIsAnHtmlFile: true,
             setReplaceExistingGame: false,
             setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -1317,6 +1369,43 @@ class TextAdventureUploaderTest extends TestCase
         }
         unlink($pathToTestFile);
         rmdir($textAdventureUploader->pathToUploadsDirectory());
+    }
+
+    public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsNotSet(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: false,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            !isset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["errors"] is not set.'
+            );
+        }
+        /**
+        if(
+        ) {
+            throw new RuntimeException('Bad Upload Request');
+        }
+         */
     }
 }
 
