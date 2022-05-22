@@ -285,6 +285,8 @@ class TextAdventureUploader {
         return
             isset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
             &&
+            !is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+            &&
             $this->aFileWasSelectedForUpload()
             &&
             $this->fileToUploadIsAnHtmlFile()
