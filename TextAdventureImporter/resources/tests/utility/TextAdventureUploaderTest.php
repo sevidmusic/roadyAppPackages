@@ -65,12 +65,12 @@ class TextAdventureUploaderTest extends TestCase
         if($fileWasSelected && $setFilesErrors && !$filesErrorsIsAnArray) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                ['error'] = $filesErrorsValue;
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = $filesErrorsValue;
         }
         if($fileWasSelected && $filesErrorsIsAnArray) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                ['error'] = [$filesErrorsValue];
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = [$filesErrorsValue];
         }
         $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
@@ -1416,7 +1416,11 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockComponentCrud()
         );
         if(
-            !isset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+            !isset(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
         ) {
             $this->assertFalse(
                 $textAdventureUploader->uploadIsPossible(),
@@ -1435,7 +1439,7 @@ class TextAdventureUploaderTest extends TestCase
          */
     }
 
-    //is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+    //is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX])
     /**
      * Checking the errors in the FILES array is recommended by the
      * following post on php.net:
@@ -1461,7 +1465,11 @@ class TextAdventureUploaderTest extends TestCase
             $this->mockComponentCrud()
         );
         if(
-            is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
+            is_array(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
         ) {
             $this->assertFalse(
                 $textAdventureUploader->uploadIsPossible(),
@@ -1469,15 +1477,24 @@ class TextAdventureUploaderTest extends TestCase
                 '->uploadIsPossible() must ' .
                 'return false if $_FILES["' .
                 TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
-                '"]["errors"] is an array.'
+                '"]["' .
+                TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX .
+                '"] is an array.'
             );
         }
-        /**
-        if(
-        ) {
-            throw new RuntimeException('Bad Upload Request');
-        }
-         */
+    }
+
+    public function test_FILE_UPLOAD_ERRORS_INDEX_IsAssignedTheString_error(): void
+    {
+        $expectedString = 'error';
+        $this->assertEquals(
+            $expectedString,
+            TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX,
+            TextAdventureUploader::class .
+            '::FILE_UPLOAD_ERRORS_INDEX ' .
+            'must be assigned the string: ' .
+            $expectedString
+        );
     }
 }
 

@@ -10,6 +10,8 @@ use roady\classes\primary\Switchable;
 
 class TextAdventureUploader {
 
+    public const FILE_UPLOAD_ERRORS_INDEX = 'error';
+
     public const NO_FILE_SELECTED = 'NO_FILE_SELECTED';
 
     private const RELATIVE_PATH_TO_UPLOADS_DIRECTORY =
