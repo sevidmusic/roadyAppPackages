@@ -272,7 +272,13 @@ class TextAdventureUploader {
 
     public function aFileWasSelectedForUpload(): bool
     {
-        if($this->nameOfFileToUpload() === self::NO_FILE_SELECTED) {
+        if(
+            (
+                $this->nameOfFileToUpload()
+                ===
+                self::NO_FILE_SELECTED
+            )
+        ) {
             array_push(
                 $this->errorMessages,
                 self::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
@@ -282,24 +288,45 @@ class TextAdventureUploader {
         return true;
     }
 
+    private function uploadRequestIsValid(): bool
+    {
+        return (
+            $this->previousRequest()->getUniqueId()
+            ===
+            $this->postRequestId()
+            &&
+            isset(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+            &&
+            !is_array(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+            &&
+            (
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                ===
+                UPLOAD_ERR_OK
+            )
+        );
+    }
+
     public function uploadIsPossible(): bool
     {
         return
-            isset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
-            &&
-            !is_array($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]['error'])
-            &&
             $this->aFileWasSelectedForUpload()
+            &&
+            $this->uploadRequestIsValid()
             &&
             $this->fileToUploadIsAnHtmlFile()
             &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
-            &&
-            (
-                $this->previousRequest()->getUniqueId()
-                ===
-                $this->postRequestId()
-            )
             &&
             $this->safeToReplaceExistingGame();
     }
