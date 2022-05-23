@@ -1060,7 +1060,7 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testAFileWasSelectedReturnsFalseIfAFileWasNotSeletedForUpload(): void
+    public function testAFileWasSelectedForUploadReturnsFalseIfAFileWasNotSeletedForUpload(): void
     {
         $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
@@ -1072,6 +1072,39 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->aFileWasSelectedForUpload() must return `false` if ' .
             'a file was not selected for upload.'
+        );
+        /**
+         * Also test case where
+         * $_FILES
+         * [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+         * [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+         * === UPLOAD_ERR_NO_FILE
+         */
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            // Set fileWasSelected to true,
+            // UPLOAD_ERR_NO_FILE is what is being tested here.
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertFalse(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `false` if ' .
+            '$_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]' .
+            '[TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] ' .
+            'is set to UPLOAD_ERR_NO_FILE'
         );
     }
 

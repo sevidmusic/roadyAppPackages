@@ -278,6 +278,18 @@ class TextAdventureUploader {
                 ===
                 self::NO_FILE_SELECTED
             )
+            ||
+            (
+                (
+                    $_FILES
+                    [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                    [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                    ??
+                    ''
+                )
+                ===
+                UPLOAD_ERR_NO_FILE
+            )
         ) {
             array_push(
                 $this->errorMessages,
