@@ -112,7 +112,7 @@ class TextAdventureUploader {
             true =>
                 $this->pathToUploadsDirectory() .
                 DIRECTORY_SEPARATOR .
-                basename($this->nameOfFileToUpload()),
+                sha1(basename($this->nameOfFileToUpload())),
             default => $this->nameOfFileToUpload(),
         };
     }

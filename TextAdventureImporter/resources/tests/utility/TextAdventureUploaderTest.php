@@ -192,7 +192,7 @@ class TextAdventureUploaderTest extends TestCase
         $this->assertEquals(
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $textAdventureUploader->nameOfFileToUpload(),
+            sha1(basename($textAdventureUploader->nameOfFileToUpload())),
             $textAdventureUploader->pathToUploadFileTo()
         );
     }
@@ -820,7 +820,7 @@ class TextAdventureUploaderTest extends TestCase
         $pathToTestFile =
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $testFileName;
+            sha1(basename($testFileName));
         if(
             !is_dir($textAdventureUploader->pathToUploadsDirectory())
         ) {
@@ -877,7 +877,7 @@ class TextAdventureUploaderTest extends TestCase
         $pathToTestFile =
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $testFileName;
+            sha1(basename($testFileName));
         if(
             !is_dir($textAdventureUploader->pathToUploadsDirectory())
         ) {
@@ -1373,7 +1373,7 @@ class TextAdventureUploaderTest extends TestCase
         $pathToTestFile =
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $testFileName;
+            sha1(basename($testFileName));
         if(
             !is_dir($textAdventureUploader->pathToUploadsDirectory())
         ) {
