@@ -10,6 +10,8 @@ use roady\classes\primary\Switchable;
 
 class TextAdventureUploader {
 
+    public const FILE_UPLOAD_ERRORS_INDEX = 'error';
+
     public const NO_FILE_SELECTED = 'NO_FILE_SELECTED';
 
     private const RELATIVE_PATH_TO_UPLOADS_DIRECTORY =
@@ -35,6 +37,8 @@ class TextAdventureUploader {
 
     public const TEMPORARY_FILENAME_INDEX = 'tmp_name';
 
+    public const MAXIMUM_ALLOWED_FILE_SIZE = 1000000;
+
     public const A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE =
         'A Twine html file was not selected. Please select a Twine ' .
         'html file to upload!';
@@ -42,6 +46,16 @@ class TextAdventureUploader {
     public const SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE =
         'The selected file is not a valid ' .
         ' html file. Only html files may be uploaded.';
+
+    public const FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE =
+        'The selected file is too large! Please choose a file ' .
+        'that is less than 1 megabytes.';
+
+    public const FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE =
+        'A file already exists whose name ' .
+        'matches the name of the specified file. ' .
+        'Please select a file with a different name, or check ' .
+        'the  "Replace Existing" box.';
 
     private Request $previousRequest;
 
@@ -98,7 +112,7 @@ class TextAdventureUploader {
             true =>
                 $this->pathToUploadsDirectory() .
                 DIRECTORY_SEPARATOR .
-                basename($this->nameOfFileToUpload()),
+                sha1(basename($this->nameOfFileToUpload())),
             default => $this->nameOfFileToUpload(),
         };
     }
@@ -154,9 +168,22 @@ class TextAdventureUploader {
     public function fileToUploadSizeExceedsAllowedFileSize(): bool
     {
         // @todo Refactor to more accurately check file size
-        return (
-            $_FILES[self::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] ?? 5000000
-        ) > 5000000;
+        if (
+            (
+                $_FILES
+                [self::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
+                ??
+                self::MAXIMUM_ALLOWED_FILE_SIZE
+            ) > self::MAXIMUM_ALLOWED_FILE_SIZE
+        ) {
+            array_push(
+                $this->errorMessages,
+                self::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+            );
+            return true;
+        }
+        return false;
 
     }
 
@@ -177,7 +204,7 @@ class TextAdventureUploader {
 
     public function replaceExistingGame(): bool
     {
-        return (
+        if (
             (
                 $this->currentRequest()
                      ->getPost()[self::REPLACE_EXISTING_GAME_INDEX]
@@ -186,7 +213,14 @@ class TextAdventureUploader {
             )
             ===
             'true'
+        ) {
+            return true;
+        }
+        array_push(
+            $this->errorMessages,
+            self::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
         );
+        return false;
     }
 
     public function fileToUploadsTemporaryName(): string
@@ -238,7 +272,25 @@ class TextAdventureUploader {
 
     public function aFileWasSelectedForUpload(): bool
     {
-        if($this->nameOfFileToUpload() === self::NO_FILE_SELECTED) {
+        if(
+            (
+                $this->nameOfFileToUpload()
+                ===
+                self::NO_FILE_SELECTED
+            )
+            ||
+            (
+                (
+                    $_FILES
+                    [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                    [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                    ??
+                    ''
+                )
+                ===
+                UPLOAD_ERR_NO_FILE
+            )
+        ) {
             array_push(
                 $this->errorMessages,
                 self::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
@@ -248,20 +300,45 @@ class TextAdventureUploader {
         return true;
     }
 
+    private function uploadRequestIsValid(): bool
+    {
+        return (
+            $this->previousRequest()->getUniqueId()
+            ===
+            $this->postRequestId()
+            &&
+            isset(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+            &&
+            !is_array(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+            &&
+            (
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                ===
+                UPLOAD_ERR_OK
+            )
+        );
+    }
+
     public function uploadIsPossible(): bool
     {
         return
             $this->aFileWasSelectedForUpload()
             &&
+            $this->uploadRequestIsValid()
+            &&
             $this->fileToUploadIsAnHtmlFile()
             &&
             !$this->fileToUploadSizeExceedsAllowedFileSize()
-            &&
-            (
-                $this->previousRequest()->getUniqueId()
-                ===
-                $this->postRequestId()
-            )
             &&
             $this->safeToReplaceExistingGame();
     }

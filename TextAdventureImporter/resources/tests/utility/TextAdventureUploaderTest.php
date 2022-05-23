@@ -13,14 +13,17 @@ use roady\classes\primary\Switchable;
 class TextAdventureUploaderTest extends TestCase
 {
 
+    private const MAXIMUM_ALLOWED_FILE_SIZE = 1000000;
+    private const INVALID_FILE_SIZE = 1000001;
+
     public function tearDown(): void
     {
         unset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]);
         foreach(
             $this->mockComponentCrud()
                  ->readAll(
-                     $this->mockCurrentRequest()->getLocation(),
-                     $this->mockCurrentRequest()->getContainer()
+                     $this->mockRequest()->getLocation(),
+                     $this->mockRequest()->getContainer()
                  ) as $testComponent
         ) {
             $this->mockComponentCrud()->delete($testComponent);
@@ -28,10 +31,88 @@ class TextAdventureUploaderTest extends TestCase
 
     }
 
-    public function testNameOfFileToUploadRetunrsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
+    /**
+     * For an overview of PHP's upload error message values:
+     *
+     * @see https://www.php.net/manual/en/features.file-upload.errors.php
+     */
+    private function mockUploadRequest(
+        Request $request,
+        bool $fileWasSelected,
+        bool $fileSizeIsValid,
+        bool $fileIsAnHtmlFile,
+        bool $setReplaceExistingGame,
+        bool $setPostRequestId,
+        bool $setFilesErrors,
+        int $filesErrorsValue,
+        bool $filesErrorsIsAnArray,
+    ): void
     {
+        $request->import(
+            [
+                'post' => [
+                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+                    => ($setReplaceExistingGame ? 'true' : ''),
+                    TextAdventureUploader::POST_REQUEST_ID_INDEX
+                    => (
+                        $setPostRequestId
+                        ? $request->getUniqueId()
+                        : ''
+                    )
+                ]
+            ]
+        );
+        if($fileWasSelected && $setFilesErrors && !$filesErrorsIsAnArray) {
+            $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = $filesErrorsValue;
+        }
+        if($fileWasSelected && $filesErrorsIsAnArray) {
+            $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = [$filesErrorsValue];
+        }
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILENAME_INDEX]
+            = (
+                $fileWasSelected
+                ? $request->getUniqueId()
+                : ''
+            ) .
+            (
+                $fileWasSelected && $fileIsAnHtmlFile
+                ? '.html'
+                : ''
+            );
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
+            = (
+                $fileSizeIsValid
+                ? self::MAXIMUM_ALLOWED_FILE_SIZE
+                : self::INVALID_FILE_SIZE
+            );
+        $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::TEMPORARY_FILENAME_INDEX]
+            = (
+                $fileWasSelected
+                ? $request->getUniqueId()
+                : ''
+            ) .
+            (
+                $fileWasSelected && $fileIsAnHtmlFile
+                ? '.html'
+                : ''
+            );
+    }
+
+    public function testNameOfFileToUploadReturnsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
+    {
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
@@ -39,30 +120,44 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->nameOfFileToUpload()
         );
         /**
-         * Also test for case where
-         * $_FILES
-         *     [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-         *     [TextAdventureUploader::FILENAME_INDEX]
-         * is empty.
+         * Also test case where an upload Request has been
+         * made but a file was not actually selected.
          */
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-               [TextAdventureUploader::FILENAME_INDEX] = '';
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: false,
+            fileSizeIsValid: false,
+            fileIsAnHtmlFile: false,
+            setReplaceExistingGame: false,
+            setPostRequestId: false,
+            setFilesErrors: false,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
+            filesErrorsIsAnArray: false,
+        );
         $this->assertEquals(
              TextAdventureUploader::NO_FILE_SELECTED,
             $textAdventureUploader->nameOfFileToUpload()
         );
     }
 
-    public function testNameOfFileToUploadRetunrsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
+    public function testNameOfFileToUploadReturnsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
     {
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = 'TwineFile.html';
         $this->assertEquals(
             $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
@@ -78,19 +173,26 @@ class TextAdventureUploaderTest extends TestCase
      */
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $request->getUniqueId() . '.html';
         $this->assertEquals(
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $textAdventureUploader->nameOfFileToUpload(),
+            sha1(basename($textAdventureUploader->nameOfFileToUpload())),
             $textAdventureUploader->pathToUploadFileTo()
         );
     }
@@ -98,7 +200,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         $this->assertEquals(
@@ -110,7 +212,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         $expectedPath = (
@@ -140,7 +242,9 @@ class TextAdventureUploaderTest extends TestCase
     {
         $this->assertEquals(
             'size',
-            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX
+            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX,
+            'TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX constant must ' .
+            'be assigned the string `size`.'
         );
     }
 
@@ -148,23 +252,29 @@ class TextAdventureUploaderTest extends TestCase
     {
         $this->assertEquals(
             'fileToUpload',
-            TextAdventureUploader::FILE_TO_UPLOAD_INDEX
+            TextAdventureUploader::FILE_TO_UPLOAD_INDEX,
+            'TextAdventureUploader::FILE_TO_UPLOAD_INDEX constant must ' .
+            'be assigned the string `fileToUpload`.'
         );
     }
 
     public function testPOST_REQUEST_ID_INDEXConstantIsAssignedTheString_postRequestId(): void
     {
         $this->assertEquals(
+            'postRequestId',
             TextAdventureUploader::POST_REQUEST_ID_INDEX,
-            TextAdventureUploader::POST_REQUEST_ID_INDEX
+            'TextAdventureUploader::POST_REQUEST_ID_INDEX constant must ' .
+            'be assigned the string `postRequestId`.'
         );
     }
 
-    public function testREPLACE_EXISTING_GAMEConstantIsAssignedTheString_replaceExistingGame(): void
+    public function testREPLACE_EXISTING_GAME_INDEXConstantIsAssignedTheString_replaceExistingGame(): void
     {
         $this->assertEquals(
+            'replaceExistingGame',
             TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX,
-            TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+            'TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX constant must ' .
+            'be assigned the string `replaceExistingGame`.'
         );
     }
 
@@ -200,8 +310,20 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testFileToUploadIsAnHtmlFileReturnsFalseIfFileSelcetedForUploadDoesNotHaveTheExtension_html(): void
     {
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: false,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertFalse(
@@ -214,15 +336,22 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testFileToUploadIsAnHtmlFileReturnsTrueIfFileSelcetedForUploadHasTheExtension_html(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $request->getUniqueId() . '.html';
         $this->assertTrue(
             $textAdventureUploader->fileToUploadIsAnHtmlFile(),
             TextAdventureUploader::class .
@@ -233,13 +362,13 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheRequestSpecifiedOnInstantiation(): void
     {
-        $currentRequest = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
-            $currentRequest->getUrl(),
+            $request->getUrl(),
             $textAdventureUploader->currentRequest()->getUrl(),
             TextAdventureUploader::class .
             '->currentRequest() must return a ' .
@@ -252,14 +381,14 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testCurrentRequestReturnsARequestInstanceWhosePostDataMatchesTheCurrentRequestsPostData(): void
     {
-        $currentRequest = $this->mockCurrentRequest();
-        $currentRequest->import(['post' => ['post data']]);
+        $request = $this->mockRequest();
+        $request->import(['post' => ['post data']]);
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
-            $currentRequest->getPost(),
+            $request->getPost(),
             $textAdventureUploader->currentRequest()->getPost(),
             TextAdventureUploader::class .
             '->' .
@@ -274,14 +403,14 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testCurrentRequestReturnsARequestInstanceWhoseGetDataMatchesTheCurrentRequestsGetData(): void
     {
-        $currentRequest = $this->mockCurrentRequest();
-        $currentRequest->import(['get' => ['get data']]);
+        $request = $this->mockRequest();
+        $request->import(['get' => ['get data']]);
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
-            $currentRequest->getPost(),
+            $request->getPost(),
             $textAdventureUploader->currentRequest()->getPost(),
             TextAdventureUploader::class .
             '->' .
@@ -294,7 +423,7 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    private function mockCurrentRequest(): Request
+    private function mockRequest(): Request
     {
         return new Request(
             new Storable(
@@ -306,12 +435,22 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsFalseIfSizeOfFileToUploadDoesNotExceedAllowedFileSizeOf_5000000_bytes(): void
+    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsFalseIfSizeOfFileToUploadDoesNotExceedAllowedFileSize(): void
     {
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] = 4999999;
-        $currentRequest = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertFalse(
@@ -319,16 +458,28 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadSizeExceedsAllowedFileSize() must ' .
             'return false if size of file to upload does not ' .
-            'exceed the maximum allowed file size of 5000000 bytes.'
+            'exceed the maximum allowed file size of ' .
+            self::MAXIMUM_ALLOWED_FILE_SIZE .
+            ' bytes.'
         );
     }
 
-    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSizeOf_5000000_bytes(): void
+    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSize(): void
     {
-        $_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX][TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX] = 5000001;
-        $currentRequest = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: false,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertTrue(
@@ -336,7 +487,9 @@ class TextAdventureUploaderTest extends TestCase
             TextAdventureUploader::class .
             '->fileToUploadSizeExceedsAllowedFileSize() must ' .
             'return true if size of file to upload exceeds ' .
-            'the maximum allowed file size of 5000000 bytes.'
+            'the maximum allowed file size of ' .
+            self::MAXIMUM_ALLOWED_FILE_SIZE .
+            ' bytes.'
         );
     }
 
@@ -364,7 +517,7 @@ class TextAdventureUploaderTest extends TestCase
     {
         $specifiedComponentCrud = $this->mockComponentCrud();
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $specifiedComponentCrud
         );
         $this->assertEquals(
@@ -379,15 +532,15 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testSpecifiedRequestIsStoredOnInstantiation(): void
     {
-        $currentRequest = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
-            $currentRequest,
+            $request,
             $this->mockComponentCrud()->read(
-                $currentRequest
+                $request
             ),
             'The specified ' .
             Request::class .
@@ -406,8 +559,8 @@ class TextAdventureUploaderTest extends TestCase
             Request::class . ' must be used to update the stored ' .
             Request::class . ' on instantiation of a new ' .
             TextAdventureUploader::class . '.';
-        $previousRequest = $this->mockCurrentRequest();
-        $newRequest = $this->mockCurrentRequest();
+        $previousRequest = $this->mockRequest();
+        $newRequest = $this->mockRequest();
         $firstTextAdventureUploader = new TextAdventureUploader(
             $previousRequest,
             $this->mockComponentCrud()
@@ -438,13 +591,13 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPreviousRequestReturnsPreviouslyStoredRequest(): void
     {
-        $previousRequest = $this->mockCurrentRequest();
+        $previousRequest = $this->mockRequest();
         $firstTextAdventureUploader = new TextAdventureUploader(
             $previousRequest,
             $this->mockComponentCrud()
         );
         $secondTextAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         $this->assertEquals(
@@ -460,7 +613,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPreviousRequestReturnsSpecifiedRequestIfARequestWasNotPreviouslyStored(): void
     {
-        $newRequest = $this->mockCurrentRequest();
+        $newRequest = $this->mockRequest();
         $firstTextAdventureUploader = new TextAdventureUploader(
             $newRequest,
             $this->mockComponentCrud()
@@ -478,7 +631,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPostRequestIdReturnsTheString_NO_FILE_SELECTED_IfPostRequestIdIsNotSetInCurrentRequestsPOSTData(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -496,7 +649,7 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testPostRequestIdReturnsThePostRequestIdSetInTheCurrentRequestsPOSTData(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $request->import(
             [
                 'post' => [
@@ -520,9 +673,21 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testReplaceExistingGameReturnsFalseIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsNotSetToTheString_true(): void
+    public function testReplaceExistingGameReturnsFalseIf_POST_REPLACE_EXISTING_GAME_INDEX_IsNotSetToTheString_true(): void
     {
-        $request = $this->mockCurrentRequest();
+        // TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -537,16 +702,19 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testReplaceExistingGameReturnsTrueIfValueSetInSpecifiedRequestsPOSTDataForReplaceExistingGameIsSetToTheString_true(): void
+    public function testReplaceExistingGameReturnsTrueIf_POST_REPLACE_EXISTING_GAME_INDEX_IsSetToTheString_true(): void
     {
-        $request = $this->mockCurrentRequest();
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true'
-                ]
-            ]
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: true,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -562,9 +730,9 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFileToUploadsTemporaryNameReturnsTheString_NO_FILE_SELECTED_If_fileToUpload__tmp_name_IsNotSetIn_FILES(): void
+    public function testFileToUploadsTemporaryNameReturnsTheString_NO_FILE_SELECTED_If_FILES__FILE_TO_UPLOAD_INDEX__TEMPORARY_FILENAME_INDEX_IsNotSet(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -583,35 +751,41 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testFileToUploadsTemporaryNameReturnsValueAssignedTo_fileToUpload__tmp_name_IfItIsSetIn_FILES(): void
+    public function testFileToUploadsTemporaryNameReturnsValueAssignedTo_FILES__FILE_TO_UPLOAD_INDEX__TEMPORARY_FILENAME_INDEX_IfItIsSet(): void
     {
-        $request = $this->mockCurrentRequest();
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::TEMPORARY_FILENAME_INDEX]
-            = $request->getUniqueId();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
         $this->assertEquals(
-            $request->getUniqueId(),
+            $request->getUniqueId() . '.html',
             $textAdventureUploader->fileToUploadsTemporaryName(),
             TextAdventureUploader::class .
-            '->fileToUploadsTemporaryName() must return an ' .
-            'empty string if ' .
+            '->fileToUploadsTemporaryName() must return ' .
             '$_FILES[' .
             TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
             '][' .
-            TextAdventureUploader::FILENAME_INDEX .
-            '] is not set.'
+            TextAdventureUploader::TEMPORARY_FILENAME_INDEX .
+            '] if it is set.'
         );
     }
 
     public function testUploadCreatesUploadsDirectoryIfItDoesNotExist(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         $textAdventureUploader->upload();
@@ -626,12 +800,19 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testUploadIsPossibleReturnsFalseIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsFalse(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $testFileName = $request->getUniqueId() . '.html';
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $testFileName;
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -639,16 +820,18 @@ class TextAdventureUploaderTest extends TestCase
         $pathToTestFile =
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $testFileName;
+            sha1(basename($testFileName));
         if(
             !is_dir($textAdventureUploader->pathToUploadsDirectory())
         ) {
             mkdir($textAdventureUploader->pathToUploadsDirectory());
         }
-        file_put_contents(
-            $pathToTestFile,
-            $request->getName()
-        );
+        if(!file_exists($pathToTestFile)) {
+            file_put_contents(
+                $pathToTestFile,
+                $request->getName() . PHP_EOL . $request->getUniqueId()
+            );
+        }
         if(!$textAdventureUploader->replaceExistingGame()) {
             $this->assertFalse(
                 $textAdventureUploader->uploadIsPossible(),
@@ -664,23 +847,28 @@ class TextAdventureUploaderTest extends TestCase
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 
+    private function expectedPathToTestFile(TextAdventureUploader $textAdventureUploader, string $testFileName): string
+    {
+        return
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            $testFileName;
+    }
+
     public function testUploadIsPossibleReturnsTrueIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsTrue(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $testFileName = $request->getUniqueId() . '.html';
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $testFileName;
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true',
-                    TextAdventureUploader::POST_REQUEST_ID_INDEX
-                    => $request->getUniqueId()
-                ]
-            ]
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: true,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -689,7 +877,7 @@ class TextAdventureUploaderTest extends TestCase
         $pathToTestFile =
             $textAdventureUploader->pathToUploadsDirectory() .
             DIRECTORY_SEPARATOR .
-            $testFileName;
+            sha1(basename($testFileName));
         if(
             !is_dir($textAdventureUploader->pathToUploadsDirectory())
         ) {
@@ -716,12 +904,20 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testUploadIsPossibleReturnsFalseIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
     {
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
-            = 5000001;
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: false,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
         if(
@@ -741,12 +937,18 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testUploadIsPossibleReturnsFalseIfFileToUploadIsAnHtmlFileReturnsFalse(): void
     {
-
-        $request = $this->mockCurrentRequest();
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $request->getUniqueId();
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: false,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -769,7 +971,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testUploadIsPossibleReturnsFalseIfNameOfFileToUploadReturnsTheString_NO_FILE_SELECTED(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         if(
@@ -791,7 +993,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testUploadIsPossibleReturnsFalseIfPreviousRequestIdDoesNotMatchPostRequestId(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         if(
@@ -814,27 +1016,23 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testUploadIsPossibleReturnsFalseIfPostRequestIdDoesNotMatchPreviousRequestId(): void
     {
-        $request = $this->mockCurrentRequest();
-        $testFileName = $request->getUniqueId() . '.html';
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $testFileName;
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => 'true',
-                    TextAdventureUploader::POST_REQUEST_ID_INDEX
-                    => $request->getUniqueId()
-                ]
-            ]
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: true,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
         /**
          * Instantiate initial instance to set previous
          * Request.
          */
-        $textAdventureUploader = new TextAdventureUploader(
+        $intialTextAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
         );
@@ -843,7 +1041,7 @@ class TextAdventureUploaderTest extends TestCase
          * previous Request.
          */
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         if(
@@ -862,9 +1060,9 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testAFileWasSelectedReturnsFalseIfAFileWasNotSeletedForUpload(): void
+    public function testAFileWasSelectedForUploadReturnsFalseIfAFileWasNotSeletedForUpload(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -875,23 +1073,54 @@ class TextAdventureUploaderTest extends TestCase
             '->aFileWasSelectedForUpload() must return `false` if ' .
             'a file was not selected for upload.'
         );
+        /**
+         * Also test case where
+         * $_FILES
+         * [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+         * [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+         * === UPLOAD_ERR_NO_FILE
+         */
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            // Set fileWasSelected to true,
+            // UPLOAD_ERR_NO_FILE is what is being tested here.
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->assertFalse(
+            $textAdventureUploader->aFileWasSelectedForUpload(),
+            TextAdventureUploader::class .
+            '->aFileWasSelectedForUpload() must return `false` if ' .
+            '$_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]' .
+            '[TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] ' .
+            'is set to UPLOAD_ERR_NO_FILE'
+        );
     }
 
     public function testAFileWasSelectedReturnsTrueIfAFileWasSeletedForUpload(): void
     {
-        $request = $this->mockCurrentRequest();
-        $testFileName = $request->getUniqueId() . '.html';
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $testFileName;
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::POST_REQUEST_ID_INDEX
-                    => $request->getUniqueId()
-                ]
-            ]
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -908,7 +1137,7 @@ class TextAdventureUploaderTest extends TestCase
     public function testUploadIsPossibleReturnsFalseIfAFileWasSelectedReturnsFalse(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
         if(!$textAdventureUploader->aFileWasSelectedForUpload()) {
@@ -921,21 +1150,20 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId(): void
+    public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId_And__FILES_ERRORS_IsSet(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $testFileName = $request->getUniqueId() . '.html';
-        $_FILES
-            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-            [TextAdventureUploader::FILENAME_INDEX]
-            = $testFileName;
-        $request->import(
-            [
-                'post' => [
-                    TextAdventureUploader::POST_REQUEST_ID_INDEX
-                    => $request->getUniqueId()
-                ]
-            ]
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
         $textAdventureUploader = new TextAdventureUploader(
             $request,
@@ -983,22 +1211,23 @@ class TextAdventureUploaderTest extends TestCase
     public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingAFileWasNotSelectedForUploadIfAFileWasSelectedForUploadReturnsFalse(): void
     {
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $this->mockRequest(),
             $this->mockComponentCrud()
         );
-        $textAdventureUploader->aFileWasSelectedForUpload();
-        $this->assertTrue(
-            in_array(
-                TextAdventureUploader::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
-                $textAdventureUploader->errorMessages(),
-            ),
-            TextAdventureUploader::class .
-            '->errorMessages() must return an array that ' .
-            'includes an error message that indicates a ' .
-            'file was not selected for upload if ' .
-            TextAdventureUploader::class .
-            '->aFileWasSelectedForUpload() returns `false`'
-        );
+        if(!$textAdventureUploader->aFileWasSelectedForUpload()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates a ' .
+                'file was not selected for upload if ' .
+                TextAdventureUploader::class .
+                '->aFileWasSelectedForUpload() returns `false`'
+            );
+        }
     }
 
     public function test_SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
@@ -1017,28 +1246,97 @@ class TextAdventureUploaderTest extends TestCase
 
     public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFileIsNotAnHtmlFileIfFileToUploadIsAnHtmlFileReturnsFalse(): void
     {
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockCurrentRequest(),
+            $request,
             $this->mockComponentCrud()
         );
-        $textAdventureUploader->fileToUploadIsAnHtmlFile();
-        $this->assertTrue(
-            in_array(
-                TextAdventureUploader::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE,
-                $textAdventureUploader->errorMessages(),
-            ),
-            TextAdventureUploader::class .
-            '->errorMessages() must return an array that ' .
-            'includes an error message that indicates a ' .
-            'the selected file is not an html file if ' .
-            TextAdventureUploader::class .
-            '->fileToUploadIsAnHtmlFile() returns `false`'
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: false,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
         );
+        if(!$textAdventureUploader->fileToUploadIsAnHtmlFile()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates a ' .
+                'the selected file is not an html file if ' .
+                TextAdventureUploader::class .
+                '->fileToUploadIsAnHtmlFile() returns `false`'
+            );
+        }
+    }
+
+    public function test_FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        $expectedErrorMessage = 'The selected file is too large! ' .
+            'Please choose a file that is less than ' .
+            strval(
+                (
+                    TextAdventureUploader::MAXIMUM_ALLOWED_FILE_SIZE
+                    *
+                    0.000001
+                )
+            ) . ' megabytes.';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
+        );
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFilesSizeExceedsTheMaximumAllowedFileSizeIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
+    {
+        $request = $this->mockRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: false,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
+        if($textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates a ' .
+                'the selected file\'s size eceeds the ' .
+                'maximum allowed files size if ' .
+                TextAdventureUploader::class .
+                '->fileToUploadIsAnHtmlFile() returns `false`'
+            );
+        }
     }
 
     public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
     {
-        $request = $this->mockCurrentRequest();
+        $request = $this->mockRequest();
         $textAdventureUploader = new TextAdventureUploader(
             $request,
             $this->mockComponentCrud()
@@ -1056,21 +1354,222 @@ class TextAdventureUploaderTest extends TestCase
             $textAdventureUploader->rootUrl(),
         );
     }
+
+    public function test_MAXIMUM_ALLOWED_FILE_SIZE_IsAssignedTheInteger_1000000(): void
+    {
+        $this->assertEquals(
+            self::MAXIMUM_ALLOWED_FILE_SIZE,
+            TextAdventureUploader::MAXIMUM_ALLOWED_FILE_SIZE,
+            TextAdventureUploader::class .
+            '::MAXIMUM_ALLOWED_FILE_SIZE must be assigned the ' .
+            'integer ' .
+            self::MAXIMUM_ALLOWED_FILE_SIZE
+        );
+    }
+
+    public function test_FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    {
+        // FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE
+        $expectedErrorMessage = 'A file already exists whose name ' .
+            'matches the name of the specified file. ' .
+            'Please select a file with a different name, or check ' .
+            'the  "Replace Existing" box.';
+        $this->assertEquals(
+            $expectedErrorMessage,
+            TextAdventureUploader::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
+            TextAdventureUploader::class .
+            '::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE ' .
+            'must be assigned the string: ' .
+            $expectedErrorMessage
+        );
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingThatAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload_IfAFileAlreadyExistsWhoseNameMatchesTheNameOfTheFileSelectedToUploadAndReplaceExistingGameReturnsFalse(): void
+    {
+        $request = $this->mockRequest();
+        $testFileName = $request->getUniqueId() . '.html';
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $pathToTestFile =
+            $textAdventureUploader->pathToUploadsDirectory() .
+            DIRECTORY_SEPARATOR .
+            sha1(basename($testFileName));
+        if(
+            !is_dir($textAdventureUploader->pathToUploadsDirectory())
+        ) {
+            mkdir($textAdventureUploader->pathToUploadsDirectory());
+        }
+        if(!file_exists($pathToTestFile)) {
+            file_put_contents(
+                $pathToTestFile,
+                $request->getName() . PHP_EOL . $request->getUniqueId()
+            );
+        }
+        if(!$textAdventureUploader->replaceExistingGame()) {
+            $this->assertTrue(
+                in_array(
+                    TextAdventureUploader::FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE,
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates ' .
+                'the selected file was already uploaded ' .
+                'if a file already exists whose name matches ' .
+                'the name of the file selected for upload and ' .
+                TextAdventureUploader::class .
+                '->replaceExistingGame() returns `false`'
+            );
+        }
+        unlink($pathToTestFile);
+        rmdir($textAdventureUploader->pathToUploadsDirectory());
+    }
+
+    public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsNotSet(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: false,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            !isset(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["errors"] is not set.'
+            );
+        }
+    }
+
+    /**
+     * Checking the errors in the FILES array is recommended by the
+     * following post on php.net:
+     *
+     * @see https://www.php.net/manual/en/features.file-upload.php
+     */
+    public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsAnArray(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: false,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: true,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            is_array(
+                $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            )
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["' .
+                TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX .
+                '"] is an array.'
+            );
+        }
+    }
+
+    public function test_FILE_UPLOAD_ERRORS_INDEX_IsAssignedTheString_error(): void
+    {
+        $expectedString = 'error';
+        $this->assertEquals(
+            $expectedString,
+            TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX,
+            TextAdventureUploader::class .
+            '::FILE_UPLOAD_ERRORS_INDEX ' .
+            'must be assigned the string: ' .
+            $expectedString
+        );
+    }
+
+    public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsNotSetTo_UPLOAD_ERR_OK(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_NO_FILE,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            !==
+            UPLOAD_ERR_OK
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["errors"] is not set to UPLOAD_ERR_OK.'
+            );
+        }
+    }
 }
 
 /**
  *
-$invalidFileTypeMessage = '
-    <p class="roady-error-message">
-        Only Twine html files can be uploaded!
-        Please select a Twine html file to upload
-    </p>
-';
-$fileIsToLargeMessage = '
-    <p class="roady-error-message">
-        The file is too large!
-    </p>
-';
 
 $theSpecifiedTwineFileWasAlreadyImportedMessage = "
     <div class=\"roady-error-message\">
