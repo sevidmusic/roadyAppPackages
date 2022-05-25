@@ -18,7 +18,10 @@ class TextAdventureUploaderTest extends TestCase
 
     public function tearDown(): void
     {
-        unset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]);
+        unset(
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+        );
         foreach(
             $this->mockComponentCrud()
                  ->readAll(
@@ -26,7 +29,8 @@ class TextAdventureUploaderTest extends TestCase
                      $this->mockRequest()->getContainer()
                  ) as $testComponent
         ) {
-            $this->mockComponentCrud()->delete($testComponent);
+            $this->mockComponentCrud()
+                 ->delete($testComponent);
         }
 
     }
@@ -52,7 +56,13 @@ class TextAdventureUploaderTest extends TestCase
             [
                 'post' => [
                     TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => ($setReplaceExistingGame ? 'true' : ''),
+                    => (
+                        $setReplaceExistingGame
+                        ?
+                        'true'
+                        :
+                        ''
+                    ),
                     TextAdventureUploader::POST_REQUEST_ID_INDEX
                     => (
                         $setPostRequestId
@@ -62,15 +72,23 @@ class TextAdventureUploaderTest extends TestCase
                 ]
             ]
         );
-        if($fileWasSelected && $setFilesErrors && !$filesErrorsIsAnArray) {
+        if(
+            $fileWasSelected
+            &&
+            $setFilesErrors
+            &&
+            !$filesErrorsIsAnArray
+        ) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = $filesErrorsValue;
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                = $filesErrorsValue;
         }
         if($fileWasSelected && $filesErrorsIsAnArray) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = [$filesErrorsValue];
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                = [$filesErrorsValue];
         }
         $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
@@ -166,11 +184,6 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    /**
-     * @todo Consider instead using sha1_file() to generate
-     * a hash of the file to use as the uploaded files
-     * name. It would be safer than using a predictable name.
-     */
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $request = $this->mockRequest();
