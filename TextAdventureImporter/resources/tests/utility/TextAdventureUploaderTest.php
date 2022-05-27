@@ -10,6 +10,86 @@ use roady\classes\component\Web\Routing\Request;
 use roady\classes\primary\Storable;
 use roady\classes\primary\Switchable;
 
+/**
+ * TextAdventureUploaderTest. Defines test methods for the
+ * `Apps\TextAdventureImporter\resources\classes\utility\TextAdventureUploader`;
+ *
+ * Methods:
+ *
+ * private function expectedMaximumFileSize(): int
+ * private function expectedPathToTestFile(TextAdventureUploader $textAdventureUploader, string $testFileName): string
+ * private function invalidFileSize(): int
+ * private function mockRequest(): Request
+ * private function mockUploadRequest(
+ *     Request $request,
+ *     bool $fileWasSelected,
+ *     bool $fileSizeIsValid,
+ *     bool $fileIsAnHtmlFile,
+ *     bool $setReplaceExistingGame,
+ *     bool $setPostRequestId,
+ *     bool $setFilesErrors,
+ *     int $filesErrorsValue,
+ *     bool $filesErrorsIsAnArray,
+ * ): void
+ * public function mockComponentCrud(): ComponentCrud
+ * public function tearDown(): void
+ * public function tesTEMPORARY_FILENAME_INDEXConstantIsAssignedTheString__tmp_name(): void
+ * public function testAFileWasSelectedForUploadReturnsFalseIfAFileWasNotSeletedForUpload(): void
+ * public function testAFileWasSelectedReturnsTrueIfAFileWasSeletedForUpload(): void
+ * public function testComponentCrudReturnsAssignedComponentCrud(): void
+ * public function testCurrentRequestReturnsARequestInstanceWhoseGetDataMatchesTheCurrentRequestsGetData(): void
+ * public function testCurrentRequestReturnsARequestInstanceWhosePostDataMatchesTheCurrentRequestsPostData(): void
+ * public function testCurrentRequestReturnsARequestInstanceWhoseUrlMatchesTheRequestSpecifiedOnInstantiation(): void
+ * public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingAFileWasNotSelectedForUploadIfAFileWasSelectedForUploadReturnsFalse(): void
+ * public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFileIsNotAnHtmlFileIfFileToUploadIsAnHtmlFileReturnsFalse(): void
+ * public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFilesSizeExceedsTheMaximumAllowedFileSizeIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
+ * public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingThatAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload_IfAFileAlreadyExistsWhoseNameMatchesTheNameOfTheFileSelectedToUploadAndReplaceExistingGameReturnsFalse(): void
+ * public function testFILENAME_INDEXConstantIsAssignedTheString_name(): void
+ * public function testFILE_TO_UPLOAD_INDEXConstantIsAssignedTheString_fileToUpload(): void
+ * public function testFILE_TO_UPLOAD_SIZE_INDEXConstantIsAssignedTheString_size(): void
+ * public function testFileToUploadIsAnHtmlFileReturnsFalseIfFileSelcetedForUploadDoesNotHaveTheExtension_html(): void
+ * public function testFileToUploadIsAnHtmlFileReturnsTrueIfFileSelcetedForUploadHasTheExtension_html(): void
+ * public function testFileToUploadSizeExceedsAllowedFileSizeReturnsFalseIfSizeOfFileToUploadDoesNotExceedAllowedFileSize(): void
+ * public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIfSizeOfFileToUploadExceedsAllowedFileSize(): void
+ * public function testFileToUploadsTemporaryNameReturnsTheString_NO_FILE_SELECTED_If_FILES__FILE_TO_UPLOAD_INDEX__TEMPORARY_FILENAME_INDEX_IsNotSet(): void
+ * public function testFileToUploadsTemporaryNameReturnsValueAssignedTo_FILES__FILE_TO_UPLOAD_INDEX__TEMPORARY_FILENAME_INDEX_IfItIsSet(): void
+ * public function testMaximumAllowedFileSizeReturnsTheValueOfTHeIniSetting_upload_max_filesize_ConvertedIntpBytes(): void
+ * public function testNO_FILE_SELECTEDConstantIsAssignedTheString_NO_FILE_SELECTED(): void
+ * public function testNameOfFileToUploadReturnsTheNameOfTheFileToUploadIfAFileHasBeenSelectedForUpload(): void
+ * public function testNameOfFileToUploadReturnsTheValueOfTheNO_FILE_SELECTEDConstantIfAFileHasNotBeenSelectedForUpload(): void
+ * public function testPOST_REQUEST_ID_INDEXConstantIsAssignedTheString_postRequestId(): void
+ * public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
+ * public function testPathToUploadFileToReturnsTheString_NO_FILE_SELECTED_IfAFileHasNotBeenSelectedForUpload(): void
+ * public function testPathToUploadsDirectoryReturnsExpectedPathToUploadsDirectory(): void
+ * public function testPostRequestIdReturnsThePostRequestIdSetInTheCurrentRequestsPOSTData(): void
+ * public function testPostRequestIdReturnsTheString_NO_FILE_SELECTED_IfPostRequestIdIsNotSetInCurrentRequestsPOSTData(): void
+ * public function testPreviousRequestReturnsPreviouslyStoredRequest(): void
+ * public function testPreviousRequestReturnsSpecifiedRequestIfARequestWasNotPreviouslyStored(): void
+ * public function testREPLACE_EXISTING_GAME_INDEXConstantIsAssignedTheString_replaceExistingGame(): void
+ * public function testReplaceExistingGameReturnsFalseIf_POST_REPLACE_EXISTING_GAME_INDEX_IsNotSetToTheString_true(): void
+ * public function testReplaceExistingGameReturnsTrueIf_POST_REPLACE_EXISTING_GAME_INDEX_IsSetToTheString_true(): void
+ * public function testRootUrlReturnsRootUrlDerivedFromSpecifiedRequest(): void
+ * public function testSpecifiedRequestIsStoredOnInstantiation(): void
+ * public function testSpecifiedRequestReplacesExistingStoredRequestWhoseNameTypeLocationAndContainerMatchSpecifiedRequestOnInstantiation(): void
+ * public function testUploadCreatesUploadsDirectoryIfItDoesNotExist(): void
+ * public function testUploadIsPossibleReturnsFalseIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsFalse(): void
+ * public function testUploadIsPossibleReturnsFalseIfAFileWasSelectedReturnsFalse(): void
+ * public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestPostRequestId(): void
+ * public function testUploadIsPossibleReturnsFalseIfDoesNotMatchPostRequestIdIsNotSet(): void
+ * public function testUploadIsPossibleReturnsFalseIfFileToUploadIsAnHtmlFileReturnsFalse(): void
+ * public function testUploadIsPossibleReturnsFalseIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
+ * public function testUploadIsPossibleReturnsFalseIfNameOfFileToUploadReturnsTheString_NO_FILE_SELECTED(): void
+ * public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsAnArray(): void
+ * public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsNotSet(): void
+ * public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsNotSetTo_UPLOAD_ERR_OK(): void
+ * public function testUploadIsPossibleReturnsTrueIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsTrue(): void
+ * public function testUploadIsPossibleReturnsTrueIf_AFileWasSelected_TheSelectedFileIsAnHtmlFile_TheSelectedFileDoesNotExceedTheMaximumFileSize_ThePostRequestIdMatchesThePreviousRequestId_And__FILES_ERRORS_IsSet(): void
+ * public function test_A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+ * public function test_FILE_UPLOAD_ERRORS_INDEX_IsAssignedTheString_error(): void
+ * public function test_FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+ * public function test_SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+ * public function test_fileToUploadSizeExceedsAllowedFileSizeErrorMessage_ReturnsTheAppropriateErrorMessage(): void
+ */
 class TextAdventureUploaderTest extends TestCase
 {
 
@@ -1000,31 +1080,34 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testUploadIsPossibleReturnsFalseIfPreviousRequestIdDoesNotMatchPostRequestId(): void
+    public function testUploadIsPossibleReturnsFalseIfDoesNotMatchPostRequestIdIsNotSet(): void
     {
+        $request = $this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: true,
+            setPostRequestId: false,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_OK,
+            filesErrorsIsAnArray: false,
+        );
         $textAdventureUploader = new TextAdventureUploader(
-            $this->mockRequest(),
+            $request,
             $this->mockComponentCrud()
         );
-        if(
-            $textAdventureUploader->previousRequest()->getUniqueId()
-            !==
-            $textAdventureUploader->postRequestId()
-        ) {
-            $this->assertFalse(
-                $textAdventureUploader->uploadIsPossible(),
-                TextAdventureUploader::class .
-                '->uploadIsPossible() must return false ' .
-                'if the id returned by ' .
-                TextAdventureUploader::class .
-                '->postRequestId() does not match the ' .
-                'the previous ' . Request::class . '\'s ' .
-                'unique id.'
-            );
-        }
+        $this->assertFalse(
+            $textAdventureUploader->uploadIsPossible(),
+            TextAdventureUploader::class .
+            '->uploadIsPossible() must return false ' .
+            'if the postRequestId is not set in the current ' .
+            'upload Request.'
+        );
     }
 
-    public function testUploadIsPossibleReturnsFalseIfPostRequestIdDoesNotMatchPreviousRequestId(): void
+    public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestPostRequestId(): void
     {
         $request = $this->mockRequest();
         $this->mockUploadRequest(
