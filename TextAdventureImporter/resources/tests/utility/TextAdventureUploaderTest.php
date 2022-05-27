@@ -13,12 +13,12 @@ use roady\classes\primary\Switchable;
 class TextAdventureUploaderTest extends TestCase
 {
 
-    private const MAXIMUM_ALLOWED_FILE_SIZE = 1000000;
-    private const INVALID_FILE_SIZE = 1000001;
-
     public function tearDown(): void
     {
-        unset($_FILES[TextAdventureUploader::FILE_TO_UPLOAD_INDEX]);
+        unset(
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+        );
         foreach(
             $this->mockComponentCrud()
                  ->readAll(
@@ -26,7 +26,8 @@ class TextAdventureUploaderTest extends TestCase
                      $this->mockRequest()->getContainer()
                  ) as $testComponent
         ) {
-            $this->mockComponentCrud()->delete($testComponent);
+            $this->mockComponentCrud()
+                 ->delete($testComponent);
         }
 
     }
@@ -52,7 +53,13 @@ class TextAdventureUploaderTest extends TestCase
             [
                 'post' => [
                     TextAdventureUploader::REPLACE_EXISTING_GAME_INDEX
-                    => ($setReplaceExistingGame ? 'true' : ''),
+                    => (
+                        $setReplaceExistingGame
+                        ?
+                        'true'
+                        :
+                        ''
+                    ),
                     TextAdventureUploader::POST_REQUEST_ID_INDEX
                     => (
                         $setPostRequestId
@@ -62,15 +69,23 @@ class TextAdventureUploaderTest extends TestCase
                 ]
             ]
         );
-        if($fileWasSelected && $setFilesErrors && !$filesErrorsIsAnArray) {
+        if(
+            $fileWasSelected
+            &&
+            $setFilesErrors
+            &&
+            !$filesErrorsIsAnArray
+        ) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = $filesErrorsValue;
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                = $filesErrorsValue;
         }
         if($fileWasSelected && $filesErrorsIsAnArray) {
             $_FILES
                 [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
-                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX] = [$filesErrorsValue];
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                = [$filesErrorsValue];
         }
         $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
@@ -90,8 +105,8 @@ class TextAdventureUploaderTest extends TestCase
             [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
             = (
                 $fileSizeIsValid
-                ? self::MAXIMUM_ALLOWED_FILE_SIZE
-                : self::INVALID_FILE_SIZE
+                ? $this->expectedMaximumFileSize()
+                : $this->invalidFileSize()
             );
         $_FILES
             [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
@@ -166,11 +181,6 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    /**
-     * @todo Consider instead using sha1_file() to generate
-     * a hash of the file to use as the uploaded files
-     * name. It would be safer than using a predictable name.
-     */
     public function testPathToUploadFileToReturnsTheNameOfFileToUploadPrefixedByThePathToUploadsDirectory(): void
     {
         $request = $this->mockRequest();
@@ -459,7 +469,7 @@ class TextAdventureUploaderTest extends TestCase
             '->fileToUploadSizeExceedsAllowedFileSize() must ' .
             'return false if size of file to upload does not ' .
             'exceed the maximum allowed file size of ' .
-            self::MAXIMUM_ALLOWED_FILE_SIZE .
+            $this->expectedMaximumFileSize() .
             ' bytes.'
         );
     }
@@ -488,7 +498,7 @@ class TextAdventureUploaderTest extends TestCase
             '->fileToUploadSizeExceedsAllowedFileSize() must ' .
             'return true if size of file to upload exceeds ' .
             'the maximum allowed file size of ' .
-            self::MAXIMUM_ALLOWED_FILE_SIZE .
+            $this->expectedMaximumFileSize() .
             ' bytes.'
         );
     }
@@ -1278,23 +1288,28 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function test_FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE_IsAssignedTheAppropriateErrorMessage(): void
+    public function test_fileToUploadSizeExceedsAllowedFileSizeErrorMessage_ReturnsTheAppropriateErrorMessage(): void
     {
+        $request = $this->mockRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
         $expectedErrorMessage = 'The selected file is too large! ' .
             'Please choose a file that is less than ' .
             strval(
                 (
-                    TextAdventureUploader::MAXIMUM_ALLOWED_FILE_SIZE
+                    $textAdventureUploader->maximumAllowedFileSize()
                     *
                     0.000001
                 )
             ) . ' megabytes.';
         $this->assertEquals(
             $expectedErrorMessage,
-            TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+            $textAdventureUploader->fileToUploadSieExceedsAllowedFileSizeErrorMessage(),
             TextAdventureUploader::class .
-            '::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE ' .
-            'must be assigned the string: ' .
+            '->fileToUploadSieExceedsAllowedFileSizeErrorMessage() ' .
+            'must return the string: ' .
             $expectedErrorMessage
         );
     }
@@ -1320,7 +1335,7 @@ class TextAdventureUploaderTest extends TestCase
         if($textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()) {
             $this->assertTrue(
                 in_array(
-                    TextAdventureUploader::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+                    $textAdventureUploader->fileToUploadSieExceedsAllowedFileSizeErrorMessage(),
                     $textAdventureUploader->errorMessages(),
                 ),
                 TextAdventureUploader::class .
@@ -1355,15 +1370,41 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function test_MAXIMUM_ALLOWED_FILE_SIZE_IsAssignedTheInteger_1000000(): void
+    private function invalidFileSize(): int
     {
+        return $this->expectedMaximumFileSize() + 1;
+    }
+
+    private function expectedMaximumFileSize(): int
+    {
+        return intval(
+            str_replace(
+                'M',
+                '',
+                strval(
+                    ini_get(
+                        'upload_max_filesize'
+                    )
+                )
+            )
+        ) * 1048576;
+    }
+
+    public function testMaximumAllowedFileSizeReturnsTheValueOfTHeIniSetting_upload_max_filesize_ConvertedIntpBytes(): void
+    {
+        $request = $this->mockRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $expectedMaximumFileSize = $this->expectedMaximumFileSize();
         $this->assertEquals(
-            self::MAXIMUM_ALLOWED_FILE_SIZE,
-            TextAdventureUploader::MAXIMUM_ALLOWED_FILE_SIZE,
+            $expectedMaximumFileSize,
+            $textAdventureUploader->maximumAllowedFileSize(),
             TextAdventureUploader::class .
-            '::MAXIMUM_ALLOWED_FILE_SIZE must be assigned the ' .
-            'integer ' .
-            self::MAXIMUM_ALLOWED_FILE_SIZE
+            '->maximumAllowedFileSize() must return the ' .
+            'value of ini_get("upload_max_filesize") ' .
+            'converted into bytes.'
         );
     }
 

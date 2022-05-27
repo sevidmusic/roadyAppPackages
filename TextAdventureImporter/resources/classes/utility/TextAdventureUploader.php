@@ -37,8 +37,6 @@ class TextAdventureUploader {
 
     public const TEMPORARY_FILENAME_INDEX = 'tmp_name';
 
-    public const MAXIMUM_ALLOWED_FILE_SIZE = 1000000;
-
     public const A_FILE_WAS_NOT_SELECTED_FOR_UPLOAD_ERROR_MESSAGE =
         'A Twine html file was not selected. Please select a Twine ' .
         'html file to upload!';
@@ -46,10 +44,6 @@ class TextAdventureUploader {
     public const SELECTED_FILE_IS_NOT_AN_HTML_FILE_ERROR_MESSAGE =
         'The selected file is not a valid ' .
         ' html file. Only html files may be uploaded.';
-
-    public const FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE =
-        'The selected file is too large! Please choose a file ' .
-        'that is less than 1 megabytes.';
 
     public const FILE_WAS_ALREADY_UPLOADED_AND_REQUEST_DID_NOT_INDICATE_EXISTING_FILE_SHOULD_BE_REPLACE_ERROR_MESSAGE =
         'A file already exists whose name ' .
@@ -174,12 +168,12 @@ class TextAdventureUploader {
                 [self::FILE_TO_UPLOAD_INDEX]
                 [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
                 ??
-                self::MAXIMUM_ALLOWED_FILE_SIZE
-            ) > self::MAXIMUM_ALLOWED_FILE_SIZE
+                $this->maximumAllowedFileSize()
+            ) > $this->maximumAllowedFileSize()
         ) {
             array_push(
                 $this->errorMessages,
-                self::FILE_TO_UPLOAD_SIZE_EXCEEDS_ALLOWED_FILE_SIZE_ERROR_MESSAGE,
+                $this->fileToUploadSieExceedsAllowedFileSizeErrorMessage()
             );
             return true;
         }
@@ -381,5 +375,35 @@ class TextAdventureUploader {
         );
         return (empty($port) ? '' : ':' . $port);
     }
+
+
+    public function maximumAllowedFileSize(): int
+    {
+        return intval(
+            str_replace(
+                'M',
+                '',
+                strval(
+                    ini_get(
+                        'upload_max_filesize'
+                    )
+                )
+            )
+        ) * 1048576;
+    }
+
+    public function fileToUploadSieExceedsAllowedFileSizeErrorMessage(): string
+    {
+        return 'The selected file is too large! Please choose a ' .
+            'file that is less than ' .
+            strval(
+                (
+                    $this->maximumAllowedFileSize()
+                    *
+                    0.000001
+                )
+            ) . ' megabytes.';
+    }
+
 }
 
