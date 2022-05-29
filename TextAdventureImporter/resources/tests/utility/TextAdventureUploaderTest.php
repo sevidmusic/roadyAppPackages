@@ -1690,6 +1690,125 @@ class TextAdventureUploaderTest extends TestCase
             );
         }
     }
+
+
+    public function testFileToUploadSizeExceedsAllowedFileSizeReturnsTrueIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsSetTo_UPLOAD_ERR_INI_SIZE(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_INI_SIZE,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            ===
+            UPLOAD_ERR_INI_SIZE
+        ) {
+            $this->assertTrue(
+                $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize(),
+                TextAdventureUploader::class .
+                '->fileToUploadSizeExceedsAllowedFileSize() must ' .
+                'return true if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["errors"] is set to UPLOAD_ERR_INI_SIZE.'
+            );
+        }
+    }
+
+    public function testUploadIsPossibleReturnsFalseIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsSetTo_UPLOAD_ERR_INI_SIZE(): void
+    {
+        $request =$this->mockRequest();
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_INI_SIZE,
+            filesErrorsIsAnArray: false,
+        );
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        if(
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            ===
+            UPLOAD_ERR_INI_SIZE
+        ) {
+            $this->assertFalse(
+                $textAdventureUploader->uploadIsPossible(),
+                TextAdventureUploader::class .
+                '->uploadIsPossible() must ' .
+                'return false if $_FILES["' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '"]["errors"] is not set to UPLOAD_ERR_OK.'
+            );
+        }
+    }
+
+    public function testErrorsReturnsAnArrayThatIncludesAnErrorMessageIndicatingATheSlectedFilesSizeExceedsTheMaximumAllowedFileSizeIf_FILES_FILE_TO_UPLOAD_INDEX_ERRORS_IsSetTo_UPLOAD_ERR_INI_SIZE(): void
+    {
+        $request = $this->mockRequest();
+        $textAdventureUploader = new TextAdventureUploader(
+            $request,
+            $this->mockComponentCrud()
+        );
+        $this->mockUploadRequest(
+            $request,
+            fileWasSelected: true,
+            fileSizeIsValid: true,
+            fileIsAnHtmlFile: true,
+            setReplaceExistingGame: false,
+            setPostRequestId: true,
+            setFilesErrors: true,
+            filesErrorsValue: UPLOAD_ERR_INI_SIZE,
+            filesErrorsIsAnArray: false,
+        );
+        if(
+            $textAdventureUploader->fileToUploadSizeExceedsAllowedFileSize()
+            &&
+            $_FILES
+            [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+            [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+            ===
+            UPLOAD_ERR_INI_SIZE
+        ) {
+            $this->assertTrue(
+                in_array(
+                    $textAdventureUploader->fileToUploadSieExceedsAllowedFileSizeErrorMessage(),
+                    $textAdventureUploader->errorMessages(),
+                ),
+                TextAdventureUploader::class .
+                '->errorMessages() must return an array that ' .
+                'includes an error message that indicates a ' .
+                'the selected file\'s size eceeds the ' .
+                'maximum allowed files size if ' .
+                '`$_FILES[' .
+                TextAdventureUploader::FILE_TO_UPLOAD_INDEX .
+                '][' .
+                TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX .
+                '] is set to `UPLOAD_ERR_INI_SIZE`'
+            );
+        }
+    }
 }
 
 /**

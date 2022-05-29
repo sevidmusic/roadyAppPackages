@@ -165,6 +165,14 @@ class TextAdventureUploader {
         if (
             (
                 $_FILES
+                [TextAdventureUploader::FILE_TO_UPLOAD_INDEX]
+                [TextAdventureUploader::FILE_UPLOAD_ERRORS_INDEX]
+                ===
+                UPLOAD_ERR_INI_SIZE
+            )
+            ||
+            (
+                $_FILES
                 [self::FILE_TO_UPLOAD_INDEX]
                 [TextAdventureUploader::FILE_TO_UPLOAD_SIZE_INDEX]
                 ??
