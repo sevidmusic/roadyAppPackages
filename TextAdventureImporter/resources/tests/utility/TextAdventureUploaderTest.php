@@ -72,10 +72,10 @@ use roady\classes\primary\Switchable;
  * public function testSpecifiedRequestIsStoredOnInstantiation(): void
  * public function testSpecifiedRequestReplacesExistingStoredRequestWhoseNameTypeLocationAndContainerMatchSpecifiedRequestOnInstantiation(): void
  * public function testUploadCreatesUploadsDirectoryIfItDoesNotExist(): void
- * public function testUploadIsPossibleReturnsFalseIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsFalse(): void
+ * public function testUploadIsPossibleReturnsFalseIfReplaceExistingGameReturnsFalseAndAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload(): void
  * public function testUploadIsPossibleReturnsFalseIfAFileWasSelectedReturnsFalse(): void
- * public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestPostRequestId(): void
- * public function testUploadIsPossibleReturnsFalseIfDoesNotMatchPostRequestIdIsNotSet(): void
+ * public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestsUniqueId(): void
+ * public function testUploadIsPossibleReturnsFalseIfPostRequestIdIsNotSet(): void
  * public function testUploadIsPossibleReturnsFalseIfFileToUploadIsAnHtmlFileReturnsFalse(): void
  * public function testUploadIsPossibleReturnsFalseIfFileToUploadSizeExceedsAllowedFileSizeReturnsTrue(): void
  * public function testUploadIsPossibleReturnsFalseIfNameOfFileToUploadReturnsTheString_NO_FILE_SELECTED(): void
@@ -888,7 +888,7 @@ class TextAdventureUploaderTest extends TestCase
         rmdir($textAdventureUploader->pathToUploadsDirectory());
     }
 
-    public function testUploadIsPossibleReturnsFalseIfAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUploadAndReplaceExistingGameReturnsFalse(): void
+    public function testUploadIsPossibleReturnsFalseIfReplaceExistingGameReturnsFalseAndAFileWasAlreadyUploadedWhoseNameMatchesTheNameOfTheFileToUpload(): void
     {
         $request = $this->mockRequest();
         $testFileName = $request->getUniqueId() . '.html';
@@ -1080,7 +1080,7 @@ class TextAdventureUploaderTest extends TestCase
         }
     }
 
-    public function testUploadIsPossibleReturnsFalseIfDoesNotMatchPostRequestIdIsNotSet(): void
+    public function testUploadIsPossibleReturnsFalseIfPostRequestIdIsNotSet(): void
     {
         $request = $this->mockRequest();
         $this->mockUploadRequest(
@@ -1107,7 +1107,7 @@ class TextAdventureUploaderTest extends TestCase
         );
     }
 
-    public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestPostRequestId(): void
+    public function testUploadIsPossibleReturnsFalseIfCurrentRequestsPostRequestIdDoesNotMatchPreviousRequestsUniqueId(): void
     {
         $request = $this->mockRequest();
         $this->mockUploadRequest(
